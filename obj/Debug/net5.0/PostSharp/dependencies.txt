@@ -1,0 +1,2 @@
+C:\Users\Cenk\source\repos\ASPNETAOP\obj\Debug\net5.0\PostSharp\PostSharp.Compiler.Engine.dll
+C:\Users\Cenk\source\repos\ASPNETAOP\obj\Debug\net5.0\PostSharp\postsharp.config
