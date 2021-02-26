@@ -50,14 +50,14 @@ namespace ASPNETAOP.Controllers
         public void SendRequest(String[] ur)
         {
             HttpClient client = new HttpClient();
-            SessionList.listObject.Pair.Add(new Pair(HttpContext.Session.Id, SessionList.listObject.count));
+            SessionList.listObject.Pair.Add(new Pair(HttpContext.Session.Id, SessionList.listObject.count, Int32.Parse(ur[4])));
 
             PostJsonHttpClient("https://localhost:44316/api/SessionItems", client, ur);
         }
 
         private static async Task PostJsonHttpClient(string uri, HttpClient httpClient, String[] userInfo)
         {
-            var postUser = new SessionItem { Id = SessionList.listObject.count++,  UserID = Int32.Parse(userInfo[0]), Username = userInfo[1], Usermail = userInfo[2], Roleid = Int32.Parse(userInfo[3]) };
+            var postUser = new SessionItem { Id = SessionList.listObject.count++, UserID = Int32.Parse(userInfo[0]), Username = userInfo[1], Usermail = userInfo[2], Roleid = Int32.Parse(userInfo[3]) };
 
             var postResponse = await httpClient.PostAsJsonAsync(uri, postUser);
 
@@ -88,7 +88,8 @@ namespace ASPNETAOP.Controllers
                     {
                         while (reader.Read())
                         {
-                            if (reader.GetString(0).Equals(ur.Userpassword)){
+                            if (reader.GetString(0).Equals(ur.Userpassword))
+                            {
                                 ViewData["Message"] = "Welcome: " + ur.Usermail;
 
                                 //1. Holds current user's info in ASPNETAOP project 
@@ -108,13 +109,13 @@ namespace ASPNETAOP.Controllers
                                 SaveCookie(ur);
 
                                 //3. Sends the user information to ASPNETAOP-WebServer for session
-                                String[] UserLoggedIn = {userID, username, usermail, roleID};
+                                String[] UserLoggedIn = { userID, username, usermail, roleID, userID };
                                 SendRequest(UserLoggedIn);
 
                                 ViewData["Message"] = "Successfully logged in";
                                 reader.Close();
 
-                                return RedirectToAction("Profile","UserProfile", new { ur });
+                                return RedirectToAction("Profile", "UserProfile", new { ur });
                             }
                             else
                             {

@@ -6,6 +6,7 @@ namespace ASPNETAOP.Models
     {
         private String sessionID;
         private int requestID;
+        private int userID;
 
         public Pair(String sessionID, int requestID)
         {
@@ -13,8 +14,17 @@ namespace ASPNETAOP.Models
             this.requestID = requestID;
         }
 
-        public String getSessionID(){ return this.sessionID;}
+        public Pair(String sessionID, int requestID, int userID)
+        {
+            this.sessionID = sessionID;
+            this.requestID = requestID;
+            this.userID = userID;
+        }
 
-        public int getRequestID(){ return this.requestID;}
+        public String getSessionID() { return this.sessionID; }
+
+        public int getRequestID() { return this.requestID; }
+
+        public int getUserID() { return this.userID; }
     }
 }

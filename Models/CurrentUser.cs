@@ -18,9 +18,9 @@ namespace ASPNETAOP.Models
             this.CurrentUserInfo = CurrentUserInfo;
         }
 
-        public CurrentUser(){}
+        public CurrentUser() { }
 
-        public String getUsername(){return CurrentUserInfo[1];}
-        public String getUsermail(){return CurrentUserInfo[2];}
+        public String getUsername() { return CurrentUserInfo[1]; }
+        public String getUsermail() { return CurrentUserInfo[2]; }
     }
 }

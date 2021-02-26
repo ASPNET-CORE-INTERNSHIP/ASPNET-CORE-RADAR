@@ -1,0 +1,38 @@
+﻿@model ASPNETAOP.Models.AdminPageEdit
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Permission Edit</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-9">
+        <form asp-action="UserEdit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UserID" class="control-label"></label>
+                <input asp-for="UserID" class="form-control" />
+                <span asp-validation-for="UserID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Roleid" class="control-label"></label>
+                <input asp-for="Roleid" class="form-control" />
+                <span asp-validation-for="Roleid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="UserEdit" class="btn btn-primary" />
+            </div>
+            <b>@ViewData["Message"]</b>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="AdminPage">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
