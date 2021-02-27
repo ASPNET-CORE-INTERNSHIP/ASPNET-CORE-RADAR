@@ -1,4 +1,5 @@
 using ASPNETAOP.Models;
+using ASPNETAOP.Session;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -35,6 +36,8 @@ namespace ASPNETAOP
 
             services.AddControllersWithViews();
             services.AddSingleton<IConfiguration>(Configuration);
+            //Add service for accessing current HttpContext
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -80,7 +83,7 @@ namespace ASPNETAOP
                 {
                     errorApp.Run(async context =>
                     {
-                       
+
                         context.Response.StatusCode = 500;
                         context.Response.ContentType = "text/html";
 
@@ -92,13 +95,14 @@ namespace ASPNETAOP
                         if (exceptionHandlerPathFeature?.Error is ASPNETAOP.Aspect.UserNotLoggedInException)
                         {
                             await context.Response.WriteAsync("You have to be logged in<br><br>\r\n");
-                        }else if (exceptionHandlerPathFeature?.Error is ASPNETAOP.Aspect.UserPermissionNotEnoughException)
+                        }
+                        else if (exceptionHandlerPathFeature?.Error is ASPNETAOP.Aspect.UserPermissionNotEnoughException)
                         {
                             await context.Response.WriteAsync("You don't have the necessary permission in<br><br>\r\n");
                         }
 
-                            await context.Response.WriteAsync(
-                                                      "<a href=\"/\">Login</a><br>\r\n");
+                        await context.Response.WriteAsync(
+                                                  "<a href=\"/\">Login</a><br>\r\n");
                         await context.Response.WriteAsync("</body></html>\r\n");
                         await context.Response.WriteAsync(new string(' ', 512));
                     });
@@ -115,8 +119,10 @@ namespace ASPNETAOP
             app.UseRouting();
             app.UseAuthorization();
 
-            
+
             app.UseCookiePolicy();
+
+            AppHttpContext.Services = app.ApplicationServices;
 
 
             app.UseEndpoints(endpoints =>
