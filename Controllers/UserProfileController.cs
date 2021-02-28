@@ -15,7 +15,7 @@ namespace ASPNETAOP.Controllers
     {
         public IActionResult Index()
         {
-            //Necessary to prevent sessionID from changing with every request
+            // Necessary to prevent sessionID from changing with every request
             HttpContext.Session.Set("What", new byte[] { 1, 2, 3, 4, 5 });
             return View();
         }
@@ -23,7 +23,7 @@ namespace ASPNETAOP.Controllers
         [IsAuthenticated]
         public IActionResult Profile()
         {
-            //Necessary to prevent sessionID from changing with every request
+            // Necessary to prevent sessionID from changing with every request
             HttpContext.Session.Set("What", new byte[] { 1, 2, 3, 4, 5 });
 
             //Get the current user from WebApi
@@ -45,10 +45,10 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult Profile(UserLogin ur)
         {
-            //Necessary to prevent sessionID from changing with every request
+            // Necessary to prevent sessionID from changing with every request
             HttpContext.Session.Set("What", new byte[] { 1, 2, 3, 4, 5 });
 
-            //Get the current user from WebApi
+            // Get the current user from WebApi
             foreach (Pair pair in SessionList.listObject.Pair)
             {
                 if (HttpContext.Session.Id.Equals(pair.getSessionID()))
@@ -64,7 +64,7 @@ namespace ASPNETAOP.Controllers
             return View(ur);
         }
 
-        //Used to extract user information from retrieved json file
+        // Used to extract user information from retrieved json file
         private static async Task<SessionItem> GetJsonHttpClient(string uri, HttpClient httpClient)
         {
             try

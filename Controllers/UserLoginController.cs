@@ -46,12 +46,12 @@ namespace ASPNETAOP.Controllers
             }
         }
 
-        //Used for sessions by sending the current user information to Web Api
+        // Used for sessions by sending the current user information to Web Api
         public void SendRequest(String[] ur)
         {
             HttpClient client = new HttpClient();
 
-            //Add a new Pair class containing the sessionId, Http Request ID and role id of the current user to the arraylist inside SessionList
+            // Adds a new Pair class containing the sessionId, Http Request ID and role id of the current user to the arraylist inside SessionList
             SessionList.listObject.Pair.Add(new Pair(HttpContext.Session.Id, SessionList.listObject.count, Int32.Parse(ur[4])));
 
             PostJsonHttpClient("https://localhost:44316/api/SessionItems", client, ur);

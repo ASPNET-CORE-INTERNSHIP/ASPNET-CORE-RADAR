@@ -1,4 +1,6 @@
-﻿using PostSharp.Aspects;
+﻿using ASPNETAOP.Models;
+using ASPNETAOP.Session;
+using PostSharp.Aspects;
 using PostSharp.Serialization;
 using System;
 
@@ -10,7 +12,16 @@ namespace ASPNETAOP.Aspect
     {
         public override void OnEntry(MethodExecutionArgs args)
         {
-            if (Models.CurrentUser.currentUser.CurrentUserInfo[0] == null) throw new UserNotLoggedInException();
+            String sessionID = AppHttpContext.Current.Session.Id;
+            Boolean userFound = false;
+
+            //Check if there is a session for the active sessionID
+            foreach (Pair pair in SessionList.listObject.Pair)
+            {
+                if (sessionID.Equals(pair.getSessionID())) userFound = true;
+            }
+
+            if (!userFound) throw new UserNotLoggedInException();
         }
     }
 
