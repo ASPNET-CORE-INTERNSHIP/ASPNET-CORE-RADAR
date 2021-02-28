@@ -2,10 +2,11 @@
 
 namespace ASPNETAOP.Models
 {
+    // Used for storing the HttpContext.SessionId and the ID of the Http request sent to ASPNETAOP-WebServer of the currently active user
     public class Pair
     {
-        private String sessionID;
-        private int requestID;
+        private String sessionID;   // Stores HttpContext.SessionId
+        private int requestID;      // Stores the id of the POST Request 
         private int userID;
 
         public Pair(String sessionID, int requestID)

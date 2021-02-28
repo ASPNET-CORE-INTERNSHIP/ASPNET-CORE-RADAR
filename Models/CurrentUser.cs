@@ -4,8 +4,8 @@ namespace ASPNETAOP.Models
 {
     public class CurrentUser
     {
-
-
+        // Previously used for storing the currennt user
+        // Now, replaced by the Session managment to allow for multiple active users
         public String[] CurrentUserInfo = new String[3];
         //0 - id 
         //1 - username

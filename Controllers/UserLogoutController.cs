@@ -15,7 +15,7 @@ namespace ASPNETAOP.Controllers
 
         public IActionResult Logout()
         {
-            //Necessary to prevent sessionID from changing with every request
+            // Necessary to prevent sessionID from changing with every request
             HttpContext.Session.Set("What", new byte[] { 1, 2, 3, 4, 5 });
 
             String connection = _configuration.GetConnectionString("localDatabase");
@@ -29,13 +29,10 @@ namespace ASPNETAOP.Controllers
                 }
             }
             
-            //removes the records of the currently logged in user from the global currentUserInfo array
-            for(int i=0; i<3; i++)
-            {
-                Models.CurrentUser.currentUser.CurrentUserInfo[i] = null;
-            }
+            // removes the records of the currently logged in user from the global currentUserInfo array
+            for(int i=0; i<3; i++){ Models.CurrentUser.currentUser.CurrentUserInfo[i] = null; }
 
-            //sends a Delete HTTP request
+            // sends a Delete HTTP request
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://localhost:44316/api/");

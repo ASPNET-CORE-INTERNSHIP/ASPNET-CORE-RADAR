@@ -16,6 +16,7 @@ All of the features above are implemented in AOP without using any third-party A
 - UserRegister asks  for username, mail and password.
 - UserProfile is a restricted page. When user clicks on profile menu on the home page, isAuthenticated Aspect checks whether the current user is logged in. If there is an active cookie, user is admitted. Otherwise, an exception is thrown out.
 - UserList requires both isAuthenticated and isAuthorization aspects. Former checks whether the user is logged in while the latter requires admin type user rule. If the requirements are fulfilled, name, mail address and session information for each of users are displayed.
+- UserEdit can be accessed only by logged in admin users similar to UserList. This page allows to update the roles of the selected users. 
 
 ## Necessary Programs/Libraries
 
@@ -136,7 +137,7 @@ Program was written in C#, therefore, a special environment for the aforemention
     Server Name: Your local SQL Server's name 
 
 8. Copy the connection string from the "properties" for the server added in the previous step in "Data Connections" & paste it to localDatabase in appsettings.json
-9. Install Postgres from Package Manager Console under the Tools menu of the Visual Studio
+9. Install Postgres from Package Manager Console under the Tools menu of the Visual Studio (Required for aspects)
 10. Install [ASPNETAOP-WebServer](https://github.com/cenkgokturk/ASPNET-CORE-MVC-WEB-SERVER) and open it in a seperate Visual Studio window 
 11. Click "Start without debugging" for the ASPNETAOP-WebServer project
 12. Do the same thing for ASPNETAOP

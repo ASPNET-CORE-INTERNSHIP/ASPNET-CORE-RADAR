@@ -4,13 +4,12 @@ using System.Threading;
 
 namespace ASPNETAOP.Session
 {
+    // Used for accessing to the current HttpContext outside of controllers
     public static class AppHttpContext
     {
         static IServiceProvider services = null;
 
-        /// <summary>
-        /// Provides static access to the framework's services provider
-        /// </summary>
+        // Provides static access to the framework's services provider
         public static IServiceProvider Services
         {
             get { return services; }
@@ -24,9 +23,7 @@ namespace ASPNETAOP.Session
             }
         }
 
-        /// <summary>
-        /// Provides static access to the current HttpContext
-        /// </summary>
+        // Provides static access to the current HttpContext
         public static HttpContext Current
         {
             get
