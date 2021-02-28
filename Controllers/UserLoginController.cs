@@ -67,10 +67,8 @@ namespace ASPNETAOP.Controllers
         }
 
         //When user is redirected to login page, user's info is 
-        //1. stored in CurrentUser array (in ASPNETAOP project) 
-        //2. saved as a cookie (in ASPNETAOP) in AccountDb
-        //3. sent to UserSession (in ASPNETAOP-Session) to be stored in DatabaseDb 
-
+        //1. saved in the database (for logging)
+        //2. sent to ASPNETAOP-WebServer (for sessions)
         [HttpPost]
         public IActionResult Login(UserLogin ur)
         {
@@ -94,23 +92,18 @@ namespace ASPNETAOP.Controllers
                             {
                                 ViewData["Message"] = "Welcome: " + ur.Usermail;
 
-                                //1. Holds current user's info in ASPNETAOP project 
-                                String userID = reader.GetInt32(1).ToString();    //UserID;
-                                String username = reader.GetString(2);    //Username;
+                                String userID = reader.GetInt32(1).ToString();  
+                                String username = reader.GetString(2);        
                                 String usermail = ur.Usermail;
                                 String roleID = reader.GetInt32(3).ToString();
-
-                                Models.CurrentUser.currentUser.CurrentUserInfo[0] = userID;
-                                Models.CurrentUser.currentUser.CurrentUserInfo[1] = username;
-                                Models.CurrentUser.currentUser.CurrentUserInfo[2] = usermail;
 
                                 reader.Close();
                                 sqlconn.Close();
 
-                                //2. Stores user's session as a cookie in AccountDb
+                                // 1. Stores user activity in AccountDb
                                 SaveCookie(ur);
 
-                                //3. Sends the user information to ASPNETAOP-WebServer for session
+                                // 2. Sends the user information to ASPNETAOP-WebServer for sessions
                                 String[] UserLoggedIn = { userID, username, usermail, roleID, userID };
                                 SendRequest(UserLoggedIn);
 
@@ -134,9 +127,7 @@ namespace ASPNETAOP.Controllers
                     }
                     reader.Close();
                 }
-
             }
-
             return View(ur);
         }
     }

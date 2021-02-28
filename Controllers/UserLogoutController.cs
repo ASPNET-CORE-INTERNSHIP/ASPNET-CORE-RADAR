@@ -28,9 +28,6 @@ namespace ASPNETAOP.Controllers
                     sqlcomm.ExecuteNonQuery();
                 }
             }
-            
-            // removes the records of the currently logged in user from the global currentUserInfo array
-            for(int i=0; i<3; i++){ Models.CurrentUser.currentUser.CurrentUserInfo[i] = null; }
 
             // sends a Delete HTTP request
             using (var client = new HttpClient())
