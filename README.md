@@ -70,7 +70,7 @@ Program was written in C#, therefore, a special environment for the aforemention
 5. Execute the following queries to create necessary tables
 ````java
      CREATE TABLE Antenna (
-	antenna_id uniqueidentifier PRIMARY KEY NOT NULL,
+	antenna_id INT IDENTITY PRIMARY KEY NOT NULL,
 	type nvarchar(50) NOT NULL CHECK (type IN('parabolic', 'cassegrain', 'phased array')),
 	horizontal_beamwidth NUMERIC(4,2),
 	vertical_beamwidth NUMERIC(4,2),
@@ -81,7 +81,7 @@ Program was written in C#, therefore, a special environment for the aforemention
     );
 
     CREATE TABLE Receiver(
-	receiver_id uniqueidentifier PRIMARY KEY NOT NULL,
+	receiver_id INT IDENTITY PRIMARY KEY NOT NULL,
 	listening_time INT NOT NULL,
 	rest_time INT NOT NULL,
 	recovery_time INT NOT NULL
@@ -89,53 +89,53 @@ Program was written in C#, therefore, a special environment for the aforemention
 
 
     CREATE TABLE Transmitter(
-	transmitter_id uniqueidentifier PRIMARY KEY NOT NULL,
+	transmitter_id INT IDENTITY PRIMARY KEY NOT NULL,
 	PW numeric(4,2) NOT NULL,
 	PRI numeric(4,2) NOT NULL,
 	PRF numeric(4,2) NOT NULL,
 	power INT NOT NULL
-   );
+    );
 
    CREATE TABLE Location(
-	location_id uniqueidentifier PRIMARY KEY NOT NULL,
+	location_id INT IDENTITY PRIMARY KEY NOT NULL,
 	country nvarchar(500) NOT NULL,
 	city nvarchar(500) NOT NULL,
 	geographic_latitude nvarchar(500) NOT NULL,
 	geographic_longitude nvarchar(500) NOT NULL
-   );
+    );
 
 
    CREATE TABLE Scan(
-	scan_id uniqueidentifier PRIMARY KEY NOT NULL,
+	scan_id INT IDENTITY PRIMARY KEY NOT NULL,
 	type nvarchar(500) NOT NULL
-   );
+    );
 
-   CREATE TABLE Radar(
-	radar_id uniqueidentifier PRIMARY KEY NOT NULL,
+  CREATE TABLE Radar(
+	radar_id INT IDENTITY PRIMARY KEY NOT NULL,
 	type nvarchar(500) NOT NULL CHECK (type IN('attack warning', 'threat engagement', 'multiple type')),
 	configuration nvarchar(500) NOT NULL CHECK (configuration IN('bistatic', 'continious wave', 'doppler', 'fm-cw', 'monopulse', 'passive', 'planar array', 'pulse doppler')),
-	location uniqueidentifier FOREIGN KEY REFERENCES Location(location_id) ON DELETE CASCADE ON UPDATE CASCADE
-   );
-
+	location INT FOREIGN KEY REFERENCES Location(location_id) ON DELETE CASCADE ON UPDATE CASCADE
+    );
+    
    CREATE TABLE RadarScans(
-	rs_id uniqueidentifier PRIMARY KEY NOT NULL,
-	radar_id uniqueidentifier FOREIGN KEY REFERENCES Radar(radar_id) ON DELETE CASCADE ON UPDATE CASCADE,
-	scan_id uniqueidentifier FOREIGN KEY REFERENCES Scan(scan_id) ON DELETE CASCADE ON UPDATE CASCADE
-   );
+	rs_id INT IDENTITY PRIMARY KEY NOT NULL,
+	radar_id INT FOREIGN KEY REFERENCES Radar(radar_id) ON DELETE CASCADE ON UPDATE CASCADE,
+	scan_id INT FOREIGN KEY REFERENCES Scan(scan_id) ON DELETE CASCADE ON UPDATE CASCADE
+    );
 
    CREATE TABLE RadarTransmitter(
-	rt_id uniqueidentifier PRIMARY KEY NOT NULL,
-	radar_id uniqueidentifier FOREIGN KEY REFERENCES Radar(radar_id) ON DELETE CASCADE ON UPDATE CASCADE,
-	transmitter_id uniqueidentifier FOREIGN KEY REFERENCES Transmitter(transmitter_id) ON DELETE CASCADE ON UPDATE CASCADE,
-	transmitter_antenna_id uniqueidentifier FOREIGN KEY REFERENCES Antenna(antenna_id) ON DELETE CASCADE ON UPDATE CASCADE,
-   );
+	rt_id INT IDENTITY PRIMARY KEY NOT NULL,
+	radar_id INT FOREIGN KEY REFERENCES Radar(radar_id) ON DELETE CASCADE ON UPDATE CASCADE,
+	transmitter_id INT FOREIGN KEY REFERENCES Transmitter(transmitter_id) ON DELETE CASCADE ON UPDATE CASCADE,
+	transmitter_antenna_id INT FOREIGN KEY REFERENCES Antenna(antenna_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    );
 
    CREATE TABLE RadarReceiver(
-	rr_id uniqueidentifier PRIMARY KEY NOT NULL,
-	radar_id uniqueidentifier FOREIGN KEY REFERENCES Radar(radar_id) ON DELETE CASCADE ON UPDATE CASCADE,
-	receiver_id uniqueidentifier FOREIGN KEY REFERENCES Receiver(receiver_id) ON DELETE CASCADE ON UPDATE CASCADE,
-	receiver_antenna_id uniqueidentifier FOREIGN KEY REFERENCES Antenna(antenna_id) ON DELETE CASCADE ON UPDATE CASCADE
-   );
+	rr_id INT IDENTITY PRIMARY KEY NOT NULL,
+	radar_id INT FOREIGN KEY REFERENCES Radar(radar_id) ON DELETE CASCADE ON UPDATE CASCADE,
+	receiver_id INT FOREIGN KEY REFERENCES Receiver(receiver_id) ON DELETE CASCADE ON UPDATE CASCADE,
+	receiver_antenna_id INT FOREIGN KEY REFERENCES Antenna(antenna_id) ON DELETE CASCADE ON UPDATE CASCADE
+    );
 
    ALTER TABLE RadarReceiver
      ADD CONSTRAINT uq_RadarReceiver UNIQUE(radar_id, receiver_id, receiver_antenna_id);
