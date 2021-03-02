@@ -59,11 +59,9 @@ Program was written in C#, therefore, a special environment for the aforemention
     );
 
     INSERT INTO AccountInfo(Username, Usermail, Userpassword) VALUES ('admin', 'admin@admin.com', 'admin');
-
-    INSERT INTO UserRoles(UserID, Roleid) VALUES (1,1);
-
     INSERT INTO AccountRoles(Rolename, Roleallow) VALUES ('Admin', '45EADA4A-CFB8-46A9-8DDB-5A1ACCC89D2A');
     INSERT INTO AccountRoles(Rolename, Roledeny) VALUES ('RegularUser', '45EADA4A-CFB8-46A9-8DDB-5A1ACCC89D2A');
+    INSERT INTO UserRoles(UserID, Roleid) VALUES (1,1);
     ```
 
 4.  Create a new database, named as RADAR, in your local SQL Server
