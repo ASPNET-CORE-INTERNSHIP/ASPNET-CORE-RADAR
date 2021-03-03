@@ -1,37 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Symbols LinesOfCode="547" PostSharpLinesOfCode="0" EnhancedTypesCount="5" SchemaVersion="1" PostSharpVersion="6.8.8.0" xmlns="http://schemas.postsharp.org/2.0/symbols">
+<Symbols LinesOfCode="579" PostSharpLinesOfCode="0" EnhancedTypesCount="5" SchemaVersion="1" PostSharpVersion="6.8.8.0" xmlns="http://schemas.postsharp.org/2.0/symbols">
   <Class Class="#1=T:[PostSharp]PostSharp.Serialization.PSerializableAttribute">
-    <Instance Declaration="#2=T:[ASPNETAOP]ASPNETAOP.Aspect.IsAuthenticatedAttribute" Id="4ad7b5ce00f94bee">
+    <Instance Declaration="#2=T:[ASPNETAOP]ASPNETAOP.Aspect.IsAuthenticatedAttribute" Id="4ad7b5cea2e19dec">
       <Target />
     </Instance>
-    <Instance Declaration="#3=T:[ASPNETAOP]ASPNETAOP.Aspect.IsAuthorizedAttribute" Id="4ad7b5ce7f4a6206">
+    <Instance Declaration="#3=T:[ASPNETAOP]ASPNETAOP.Aspect.IsAuthorizedAttribute" Id="4ad7b5ce0238a7d4">
       <Target />
     </Instance>
   </Class>
   <Class Class="#2">
-    <Instance Declaration="#4=M:[ASPNETAOP]ASPNETAOP.Controllers.AdminPageController::UserList()" Id="4ad7b5cef5c254eb">
+    <Instance Declaration="#4=M:[ASPNETAOP]ASPNETAOP.Controllers.AdminPageController::UserList()" Id="4ad7b5cebfd80f16">
       <Target LinesAvoided="2">
         <JoinPoint Description="#5=Wrapped by advice(s) OnEntry" Ordinal="0" />
       </Target>
     </Instance>
-    <Instance Declaration="#6=M:[ASPNETAOP]ASPNETAOP.Controllers.AdminPageEditController::UserEdit([ASPNETAOP]ASPNETAOP.Models.AdminPageEdit)" Id="4ad7b5ce75331639">
+    <Instance Declaration="#6=M:[ASPNETAOP]ASPNETAOP.Controllers.AdminPageEditController::UserEdit([ASPNETAOP]ASPNETAOP.Models.AdminPageEdit)" Id="4ad7b5ce24682a1f">
       <Target LinesAvoided="2">
         <JoinPoint Description="#5" Ordinal="2" />
       </Target>
     </Instance>
-    <Instance Declaration="#7=M:[ASPNETAOP]ASPNETAOP.Controllers.UserProfileController::Profile()" Id="4ad7b5ce0ce7d5f6">
+    <Instance Declaration="#7=M:[ASPNETAOP]ASPNETAOP.Controllers.UserProfileController::Profile()" Id="4ad7b5ce0733e546">
       <Target LinesAvoided="2">
         <JoinPoint Description="#5" Ordinal="4" />
       </Target>
     </Instance>
   </Class>
   <Class Class="#3">
-    <Instance Declaration="#4" Id="4ad7b5ce607ffdef">
+    <Instance Declaration="#4" Id="4ad7b5cee68a5362">
       <Target LinesAvoided="2">
         <JoinPoint Description="#5" />
       </Target>
     </Instance>
-    <Instance Declaration="#6" Id="4ad7b5ceaccf411d">
+    <Instance Declaration="#6" Id="4ad7b5ce78ee5325">
       <Target LinesAvoided="2">
         <JoinPoint Description="#5" Ordinal="3" />
       </Target>
