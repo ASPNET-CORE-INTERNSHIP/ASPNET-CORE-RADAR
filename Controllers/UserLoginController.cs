@@ -17,13 +17,13 @@ namespace ASPNETAOP.Controllers
 
         public IActionResult Index()
         {
-            HttpContext.Session.Set("What", new byte[] { 1, 2, 3, 4, 5 });
+            HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
             return View();
         }
 
         public IActionResult Login()
         {
-            HttpContext.Session.Set("What", new byte[] { 1, 2, 3, 4, 5 });
+            HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
             return View();
         }
 
@@ -72,7 +72,17 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult Login(UserLogin ur)
         {
-            HttpContext.Session.Set("What", new byte[] { 1, 2, 3, 4, 5 });
+            HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
+
+            /*
+             * String[] UserLoggedIn = { userID, username, usermail, roleID, userID };
+             * SendRequest(UserLoggedIn);
+             * 
+             * 
+             * 
+             * 
+             */
+
 
             String connection = _configuration.GetConnectionString("localDatabase");
 

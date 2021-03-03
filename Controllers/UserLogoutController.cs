@@ -16,7 +16,7 @@ namespace ASPNETAOP.Controllers
         public IActionResult Logout()
         {
             // Necessary to prevent sessionID from changing with every request
-            HttpContext.Session.Set("What", new byte[] { 1, 2, 3, 4, 5 });
+            HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
 
             String connection = _configuration.GetConnectionString("localDatabase");
             using (SqlConnection sqlconn = new SqlConnection(connection))

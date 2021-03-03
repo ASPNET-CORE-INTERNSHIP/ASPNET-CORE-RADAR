@@ -22,7 +22,7 @@ namespace ASPNETAOP.Controllers
 
         public IActionResult Index()
         {
-            HttpContext.Session.Set("What", new byte[] { 1, 2, 3, 4, 5 });
+            HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
             return View();
         }
 
@@ -68,7 +68,7 @@ namespace ASPNETAOP.Controllers
         [IsAuthorized]
         public IActionResult UserList()
         {
-            HttpContext.Session.Set("What", new byte[] { 1, 2, 3, 4, 5 });
+            HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
 
             String connection = _configuration.GetConnectionString("localDatabase");
 

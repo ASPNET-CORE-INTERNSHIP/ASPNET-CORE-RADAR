@@ -15,14 +15,14 @@ namespace ASPNETAOP.Controllers
         public IActionResult Index()
         {
             //Necessary to prevent sessionID from changing with every request
-            HttpContext.Session.Set("What", new byte[] { 1, 2, 3, 4, 5 });
+            HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
             return View();
         }
 
         public IActionResult Create()
         {
             //Necessary to prevent sessionID from changing with every request
-            HttpContext.Session.Set("What", new byte[] { 1, 2, 3, 4, 5 });
+            HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
             return View();
         }
 
@@ -74,7 +74,7 @@ namespace ASPNETAOP.Controllers
         public IActionResult Create(UserRegister ur)
         {
             // Necessary to prevent sessionID from changing with every request
-            HttpContext.Session.Set("What", new byte[] { 1, 2, 3, 4, 5 });
+            HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
 
             // Add a new user to the database
             String connection = _configuration.GetConnectionString("localDatabase");
