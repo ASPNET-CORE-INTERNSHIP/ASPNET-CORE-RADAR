@@ -3,6 +3,10 @@ using System;
 using Microsoft.Data.SqlClient;
 using ASPNETAOP.Models;
 using Microsoft.Extensions.Configuration;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Net.Http.Json;
+using ASPNETAOP.Session;
 
 namespace ASPNETAOP.Controllers
 {
@@ -76,6 +80,13 @@ namespace ASPNETAOP.Controllers
             // Necessary to prevent sessionID from changing with every request
             HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
 
+            //Make the SessionId smaller
+            long sessionId = Hash.CurrentHashed(HttpContext.Session.Id);
+
+            String[] registerInfo = { ur.Username, ur.Usermail, ur.Userpassword };
+            SendUserRegister(registerInfo, sessionId);
+
+            /*
             // Add a new user to the database
             String connection = _configuration.GetConnectionString("localDatabase");
             using (SqlConnection sqlconn = new SqlConnection(connection))
@@ -97,9 +108,27 @@ namespace ASPNETAOP.Controllers
 
             // define a standart permission
             AddUserRole(UserID);
+            */
 
             return View(ur);
         }
 
+        //Post request to Web Api with the given user credentials
+        public void SendUserRegister(String[] registerInfo, long sessionId)
+        {
+            HttpClient client = new HttpClient();
+
+            PostUserLogin("https://localhost:44316/api/UserLoginItems", client, registerInfo, sessionId);
+        }
+
+        //Helper method for the SendUserLogin
+        private static async Task PostUserLogin(string uri, HttpClient httpClient, String[] registerInfo, long sessionId)
+        {
+            var postUser = new UserLoginItem { Id = sessionId, Username = registerInfo[0], Usermail = registerInfo[1], Userpassword = registerInfo[2], isUserLoggedIn = 4 };
+
+            var postResponse = await httpClient.PostAsJsonAsync(uri, postUser);
+
+            postResponse.EnsureSuccessStatusCode();
+        }
     }
 }

@@ -9,6 +9,7 @@ namespace ASPNETAOP.Models
     {
         public long Id { get; set; }
 
+        public string Username { get; set; }
         public string Usermail { get; set; }
         public string Userpassword { get; set; }
 
