@@ -13,7 +13,7 @@ using ASPNETAOP.Session;
 
 namespace ASPNETAOP.Aspect
 {
-    // Used for checking the permission of the currently level
+    // Used for checking the permission of the currently logged in user
     // Requires Admin-level access
     [PSerializable]
     public sealed class IsAuthorizedAttribute : OnMethodBoundaryAspect
@@ -22,7 +22,7 @@ namespace ASPNETAOP.Aspect
         {
             String sessionID = AppHttpContext.Current.Session.Id;
 
-            //Get the current user from WebApi
+            // Get the current user from WebApi
             foreach (Pair pair in SessionList.listObject.Pair)
             {
                 if (sessionID.Equals(pair.getSessionID()))
@@ -31,7 +31,7 @@ namespace ASPNETAOP.Aspect
                     String connectionString = "https://localhost:44316/api/SessionItems/" + pair.getRequestID();
                     Task<SessionItem> userSession = GetJsonHttpClient(connectionString, client); ;
 
-                    //check if the current user has an admin role
+                    // check if the current user has an admin role
                     if (userSession.Result.Roleid != 1) throw new UserPermissionNotEnoughException();
                 }
             }

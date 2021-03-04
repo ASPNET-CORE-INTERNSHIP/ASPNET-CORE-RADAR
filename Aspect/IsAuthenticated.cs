@@ -3,6 +3,10 @@ using ASPNETAOP.Session;
 using PostSharp.Aspects;
 using PostSharp.Serialization;
 using System;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace ASPNETAOP.Aspect
 {
@@ -12,16 +16,37 @@ namespace ASPNETAOP.Aspect
     {
         public override void OnEntry(MethodExecutionArgs args)
         {
-            String sessionID = AppHttpContext.Current.Session.Id;
-            Boolean userFound = false;
+            HttpClient client = new HttpClient();
+            String connectionString = "https://localhost:44316/api/UserLoginItems/" + Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
+            Task<UserLoginItem> userLogin = GetJsonHttpClient(connectionString, client); ;
 
-            //Check if there is a session for the active sessionID
-            foreach (Pair pair in SessionList.listObject.Pair)
+            Console.WriteLine("UserLogin in IsAuthenticated" + userLogin.Result.isUserLoggedIn);
+
+            if(userLogin.Result == null ) throw new UserNotLoggedInException();
+            if(userLogin.Result.isUserLoggedIn != 1) throw new UserNotLoggedInException();
+        }
+
+        //Used to extract user information from retrieved json file
+        private static async Task<UserLoginItem> GetJsonHttpClient(string uri, HttpClient httpClient)
+        {
+            try
             {
-                if (sessionID.Equals(pair.getSessionID())) userFound = true;
+                return await httpClient.GetFromJsonAsync<UserLoginItem>(uri);
+            }
+            catch (HttpRequestException) // Non success
+            {
+                Console.WriteLine("An error occurred.");
+            }
+            catch (NotSupportedException) // When content type is not valid
+            {
+                Console.WriteLine("The content type is not supported.");
+            }
+            catch (JsonException) // Invalid JSON
+            {
+                Console.WriteLine("Invalid JSON.");
             }
 
-            if (!userFound) throw new UserNotLoggedInException();
+            return null;
         }
     }
 

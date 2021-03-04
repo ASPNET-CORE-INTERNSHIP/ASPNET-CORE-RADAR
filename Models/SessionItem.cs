@@ -17,5 +17,7 @@ namespace ASPNETAOP.Models
         //Information from UserRoles table in AccountDb
         public int Roleid { get; set; }
 
+        public string SessiondId { get; set; }
+
     }
 }
