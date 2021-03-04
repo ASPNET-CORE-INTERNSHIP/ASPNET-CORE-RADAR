@@ -68,7 +68,7 @@ Program was written in C#, therefore, a special environment for the aforemention
 5. Execute the following queries to create necessary tables
 ````java
      CREATE TABLE Antenna (
-	antenna_id INT IDENTITY PRIMARY KEY NOT NULL,
+	ID uniqueidentifier PRIMARY KEY NOT NULL,
 	type nvarchar(50) NOT NULL CHECK (type IN('parabolic', 'cassegrain', 'phased array')),
 	horizontal_beamwidth NUMERIC(4,2),
 	vertical_beamwidth NUMERIC(4,2),
@@ -78,68 +78,106 @@ Program was written in C#, therefore, a special environment for the aforemention
 	vertical_dimension NUMERIC(6,2)
     );
 
-    CREATE TABLE Receiver(
-	receiver_id INT IDENTITY PRIMARY KEY NOT NULL,
+   CREATE TABLE Receiver(
+	ID uniqueidentifier PRIMARY KEY NOT NULL,
 	listening_time INT NOT NULL,
 	rest_time INT NOT NULL,
 	recovery_time INT NOT NULL
     );
+    
+    CREATE TABLE Mode(
+	ID uniqueidentifier PRIMARY KEY NOT NULL,
+	mode nvarchar(500) NOT NULL
+    );
 
-
-    CREATE TABLE Transmitter(
-	transmitter_id INT IDENTITY PRIMARY KEY NOT NULL,
+    CREATE TABLE Submode(
+	ID uniqueidentifier PRIMARY KEY NOT NULL,
 	PW numeric(4,2) NOT NULL,
 	PRI numeric(4,2) NOT NULL,
-	PRF numeric(4,2) NOT NULL,
+	PRF numeric(4,2) NOT NULL
+    );
+    
+    CREATE TABLE Transmitter(
+	ID uniqueidentifier PRIMARY KEY NOT NULL,
 	power INT NOT NULL
     );
 
    CREATE TABLE Location(
-	location_id INT IDENTITY PRIMARY KEY NOT NULL,
+	ID uniqueidentifier PRIMARY KEY NOT NULL,
 	country nvarchar(500) NOT NULL,
 	city nvarchar(500) NOT NULL,
 	geographic_latitude nvarchar(500) NOT NULL,
 	geographic_longitude nvarchar(500) NOT NULL
     );
 
-
    CREATE TABLE Scan(
-	scan_id INT IDENTITY PRIMARY KEY NOT NULL,
-	type nvarchar(500) NOT NULL
+	ID uniqueidentifier PRIMARY KEY NOT NULL,
+	type nvarchar(500) NOT NULL CHECK (type IN('circular', 'linear', 'unidirectional', 'bidirectional', 'conical', 'palmer-raster', 'palmer', 'palmer-helical', 'track-while')),
     );
 
   CREATE TABLE Radar(
-	radar_id INT IDENTITY PRIMARY KEY NOT NULL,
-	type nvarchar(500) NOT NULL CHECK (type IN('attack warning', 'threat engagement', 'multiple type')),
+	ID uniqueidentifier PRIMARY KEY NOT NULL,
 	configuration nvarchar(500) NOT NULL CHECK (configuration IN('bistatic', 'continious wave', 'doppler', 'fm-cw', 'monopulse', 'passive', 'planar array', 'pulse doppler')),
-	location INT FOREIGN KEY REFERENCES Location(location_id) ON DELETE CASCADE ON UPDATE CASCADE
+	location uniqueidentifier FOREIGN KEY REFERENCES Location(ID) ON DELETE CASCADE ON UPDATE CASCADE
     );
     
-   CREATE TABLE RadarScans(
-	rs_id INT IDENTITY PRIMARY KEY NOT NULL,
-	radar_id INT FOREIGN KEY REFERENCES Radar(radar_id) ON DELETE CASCADE ON UPDATE CASCADE,
-	scan_id INT FOREIGN KEY REFERENCES Scan(scan_id) ON DELETE CASCADE ON UPDATE CASCADE
+    CREATE TABLE RadarScans(
+	ID uniqueidentifier PRIMARY KEY NOT NULL,
+	radar_id uniqueidentifier FOREIGN KEY REFERENCES Radar(ID) ON DELETE CASCADE ON UPDATE CASCADE,
+	scan_id uniqueidentifier FOREIGN KEY REFERENCES Scan(ID) ON DELETE CASCADE ON UPDATE CASCADE
     );
 
    CREATE TABLE RadarTransmitter(
-	rt_id INT IDENTITY PRIMARY KEY NOT NULL,
-	radar_id INT FOREIGN KEY REFERENCES Radar(radar_id) ON DELETE CASCADE ON UPDATE CASCADE,
-	transmitter_id INT FOREIGN KEY REFERENCES Transmitter(transmitter_id) ON DELETE CASCADE ON UPDATE CASCADE,
-	transmitter_antenna_id INT FOREIGN KEY REFERENCES Antenna(antenna_id) ON DELETE CASCADE ON UPDATE CASCADE,
+	ID uniqueidentifier PRIMARY KEY NOT NULL,
+	radar_id uniqueidentifier FOREIGN KEY REFERENCES Radar(ID) ON DELETE CASCADE ON UPDATE CASCADE,
+	transmitter_id uniqueidentifier FOREIGN KEY REFERENCES Transmitter(ID) ON DELETE CASCADE ON UPDATE CASCADE,
+	transmitter_antenna_id uniqueidentifier FOREIGN KEY REFERENCES Antenna(ID) ON DELETE CASCADE ON UPDATE CASCADE,
     );
 
-   CREATE TABLE RadarReceiver(
-	rr_id INT IDENTITY PRIMARY KEY NOT NULL,
-	radar_id INT FOREIGN KEY REFERENCES Radar(radar_id) ON DELETE CASCADE ON UPDATE CASCADE,
-	receiver_id INT FOREIGN KEY REFERENCES Receiver(receiver_id) ON DELETE CASCADE ON UPDATE CASCADE,
-	receiver_antenna_id INT FOREIGN KEY REFERENCES Antenna(antenna_id) ON DELETE CASCADE ON UPDATE CASCADE
+  CREATE TABLE RadarReceiver(
+	ID uniqueidentifier PRIMARY KEY NOT NULL,
+	radar_id uniqueidentifier FOREIGN KEY REFERENCES Radar(ID) ON DELETE CASCADE ON UPDATE CASCADE,
+	receiver_id uniqueidentifier FOREIGN KEY REFERENCES Receiver(ID) ON DELETE CASCADE ON UPDATE CASCADE,
+	receiver_antenna_id uniqueidentifier FOREIGN KEY REFERENCES Antenna(ID) ON DELETE CASCADE ON UPDATE CASCADE
+    );
+    
+    CREATE TABLE RadarMode(
+	ID uniqueidentifier PRIMARY KEY NOT NULL,
+	radar_id uniqueidentifier FOREIGN KEY REFERENCES Radar(ID) ON DELETE CASCADE ON UPDATE CASCADE,
+	mode_id uniqueidentifier FOREIGN KEY REFERENCES Mode(ID) ON DELETE CASCADE ON UPDATE CASCADE,
     );
 
+   CREATE TABLE ModeSubmode(
+	ID uniqueidentifier PRIMARY KEY NOT NULL,
+	mode_id uniqueidentifier FOREIGN KEY REFERENCES Mode(ID) ON DELETE CASCADE ON UPDATE CASCADE,
+	submode_id uniqueidentifier FOREIGN KEY REFERENCES Submode(ID) ON DELETE CASCADE ON UPDATE CASCADE
+    );
+    
+    CREATE TABLE SubmodeScan(
+	ID uniqueidentifier PRIMARY KEY NOT NULL,
+	submode_id uniqueidentifier FOREIGN KEY REFERENCES Submode(ID) ON DELETE CASCADE ON UPDATE CASCADE,
+	scan_id uniqueidentifier FOREIGN KEY REFERENCES Scan(ID) ON DELETE CASCADE ON UPDATE CASCADE
+    );
+
+   ALTER TABLE SubmodeScan
+     ADD CONSTRAINT uq_SubmodeScan UNIQUE(submode_id, scan_id);
+
+   ALTER TABLE ModeSubmode
+     ADD CONSTRAINT uq_ModeSubmode UNIQUE(mode_id, submode_id);
+     
    ALTER TABLE RadarReceiver
      ADD CONSTRAINT uq_RadarReceiver UNIQUE(radar_id, receiver_id, receiver_antenna_id);
 
    ALTER TABLE RadarTransmitter
      ADD CONSTRAINT uq_RadarTransmitter UNIQUE(radar_id, transmitter_id, transmitter_antenna_id);
+     
+   ALTER TABLE RadarMode
+     ADD CONSTRAINT uq_RadarMode UNIQUE(radar_id, mode_id);
+     
+    CREATE TABLE AntennaScan(
+	ID uniqueidentifier PRIMARY KEY NOT NULL FOREIGN KEY REFERENCES Antenna(ID) ON DELETE CASCADE ON UPDATE CASCADE,
+	scan_id uniqueidentifier FOREIGN KEY REFERENCES Scan(ID) ON DELETE CASCADE ON UPDATE CASCADE
+    );
     
 ````
 6. Select "Add Connection" after right clicking on "Data Connections" in "Server Explorer" from the view panel of the Visual Studio 
