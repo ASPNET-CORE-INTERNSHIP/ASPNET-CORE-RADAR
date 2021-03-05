@@ -26,10 +26,10 @@ namespace ASPNETAOP.Controllers
         [IsAuthorized]
         public IActionResult UserEdit(AdminPageEdit ur)
         {
-            //Necessary to prevent sessionID from changing with every request
+            // Necessary to prevent sessionID from changing with every request
             HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
 
-            //Add a new user to the database
+            // Add a new user to the database
             String connection = _configuration.GetConnectionString("localDatabase");
             using (SqlConnection sqlconn = new SqlConnection(connection))
             {

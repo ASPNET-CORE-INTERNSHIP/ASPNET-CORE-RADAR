@@ -29,47 +29,6 @@ namespace ASPNETAOP.Controllers
             return View();
         }
 
-        //Functions below are no longer used
-        //Their actions are now handled by the WebServer
-        /*
-        public void SaveCookie(UserLogin ur)
-        {
-            String connection = _configuration.GetConnectionString("localDatabase");
-            using (SqlConnection sqlconn = new SqlConnection(connection))
-            {
-                DateTime thisDay = DateTime.Now;
-                //Date format is 30/3/2020 12:00 AM
-                //Number at the end indicates 0 for Logged Out & 1 for Logged in
-                string sqlQuerySession = "insert into AccountSessions(Usermail, LoginDate, IsLoggedIn) values ('" + ur.Usermail + "', '" + thisDay.ToString("g") + "', 1 )";
-                using (SqlCommand sqlcommCookie = new SqlCommand(sqlQuerySession, sqlconn))
-                {
-                    sqlconn.Open();
-                    sqlcommCookie.ExecuteNonQuery();
-                }
-            }
-        }
-
-        //Used for sessions by sending the current user information to Web Api
-        public void SendRequest(String[] ur)
-        {
-            HttpClient client = new HttpClient();
-
-            //Adds a new Pair class containing the sessionId, Http Request ID and role id of the current user to the arraylist inside SessionList
-            SessionList.listObject.Pair.Add(new Pair(HttpContext.Session.Id, SessionList.listObject.count, Int32.Parse(ur[0])));
-
-            PostJsonHttpClient("https://localhost:44316/api/SessionItems", client, ur, HttpContext.Session.Id);
-        }
-
-        private static async Task PostJsonHttpClient(string uri, HttpClient httpClient, String[] userInfo, String SessionId)
-        {
-            var postUser = new SessionItem { Id = Hash.CurrentHashed(SessionId), UserID = Int32.Parse(userInfo[0]), Username = userInfo[1], Usermail = userInfo[2], Roleid = Int32.Parse(userInfo[3]), SessiondId = userInfo[4] };
-
-            var postResponse = await httpClient.PostAsJsonAsync(uri, postUser);
-
-            postResponse.EnsureSuccessStatusCode();
-        }
-        */
-
         [HttpPost]
         public IActionResult Login(UserLogin ur)
         {

@@ -25,7 +25,6 @@ namespace ASPNETAOP.Controllers
             HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
 
             long sessionId = Hash.CurrentHashed(HttpContext.Session.Id);
-            Console.WriteLine("SessionId: " + sessionId);
 
             // sends a Delete HTTP request
             using (var client = new HttpClient())
@@ -36,7 +35,6 @@ namespace ASPNETAOP.Controllers
                 deleteTask.Wait();
 
                 var result = deleteTask.Result;
-                if (!result.IsSuccessStatusCode) { }
             }
 
             return RedirectToAction("Login", "UserLogin");
