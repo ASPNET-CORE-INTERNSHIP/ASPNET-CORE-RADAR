@@ -126,18 +126,11 @@ namespace ASPNETAOP.Controllers
         {
             int isUserLoggedIn = 0;
 
-            Console.WriteLine("GetUserLogin: " + sessionId);
-
             HttpClient client = new HttpClient();
             String connectionString = "https://localhost:44316/api/UserLoginItems/" + sessionId;
             Task<UserLoginItem> userLogin = GetJsonHttpClient(connectionString, client);
 
-            if (userLogin.Result != null)
-            {
-                Console.WriteLine("UserLogin " + userLogin.Result.isUserLoggedIn);
-
-                isUserLoggedIn = userLogin.Result.isUserLoggedIn;
-            }
+            if (userLogin.Result != null){ isUserLoggedIn = userLogin.Result.isUserLoggedIn; }
 
             return isUserLoggedIn;
         }
