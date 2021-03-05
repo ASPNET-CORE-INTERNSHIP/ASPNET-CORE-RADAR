@@ -20,28 +20,19 @@ namespace ASPNETAOP.Aspect
     {
         public override void OnEntry(MethodExecutionArgs args)
         {
-            String sessionID = AppHttpContext.Current.Session.Id;
+            HttpClient client = new HttpClient();
+            String connectionString = "https://localhost:44316/api/UserLoginItems/" + Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
+            Task<UserLoginItem> userLogin = GetJsonHttpClient(connectionString, client); ;
 
-            // Get the current user from WebApi
-            foreach (Pair pair in SessionList.listObject.Pair)
-            {
-                if (sessionID.Equals(pair.getSessionID()))
-                {
-                    HttpClient client = new HttpClient();
-                    String connectionString = "https://localhost:44316/api/SessionItems/" + pair.getRequestID();
-                    Task<SessionItem> userSession = GetJsonHttpClient(connectionString, client); ;
-
-                    // check if the current user has an admin role
-                    if (userSession.Result.Roleid != 1) throw new UserPermissionNotEnoughException();
-                }
-            }
+            if (userLogin == null || userLogin.Result == null || userLogin.Result.Id == null) throw new UserNotLoggedInException(); //check if the current user has an active session
+            if (userLogin.Result.UserRole != 1) throw new UserNotLoggedInException();  //check if tge user has ann admin level authorization
         }
 
-        private static async Task<SessionItem> GetJsonHttpClient(string uri, HttpClient httpClient)
+        private static async Task<UserLoginItem> GetJsonHttpClient(string uri, HttpClient httpClient)
         {
             try
             {
-                return await httpClient.GetFromJsonAsync<SessionItem>(uri);
+                return await httpClient.GetFromJsonAsync<UserLoginItem>(uri);
             }
             catch (HttpRequestException) // Non success
             {

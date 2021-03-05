@@ -20,8 +20,8 @@ namespace ASPNETAOP.Aspect
             String connectionString = "https://localhost:44316/api/UserLoginItems/" + Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
             Task<UserLoginItem> userLogin = GetJsonHttpClient(connectionString, client); ;
 
-            if(userLogin == null || userLogin.Result == null || userLogin.Result.Id == null) throw new UserNotLoggedInException(); //check whether there is a logged in user
-            if(userLogin.Result.isUserLoggedIn != 1) throw new UserNotLoggedInException();  //check whether user is successfully authenticated
+            if(userLogin == null || userLogin.Result == null || userLogin.Result.Id == null) throw new UserNotLoggedInException(); //check if the current user has an active session
+            if (userLogin.Result.isUserLoggedIn != 1) throw new UserNotLoggedInException();  //check if the user is successfully authenticated
         }
 
         //Used to extract user information from retrieved json file
