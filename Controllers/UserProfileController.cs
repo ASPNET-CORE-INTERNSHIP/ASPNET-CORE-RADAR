@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Net.Http;
 using System.Text.Json;
 using System.Net.Http.Json;
+using ASPNETAOP.Session;
 
 namespace ASPNETAOP.Controllers
 {
@@ -26,6 +27,15 @@ namespace ASPNETAOP.Controllers
             // Necessary to prevent sessionID from changing with every request
             HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
 
+            long sessionId = Hash.CurrentHashed(HttpContext.Session.Id);
+
+            HttpClient client = new HttpClient();
+            String connectionString = "https://localhost:44316/api/UserLoginItems/" + sessionId;
+            Task<UserLoginItem> userProfile = GetJsonHttpClient(connectionString, client); ;
+
+            ViewData["message"] = "User name: " + userProfile.Result.Username + "\r\n Mail: " + userProfile.Result.Usermail;
+
+            /*
             //Get the current user from WebApi
             foreach (Pair pair in SessionList.listObject.Pair)
             {
@@ -38,6 +48,7 @@ namespace ASPNETAOP.Controllers
                     ViewData["message"] = "User name: " + userSession.Result.Username + "\r\n Mail: " + userSession.Result.Usermail;
                 }
             }
+            */
 
             return View();
         }
@@ -48,6 +59,17 @@ namespace ASPNETAOP.Controllers
             // Necessary to prevent sessionID from changing with every request
             HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
 
+            // Necessary to prevent sessionID from changing with every request
+            HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
+
+            long sessionId = Hash.CurrentHashed(HttpContext.Session.Id);
+
+            HttpClient client = new HttpClient();
+            String connectionString = "https://localhost:44316/api/UserLoginItems/" + sessionId;
+            Task<UserLoginItem> userProfile = GetJsonHttpClient(connectionString, client); ;
+
+            ViewData["message"] = "User name: " + userProfile.Result.Username + "\r\n Mail: " + userProfile.Result.Usermail;
+            /*
             // Get the current user from WebApi
             foreach (Pair pair in SessionList.listObject.Pair)
             {
@@ -60,16 +82,17 @@ namespace ASPNETAOP.Controllers
                     ViewData["message"] = "User name: " + userSession.Result.Username + "\r\n Mail: " + userSession.Result.Usermail;
                 }
             }
+            */
 
             return View(ur);
         }
 
         // Used to extract user information from retrieved json file
-        private static async Task<SessionItem> GetJsonHttpClient(string uri, HttpClient httpClient)
+        private static async Task<UserLoginItem> GetJsonHttpClient(string uri, HttpClient httpClient)
         {
             try
             {
-                return await httpClient.GetFromJsonAsync<SessionItem>(uri);
+                return await httpClient.GetFromJsonAsync<UserLoginItem>(uri);
             }
             catch (HttpRequestException) // Non success
             {

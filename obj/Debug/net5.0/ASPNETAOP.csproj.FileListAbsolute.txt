@@ -441,4 +441,3 @@ C:\Users\Cenk\source\repos\ASPNET-CORE-MVC-AOP-APP-main\bin\Debug\net5.0\runtime
 C:\Users\Cenk\source\repos\ASPNET-CORE-MVC-AOP-APP-main\bin\Debug\net5.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
 C:\Users\Cenk\source\repos\ASPNET-CORE-MVC-AOP-APP-main\bin\Debug\net5.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
 C:\Users\Cenk\source\repos\ASPNET-CORE-MVC-AOP-APP-main\obj\Debug\net5.0\Razor\Views\AddAntennaPage\Add.cshtml.g.cs
-C:\Users\Cenk\source\repos\ASPNET-CORE-MVC-AOP-APP-main\obj\Debug\net5.0\ASPNETAOP.csprojAssemblyReference.cache
