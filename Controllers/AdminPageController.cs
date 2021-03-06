@@ -26,21 +26,6 @@ namespace ASPNETAOP.Controllers
             return View();
         }
 
-        private void retrieveSessionInfo(int userID)
-        {
-            foreach (Pair pair in SessionList.listObject.Pair)
-            {
-                if (pair.getUserID().Equals(userID))
-                {
-                    HttpClient client = new HttpClient();
-                    String connectionString = "https://localhost:44316/api/SessionItems/" + SessionList.listObject.count;
-                    Task<SessionItem> userSession = GetJsonHttpClient(connectionString, client); ;
-
-                    //ViewData["message"] = "User name: " + userSession.Result.Username + "\r\n Mail: " + userSession.Result.Usermail;
-                }
-            }
-        }
-
         //Used to extract user information from retrieved json file
         private static async Task<SessionItem> GetJsonHttpClient(string uri, HttpClient httpClient)
         {
