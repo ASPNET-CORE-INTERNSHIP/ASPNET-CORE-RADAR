@@ -4,11 +4,17 @@ Basic [ASP.NET](http://asp.net/) Core Model-View-Controller (MVC) app built on C
 
 ## Features
 
+Features implemented with AOP:
 - User authentication
 - User authorization with predefined roles and user specific permissions
-- Session controls using cookies
 
-All of the features above are implemented in AOP without using any third-party APIs or services (such as Identity).
+Rest of the features:
+- Session controls 
+- Logging of user activity 
+
+## Web API
+
+In order to control the user login attempt, user registration, user authentication, user authorization control and list the user information, HTTP request is made to the ASPNETCORE-WebServer project. The connection is done by predefined urls for both of the solutions. Each request is given a special id consisting of the HttpContext.Session.Id converted to ASCII and shortened.
 
 ## Pages
 
@@ -189,6 +195,7 @@ Program was written in C#, therefore, a special environment for the aforemention
 
 8. Copy the connection string from the "properties" for the server added in the previous step in "Data Connections" & paste it to localDatabase in appsettings.json
 9. Install Postgres from Package Manager Console under the Tools menu of the Visual Studio (Required for aspects)
+10. Click on "Register license" from the PostSharp options in the Extensions dropdown of Visual Studio
 10. Install [ASPNETAOP-WebServer](https://github.com/cenkgokturk/ASPNET-CORE-MVC-WEB-SERVER) and open it in a seperate Visual Studio window 
 11. Click "Start without debugging" for the ASPNETAOP-WebServer project
 12. Do the same thing for ASPNETAOP
