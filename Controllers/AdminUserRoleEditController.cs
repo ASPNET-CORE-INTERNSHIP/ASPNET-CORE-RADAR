@@ -29,21 +29,59 @@ namespace ASPNETAOP.Controllers
             // Necessary to prevent sessionID from changing with every request
             HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
 
-            // Add a new user to the database
             String connection = _configuration.GetConnectionString("localDatabase");
-            using (SqlConnection sqlconn = new SqlConnection(connection))
+
+            if (ur.Roleid != null)
             {
-                string sqlquery = "Update UserRoles SET Roleid ='" + ur.Roleid + "' WHERE UserID = '" + ur.UserID + "'";
-                using (SqlCommand sqlcomm = new SqlCommand(sqlquery, sqlconn))
+                using (SqlConnection sqlconn = new SqlConnection(connection))
                 {
-                    sqlconn.Open();
-                    sqlcomm.ExecuteNonQuery();
+                    string sqlquery = "Update UserRoles SET Roleid ='" + ur.Roleid + "' WHERE UserID = '" + ur.UserID + "'";
+                    using (SqlCommand sqlcomm = new SqlCommand(sqlquery, sqlconn))
+                    {
+                        sqlconn.Open();
+                        sqlcomm.ExecuteNonQuery();
 
-                    ViewData["Message"] = "Role id for " + ur.UserID + " has been changed to " + ur.Roleid;
+                        ViewData["Message"] = "Role id for " + ur.UserID + " has been changed to " + ur.Roleid;
 
-                    sqlconn.Close();
+                        sqlconn.Close();
+                    }
                 }
             }
+
+            if(ur.Allow != null)
+            {
+                using (SqlConnection sqlconn = new SqlConnection(connection))
+                {
+                    string sqlquery = "Update UserRoles SET UserAllow ='" + ur.Allow + "' WHERE UserID = '" + ur.UserID + "'";
+                    using (SqlCommand sqlcomm = new SqlCommand(sqlquery, sqlconn))
+                    {
+                        sqlconn.Open();
+                        sqlcomm.ExecuteNonQuery();
+
+                        ViewData["Message"] = "Method " + ur.Allow + " has been allowed for " + ur.UserID;
+
+                        sqlconn.Close();
+                    }
+                }
+            }
+
+            if (ur.Deny != null)
+            {
+                using (SqlConnection sqlconn = new SqlConnection(connection))
+                {
+                    string sqlquery = "Update UserRoles SET UserDeny ='" + ur.Deny + "' WHERE UserID = '" + ur.UserID + "'";
+                    using (SqlCommand sqlcomm = new SqlCommand(sqlquery, sqlconn))
+                    {
+                        sqlconn.Open();
+                        sqlcomm.ExecuteNonQuery();
+
+                        ViewData["Message"] = "Method " + ur.Deny + " has been denied for " + ur.UserID;
+
+                        sqlconn.Close();
+                    }
+                }
+            }
+
             return View(ur);
         }
     }

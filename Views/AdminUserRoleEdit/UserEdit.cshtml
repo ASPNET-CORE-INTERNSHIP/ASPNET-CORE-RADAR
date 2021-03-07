@@ -22,6 +22,16 @@
                 <span asp-validation-for="Roleid" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Allow" class="control-label"></label>
+                <input asp-for="Allow" class="form-control" />
+                <span asp-validation-for="Allow" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Deny" class="control-label"></label>
+                <input asp-for="Deny" class="form-control" />
+                <span asp-validation-for="Deny" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="UserEdit" class="btn btn-primary" />
             </div>
             <b>@ViewData["Message"]</b>
