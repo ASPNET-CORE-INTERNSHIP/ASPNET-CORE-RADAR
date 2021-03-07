@@ -1,0 +1,43 @@
+﻿@model ASPNETAOP.Models.AddReceiver
+
+@{
+    ViewData["Title"] = "NewReceiver";
+}
+
+<h1>Add Receiver</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-9">
+        <form asp-action="NewReceiver">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="listening_time" class="control-label"></label>
+                <input asp-for="listening_time" class="form-control" type="number" placeholder="00.00ns" step="0.01">
+                <span asp-validation-for="listening_time" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="rest_time" class="control-label"></label>
+                <input asp-for="rest_time" class="form-control" type="number" placeholder="00.00ns" step="0.01">
+                <span asp-validation-for="rest_time" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="recovery_time" class="control-label"></label>
+                <input asp-for="recovery_time" class="form-control" type="number" placeholder="00.00ns" step="0.01">
+                <span asp-validation-for="recovery_time" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add" class="btn btn-primary" />
+            </div>
+            <b>@ViewData["Message"]</b>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Turn back</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
