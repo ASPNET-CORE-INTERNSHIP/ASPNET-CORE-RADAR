@@ -198,5 +198,7 @@ Program was written in C#, therefore, a special environment for the aforemention
 10. Click on "Register license" from the PostSharp options in the Extensions dropdown of Visual Studio
 10. Install [ASPNETAOP-WebServer](https://github.com/cenkgokturk/ASPNET-CORE-MVC-WEB-SERVER) and open it in a seperate Visual Studio window 
 11. Click "Start without debugging" for the ASPNETAOP-WebServer project
-12. Do the same thing for ASPNETAOP
-13. Both projects will be opened in your default browser. Unless you want to debug, you don't have to interact with the WebServer
+12. Do the same thing for ASPNETAOP *
+13. Both projects will be opened in your default browser. Unless you want to debug, you don't have to interact with the WebServer 
+
+* If there is an error regarding the Aspects or the SQL Connections, right click on PSerializable attribute in either of the Aspects and select "Install PostSharp.Redist"
