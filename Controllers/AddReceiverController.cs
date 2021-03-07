@@ -2,14 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 namespace ASPNETAOP.Controllers
 {
+    [Guid("01BC1E8A-D8ED-41CE-9711-83CB0F256F5B")]
     public class AddReceiverController : Controller
     {
         //We need configuration for calling db.

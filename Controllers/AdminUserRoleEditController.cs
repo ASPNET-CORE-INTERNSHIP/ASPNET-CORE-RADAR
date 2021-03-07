@@ -29,10 +29,13 @@ namespace ASPNETAOP.Controllers
             // Necessary to prevent sessionID from changing with every request
             HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
 
+            TempData["ResultMessage"] = "Admin";
+
             String connection = _configuration.GetConnectionString("localDatabase");
 
             if (ur.Roleid != null)
             {
+
                 using (SqlConnection sqlconn = new SqlConnection(connection))
                 {
                     string sqlquery = "Update UserRoles SET Roleid ='" + ur.Roleid + "' WHERE UserID = '" + ur.UserID + "'";

@@ -48,6 +48,13 @@ namespace ASPNETAOP.Controllers
             {
                 ViewData["Message"] = "Welcome: " + ur.Usermail;
                 ViewData["Message"] = "Successfully logged in";
+
+                int userRole = GetUserRole(sessionId);
+
+                //Change the layout according to user
+                if (userRole == 1) { TempData["ResultMessage"] = "Admin"; }
+                else { TempData["ResultMessage"] = "Regular"; }
+
                 return RedirectToAction("Profile", "UserProfile", new { ur }); 
             }
             else if(userLoginStatus == 2)   //Given password does not match
@@ -92,6 +99,19 @@ namespace ASPNETAOP.Controllers
             if (userLogin.Result != null){ isUserLoggedIn = userLogin.Result.isUserLoggedIn; }
 
             return isUserLoggedIn;
+        }
+
+        private int GetUserRole(long sessionId)
+        {
+            int UserRole = 0;
+
+            HttpClient client = new HttpClient();
+            String connectionString = "https://localhost:44316/api/UserLoginItems/" + sessionId;
+            Task<UserLoginItem> userLogin = GetJsonHttpClient(connectionString, client);
+
+            if (userLogin.Result != null) { UserRole = userLogin.Result.UserRole; }
+
+            return UserRole;
         }
 
         //Used to extract user information from retrieved json file

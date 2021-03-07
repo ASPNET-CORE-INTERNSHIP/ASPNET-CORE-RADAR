@@ -26,34 +26,14 @@ namespace ASPNETAOP.Controllers
             return View();
         }
 
-        //Used to extract user information from retrieved json file
-        private static async Task<SessionItem> GetJsonHttpClient(string uri, HttpClient httpClient)
-        {
-            try
-            {
-                return await httpClient.GetFromJsonAsync<SessionItem>(uri);
-            }
-            catch (HttpRequestException) // Non success
-            {
-                Console.WriteLine("An error occurred.");
-            }
-            catch (NotSupportedException) // When content type is not valid
-            {
-                Console.WriteLine("The content type is not supported.");
-            }
-            catch (JsonException) // Invalid JSON
-            {
-                Console.WriteLine("Invalid JSON.");
-            }
-
-            return null;
-        }
-
         [IsAuthenticated]
         [IsAuthorized]
         public IActionResult UserActivity()
         {
             HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
+
+            //Changing the layout
+            TempData["ResultMessage"] = "Admin";
 
             String connection = _configuration.GetConnectionString("localDatabase");
 

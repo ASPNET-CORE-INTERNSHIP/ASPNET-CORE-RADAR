@@ -581,10 +581,14 @@ C:\Users\Cenk\OneDrive\Desktop\ASPNET-CORE-MVC-AOP-APP-main\obj\Debug\net5.0\ASP
 C:\Users\Cenk\OneDrive\Desktop\ASPNET-CORE-MVC-AOP-APP-main\obj\Debug\net5.0\Razor\Views\AddAntenna\NewAntenna.cshtml.g.cs
 C:\Users\Cenk\OneDrive\Desktop\ASPNET-CORE-MVC-AOP-APP-main\obj\Debug\net5.0\Razor\Views\AddGroundLocation\NewGround.cshtml.g.cs
 C:\Users\Cenk\OneDrive\Desktop\ASPNET-CORE-MVC-AOP-APP-main\obj\Debug\net5.0\Razor\Views\AddReceiver\NewReceiver.cshtml.g.cs
+C:\Users\Cenk\OneDrive\Desktop\ASPNET-CORE-MVC-AOP-APP-main\obj\Debug\net5.0\Razor\Views\AdminUserActivity\UserActivity.cshtml.g.cs
+C:\Users\Cenk\OneDrive\Desktop\ASPNET-CORE-MVC-AOP-APP-main\obj\Debug\net5.0\Razor\Views\AdminUserList\UserList.cshtml.g.cs
+C:\Users\Cenk\OneDrive\Desktop\ASPNET-CORE-MVC-AOP-APP-main\obj\Debug\net5.0\Razor\Views\AdminUserRoleEdit\UserEdit.cshtml.g.cs
 C:\Users\Cenk\OneDrive\Desktop\ASPNET-CORE-MVC-AOP-APP-main\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
 C:\Users\Cenk\OneDrive\Desktop\ASPNET-CORE-MVC-AOP-APP-main\obj\Debug\net5.0\Razor\Views\Home\Privacy.cshtml.g.cs
 C:\Users\Cenk\OneDrive\Desktop\ASPNET-CORE-MVC-AOP-APP-main\obj\Debug\net5.0\Razor\Views\Shared\Error.cshtml.g.cs
 C:\Users\Cenk\OneDrive\Desktop\ASPNET-CORE-MVC-AOP-APP-main\obj\Debug\net5.0\Razor\Views\Shared\Index.cshtml.g.cs
+C:\Users\Cenk\OneDrive\Desktop\ASPNET-CORE-MVC-AOP-APP-main\obj\Debug\net5.0\Razor\Views\Shared\_AdminLayout.cshtml.g.cs
 C:\Users\Cenk\OneDrive\Desktop\ASPNET-CORE-MVC-AOP-APP-main\obj\Debug\net5.0\Razor\Views\Shared\_Layout.cshtml.g.cs
 C:\Users\Cenk\OneDrive\Desktop\ASPNET-CORE-MVC-AOP-APP-main\obj\Debug\net5.0\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
 C:\Users\Cenk\OneDrive\Desktop\ASPNET-CORE-MVC-AOP-APP-main\obj\Debug\net5.0\Razor\Views\UserLogin\Login.cshtml.g.cs
@@ -600,6 +604,3 @@ C:\Users\Cenk\OneDrive\Desktop\ASPNET-CORE-MVC-AOP-APP-main\obj\Debug\net5.0\ASP
 C:\Users\Cenk\OneDrive\Desktop\ASPNET-CORE-MVC-AOP-APP-main\obj\Debug\net5.0\ASPNETAOP.pdb
 C:\Users\Cenk\OneDrive\Desktop\ASPNET-CORE-MVC-AOP-APP-main\obj\Debug\net5.0\ASPNETAOP.genruntimeconfig.cache
 C:\Users\Cenk\OneDrive\Desktop\ASPNET-CORE-MVC-AOP-APP-main\obj\Debug\net5.0\PostSharp\postsharp.app.config
-C:\Users\Cenk\OneDrive\Desktop\ASPNET-CORE-MVC-AOP-APP-main\obj\Debug\net5.0\Razor\Views\AdminUserActivity\UserActivity.cshtml.g.cs
-C:\Users\Cenk\OneDrive\Desktop\ASPNET-CORE-MVC-AOP-APP-main\obj\Debug\net5.0\Razor\Views\AdminUserList\UserList.cshtml.g.cs
-C:\Users\Cenk\OneDrive\Desktop\ASPNET-CORE-MVC-AOP-APP-main\obj\Debug\net5.0\Razor\Views\AdminUserRoleEdit\UserEdit.cshtml.g.cs
