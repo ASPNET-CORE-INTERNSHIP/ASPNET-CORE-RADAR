@@ -34,6 +34,12 @@ namespace ASPNETAOP.Controllers
             String connectionString = "https://localhost:44316/api/UserLoginItems/" + sessionId;
             Task<UserLoginItem> userProfile = GetJsonHttpClient(connectionString, client); ;
 
+            int userRole = GetUserRole(sessionId);
+
+            //Change the layout according to user
+            if (userRole == 1) { TempData["ResultMessage"] = "Admin"; }
+            else { TempData["ResultMessage"] = "Regular"; }
+
             ViewData["message"] = "User name: " + userProfile.Result.Username + "\r\n Mail: " + userProfile.Result.Usermail;
 
             return View();
@@ -54,6 +60,19 @@ namespace ASPNETAOP.Controllers
             ViewData["message"] = "User name: " + userProfile.Result.Username + "\r\n Mail: " + userProfile.Result.Usermail;
 
             return View(ur);
+        }
+
+        private int GetUserRole(long sessionId)
+        {
+            int UserRole = 0;
+
+            HttpClient client = new HttpClient();
+            String connectionString = "https://localhost:44316/api/UserLoginItems/" + sessionId;
+            Task<UserLoginItem> userLogin = GetJsonHttpClient(connectionString, client);
+
+            if (userLogin.Result != null) { UserRole = userLogin.Result.UserRole; }
+
+            return UserRole;
         }
 
         // Used to extract user information from retrieved json file
