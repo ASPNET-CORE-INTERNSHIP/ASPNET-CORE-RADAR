@@ -1,6 +1,4 @@
 ﻿using ASPNETAOP.Models;
-using ASPNETAOP.Controllers;
-using Microsoft.Data.SqlClient;
 using PostSharp.Aspects;
 using PostSharp.Serialization;
 using System;
@@ -8,7 +6,6 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
-using Microsoft.AspNetCore.Http;
 using ASPNETAOP.Session;
 
 namespace ASPNETAOP.Aspect
@@ -25,7 +22,7 @@ namespace ASPNETAOP.Aspect
             Task<UserLoginItem> userLogin = GetJsonHttpClient(connectionString, client); ;
 
             if (userLogin == null || userLogin.Result == null || userLogin.Result.Id == null) throw new UserPermissionNotEnoughException(); //check if the current user has an active session
-            if (userLogin.Result.UserRole != 1) throw new UserPermissionNotEnoughException();  //check if tge user has ann admin level authorization
+            if (userLogin.Result.UserRole != 1) throw new UserPermissionNotEnoughException();  //check if the user has ann admin level authorization
         }
 
         private static async Task<UserLoginItem> GetJsonHttpClient(string uri, HttpClient httpClient)

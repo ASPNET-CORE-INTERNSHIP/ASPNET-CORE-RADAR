@@ -724,7 +724,7 @@
           "build/PostSharp.targets": {}
         }
       },
-      "PostSharp.Redist/6.8.8": {
+      "PostSharp.Redist/6.8.9": {
         "type": "package",
         "compile": {
           "lib/net5.0/PostSharp.dll": {}
@@ -3557,10 +3557,10 @@
         "postsharp.nuspec"
       ]
     },
-    "PostSharp.Redist/6.8.8": {
-      "sha512": "ujcGYLO6cI1r91NxT/GB5n/cdwgE5mkkrXInAkiFmSD2fk8/DxbAHNVO1KnuqnnvXJB+D7ByPs3ORfTpzypWLw==",
+    "PostSharp.Redist/6.8.9": {
+      "sha512": "3lMqQUNq24aDRed1SH8CGH5gGkdhyY+2kqjjr3BqR/LRZBH8kEHd3Tg8H6MMx7n8vkdHkVsthLmJ76DXY7IBUQ==",
       "type": "package",
-      "path": "postsharp.redist/6.8.8",
+      "path": "postsharp.redist/6.8.9",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -3576,7 +3576,7 @@
         "lib/netstandard1.3/PostSharp.xml",
         "lib/netstandard2.0/PostSharp.dll",
         "lib/netstandard2.0/PostSharp.xml",
-        "postsharp.redist.6.8.8.nupkg.sha512",
+        "postsharp.redist.6.8.9.nupkg.sha512",
         "postsharp.redist.nuspec"
       ]
     },
@@ -7553,24 +7553,25 @@
       "Microsoft.Data.SqlClient >= 2.1.1",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 5.0.1",
       "PostSharp >= 6.8.8",
+      "PostSharp.Redist >= 6.8.9",
       "System.Configuration.ConfigurationManager >= 5.0.0",
       "System.Data.SqlClient >= 4.8.2"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ENA\\.nuget\\packages\\": {}
+    "C:\\Users\\Cenk\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ENA\\Source\\Repos\\ASPNET-CORE-RADAR\\ASPNETAOP.csproj",
+      "projectUniqueName": "C:\\Users\\Cenk\\OneDrive\\Desktop\\ASPNET-CORE-MVC-AOP-APP-main\\ASPNETAOP.csproj",
       "projectName": "ASPNETAOP",
-      "projectPath": "C:\\Users\\ENA\\Source\\Repos\\ASPNET-CORE-RADAR\\ASPNETAOP.csproj",
-      "packagesPath": "C:\\Users\\ENA\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ENA\\Source\\Repos\\ASPNET-CORE-RADAR\\obj\\",
+      "projectPath": "C:\\Users\\Cenk\\OneDrive\\Desktop\\ASPNET-CORE-MVC-AOP-APP-main\\ASPNETAOP.csproj",
+      "packagesPath": "C:\\Users\\Cenk\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Cenk\\OneDrive\\Desktop\\ASPNET-CORE-MVC-AOP-APP-main\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\ENA\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Cenk\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -7607,6 +7608,10 @@
           "PostSharp": {
             "target": "Package",
             "version": "[6.8.8, )"
+          },
+          "PostSharp.Redist": {
+            "target": "Package",
+            "version": "[6.8.9, )"
           },
           "System.Configuration.ConfigurationManager": {
             "target": "Package",
@@ -7649,7 +7654,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   }

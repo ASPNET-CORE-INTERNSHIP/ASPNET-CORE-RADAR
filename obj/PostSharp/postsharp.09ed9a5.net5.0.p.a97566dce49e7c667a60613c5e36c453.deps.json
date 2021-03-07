@@ -1692,12 +1692,12 @@
         "runtime": {},
         "runtimeTargets": {}
       },
-      "PostSharp.Redist/6.8.8": {
+      "PostSharp.Redist/6.8.9": {
         "dependencies": {},
         "runtime": {
           "lib/net5.0/PostSharp.dll": {
-            "assemblyVersion": "6.8.8.0",
-            "fileVersion": "6.8.8.0"
+            "assemblyVersion": "6.8.9.0",
+            "fileVersion": "6.8.9.0"
           }
         },
         "runtimeTargets": {}
@@ -2890,12 +2890,12 @@
       "path": "netstandard.library/1.6.1",
       "hashPath": "netstandard.library.1.6.1.nupkg.sha512"
     },
-    "PostSharp.Redist/6.8.8": {
+    "PostSharp.Redist/6.8.9": {
       "type": "package",
       "serviceable": true,
       "sha512": "",
-      "path": "postsharp.redist/6.8.8",
-      "hashPath": "postsharp.redist.6.8.8.nupkg.sha512"
+      "path": "postsharp.redist/6.8.9",
+      "hashPath": "postsharp.redist.6.8.9.nupkg.sha512"
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
       "type": "package",

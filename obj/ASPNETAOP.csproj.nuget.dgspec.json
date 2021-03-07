@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ENA\\Source\\Repos\\ASPNET-CORE-RADAR\\ASPNETAOP.csproj": {}
+    "C:\\Users\\Cenk\\OneDrive\\Desktop\\ASPNET-CORE-MVC-AOP-APP-main\\ASPNETAOP.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ENA\\Source\\Repos\\ASPNET-CORE-RADAR\\ASPNETAOP.csproj": {
+    "C:\\Users\\Cenk\\OneDrive\\Desktop\\ASPNET-CORE-MVC-AOP-APP-main\\ASPNETAOP.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ENA\\Source\\Repos\\ASPNET-CORE-RADAR\\ASPNETAOP.csproj",
+        "projectUniqueName": "C:\\Users\\Cenk\\OneDrive\\Desktop\\ASPNET-CORE-MVC-AOP-APP-main\\ASPNETAOP.csproj",
         "projectName": "ASPNETAOP",
-        "projectPath": "C:\\Users\\ENA\\Source\\Repos\\ASPNET-CORE-RADAR\\ASPNETAOP.csproj",
-        "packagesPath": "C:\\Users\\ENA\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ENA\\Source\\Repos\\ASPNET-CORE-RADAR\\obj\\",
+        "projectPath": "C:\\Users\\Cenk\\OneDrive\\Desktop\\ASPNET-CORE-MVC-AOP-APP-main\\ASPNETAOP.csproj",
+        "packagesPath": "C:\\Users\\Cenk\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Cenk\\OneDrive\\Desktop\\ASPNET-CORE-MVC-AOP-APP-main\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\ENA\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Cenk\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -51,6 +51,10 @@
             "PostSharp": {
               "target": "Package",
               "version": "[6.8.8, )"
+            },
+            "PostSharp.Redist": {
+              "target": "Package",
+              "version": "[6.8.9, )"
             },
             "System.Configuration.ConfigurationManager": {
               "target": "Package",
@@ -93,7 +97,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }

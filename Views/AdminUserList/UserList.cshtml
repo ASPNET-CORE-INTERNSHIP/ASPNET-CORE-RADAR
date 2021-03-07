@@ -1,0 +1,26 @@
+﻿@model List<ASPNETAOP.Models.AdminUserActivity>
+
+@{
+    ViewData["Title"] = "UserList";
+}
+
+<h1>Users</h1>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>User Name</th>
+        <th>Mail</th>
+        <th>Role</th>
+        <th></th>
+    </tr>
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.UserID</td>
+            <td>@user.Username</td>
+            <td>@user.Usermail</td>
+            <td>@user.Rolename</td>
+        </tr>
+    }
+</table>

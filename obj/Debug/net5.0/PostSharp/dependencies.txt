@@ -1,2 +1,2 @@
-C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\PostSharp\PostSharp.Compiler.Engine.dll
-C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\PostSharp\postsharp.config
+C:\Users\Cenk\OneDrive\Desktop\ASPNET-CORE-MVC-AOP-APP-main\obj\Debug\net5.0\PostSharp\PostSharp.Compiler.Engine.dll
+C:\Users\Cenk\OneDrive\Desktop\ASPNET-CORE-MVC-AOP-APP-main\obj\Debug\net5.0\PostSharp\postsharp.config

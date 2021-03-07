@@ -1,8 +1,8 @@
 {
   "runtimeOptions": {
     "additionalProbingPaths": [
-      "C:\\Users\\ENA\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\ENA\\.nuget\\packages"
+      "C:\\Users\\Cenk\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\Cenk\\.nuget\\packages"
     ]
   }
 }
