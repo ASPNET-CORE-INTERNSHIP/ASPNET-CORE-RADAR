@@ -28,7 +28,6 @@ namespace ASPNETAOP.Controllers
         {
             HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
 
-            //Changing the layout
             TempData["ResultMessage"] = "Admin";
 
             String connection = _configuration.GetConnectionString("localDatabase");

@@ -1,0 +1,40 @@
+﻿@model ASPNETAOP.Models.AdminAddRole
+
+@{
+    ViewData["Title"] = "Add Role";
+}
+
+<h1>Create</h1>
+
+<h4>AddRole</h4>
+<hr />
+<div class="row">
+    <div class="col-md-9">
+        <form asp-action="AddRole">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Rolename" class="control-label"></label>
+                <input asp-for="Rolename" class="form-control" />
+                <span asp-validation-for="Rolename" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Roleallow" class="control-label"></label>
+                <input asp-for="Roleallow" class="form-control" />
+                <span asp-validation-for="Roleallow" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Roledeny" class="control-label"></label>
+                <input asp-for="Roledeny" class="form-control" />
+                <span asp-validation-for="Roledeny" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="AddRole" class="btn btn-primary" />
+            </div>
+            <b>@ViewData["Message"]</b>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

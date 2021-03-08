@@ -30,50 +30,6 @@ namespace ASPNETAOP.Controllers
             return View();
         }
 
-        //Retrieve the UserID of the given User 
-        private int GetUsedID(String Usermail)
-        {
-            int UserID = -1;
-
-            String connection = _configuration.GetConnectionString("localDatabase");
-            using (SqlConnection sqlconn = new SqlConnection(connection))
-            {
-                string sqlquery = "select UserID  from AccountInfo where Usermail = '" + Usermail + "' ";
-                using (SqlCommand sqlcomm = new SqlCommand(sqlquery, sqlconn))
-                {
-                    sqlconn.Open();
-                    SqlDataReader reader = sqlcomm.ExecuteReader();
-
-                    if (reader.HasRows)
-                    {
-                        while (reader.Read())
-                        {
-                            UserID = reader.GetInt32(0);
-                        }
-                    }
-
-                    sqlconn.Close();
-                }
-            }
-            return UserID;
-        }
-
-        // Add a new entity to the UserRoles with the given user
-        private void AddUserRole(int UserID)
-        {
-            String connection = _configuration.GetConnectionString("localDatabase");
-            using (SqlConnection sqlconn = new SqlConnection(connection))
-            {
-                // Number 2 for the Roleid indicates RegularUser
-                string sqlquery = "insert into UserRoles(UserID, Roleid) values ('" + UserID + "', 2)";
-                using (SqlCommand sqlcomm = new SqlCommand(sqlquery, sqlconn))
-                {
-                    sqlconn.Open();
-                    sqlcomm.ExecuteNonQuery();
-                }
-            }
-        }
-
         [HttpPost]
         public IActionResult Create(UserRegister ur)
         {
@@ -88,7 +44,7 @@ namespace ASPNETAOP.Controllers
 
             return View(ur);
         }
-
+        
         //Post request to Web Api with the given user credentials
         public void SendUserRegister(String[] registerInfo, long sessionId)
         {
