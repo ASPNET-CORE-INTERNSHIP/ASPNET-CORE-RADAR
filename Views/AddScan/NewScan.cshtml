@@ -1,0 +1,60 @@
+﻿@model ASPNETAOP.Models.AddScan
+
+@{
+    ViewData["Title"] = "NewScan";
+}
+
+<h1>Add Scan</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-9">
+        <form asp-action="NewScan">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="type" class="control-label"></label>
+                <input asp-for="type" class="form-control" type="text">
+                <span asp-validation-for="type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="main_aspect" class="control-label"></label>
+                <select asp-for="main_aspect" class="form-select" aria-label="Default select example">
+                    <option selected>Select the aspect of antenna</option>
+                    <option value="east">east</option>
+                    <option value="west">west</option>
+                    <option value="north">north</option>
+                    <option value="south">south</option>
+                    <option value="changeable">changeable</option>
+                </select>
+                <span asp-validation-for="main_aspect" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="scan_angle" class="control-label"></label>
+                <input asp-for="scan_angle" class="form-control" type="number" placeholder="00.00" step="0.1">
+                <span asp-validation-for="scan_angle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="scan_rate" class="control-label"></label>
+                <input asp-for="scan_rate" class="form-control" type="number" placeholder="00.00" step="0.1">
+                <span asp-validation-for="scan_rate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="hits_per_scan" class="control-label"></label>
+                <input asp-for="hits_per_scan" class="form-control" type="number" placeholder="0">
+                <span asp-validation-for="hits_per_scan" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add" class="btn btn-primary" />
+            </div>
+            <b>@ViewData["Message"]</b>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Turn back</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
