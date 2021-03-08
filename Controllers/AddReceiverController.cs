@@ -1,4 +1,4 @@
-﻿using ASPNETAOP.Models;
+using ASPNETAOP.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -8,7 +8,6 @@ using System.Runtime.InteropServices;
 
 namespace ASPNETAOP.Controllers
 {
-    [Guid("01BC1E8A-D8ED-41CE-9711-83CB0F256F5B")]
     public class AddReceiverController : Controller
     {
         //We need configuration for calling db.
@@ -26,6 +25,29 @@ namespace ASPNETAOP.Controllers
             //Necessary to prevent sessionID from changing with every request
             HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
             return View();
+        }
+
+        public string GetID(float listening_time, float rest_time, float recovery_time)
+        {
+            String receiver_id = "";
+            SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true");
+            SqlCommand cmd_receiverID = new SqlCommand("SelectIDReceiver", con);
+            cmd_receiverID.CommandType = CommandType.StoredProcedure;
+            cmd_receiverID.Parameters.AddWithValue("@listening_time", listening_time);
+            cmd_receiverID.Parameters.AddWithValue("@rest_time", rest_time);
+            cmd_receiverID.Parameters.AddWithValue("@recovery_time", recovery_time);
+            con.Open();
+            SqlDataReader dr = cmd_receiverID.ExecuteReader();
+            if (dr.HasRows)
+            {
+                while (dr.Read())
+                {
+                    receiver_id = dr.GetString(0);
+                }
+            }
+            dr.Close();
+            con.Close();
+            return receiver_id;
         }
 
         [HttpPost]
