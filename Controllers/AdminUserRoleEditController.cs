@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using ASPNETAOP.Aspect;
 using ASPNETAOP.Models;
-using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
-using ASPNETAOP.Aspect;
+using Microsoft.Extensions.Configuration;
+using System;
 
 namespace ASPNETAOP.Controllers
 {

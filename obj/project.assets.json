@@ -708,10 +708,10 @@
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         }
       },
-      "PostSharp/6.8.8": {
+      "PostSharp/6.8.9": {
         "type": "package",
         "dependencies": {
-          "PostSharp.Redist": "[6.8.8, 7.0.0)"
+          "PostSharp.Redist": "[6.8.9, 7.0.0)"
         },
         "compile": {
           "lib/netstandard1.0/_._": {}
@@ -3520,10 +3520,10 @@
         "newtonsoft.json.nuspec"
       ]
     },
-    "PostSharp/6.8.8": {
-      "sha512": "V2sKOiqyXD3L+vEu3cHDN4pY0wQeT6sIAyzZwaHB66ieKaTxxMe/gAu7qP7UtTTx1KAoVd2IvAGhfkksNs7FBg==",
+    "PostSharp/6.8.9": {
+      "sha512": "XVM7KL2KrAU5AGET4gjZA2O9mVTSvUvSguc3Yn7WEF0wamY+CLm7CfBYD5V9AaczmrvvaCScns96bi8YgdRCxw==",
       "type": "package",
-      "path": "postsharp/6.8.8",
+      "path": "postsharp/6.8.9",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -3546,14 +3546,14 @@
         "build/_common/unzipper/unzipper.exe.config",
         "build/_common/unzipper/unzipper.pdb",
         "build/_common/unzipper/unzipper.runtimeconfig.json",
-        "build/net472/PostSharp.MSBuild.v6.8.8.Release.dll",
-        "build/net472/PostSharp.MSBuild.v6.8.8.Release.pdb",
-        "build/netcoreapp2.1/PostSharp.MSBuild.v6.8.8.Release.dll",
-        "build/netcoreapp2.1/PostSharp.MSBuild.v6.8.8.Release.pdb",
+        "build/net472/PostSharp.MSBuild.v6.8.9.Release.dll",
+        "build/net472/PostSharp.MSBuild.v6.8.9.Release.pdb",
+        "build/netcoreapp2.1/PostSharp.MSBuild.v6.8.9.Release.dll",
+        "build/netcoreapp2.1/PostSharp.MSBuild.v6.8.9.Release.pdb",
         "icon.png",
         "lib/net35-client/_._",
         "lib/netstandard1.0/_._",
-        "postsharp.6.8.8.nupkg.sha512",
+        "postsharp.6.8.9.nupkg.sha512",
         "postsharp.nuspec"
       ]
     },
@@ -7552,7 +7552,7 @@
     "net5.0": [
       "Microsoft.Data.SqlClient >= 2.1.1",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 5.0.1",
-      "PostSharp >= 6.8.8",
+      "PostSharp >= 6.8.9",
       "PostSharp.Redist >= 6.8.9",
       "System.Configuration.ConfigurationManager >= 5.0.0",
       "System.Data.SqlClient >= 4.8.2"
@@ -7607,7 +7607,7 @@
           },
           "PostSharp": {
             "target": "Package",
-            "version": "[6.8.8, )"
+            "version": "[6.8.9, )"
           },
           "PostSharp.Redist": {
             "target": "Package",

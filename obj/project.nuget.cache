@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "iXK48GZVrhaxT1cAlA4vEIDNPQ1AaI5F6BNuu5SEf1ZHwhOgo76/ojSyxTZP/B4xk3f216Q3u2NRkwS1ySX8ww==",
+  "dgSpecHash": "CDDLKK7bW1jQtUJJ1ahJ1HTLkdZ125lFTDf5mD3ewlF2yO4J5kw6rVDIqY1458Y8AU1KRclPNCWAnV6S9NRYkg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Cenk\\OneDrive\\Desktop\\ASPNET-CORE-MVC-AOP-APP-main\\ASPNETAOP.csproj",
   "expectedPackageFiles": [
@@ -42,7 +42,7 @@
     "C:\\Users\\Cenk\\.nuget\\packages\\microsoft.win32.systemevents\\5.0.0\\microsoft.win32.systemevents.5.0.0.nupkg.sha512",
     "C:\\Users\\Cenk\\.nuget\\packages\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
     "C:\\Users\\Cenk\\.nuget\\packages\\newtonsoft.json\\11.0.2\\newtonsoft.json.11.0.2.nupkg.sha512",
-    "C:\\Users\\Cenk\\.nuget\\packages\\postsharp\\6.8.8\\postsharp.6.8.8.nupkg.sha512",
+    "C:\\Users\\Cenk\\.nuget\\packages\\postsharp\\6.8.9\\postsharp.6.8.9.nupkg.sha512",
     "C:\\Users\\Cenk\\.nuget\\packages\\postsharp.redist\\6.8.9\\postsharp.redist.6.8.9.nupkg.sha512",
     "C:\\Users\\Cenk\\.nuget\\packages\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\Cenk\\.nuget\\packages\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",

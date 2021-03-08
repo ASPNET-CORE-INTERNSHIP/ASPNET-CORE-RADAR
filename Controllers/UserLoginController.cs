@@ -1,13 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
-using Microsoft.Data.SqlClient;
-using ASPNETAOP.Models;
-using Microsoft.Extensions.Configuration;
-using System.Net.Http;
-using System.Net.Http.Json;
+﻿using ASPNETAOP.Models;
 using ASPNETAOP.Session;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System.Net.Http.Json;
+using System.Net.Http;
 using System.Text.Json;
+using System.Threading.Tasks;
+using System;
 
 namespace ASPNETAOP.Controllers
 {

@@ -1,15 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using ASPNETAOP.Aspect;
-using Microsoft.Data.SqlClient;
+﻿using ASPNETAOP.Aspect;
 using ASPNETAOP.Models;
-using System.Runtime.InteropServices;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Net.Http.Json;
-using System.Text.Json;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System;
 
 namespace ASPNETAOP.Controllers
 {

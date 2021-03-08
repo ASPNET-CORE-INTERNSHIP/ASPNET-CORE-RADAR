@@ -28,7 +28,7 @@
         "dependencies": {
           "Microsoft.Data.SqlClient": "2.1.1",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "5.0.1",
-          "PostSharp": "6.8.8",
+          "PostSharp": "6.8.9",
           "PostSharp.Redist": "6.8.9",
           "System.Configuration.ConfigurationManager": "5.0.0",
           "System.Data.SqlClient": "4.8.2",
@@ -980,7 +980,7 @@
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         }
       },
-      "PostSharp/6.8.8": {
+      "PostSharp/6.8.9": {
         "dependencies": {
           "PostSharp.Redist": "6.8.9"
         }
@@ -3845,12 +3845,12 @@
       "path": "newtonsoft.json/11.0.2",
       "hashPath": "newtonsoft.json.11.0.2.nupkg.sha512"
     },
-    "PostSharp/6.8.8": {
+    "PostSharp/6.8.9": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-V2sKOiqyXD3L+vEu3cHDN4pY0wQeT6sIAyzZwaHB66ieKaTxxMe/gAu7qP7UtTTx1KAoVd2IvAGhfkksNs7FBg==",
-      "path": "postsharp/6.8.8",
-      "hashPath": "postsharp.6.8.8.nupkg.sha512"
+      "sha512": "sha512-XVM7KL2KrAU5AGET4gjZA2O9mVTSvUvSguc3Yn7WEF0wamY+CLm7CfBYD5V9AaczmrvvaCScns96bi8YgdRCxw==",
+      "path": "postsharp/6.8.9",
+      "hashPath": "postsharp.6.8.9.nupkg.sha512"
     },
     "PostSharp.Redist/6.8.9": {
       "type": "package",

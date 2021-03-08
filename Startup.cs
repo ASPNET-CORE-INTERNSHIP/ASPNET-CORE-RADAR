@@ -45,80 +45,42 @@ namespace ASPNETAOP
         {
             app.UseSession();
 
-            if (env.IsDevelopment())
+            app.UseExceptionHandler(errorApp =>
             {
-
-                app.UseExceptionHandler(errorApp =>
+                errorApp.Run(async context =>
                 {
-                    errorApp.Run(async context =>
+                    context.Response.StatusCode = 500;
+                    context.Response.ContentType = "text/html";
+
+                    await context.Response.WriteAsync("<html lang=\"en\"><body>\r\n");
+                    await context.Response.WriteAsync("ERROR!<br><br>\r\n");
+
+                    var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
+
+                    if (exceptionHandlerPathFeature?.Error is ASPNETAOP.Aspect.UserNotLoggedInException)
                     {
-                        context.Response.StatusCode = 500;
-                        context.Response.ContentType = "text/html";
-
-                        await context.Response.WriteAsync("<html lang=\"en\"><body>\r\n");
-                        await context.Response.WriteAsync("ERROR!<br><br>\r\n");
-
-                        var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
-
-                        if (exceptionHandlerPathFeature?.Error is ASPNETAOP.Aspect.UserNotLoggedInException)
-                        {
-                            await context.Response.WriteAsync("You have to be logged in<br><br>\r\n");
-                        }
-                        else if (exceptionHandlerPathFeature?.Error is ASPNETAOP.Aspect.UserPermissionNotEnoughException)
-                        {
-                            await context.Response.WriteAsync("You don't have the necessary permission in<br><br>\r\n");
-                        }
-
-                        await context.Response.WriteAsync(
-                                                      "<a href=\"/\">Login</a><br>\r\n");
-                        await context.Response.WriteAsync("</body></html>\r\n");
-                        await context.Response.WriteAsync(new string(' ', 512));
-                    });
-                });
-            }
-            else
-            {
-
-                app.UseExceptionHandler(errorApp =>
-                {
-                    errorApp.Run(async context =>
+                        await context.Response.WriteAsync("You have to be logged in<br><br>\r\n");
+                    }
+                    else if (exceptionHandlerPathFeature?.Error is ASPNETAOP.Aspect.UserPermissionNotEnoughException)
                     {
+                        await context.Response.WriteAsync("You don't have the necessary permission in<br><br>\r\n");
+                    }
 
-                        context.Response.StatusCode = 500;
-                        context.Response.ContentType = "text/html";
-
-                        await context.Response.WriteAsync("<html lang=\"en\"><body>\r\n");
-                        await context.Response.WriteAsync("ERROR!<br><br>\r\n");
-
-                        var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
-
-                        if (exceptionHandlerPathFeature?.Error is ASPNETAOP.Aspect.UserNotLoggedInException)
-                        {
-                            await context.Response.WriteAsync("You have to be logged in<br><br>\r\n");
-                        }
-                        else if (exceptionHandlerPathFeature?.Error is ASPNETAOP.Aspect.UserPermissionNotEnoughException)
-                        {
-                            await context.Response.WriteAsync("You don't have the necessary permission in<br><br>\r\n");
-                        }
-
-                        await context.Response.WriteAsync(
-                                                  "<a href=\"/\">Login</a><br>\r\n");
-                        await context.Response.WriteAsync("</body></html>\r\n");
-                        await context.Response.WriteAsync(new string(' ', 512));
-                    });
+                    await context.Response.WriteAsync(
+                                                    "<a href=\"/\">Login</a><br>\r\n");
+                    await context.Response.WriteAsync("</body></html>\r\n");
+                    await context.Response.WriteAsync(new string(' ', 512));
                 });
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+            });
 
-            SessionList.listObject.count = 1;
+
+            if (!env.IsDevelopment()) { app.UseHsts(); }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
             app.UseAuthorization();
-
 
             app.UseCookiePolicy();
 

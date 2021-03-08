@@ -2,11 +2,11 @@
 using ASPNETAOP.Session;
 using PostSharp.Aspects;
 using PostSharp.Serialization;
-using System;
-using System.Net.Http;
 using System.Net.Http.Json;
+using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System;
 
 namespace ASPNETAOP.Aspect
 {
@@ -16,6 +16,7 @@ namespace ASPNETAOP.Aspect
     {
         public override void OnEntry(MethodExecutionArgs args)
         {
+            Console.WriteLine("Aspect entry");
             HttpClient client = new HttpClient();
             String connectionString = "https://localhost:44316/api/UserLoginItems/" + Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
             Task<UserLoginItem> userLogin = GetJsonHttpClient(connectionString, client); ;

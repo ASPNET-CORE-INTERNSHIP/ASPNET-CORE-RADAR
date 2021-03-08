@@ -1,12 +1,12 @@
 ﻿using ASPNETAOP.Models;
+using ASPNETAOP.Session;
 using PostSharp.Aspects;
 using PostSharp.Serialization;
-using System;
-using System.Threading.Tasks;
-using System.Net.Http;
 using System.Net.Http.Json;
+using System.Net.Http;
 using System.Text.Json;
-using ASPNETAOP.Session;
+using System.Threading.Tasks;
+using System;
 
 namespace ASPNETAOP.Aspect
 {

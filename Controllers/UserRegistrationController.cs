@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using ASPNETAOP.Models;
+using ASPNETAOP.Session;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
-using ASPNETAOP.Models;
 using Microsoft.Extensions.Configuration;
+using System.Net.Http.Json;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Net.Http.Json;
-using ASPNETAOP.Session;
+using System;
 
 namespace ASPNETAOP.Controllers
 {
@@ -85,30 +85,6 @@ namespace ASPNETAOP.Controllers
 
             String[] registerInfo = { ur.Username, ur.Usermail, ur.Userpassword };
             SendUserRegister(registerInfo, sessionId);
-
-            /*
-            // Add a new user to the database
-            String connection = _configuration.GetConnectionString("localDatabase");
-            using (SqlConnection sqlconn = new SqlConnection(connection))
-            {
-                string sqlquery = "insert into AccountInfo(Username, Usermail, Userpassword) values ('" + ur.Username + "', '" + ur.Usermail + "', '" + ur.Userpassword + "' )";
-                using (SqlCommand sqlcomm = new SqlCommand(sqlquery, sqlconn))
-                {
-                    sqlconn.Open();
-                    sqlcomm.ExecuteNonQuery();
-
-                    ViewData["Message"] = "New User " + ur.Username + " is saved successfully";
-
-                    sqlconn.Close();
-                }
-            }
-
-            // retrieve the UserID of the newly created user
-            int UserID = GetUsedID(ur.Usermail);
-
-            // define a standart permission
-            AddUserRole(UserID);
-            */
 
             return View(ur);
         }

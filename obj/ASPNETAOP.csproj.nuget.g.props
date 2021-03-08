@@ -16,7 +16,7 @@
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
   </PropertyGroup>
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <Import Project="$(NuGetPackageRoot)postsharp\6.8.8\build\PostSharp.props" Condition="Exists('$(NuGetPackageRoot)postsharp\6.8.8\build\PostSharp.props')" />
+    <Import Project="$(NuGetPackageRoot)postsharp\6.8.9\build\PostSharp.props" Condition="Exists('$(NuGetPackageRoot)postsharp\6.8.9\build\PostSharp.props')" />
   </ImportGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <PkgMicrosoft_CodeAnalysis_Analyzers Condition=" '$(PkgMicrosoft_CodeAnalysis_Analyzers)' == '' ">C:\Users\Cenk\.nuget\packages\microsoft.codeanalysis.analyzers\3.0.0</PkgMicrosoft_CodeAnalysis_Analyzers>

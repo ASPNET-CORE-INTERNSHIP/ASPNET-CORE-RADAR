@@ -688,7 +688,7 @@
         "runtime": {},
         "runtimeTargets": {}
       },
-      "PostSharp/6.8.8": {
+      "PostSharp/6.8.9": {
         "dependencies": {},
         "runtime": {},
         "runtimeTargets": {}
@@ -2372,12 +2372,12 @@
       "path": "system.xml.xdocument/4.3.0",
       "hashPath": "system.xml.xdocument.4.3.0.nupkg.sha512"
     },
-    "PostSharp/6.8.8": {
+    "PostSharp/6.8.9": {
       "type": "package",
       "serviceable": true,
       "sha512": "",
-      "path": "postsharp/6.8.8",
-      "hashPath": "postsharp.6.8.8.nupkg.sha512"
+      "path": "postsharp/6.8.9",
+      "hashPath": "postsharp.6.8.9.nupkg.sha512"
     },
     "PostSharp.Compiler.Common/1.0.0": {
       "type": "project",

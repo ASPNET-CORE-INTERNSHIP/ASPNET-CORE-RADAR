@@ -1,10 +1,8 @@
-﻿using ASPNETAOP.Models;
-using ASPNETAOP.Session;
+﻿using ASPNETAOP.Session;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using System;
 using System.Net.Http;
+using System;
 
 namespace ASPNETAOP.Controllers
 {
