@@ -35,13 +35,6 @@ Program was written in C#, therefore, a special environment for the aforemention
 3. Execute the following queries to create necessary tables
 
     ```java
-    CREATE TABLE AccountRoles (
-    	Roleid INT IDENTITY PRIMARY KEY,
-    	Rolename nvarchar(100) NOT NULL,
-    	Roleallow nvarchar(100), 
-    	Roledeny nvarchar(100)
-    );
-
     CREATE TABLE AccountInfo(
     	UserID INT IDENTITY PRIMARY KEY,
     	Username nvarchar(100),
@@ -51,23 +44,58 @@ Program was written in C#, therefore, a special environment for the aforemention
     	Userdeny nvarchar(100)
     );
 
-    CREATE TABLE UserRoles(
+	CREATE TABLE AccountRoles (
+    	Roleid INT IDENTITY PRIMARY KEY,
+    	Rolename nvarchar(100) NOT NULL,
+    	Roleallow nvarchar(100), 
+    	Roledeny nvarchar(100)
+    );
+
+    CREATE TABLE RoleAllow (
     	ID INT IDENTITY PRIMARY KEY,
-    	UserID INT FOREIGN KEY REFERENCES AccountInfo(UserID) ON DELETE CASCADE ON UPDATE CASCADE,
-    	Roleid INT FOREIGN KEY REFERENCES AccountRoles(Roleid) ON DELETE CASCADE ON UPDATE CASCADE
+    	Roleid INT FOREIGN KEY REFERENCES AccountRoles(Roleid) ON DELETE CASCADE ON UPDATE CASCADE,
+    	Roleallow nvarchar(100)
+    );
+
+        CREATE TABLE RoleDeny (
+    	ID INT IDENTITY PRIMARY KEY,
+    	Roleid INT FOREIGN KEY REFERENCES AccountRoles(Roleid) ON DELETE CASCADE ON UPDATE CASCADE,
+    	Roledeny nvarchar(100)
     );
 
     CREATE TABLE AccountSessions (
     	ID INT IDENTITY PRIMARY KEY,
     	Usermail nvarchar(100),
     	LoginDate nvarchar(100),
-    	IsLoggedIn INT
+    	IsLoggedIn INT,
+        HttpSessionId nvarchar(100)
+    );
+
+    CREATE TABLE UserRoles(
+    	ID INT IDENTITY PRIMARY KEY,
+    	UserID INT FOREIGN KEY REFERENCES AccountInfo(UserID) ON DELETE CASCADE ON UPDATE CASCADE,
+    	Roleid INT FOREIGN KEY REFERENCES AccountRoles(Roleid) ON DELETE CASCADE ON UPDATE CASCADE
+    );
+
+    CREATE TABLE UserAllow (
+    	ID INT IDENTITY PRIMARY KEY,
+    	UserID INT FOREIGN KEY REFERENCES AccountInfo(UserID) ON DELETE CASCADE ON UPDATE CASCADE,
+    	Userallow nvarchar(100)
+    );
+
+    CREATE TABLE RoleDeny (
+    	ID INT IDENTITY PRIMARY KEY,
+    	UserID INT FOREIGN KEY REFERENCES AccountInfo(UserID) ON DELETE CASCADE ON UPDATE CASCADE,
+    	Userdeny nvarchar(100)
     );
 
     INSERT INTO AccountInfo(Username, Usermail, Userpassword) VALUES ('admin', 'admin@admin.com', 'admin');
-    INSERT INTO AccountRoles(Rolename, Roleallow) VALUES ('Admin', '45EADA4A-CFB8-46A9-8DDB-5A1ACCC89D2A');
-    INSERT INTO AccountRoles(Rolename, Roledeny) VALUES ('RegularUser', '45EADA4A-CFB8-46A9-8DDB-5A1ACCC89D2A');
+    INSERT INTO AccountRoles(Rolename) VALUES ('admin');
     INSERT INTO UserRoles(UserID, Roleid) VALUES (1,1);
+    INSERT INTO RoleAllow(Roleid, Roleallow) VALUES (1, '8CAD996A-39EA-4B04-AA60-8069C6A665E9');
+    INSERT INTO RoleAllow(Roleid, Roleallow) VALUES (1, '45EADA4A-CFB8-46A9-8DDB-5A1ACCC89D2A');
+    INSERT INTO RoleAllow(Roleid, Roleallow) VALUES (1, 'CD3EC045-30FC-49C5-BF71-A1109D895FD4');
+    INSERT INTO RoleAllow(Roleid, Roleallow) VALUES (1, '1371A9F7-25FC-4EDC-B82B-ADB3CCEE485B');
     ```
 
 4.  Create a new database, named as RADAR, in your local SQL Server
