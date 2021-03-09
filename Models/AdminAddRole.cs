@@ -11,11 +11,5 @@ namespace ASPNETAOP.Models
         [Display(Name = "Rolename")]
         [Required(ErrorMessage = "Please enter role name")]
         public String Rolename { get; set; }
-        
-        [Display(Name = "Roleallow")]
-        public String Roleallow { get; set; }
-
-        [Display(Name = "Roledeny")]
-        public String Roledeny { get; set; }
     }
 }

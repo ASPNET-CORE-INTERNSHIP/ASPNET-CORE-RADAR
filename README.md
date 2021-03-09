@@ -83,7 +83,7 @@ Program was written in C#, therefore, a special environment for the aforemention
     	Userallow nvarchar(100)
     );
 
-    CREATE TABLE RoleDeny (
+    CREATE TABLE UserDeny (
     	ID INT IDENTITY PRIMARY KEY,
     	UserID INT FOREIGN KEY REFERENCES AccountInfo(UserID) ON DELETE CASCADE ON UPDATE CASCADE,
     	Userdeny nvarchar(100)
@@ -96,6 +96,7 @@ Program was written in C#, therefore, a special environment for the aforemention
     INSERT INTO RoleAllow(Roleid, Roleallow) VALUES (1, '45EADA4A-CFB8-46A9-8DDB-5A1ACCC89D2A');
     INSERT INTO RoleAllow(Roleid, Roleallow) VALUES (1, 'CD3EC045-30FC-49C5-BF71-A1109D895FD4');
     INSERT INTO RoleAllow(Roleid, Roleallow) VALUES (1, '1371A9F7-25FC-4EDC-B82B-ADB3CCEE485B');
+    INSERT INTO RoleAllow(Roleid, Roleallow) VALUES (1, '54CABEE8-BDED-447D-BBFB-AFB2859797DF');
     ```
 
 4.  Create a new database, named as RADAR, in your local SQL Server

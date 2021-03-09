@@ -1,62 +1,72 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Symbols LinesOfCode="661" PostSharpLinesOfCode="0" EnhancedTypesCount="7" SchemaVersion="1" PostSharpVersion="6.8.9.0" xmlns="http://schemas.postsharp.org/2.0/symbols">
+<Symbols LinesOfCode="922" PostSharpLinesOfCode="0" EnhancedTypesCount="8" SchemaVersion="1" PostSharpVersion="6.8.9.0" xmlns="http://schemas.postsharp.org/2.0/symbols">
   <Class Class="#1=T:[PostSharp]PostSharp.Serialization.PSerializableAttribute">
-    <Instance Declaration="#2=T:[ASPNETAOP]ASPNETAOP.Aspect.IsAuthenticatedAttribute" Id="4ad7b5ce5dbf9f8b">
+    <Instance Declaration="#2=T:[ASPNETAOP]ASPNETAOP.Aspect.IsAuthenticatedAttribute" Id="4ad7b5cec2af9a02">
       <Target />
     </Instance>
-    <Instance Declaration="#3=T:[ASPNETAOP]ASPNETAOP.Aspect.IsAuthorizedAttribute" Id="4ad7b5ceb8a33f59">
+    <Instance Declaration="#3=T:[ASPNETAOP]ASPNETAOP.Aspect.IsAuthorizedAttribute" Id="4ad7b5cedf397979">
       <Target />
     </Instance>
   </Class>
   <Class Class="#2">
-    <Instance Declaration="#4=M:[ASPNETAOP]ASPNETAOP.Controllers.AdminAddRoleController::AddRole([ASPNETAOP]ASPNETAOP.Models.AdminAddRole)" Id="4ad7b5ce9607de9b">
+    <Instance Declaration="#4=M:[ASPNETAOP]ASPNETAOP.Controllers.AdminAddRoleController::AddRole([ASPNETAOP]ASPNETAOP.Models.AdminAddRole)" Id="4ad7b5cef8e061f7">
       <Target LinesAvoided="2">
         <JoinPoint Description="#5=Wrapped by advice(s) OnEntry" Ordinal="0" />
       </Target>
     </Instance>
-    <Instance Declaration="#6=M:[ASPNETAOP]ASPNETAOP.Controllers.AdminUserActivityController::UserActivity()" Id="4ad7b5cef18a0fc8">
+    <Instance Declaration="#6=M:[ASPNETAOP]ASPNETAOP.Controllers.AdminRolePermissionController::RolePermission([ASPNETAOP]ASPNETAOP.Models.AdminRolePermission)" Id="4ad7b5cec5f3529d">
       <Target LinesAvoided="2">
         <JoinPoint Description="#5" Ordinal="2" />
       </Target>
     </Instance>
-    <Instance Declaration="#7=M:[ASPNETAOP]ASPNETAOP.Controllers.AdminUserListController::UserList()" Id="4ad7b5ce5c245eea">
+    <Instance Declaration="#7=M:[ASPNETAOP]ASPNETAOP.Controllers.AdminUserActivityController::UserActivity()" Id="4ad7b5ce70bbad99">
       <Target LinesAvoided="2">
         <JoinPoint Description="#5" Ordinal="4" />
       </Target>
     </Instance>
-    <Instance Declaration="#8=M:[ASPNETAOP]ASPNETAOP.Controllers.AdminUserRoleEditController::UserEdit([ASPNETAOP]ASPNETAOP.Models.AdminUserRoleEdit)" Id="4ad7b5ce8adc924c">
+    <Instance Declaration="#8=M:[ASPNETAOP]ASPNETAOP.Controllers.AdminUserListController::UserList()" Id="4ad7b5ceb48ed76a">
       <Target LinesAvoided="2">
         <JoinPoint Description="#5" Ordinal="6" />
       </Target>
     </Instance>
-    <Instance Declaration="#9=M:[ASPNETAOP]ASPNETAOP.Controllers.UserProfileController::Profile()" Id="4ad7b5ce8673e22c">
+    <Instance Declaration="#9=M:[ASPNETAOP]ASPNETAOP.Controllers.AdminUserRoleEditController::UserEdit([ASPNETAOP]ASPNETAOP.Models.AdminUserRoleEdit)" Id="4ad7b5cef00ec8e5">
       <Target LinesAvoided="2">
         <JoinPoint Description="#5" Ordinal="8" />
       </Target>
     </Instance>
+    <Instance Declaration="#10=M:[ASPNETAOP]ASPNETAOP.Controllers.UserProfileController::Profile()" Id="4ad7b5ceea2e191c">
+      <Target LinesAvoided="2">
+        <JoinPoint Description="#5" Ordinal="10" />
+      </Target>
+    </Instance>
   </Class>
   <Class Class="#3">
-    <Instance Declaration="#4" Id="4ad7b5cef02f28f8">
+    <Instance Declaration="#4" Id="4ad7b5ce5ab807f1">
       <Target LinesAvoided="2">
         <JoinPoint Description="#5" />
       </Target>
     </Instance>
-    <Instance Declaration="#6" Id="4ad7b5ce9c64d533">
+    <Instance Declaration="#6" Id="4ad7b5ce578a43e3">
       <Target LinesAvoided="2">
         <JoinPoint Description="#5" Ordinal="3" />
       </Target>
     </Instance>
-    <Instance Declaration="#7" Id="4ad7b5ceb710c9a6">
+    <Instance Declaration="#7" Id="4ad7b5ce1c860b5e">
       <Target LinesAvoided="2">
         <JoinPoint Description="#5" Ordinal="5" />
       </Target>
     </Instance>
-    <Instance Declaration="#8" Id="4ad7b5cef200d90c">
+    <Instance Declaration="#8" Id="4ad7b5ce70779eb3">
       <Target LinesAvoided="2">
         <JoinPoint Description="#5" Ordinal="7" />
       </Target>
     </Instance>
+    <Instance Declaration="#9" Id="4ad7b5ce03626570">
+      <Target LinesAvoided="2">
+        <JoinPoint Description="#5" Ordinal="9" />
+      </Target>
+    </Instance>
   </Class>
-  <Annotation Target="#10=M:[ASPNETAOP]ASPNETAOP.Aspect.IsAuthenticatedAttribute::OnEntry(PostSharp.Aspects.MethodExecutionArgs)" Arguments="#11=2" Description="#12=PostSharp estimates that 2 lines of code are saved every time this advice is applied. Use the [LinesOfCodeAvoided] attribute on the aspect or specify the LinesOfCodeAvoided property on the advice attribute to override this value." />
-  <Annotation Target="#13=M:[ASPNETAOP]ASPNETAOP.Aspect.IsAuthorizedAttribute::OnEntry(PostSharp.Aspects.MethodExecutionArgs)" Arguments="#11" Description="#12" />
+  <Annotation Target="#11=M:[ASPNETAOP]ASPNETAOP.Aspect.IsAuthenticatedAttribute::OnEntry(PostSharp.Aspects.MethodExecutionArgs)" Arguments="#12=2" Description="#13=PostSharp estimates that 2 lines of code are saved every time this advice is applied. Use the [LinesOfCodeAvoided] attribute on the aspect or specify the LinesOfCodeAvoided property on the advice attribute to override this value." />
+  <Annotation Target="#14=M:[ASPNETAOP]ASPNETAOP.Aspect.IsAuthorizedAttribute::OnEntry(PostSharp.Aspects.MethodExecutionArgs)" Arguments="#12" Description="#13" />
 </Symbols>

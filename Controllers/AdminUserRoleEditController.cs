@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Runtime.InteropServices;
 
 namespace ASPNETAOP.Controllers
 {
+    [Guid("8CAD996A-39EA-4B04-AA60-8069C6A665E9")]
     public class AdminUserRoleEditController : Controller
     {
         private IConfiguration _configuration;

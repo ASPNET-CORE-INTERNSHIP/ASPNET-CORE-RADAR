@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Runtime.InteropServices;
 
 namespace ASPNETAOP.Controllers
 {
+    [Guid("1371A9F7-25FC-4EDC-B82B-ADB3CCEE485B")]
     public class AdminAddRoleController : Controller
     {
         private IConfiguration _configuration;
@@ -18,6 +20,13 @@ namespace ASPNETAOP.Controllers
             //Necessary to prevent sessionID from changing with every request
             HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
             return View();
+        }
+
+        public IActionResult RolePermission()
+        {
+            //Necessary to prevent sessionID from changing with every request
+            HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
+            return RedirectToAction("RolePermission", "AdminRolePermission");
         }
 
         [IsAuthenticated]
@@ -33,7 +42,7 @@ namespace ASPNETAOP.Controllers
             using (SqlConnection sqlconn = new SqlConnection(connection))
             {
                 // Number 2 for the Roleid indicates RegularUser
-                string sqlquery = "insert into AccountRoles(Rolename, Roleallow, Roledeny) values ('" + ur.Rolename + "', '" + ur.Roleallow + "', '" + ur.Roledeny + "')";
+                string sqlquery = "insert into AccountRoles(Rolename) values ('" + ur.Rolename + "')";
                 using (SqlCommand sqlcomm = new SqlCommand(sqlquery, sqlconn))
                 {
                     sqlconn.Open();
