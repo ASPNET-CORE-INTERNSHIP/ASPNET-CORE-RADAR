@@ -104,9 +104,11 @@ Program was written in C#, therefore, a special environment for the aforemention
 ````java
     CREATE TABLE Transmitter(
 	ID uniqueidentifier PRIMARY KEY NOT NULL,
+	oscillator_type nvarchar(500) NOT NULL,
+	modulation_type nvarchar(500),
 	max_frequency INT,
 	min_frequency INT,
-	modulation_type nvarchar(500)
+	power INT
     );
 
     CREATE TABLE Receiver(
@@ -178,7 +180,6 @@ CREATE TABLE Radar(
 	PRI float,
 	min_frequency INT,
 	max_frequency INT,
-	power int,
 	scan_id uniqueidentifier FOREIGN KEY REFERENCES Scan(ID) ON DELETE CASCADE ON UPDATE CASCADE
     );
     
