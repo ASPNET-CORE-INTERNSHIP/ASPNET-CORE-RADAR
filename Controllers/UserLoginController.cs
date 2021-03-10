@@ -18,23 +18,28 @@ namespace ASPNETAOP.Controllers
 
         public IActionResult Index()
         {
-            HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
             return View();
         }
 
+        //Add a new aspect 
+        //if accountsessions is null with get request, throw error 
+        //otherwise, method will redirect to the profile page
         public IActionResult Login()
         {
-            HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
             return View();
         }
 
         [HttpPost]
         public IActionResult Login(UserLogin ur)
         {
-            HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
+            /*
+               Send the user mail & password with Http Post Request 
+               -> WebServer will add a new entitty to AccountSessions if the given information is correct
+               Call the method above
+            */
 
             //Make the SessionId smaller
-            long sessionId = Hash.CurrentHashed(HttpContext.Session.Id);
+            long sessionId = Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
 
             //Send the current login information to the ASPNETAOP-WebServer project
             String[] loginInfo = { ur.Usermail, ur.Userpassword};
@@ -116,22 +121,10 @@ namespace ASPNETAOP.Controllers
         //Used to extract user information from retrieved json file
         private static async Task<UserLoginItem> GetJsonHttpClient(string uri, HttpClient httpClient)
         {
-            try
-            {
-                return await httpClient.GetFromJsonAsync<UserLoginItem>(uri);
-            }
-            catch (HttpRequestException) // Non success
-            {
-                Console.WriteLine("An error occurred.");
-            }
-            catch (NotSupportedException) // When content type is not valid
-            {
-                Console.WriteLine("The content type is not supported.");
-            }
-            catch (JsonException) // Invalid JSON
-            {
-                Console.WriteLine("Invalid JSON.");
-            }
+            try{ return await httpClient.GetFromJsonAsync<UserLoginItem>(uri); }
+            catch (HttpRequestException){ Console.WriteLine("An error occurred."); }
+            catch (NotSupportedException){ Console.WriteLine("The content type is not supported."); }
+            catch (JsonException){ Console.WriteLine("Invalid JSON."); }
 
             return null;
         }

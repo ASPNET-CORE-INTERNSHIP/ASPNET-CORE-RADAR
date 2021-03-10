@@ -18,26 +18,19 @@ namespace ASPNETAOP.Controllers
         [Route("Home/Index")]
         public IActionResult Index()
         {
-            //Necessary to prevent sessionID from changing with every request
-            HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
             return View();
         }
 
         public IActionResult Create()
         {
-            //Necessary to prevent sessionID from changing with every request
-            HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
             return View();
         }
 
         [HttpPost]
         public IActionResult Create(UserRegister ur)
         {
-            // Necessary to prevent sessionID from changing with every request
-            HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
-
             //Make the SessionId smaller
-            long sessionId = Hash.CurrentHashed(HttpContext.Session.Id);
+            long sessionId = Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
 
             String[] registerInfo = { ur.Username, ur.Usermail, ur.Userpassword };
             SendUserRegister(registerInfo, sessionId);

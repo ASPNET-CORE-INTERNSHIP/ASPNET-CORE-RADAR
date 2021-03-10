@@ -17,8 +17,6 @@ namespace ASPNETAOP.Controllers
         [Route("Home/Index")]
         public IActionResult Index()
         {
-            //Necessary to prevent sessionID from changing with every request
-            HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
             return View();
         }
 
@@ -26,9 +24,6 @@ namespace ASPNETAOP.Controllers
         [IsAuthorized]
         public IActionResult RolePermission(AdminRolePermission ur)
         {
-            // Necessary to prevent sessionID from changing with every request
-            HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
-
             TempData["ResultMessage"] = "Admin";
 
             String connection = _configuration.GetConnectionString("localDatabase");

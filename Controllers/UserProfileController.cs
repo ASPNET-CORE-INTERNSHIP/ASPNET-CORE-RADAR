@@ -16,18 +16,13 @@ namespace ASPNETAOP.Controllers
     {
         public IActionResult Index()
         {
-            // Necessary to prevent sessionID from changing with every request
-            HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
             return View();
         }
 
         [IsAuthenticated]
         public IActionResult Profile()
         {
-            // Necessary to prevent sessionID from changing with every request
-            HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
-
-            long sessionId = Hash.CurrentHashed(HttpContext.Session.Id);
+            long sessionId = Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
 
             // Retrieve the user information from the ASPNETAOP-WebServer
             HttpClient client = new HttpClient();
@@ -48,10 +43,7 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult Profile(UserLogin ur)
         {
-            // Necessary to prevent sessionID from changing with every request
-            HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
-
-            long sessionId = Hash.CurrentHashed(HttpContext.Session.Id);
+           long sessionId = Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
 
             HttpClient client = new HttpClient();
             String connectionString = "https://localhost:44316/api/UserLoginItems/" + sessionId;

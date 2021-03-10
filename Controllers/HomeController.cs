@@ -13,16 +13,12 @@ namespace ASPNETAOP.Controllers
         }
 
         public IActionResult Index()
-        {
-            //Necessary to prevent sessionID from changing with every request
-            HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
+        {   
             return View();
         }
 
         public IActionResult Privacy()
         {
-            //Necessary to prevent sessionID from changing with every request
-            HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
             return View();
         }
 

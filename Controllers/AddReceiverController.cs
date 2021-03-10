@@ -22,8 +22,6 @@ namespace ASPNETAOP.Controllers
 
         public IActionResult NewReceiver()
         {
-            //Necessary to prevent sessionID from changing with every request
-            HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
             return View();
         }
 
@@ -53,9 +51,6 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult NewReceiver(AddReceiver receiver)
         {
-            // Necessary to prevent sessionID from changing with every request
-            HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
-
             SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true");
             SqlCommand cmd = new SqlCommand("receiver_insert", con);
             cmd.CommandType = CommandType.StoredProcedure;

@@ -13,16 +13,12 @@ namespace ASPNETAOP.Controllers
 
         public IActionResult Index()
         {
-            HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
             return View();
         }
 
         public IActionResult Logout()
         {
-            // Necessary to prevent sessionID from changing with every request
-            HttpContext.Session.Set("CurrentHTTPSession", new byte[] { 1, 2, 3, 4, 5 });
-
-            long sessionId = Hash.CurrentHashed(HttpContext.Session.Id);
+            long sessionId = Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
 
             // sends a Delete HTTP request
             using (var client = new HttpClient())
