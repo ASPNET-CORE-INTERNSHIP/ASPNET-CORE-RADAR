@@ -103,18 +103,21 @@ Program was written in C#, therefore, a special environment for the aforemention
 5. Execute the following queries to create necessary tables
 ````java
     CREATE TABLE Transmitter(
-	ID uniqueidentifier PRIMARY KEY DEFAULT (NEWID())
+	ID uniqueidentifier PRIMARY KEY NOT NULL,
+	max_frequency INT,
+	min_frequency INT,
+	modulation_type nvarchar(500)
     );
 
     CREATE TABLE Receiver(
-	ID uniqueidentifier PRIMARY KEY DEFAULT (NEWID()),
+	ID uniqueidentifier PRIMARY KEY NOT NULL,
 	listening_time float NOT NULL,
 	rest_time float NOT NULL,
 	recovery_time float NOT NULL
     );
 
     CREATE TABLE Antenna (
-	ID uniqueidentifier PRIMARY KEY DEFAULT (NEWID()),
+	ID uniqueidentifier PRIMARY KEY NOT NULL,
 	type nvarchar(50) NOT NULL CHECK (type IN('parabolic', 'cassegrain', 'phased array')),
 	horizontal_beamwidth FLOAT,
 	vertical_beamwidth FLOAT,
@@ -129,7 +132,7 @@ Program was written in C#, therefore, a special environment for the aforemention
     );
 
     CREATE TABLE Scan(
-	ID uniqueidentifier PRIMARY KEY DEFAULT (NEWID()),
+	ID uniqueidentifier PRIMARY KEY NOT NULL,
 	type nvarchar(500) NOT NULL,
 	main_aspect nvarchar(500) CHECK (main_aspect IN('north', 'west', 'south', 'east', 'changeable')),
 	scan_angle float,
@@ -138,50 +141,43 @@ Program was written in C#, therefore, a special environment for the aforemention
     );
 
     CREATE TABLE AntennaScan(
-	ID uniqueidentifier PRIMARY KEY DEFAULT (NEWID()),
 	antenna_id uniqueidentifier FOREIGN KEY REFERENCES Antenna(ID) ON DELETE CASCADE ON UPDATE CASCADE,
-	scan_id uniqueidentifier FOREIGN KEY REFERENCES Scan(ID) ON DELETE CASCADE ON UPDATE CASCADE
+	scan_id uniqueidentifier FOREIGN KEY REFERENCES Scan(ID) ON DELETE CASCADE ON UPDATE CASCADE,
+	primary key (antenna_id, scan_id)
     );
 
-    ALTER TABLE AntennaScan
-     ADD CONSTRAINT uq_AntennaScan UNIQUE(antenna_id, scan_id);	
 
-     CREATE TABLE GroundLocation(
-	ID uniqueidentifier PRIMARY KEY DEFAULT (NEWID()),
+    CREATE TABLE Location(
+	ID uniqueidentifier PRIMARY KEY NOT NULL,
 	country nvarchar(500) NOT NULL,
 	city nvarchar(500) NOT NULL,
 	geographic_latitude nvarchar(500) NOT NULL,
-	geographic_longitude nvarchar(500) NOT NULL
-    );
-
-    CREATE TABLE Location(
-	ID uniqueidentifier PRIMARY KEY DEFAULT (NEWID()),
-	ground_location uniqueidentifier FOREIGN KEY REFERENCES GroundLocation(ID) ON DELETE CASCADE ON UPDATE CASCADE DEFAULT ('00000000-0000-0000-0000-000000000000'),
+	geographic_longitude nvarchar(500) NOT NULL,
 	airborne nvarchar(500) DEFAULT 'Non-airborne radar'
     );
 
 CREATE TABLE Radar(
-	ID uniqueidentifier PRIMARY KEY DEFAULT (NEWID()),
+	ID uniqueidentifier PRIMARY KEY NOT NULL,
 	system nvarchar(500) NOT NULL CHECK (system IN('early warning', 'missile guidance', 'target tracking', 'target acquisition', 'airborne intercept', 'fire control', 'surface search', 'battlefield surveillance', 'air mapping', 'countermortar', 'ground surveillance', 'man portable' )),
 	configuration nvarchar(500) NOT NULL CHECK (configuration IN('bistatic', 'continious wave', 'doppler', 'fm-cw', 'monopulse', 'passive', 'planar array', 'pulse doppler')),
 	transmitter_id uniqueidentifier FOREIGN KEY REFERENCES Transmitter(ID) ON DELETE CASCADE ON UPDATE CASCADE,
-        receiver_id uniqueidentifier FOREIGN KEY REFERENCES Receiver(ID) ON DELETE CASCADE ON UPDATE CASCADE,
+	receiver_id uniqueidentifier FOREIGN KEY REFERENCES Receiver(ID) ON DELETE CASCADE ON UPDATE CASCADE,
 	location_id uniqueidentifier FOREIGN KEY REFERENCES Location(ID) ON DELETE CASCADE ON UPDATE CASCADE
     );
 
     CREATE TABLE Mode(
-	ID uniqueidentifier PRIMARY KEY DEFAULT (NEWID()),
+	ID uniqueidentifier PRIMARY KEY NOT NULL,
 	name nvarchar(500),
 	radar_id uniqueidentifier FOREIGN KEY REFERENCES Radar(ID) ON DELETE CASCADE ON UPDATE CASCADE
     );
 
     CREATE TABLE Submode(
-	ID uniqueidentifier PRIMARY KEY DEFAULT (NEWID()),
+	ID uniqueidentifier PRIMARY KEY NOT NULL,
 	mode_id uniqueidentifier FOREIGN KEY REFERENCES Mode(ID) ON DELETE CASCADE ON UPDATE CASCADE,
 	PW float,
 	PRI float,
-	min_frequency float,
-	max_frequency float,
+	min_frequency INT,
+	max_frequency INT,
 	power int,
 	scan_id uniqueidentifier FOREIGN KEY REFERENCES Scan(ID) ON DELETE CASCADE ON UPDATE CASCADE
     );
