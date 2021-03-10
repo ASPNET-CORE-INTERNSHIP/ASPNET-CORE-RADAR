@@ -6,7 +6,7 @@ namespace ASPNETAOP.Models
     public class AddReceiver
     {
         [Key]
-        public String ID { get; set; }
+        public Guid ID { get; set; }
 
         [Display(Name = "Listening time in nsec")]
         [Required(ErrorMessage = "Please enter the receiver's listening time in nsec")]

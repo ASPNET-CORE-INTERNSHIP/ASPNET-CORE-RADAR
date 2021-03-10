@@ -414,8 +414,6 @@ C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\scopedcss\bundle\AS
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\ASPNETAOP.TagHelpers.input.cache
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\ASPNETAOP.TagHelpers.output.cache
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\ASPNETAOP.RazorCoreGenerate.cache
-C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AdminPageEdit\UserEdit.cshtml.g.cs
-C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AdminPage\UserList.cshtml.g.cs
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Home\Privacy.cshtml.g.cs
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Shared\Error.cshtml.g.cs
@@ -447,7 +445,6 @@ C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\runtimes\unix\lib\n
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AddAntenna\NewAntenna.cshtml.g.cs
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AddReceiver\NewReceiver.cshtml.g.cs
-C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AddGroundLocation\NewGround.cshtml.g.cs
 C:\Users\Cenk\OneDrive\Desktop\ASPNET-CORE-MVC-AOP-APP-main\bin\Debug\net5.0\ASPNETAOP.pssym
 C:\Users\Cenk\OneDrive\Desktop\ASPNET-CORE-MVC-AOP-APP-main\bin\Debug\net5.0\ASPNETAOP.pspdb
 C:\Users\Cenk\OneDrive\Desktop\ASPNET-CORE-MVC-AOP-APP-main\bin\Debug\net5.0\web.config
@@ -771,3 +768,16 @@ C:\Users\Cenk\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\ASPNETAOP.pdb
 C:\Users\Cenk\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\ASPNETAOP.genruntimeconfig.cache
 C:\Users\Cenk\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\PostSharp\postsharp.app.config
 C:\Users\Cenk\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\ASPNETAOP.csprojAssemblyReference.cache
+C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AddLocation\NewLocation.cshtml.g.cs
+C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AddMode\NewMode.cshtml.g.cs
+C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AddRadar\NewRadar.cshtml.g.cs
+C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AddScan\NewScan.cshtml.g.cs
+C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AddSubmode\NewSubmode.cshtml.g.cs
+C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AddTransmitter\NewTransmitter.cshtml.g.cs
+C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AdminAddRole\AddRole.cshtml.g.cs
+C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AdminRolePermission\RolePermission.cshtml.g.cs
+C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AdminUserActivity\UserActivity.cshtml.g.cs
+C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AdminUserList\UserList.cshtml.g.cs
+C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AdminUserRoleEdit\UserEdit.cshtml.g.cs
+C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Shared\_AdminLayout.cshtml.g.cs
+C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Shared\_PreLoginLayout.cshtml.g.cs

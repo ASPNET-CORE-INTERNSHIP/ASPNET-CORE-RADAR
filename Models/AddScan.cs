@@ -9,7 +9,7 @@ namespace ASPNETAOP.Models
     public class AddScan
     {
         [Key]
-        public String ID { get; set; }
+        public Guid ID { get; set; }
 
         [Display(Name = "Type")]
         [Required(ErrorMessage = "Please enter the scan type")]

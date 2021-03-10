@@ -31,19 +31,37 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult NewLocation(AddLocation loc)
         {
-            SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true");
-            SqlCommand cmd = new SqlCommand("location_insert", con);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@ground_location", loc.ground_location);
-            cmd.Parameters.AddWithValue("@airborne", loc.airborne);
-            con.Open();
-            int i = cmd.ExecuteNonQuery();
 
-            con.Close();
-
-            if (i != 0)
+            using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
             {
-                ViewData["Message"] = "New location added";
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = con;
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = @"INSERT INTO Location(ID, country, city, geographic_latitude, geographic_longitude, airborne) 
+                            VALUES(@ID, @country, @city, @geographic_latitude,@geographic_longitude,@airborne)";
+                    Guid key = Guid.NewGuid();
+                    cmd.Parameters.AddWithValue("@ID", key);
+                    cmd.Parameters.AddWithValue("@country", loc.country);
+                    cmd.Parameters.AddWithValue("@city", loc.city);
+                    cmd.Parameters.AddWithValue("@geographic_latitude", loc.geographic_latitude);
+                    cmd.Parameters.AddWithValue("@geographic_longitude", loc.geographic_longitude);
+                    cmd.Parameters.AddWithValue("@airborne", loc.airborne);
+
+                    try
+                    {
+                        con.Open();
+                        int i = cmd.ExecuteNonQuery();
+                        if (i != 0)
+                            ViewData["Message"] = "New location added";
+                        con.Close();
+                    }
+                    catch (SqlException e)
+                    {
+                        ViewData["Message"] = e.Message.ToString()+" Error";
+                    }
+
+                }
             }
 
             return View(loc);

@@ -12,7 +12,7 @@
       }
     ],
     "additionalProbingPaths": [
-      "C:\\Users\\Cenk\\.nuget\\packages\\",
+      "C:\\Users\\ENA\\.nuget\\packages\\",
       "C:\\ProgramData\\PostSharp\\NuGetFallback"
     ]
   }

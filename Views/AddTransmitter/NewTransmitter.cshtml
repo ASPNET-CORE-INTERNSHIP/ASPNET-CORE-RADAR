@@ -1,0 +1,52 @@
+﻿@model ASPNETAOP.Models.AddTransmitter
+
+@{
+    ViewData["Title"] = "NewTransmitter";
+}
+
+<h1>Add Receiver</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-9">
+        <form asp-action="NewTransmitter">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <label asp-for="modulation_type" class="control-label"></label>
+            <select asp-for="modulation_type" class="form-select" aria-label="Default select example">
+                <option selected>Select the type of antenna</option>
+                <option value="AM-amplitude modulation">AM-amplitude modulation</option>
+                <option value="FM-frequency modulation">FM-frequency modulation</option>
+                <option value="FSK-frequency shift keying">FSK-frequency shift keying</option>
+                <option value="OFDM-orthogonal frequency division multiplexing">OFDM-orthogonal frequency division multiplexing</option>
+            </select>
+            <span asp-validation-for="modulation_type" class="text-danger"></span>
+            <div class="form-group">
+                <label asp-for="max_frequency" class="control-label"></label>
+                <input asp-for="max_frequency" class="form-control" type="number" placeholder="0" step="1">
+                <span asp-validation-for="max_frequency" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="min_frequency" class="control-label"></label>
+                <input asp-for="min_frequency" class="form-control" type="number" placeholder="0" step="1">
+                <span asp-validation-for="min_frequency" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="power" class="control-label"></label>
+                <input asp-for="power" class="form-control" type="number" placeholder="0">
+                <span asp-validation-for="power" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add" class="btn btn-primary" />
+            </div>
+            <b>@ViewData["Message"]</b>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Turn back</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

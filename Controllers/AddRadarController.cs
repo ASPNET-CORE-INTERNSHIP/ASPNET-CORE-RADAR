@@ -31,21 +31,36 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult NewRadar(AddRadar radar, AddReceiver receiver)
         {
-            SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true");
-            SqlCommand cmd = new SqlCommand("radar_insert", con);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@system", radar.system);
-            cmd.Parameters.AddWithValue("@configuration", radar.configuration);
-            cmd.Parameters.AddWithValue("@receiver_id", radar.receiver_id);
-            cmd.Parameters.AddWithValue("@location_id", radar.location_id);
-            con.Open();
-            int i = cmd.ExecuteNonQuery();
-
-            con.Close();
-
-            if (i != 0)
+            using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
             {
-                ViewData["Message"] = "New Radar added";
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = con;
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = @"INSERT INTO Radar(ID, system, configuration, receiver_id, transmitter_id, location_id) 
+                            VALUES(@ID, @system, @configuration, @receiver_id, @transmitter_id, @location_id)";
+                    Guid key = Guid.NewGuid();
+                    cmd.Parameters.AddWithValue("@ID", key);
+                    cmd.Parameters.AddWithValue("@system", radar.system);
+                    cmd.Parameters.AddWithValue("@configuration", radar.configuration);
+                    cmd.Parameters.AddWithValue("@receiver_id", radar.receiver_id);
+                    cmd.Parameters.AddWithValue("@receiver_id", radar.transmitter_id);
+                    cmd.Parameters.AddWithValue("@location_id", radar.location_id);
+
+                    try
+                    {
+                        con.Open();
+                        int i = cmd.ExecuteNonQuery();
+                        if (i != 0)
+                            ViewData["Message"] = "New Radar added";
+                        con.Close();
+                    }
+                    catch (SqlException e)
+                    {
+                        ViewData["Message"] = e.Message.ToString() + " Error";
+                    }
+
+                }
             }
 
             return View(radar);

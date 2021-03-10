@@ -31,21 +31,34 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult NewMode(AddMode mod)
         {
-            SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true");
-            SqlCommand cmd = new SqlCommand("mode_insert", con);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@name", mod.name);
-            cmd.Parameters.AddWithValue("@radar_id", mod.radar_id);
-            con.Open();
-            int i = cmd.ExecuteNonQuery();
-
-            con.Close();
-
-            if (i != 0)
+            using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
             {
-                ViewData["Message"] = "New mode added for "+mod.radar_id+" radar";
-            }
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = con;
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = @"INSERT INTO Mode(ID, name, radar_id) 
+                            VALUES(@ID, @name, @radar_id)";
+                    Guid key = Guid.NewGuid();
+                    cmd.Parameters.AddWithValue("@ID", key);
+                    cmd.Parameters.AddWithValue("@name", mod.name);
+                    cmd.Parameters.AddWithValue("@radar_id", mod.radar_id);
 
+                    try
+                    {
+                        con.Open();
+                        int i = cmd.ExecuteNonQuery();
+                        if (i != 0)
+                            ViewData["Message"] = "New mode added for " + mod.radar_id + " radar";
+                        con.Close();
+                    }
+                    catch (SqlException e)
+                    {
+                        ViewData["Message"] = e.Message.ToString() + " Error";
+                    }
+
+                }
+            }
             return View(mod);
         }
     }

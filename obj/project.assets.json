@@ -7559,19 +7559,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Cenk\\.nuget\\packages\\": {}
+    "C:\\Users\\ENA\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Cenk\\Source\\Repos\\ASPNET-CORE-RADAR\\ASPNETAOP.csproj",
+      "projectUniqueName": "C:\\Users\\ENA\\Source\\Repos\\ASPNET-CORE-RADAR\\ASPNETAOP.csproj",
       "projectName": "ASPNETAOP",
-      "projectPath": "C:\\Users\\Cenk\\Source\\Repos\\ASPNET-CORE-RADAR\\ASPNETAOP.csproj",
-      "packagesPath": "C:\\Users\\Cenk\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Cenk\\Source\\Repos\\ASPNET-CORE-RADAR\\obj\\",
+      "projectPath": "C:\\Users\\ENA\\Source\\Repos\\ASPNET-CORE-RADAR\\ASPNETAOP.csproj",
+      "packagesPath": "C:\\Users\\ENA\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ENA\\Source\\Repos\\ASPNET-CORE-RADAR\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Cenk\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\ENA\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -7654,7 +7654,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
       }
     }
   }

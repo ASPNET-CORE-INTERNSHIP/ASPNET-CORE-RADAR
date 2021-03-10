@@ -30,22 +30,36 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult NewScan(AddScan scan)
         {
-            SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true");
-            SqlCommand cmd = new SqlCommand("scan_insert", con);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@type", scan.type);
-            cmd.Parameters.AddWithValue("@main_aspect", scan.main_aspect);
-            cmd.Parameters.AddWithValue("@scan_angle", scan.scan_angle);
-            cmd.Parameters.AddWithValue("@scan_rate", scan.scan_rate);
-            cmd.Parameters.AddWithValue("@hits_per_scan", scan.hits_per_scan);
-            con.Open();
-            int i = cmd.ExecuteNonQuery();
-
-            con.Close();
-
-            if (i != 0)
+            using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
             {
-                ViewData["Message"] = "New scan added";
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = con;
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = @"INSERT INTO Radar(ID, type, main_aspect, scan_angle, scan_rate, hits_per_scan) 
+                            VALUES(@ID, @type, @main_aspect, @scan_angle, @scan_rate, @hits_per_scan)";
+                    Guid key = Guid.NewGuid();
+                    cmd.Parameters.AddWithValue("@ID", key);
+                    cmd.Parameters.AddWithValue("@type", scan.type);
+                    cmd.Parameters.AddWithValue("@main_aspect", scan.main_aspect);
+                    cmd.Parameters.AddWithValue("@scan_angle", scan.scan_angle);
+                    cmd.Parameters.AddWithValue("@scan_rate", scan.scan_rate);
+                    cmd.Parameters.AddWithValue("@hits_per_scan", scan.hits_per_scan);
+
+                    try
+                    {
+                        con.Open();
+                        int i = cmd.ExecuteNonQuery();
+                        if (i != 0)
+                            ViewData["Message"] = "New scan added";
+                        con.Close();
+                    }
+                    catch (SqlException e)
+                    {
+                        ViewData["Message"] = e.Message.ToString() + " Error";
+                    }
+
+                }
             }
 
             return View(scan);

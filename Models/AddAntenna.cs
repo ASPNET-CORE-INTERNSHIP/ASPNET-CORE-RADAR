@@ -6,7 +6,7 @@ namespace ASPNETAOP.Models
     public class AddAntenna
     {
         [Key]
-        public String ID { get; set; }
+        public Guid ID { get; set; }
 
         [Display(Name = "Type")]
         [Required(ErrorMessage = "Please enter the antenna type")]
@@ -42,11 +42,11 @@ namespace ASPNETAOP.Models
 
         [Display(Name = "If this antenna is works for transmitting please enter Transmitter ID")]
         [Required(ErrorMessage = "Please enter the antenna's Transmitter ID in xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx format")]
-        public String transmitter_id { get; set; }
+        public Guid transmitter_id { get; set; }
 
         [Display(Name = "If this antenna is works for receiving please enter Receiver ID")]
         [Required(ErrorMessage = "Please enter the antenna's Receiver ID in xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx format")]
-        public String receiver_id { get; set; }
+        public Guid receiver_id { get; set; }
 
         [Display(Name = "Please enter antenna's location")]
         [Required(ErrorMessage = "Please enter antenna's location")]
