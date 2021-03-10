@@ -104,7 +104,6 @@ Program was written in C#, therefore, a special environment for the aforemention
 ````java
     CREATE TABLE Transmitter(
 	ID uniqueidentifier PRIMARY KEY NOT NULL,
-	oscillator_type nvarchar(500) NOT NULL,
 	modulation_type nvarchar(500),
 	max_frequency INT,
 	min_frequency INT,
