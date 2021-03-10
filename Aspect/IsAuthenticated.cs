@@ -16,12 +16,13 @@ namespace ASPNETAOP.Aspect
     {
         public override void OnEntry(MethodExecutionArgs args)
         {
+            Console.WriteLine("Aspect regularid, hashed, new " + AppHttpContext.Current.Session.Id + ", " + Hash.CurrentHashed(AppHttpContext.Current.Session.Id) );
+
             HttpClient client = new HttpClient();
             String connectionString = "https://localhost:44316/api/UserLoginItems/" + Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
             Task<UserLoginItem> userLogin = GetJsonHttpClient(connectionString, client); ;
 
-            if(userLogin == null || userLogin.Result == null || userLogin.Result.Id == null) throw new UserNotLoggedInException(); //check if the current user has an active session
-            if (userLogin.Result.isUserLoggedIn != 1) throw new UserNotLoggedInException();  //check if the user is successfully authenticated
+            if(userLogin == null || userLogin.Result == null) throw new UserNotLoggedInException(); //check if the current user has an active session
         }
 
         //Used to extract user information from retrieved json file

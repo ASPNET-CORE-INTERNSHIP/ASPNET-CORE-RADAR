@@ -80,12 +80,12 @@ namespace ASPNETAOP
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseCookiePolicy();
 
             AppHttpContext.Services = app.ApplicationServices;
-
 
             app.UseEndpoints(endpoints =>
             {

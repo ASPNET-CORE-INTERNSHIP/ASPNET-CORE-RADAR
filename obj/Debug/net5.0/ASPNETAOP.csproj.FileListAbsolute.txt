@@ -734,7 +734,6 @@ C:\Users\Cenk\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\ASPNETAOP.TagHelpe
 C:\Users\Cenk\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\ASPNETAOP.TagHelpers.output.cache
 C:\Users\Cenk\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\ASPNETAOP.RazorCoreGenerate.cache
 C:\Users\Cenk\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AddAntenna\NewAntenna.cshtml.g.cs
-C:\Users\Cenk\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AddGroundLocation\NewGround.cshtml.g.cs
 C:\Users\Cenk\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AddLocation\NewLocation.cshtml.g.cs
 C:\Users\Cenk\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AddMode\NewMode.cshtml.g.cs
 C:\Users\Cenk\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AddRadar\NewRadar.cshtml.g.cs
@@ -767,7 +766,6 @@ C:\Users\Cenk\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\ASPNETAOP.dll
 C:\Users\Cenk\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\ASPNETAOP.pdb
 C:\Users\Cenk\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\ASPNETAOP.genruntimeconfig.cache
 C:\Users\Cenk\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\PostSharp\postsharp.app.config
-C:\Users\Cenk\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\ASPNETAOP.csprojAssemblyReference.cache
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AddLocation\NewLocation.cshtml.g.cs
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AddMode\NewMode.cshtml.g.cs
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AddRadar\NewRadar.cshtml.g.cs
@@ -781,3 +779,5 @@ C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AdminUs
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AdminUserRoleEdit\UserEdit.cshtml.g.cs
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Shared\_AdminLayout.cshtml.g.cs
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Shared\_PreLoginLayout.cshtml.g.cs
+C:\Users\Cenk\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AddTransmitter\NewTransmitter.cshtml.g.cs
+C:\Users\Cenk\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\ASPNETAOP.csprojAssemblyReference.cache

@@ -1,5 +1,6 @@
 ﻿using ASPNETAOP.Models;
 using ASPNETAOP.Session;
+using ASPNETAOP.Aspect;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Net.Http.Json;
@@ -7,6 +8,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System;
+using Microsoft.AspNetCore.Http;
 
 namespace ASPNETAOP.Controllers
 {
@@ -21,15 +23,12 @@ namespace ASPNETAOP.Controllers
             return View();
         }
 
-        //Add a new aspect 
-        //if accountsessions is null with get request, throw error 
-        //otherwise, method will redirect to the profile page
-        public IActionResult Login()
+        [IsAuthenticated]
+        public IActionResult ConfirmAction(UserLogin ur)
         {
-            return View();
+            return RedirectToAction("Profile", "UserProfile", new { ur });
         }
 
-        [HttpPost]
         public IActionResult Login(UserLogin ur)
         {
             /*
@@ -40,45 +39,28 @@ namespace ASPNETAOP.Controllers
 
             //Make the SessionId smaller
             long sessionId = Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
+            HttpContext.Session.SetString("SessID", new Guid().ToString());
+            Console.WriteLine("Login regularid, hashed, new " + AppHttpContext.Current.Session.Id + ", " + sessionId + ", " + HttpContext.Session.Id);
 
-            //Send the current login information to the ASPNETAOP-WebServer project
-            String[] loginInfo = { ur.Usermail, ur.Userpassword};
-            SendUserLogin(loginInfo, sessionId);
+            if (ur.Usermail != null && ur.Userpassword != null) {
+                //Send the current login information to the ASPNETAOP-WebServer project
+                String[] loginInfo = { ur.Usermail, ur.Userpassword };
+                SendUserLogin(loginInfo, sessionId);
 
-            //Get the result of the previous request
-            int userLoginStatus = GetUserLogin(sessionId);
-
-            if (userLoginStatus == 1)   //Given password matches the one in the database
-            {
-                ViewData["Message"] = "Welcome: " + ur.Usermail;
-                ViewData["Message"] = "Successfully logged in";
-
-                int userRole = GetUserRole(sessionId);
-
-                //Change the layout according to user
-                if (userRole == 1) { TempData["ResultMessage"] = "Admin"; }
-                else { TempData["ResultMessage"] = "Regular"; }
-
-                return RedirectToAction("Profile", "UserProfile", new { ur }); 
+                return RedirectToAction("ConfirmAction", "UserLogin", new { ur });
             }
-            else if(userLoginStatus == 2)   //Given password does not match
-            {
-                ViewData["Message"] = "Incorrect password";
-            }else if(userLoginStatus == 3)  //No user was found with the given mail address
-            {
-                ViewData["Message"] = "No user with this email address has been found";
-                return RedirectToAction("Create", "UserRegistration");
-            }
+
+               
 
             return View(ur);
         }
 
         //Post request to Web Api with the given user credentials
-        public void SendUserLogin(String[] loginInfo, long sessionId)
+        public async void SendUserLogin(String[] loginInfo, long sessionId)
         {
             HttpClient client = new HttpClient();
 
-            PostUserLogin("https://localhost:44316/api/UserLoginItems", client, loginInfo, sessionId);
+            await PostUserLogin("https://localhost:44316/api/UserLoginItems", client, loginInfo, sessionId);
         }
 
         //Helper method for the SendUserLogin

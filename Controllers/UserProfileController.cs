@@ -29,13 +29,17 @@ namespace ASPNETAOP.Controllers
             String connectionString = "https://localhost:44316/api/UserLoginItems/" + sessionId;
             Task<UserLoginItem> userProfile = GetJsonHttpClient(connectionString, client); ;
 
-            int userRole = GetUserRole(sessionId);
+            if(userProfile != null)
+            {
+                int userRole = GetUserRole(sessionId);
 
-            //Change the layout according to user
-            if (userRole == 1) { TempData["ResultMessage"] = "Admin"; }
-            else { TempData["ResultMessage"] = "Regular"; }
+                //Change the layout according to user
+                if (userRole == 1) { TempData["ResultMessage"] = "Admin"; }
+                else { TempData["ResultMessage"] = "Regular"; }
 
-            ViewData["message"] = "User name: " + userProfile.Result.Username + "\r\n Mail: " + userProfile.Result.Usermail;
+                ViewData["message"] = "User name: " + userProfile.Result.Username + "\r\n Mail: " + userProfile.Result.Usermail;
+            }
+            
 
             return View();
         }
