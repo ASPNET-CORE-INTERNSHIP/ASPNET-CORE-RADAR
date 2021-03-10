@@ -12,7 +12,6 @@ namespace ASPNETAOP.Session
         public static long CurrentHashed(String normalSession)
         {
             normalSession = normalSession.Substring(0, normalSession.IndexOf('-'));
-
             String hashedSession = "";
 
             foreach (char c in normalSession)
@@ -21,11 +20,7 @@ namespace ASPNETAOP.Session
                 hashedSession += unicode;
             }
 
-            hashedSession = hashedSession.Substring(3, 7);
-
-            long hashedSessionLong = long.Parse(hashedSession);
-
-            return hashedSessionLong;
+            return long.Parse(hashedSession.Substring(3, 7));
         }
     }
 }
