@@ -137,7 +137,7 @@ Program was written in C#, therefore, a special environment for the aforemention
 	main_aspect nvarchar(500) CHECK (main_aspect IN('north', 'west', 'south', 'east', 'changeable')),
 	scan_angle float,
 	scan_rate float,
-	hits_per_scan int
+	hits_per_scan INT
     );
 
     CREATE TABLE AntennaScan(
