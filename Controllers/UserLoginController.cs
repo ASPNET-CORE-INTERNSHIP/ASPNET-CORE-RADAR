@@ -41,7 +41,7 @@ namespace ASPNETAOP.Controllers
             return View(ur);
         }
 
-        [IsAuthenticated]
+        [IsActive]
         public IActionResult ConfirmAction(UserLogin ur)
         {
             return RedirectToAction("Profile", "UserProfile", new { ur });

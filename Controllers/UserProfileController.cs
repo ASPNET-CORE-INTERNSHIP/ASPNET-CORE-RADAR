@@ -19,7 +19,7 @@ namespace ASPNETAOP.Controllers
             return View();
         }
 
-        [IsAuthenticated]
+        [IsActive]
         public IActionResult Profile()
         {
             long sessionId = Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
@@ -29,7 +29,7 @@ namespace ASPNETAOP.Controllers
             String connectionString = "https://localhost:44316/api/UserLoginItems/" + sessionId;
             Task<UserLoginItem> userProfile = GetJsonHttpClient(connectionString, client); ;
 
-            if(userProfile != null)
+            if(userProfile.Result != null)
             {
                 int userRole = GetUserRole(sessionId);
 
