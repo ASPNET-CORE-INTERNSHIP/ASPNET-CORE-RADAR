@@ -25,6 +25,7 @@ namespace ASPNETAOP.Controllers
 
         public IActionResult Login(UserLogin ur)
         {
+            //Necessary to prevent HttpContext.Session.Id from changing with every request
             HttpContext.Session.SetString("Session", new Guid().ToString());
 
             //Check if the necessary boxes are filled

@@ -1,4 +1,6 @@
-﻿namespace ASPNETAOP.Models
+﻿using System;
+
+namespace ASPNETAOP.Models
 {
     public class UserLoginItem
     {
@@ -10,10 +12,10 @@
         public string Userpassword { get; set; }
         public int UserRole { get; set; }
 
-        //0 - Request has been send
-        //1 - Sucessfully logged in
-        //2 - Password not correct
-        //3 - User not found
+        public DateTime LoginDate { get; set; }
+
+        //0 - Login Request
+        //4 - User Registration Request
         public int isUserLoggedIn { get; set; }
     }
 }

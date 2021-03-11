@@ -65,10 +65,9 @@ Program was written in C#, therefore, a special environment for the aforemention
 
     CREATE TABLE AccountSessions (
     	ID INT IDENTITY PRIMARY KEY,
-    	Usermail nvarchar(100),
-    	LoginDate nvarchar(100),
-    	IsLoggedIn INT,
-        HttpSessionId nvarchar(100)
+    	UserID INT,
+    	LoginDate smalldatetime,
+    	IsLoggedIn INT
     );
 
     CREATE TABLE UserRoles(
