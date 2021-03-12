@@ -19,7 +19,6 @@ namespace ASPNETAOP.Aspect
         public override async void OnEntry(MethodExecutionArgs args)
         {
             long sessionId = Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
-            Console.WriteLine("5");
 
             List<UserLoginItem> reservationList = new List<UserLoginItem>();
             using (var httpClient = new HttpClient())
@@ -39,34 +38,25 @@ namespace ASPNETAOP.Aspect
                     DateTime timeAccessed = DateTime.Now;
                     TimeSpan span = timeAccessed.Subtract(item.LoginDate);
 
-                    //If the session had been inactive for more than 30 minutes, remove the session
+                    using (var clientGet = new HttpClient())
+                    {
+                        clientGet.BaseAddress = new Uri("https://localhost:44316/api/");
+
+                        var deleteTask = clientGet.DeleteAsync("UserLoginItems/" + sessionId);
+                        deleteTask.Wait();
+
+                        var result = deleteTask.Result;
+                    }
+
+                    //If the session has been only active for less than 30 minutes, update the last accessed item
                     if (span.Minutes <= 30)
                     {
-                        using (var clientGet = new HttpClient())
-                        {
-                            clientGet.BaseAddress = new Uri("https://localhost:44316/api/");
-
-                            var deleteTask = clientGet.DeleteAsync("UserLoginItems/" + sessionId);
-                            deleteTask.Wait();
-
-                            var result = deleteTask.Result;
-                        }
-
                         String[] loginInfo = { item.Usermail, item.Userpassword };
-                        SendUserLogin(loginInfo, Hash.CurrentHashed(AppHttpContext.Current.Session.Id));
+                        SendUserLogin(loginInfo, sessionId);
                     }
+                    //otherwise, throw an appropiote exception
                     else
                     {
-                        using (var clientGet = new HttpClient())
-                        {
-                            clientGet.BaseAddress = new Uri("https://localhost:44316/api/");
-
-                            var deleteTask = clientGet.DeleteAsync("UserLoginItems/" + sessionId);
-                            deleteTask.Wait();
-
-                            var result = deleteTask.Result;
-                        }
-
                         throw new UserSessionExpiredException();
                     }
                 }

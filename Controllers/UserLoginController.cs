@@ -34,8 +34,6 @@ namespace ASPNETAOP.Controllers
                 String[] loginInfo = { ur.Usermail, ur.Userpassword };
                 SendUserLogin(loginInfo, Hash.CurrentHashed(AppHttpContext.Current.Session.Id));
 
-                Console.WriteLine("1");
-
                 //if user credentials are correct, a new entitiy will be added to ActivitySession table
                 return RedirectToAction("Profile", "UserProfile");
             }
@@ -46,7 +44,6 @@ namespace ASPNETAOP.Controllers
         [IsAuthenticated]
         public IActionResult ConfirmAction(UserLogin ur)
         {
-            Console.WriteLine("4");
             return RedirectToAction("Profile", "UserProfile");
         }
 

@@ -18,7 +18,6 @@ namespace ASPNETAOP.Aspect
     {
         public override async void OnEntry(MethodExecutionArgs args)
         {
-            Console.WriteLine("2");
             long sessionId = Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
 
             List<UserLoginItem> reservationList = new List<UserLoginItem>();

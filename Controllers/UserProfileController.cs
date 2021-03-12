@@ -21,10 +21,10 @@ namespace ASPNETAOP.Controllers
             return View();
         }
 
+        [IsActive]
         public async Task<IActionResult> Profile()
         {
             long sessionId = Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
-            Console.WriteLine("5");
 
             List<UserLoginItem> reservationList = new List<UserLoginItem>();
             using (var httpClient = new HttpClient())
@@ -40,7 +40,6 @@ namespace ASPNETAOP.Controllers
             {
                 if (item.Id == sessionId)
                 {
-                    Console.WriteLine("item: " + item.Username);
                     ViewData["message"] = "User name: " + item.Username + "\r\n Mail: " + item.Usermail;
 
                     if (item.UserRole == 1) { TempData["ResultMessage"] = "Admin"; }

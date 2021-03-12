@@ -2,11 +2,10 @@
 using ASPNETAOP.Session;
 using PostSharp.Aspects;
 using PostSharp.Serialization;
-using System.Net.Http.Json;
 using System.Net.Http;
-using System.Text.Json;
-using System.Threading.Tasks;
 using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace ASPNETAOP.Aspect
 {
@@ -15,23 +14,27 @@ namespace ASPNETAOP.Aspect
     [PSerializable]
     public sealed class IsAuthorizedAttribute : OnMethodBoundaryAspect
     {
-        public override void OnEntry(MethodExecutionArgs args)
+        public override async void OnEntry(MethodExecutionArgs args)
         {
-            HttpClient client = new HttpClient();
-            String connectionString = "https://localhost:44316/api/UserLoginItems/" + Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
-            Task<UserLoginItem> userLogin = GetJsonHttpClient(connectionString, client); ;
+            long sessionId = Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
 
-            if (userLogin.Result.UserRole != 1) throw new UserPermissionNotEnoughException();  //check if the user has ann admin level authorization
-        }
+            List<UserLoginItem> reservationList = new List<UserLoginItem>();
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("https://localhost:44316/api/UserLoginItems/"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    reservationList = JsonConvert.DeserializeObject<List<UserLoginItem>>(apiResponse);
+                }
+            }
 
-        private static async Task<UserLoginItem> GetJsonHttpClient(string uri, HttpClient httpClient)
-        {
-            try { return await httpClient.GetFromJsonAsync<UserLoginItem>(uri); }
-            catch (HttpRequestException) { Console.WriteLine("An error occurred."); }
-            catch (NotSupportedException) { Console.WriteLine("The content type is not supported."); }
-            catch (JsonException) { Console.WriteLine("Invalid JSON."); }
-
-            return null;
+            foreach (UserLoginItem item in reservationList)
+            {
+                if (item.Id.Equals(sessionId)) 
+                {
+                    if (item.UserRole != 1) throw new UserPermissionNotEnoughException();
+                }
+            }
         }
     }
 
