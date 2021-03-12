@@ -41,10 +41,10 @@ namespace ASPNETAOP.Controllers
             return View(ur);
         }
 
-        [IsActive]
+        [IsAuthenticated]
         public IActionResult ConfirmAction(UserLogin ur)
         {
-            return RedirectToAction("Profile", "UserProfile", new { ur });
+            return RedirectToAction("Profile", "UserProfile");
         }
 
         //Post request to Web Api with the given user credentials

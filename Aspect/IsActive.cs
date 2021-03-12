@@ -22,51 +22,64 @@ namespace ASPNETAOP.Aspect
             String connectionString = "https://localhost:44316/api/UserLoginItems/" + Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
             Task<UserLoginItem> userLogin = GetJsonHttpClient(connectionString, client); ;
 
-            //Compare current time with the last accessed time
-            DateTime timeAccessed = DateTime.Now;
-            TimeSpan span = timeAccessed.Subtract(userLogin.Result.LoginDate);
-
-            //If the session had been inactive for more than 30 minutes, remove the session
-            if (span.Minutes > 30)
+            if(userLogin != null || userLogin.Result != null || userLogin.Result.LoginDate != null)
             {
-                long sessionId = Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
+                //Compare current time with the last accessed time
+                DateTime timeAccessed = DateTime.Now;
+                TimeSpan span = timeAccessed.Subtract(userLogin.Result.LoginDate);
 
-                using (var clientGet = new HttpClient())
+                //If the session had been inactive for more than 30 minutes, remove the session
+                if (span.Minutes >= 0)
                 {
-                    clientGet.BaseAddress = new Uri("https://localhost:44316/api/");
+                    long sessionId = Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
 
-                    var deleteTask = clientGet.DeleteAsync("UserLoginItems/" + sessionId);
-                    deleteTask.Wait();
+                    using (var clientGet = new HttpClient())
+                    {
+                        clientGet.BaseAddress = new Uri("https://localhost:44316/api/");
 
-                    var result = deleteTask.Result;
+                        var deleteTask = clientGet.DeleteAsync("UserLoginItems/" + sessionId);
+                        deleteTask.Wait();
+
+                        var result = deleteTask.Result;
+                    }
+
+                    String[] loginInfo = {userLogin.Result.Usermail, userLogin.Result.Userpassword };
+                    SendUserLogin(loginInfo, Hash.CurrentHashed(AppHttpContext.Current.Session.Id));
                 }
+                else
+                {
+                    long sessionId = Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
 
-                throw new UserSessionExpired();
+                    using (var clientGet = new HttpClient())
+                    {
+                        clientGet.BaseAddress = new Uri("https://localhost:44316/api/");
+
+                        var deleteTask = clientGet.DeleteAsync("UserLoginItems/" + sessionId);
+                        deleteTask.Wait();
+
+                        var result = deleteTask.Result;
+                    }
+
+                    throw new UserSessionExpired();
+                }
             }
-
-
-            //Get the current time
-            //Compare it with LoginItem 
-            //If the time difference is more than 30 minutes, throw a new UserSessionExpired() error
         }
 
-        //Post request to Web Api with the given user credentials
-        public void SendUserRegister(String[] registerInfo, long sessionId)
+
+        public async void SendUserLogin(String[] loginInfo, long sessionId)
         {
             HttpClient client = new HttpClient();
-
-            PostUserLogin("https://localhost:44316/api/UserLoginItems", client, registerInfo, sessionId);
+            await PostUserLogin("https://localhost:44316/api/UserLoginItems", client, loginInfo, sessionId);
         }
 
         //Helper method for the SendUserLogin
-        private static async Task PostUserLogin(string uri, HttpClient httpClient, String[] registerInfo, long sessionId)
+        private static async Task PostUserLogin(string uri, HttpClient httpClient, String[] loginInfo, long sessionId)
         {
-            var postUser = new UserLoginItem { Id = sessionId, Username = registerInfo[0], Usermail = registerInfo[1], Userpassword = registerInfo[2], isUserLoggedIn = 0 };
-
+            var postUser = new UserLoginItem { Id = sessionId, Usermail = loginInfo[0], Userpassword = loginInfo[1], isUserLoggedIn = 0 };
             var postResponse = await httpClient.PostAsJsonAsync(uri, postUser);
-
             postResponse.EnsureSuccessStatusCode();
         }
+
         private static async Task<UserLoginItem> GetJsonHttpClient(string uri, HttpClient httpClient)
         {
             try { return await httpClient.GetFromJsonAsync<UserLoginItem>(uri); }
