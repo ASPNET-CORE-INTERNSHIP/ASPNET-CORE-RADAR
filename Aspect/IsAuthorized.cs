@@ -21,7 +21,6 @@ namespace ASPNETAOP.Aspect
             String connectionString = "https://localhost:44316/api/UserLoginItems/" + Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
             Task<UserLoginItem> userLogin = GetJsonHttpClient(connectionString, client); ;
 
-            if (userLogin == null || userLogin.Result == null || userLogin.Result.Id == null) throw new UserPermissionNotEnoughException(); //check if the current user has an active session
             if (userLogin.Result.UserRole != 1) throw new UserPermissionNotEnoughException();  //check if the user has ann admin level authorization
         }
 

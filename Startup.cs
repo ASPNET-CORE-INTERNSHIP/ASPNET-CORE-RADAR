@@ -57,13 +57,17 @@ namespace ASPNETAOP
 
                     var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
 
-                    if (exceptionHandlerPathFeature?.Error is ASPNETAOP.Aspect.UserNotLoggedInException)
+                    if (exceptionHandlerPathFeature?.Error is Aspect.UserNotLoggedInException)
                     {
                         await context.Response.WriteAsync("You have to be logged in<br><br>\r\n");
                     }
-                    else if (exceptionHandlerPathFeature?.Error is ASPNETAOP.Aspect.UserPermissionNotEnoughException)
+                    else if (exceptionHandlerPathFeature?.Error is Aspect.UserPermissionNotEnoughException)
                     {
                         await context.Response.WriteAsync("You don't have the necessary permission in<br><br>\r\n");
+                    }
+                    else if (exceptionHandlerPathFeature?.Error is Aspect.UserSessionExpiredException)
+                    {
+                        await context.Response.WriteAsync("Session has expired in<br><br>\r\n");
                     }
 
                     await context.Response.WriteAsync(
@@ -76,7 +80,6 @@ namespace ASPNETAOP
 
             if (!env.IsDevelopment()) { app.UseHsts(); }
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();

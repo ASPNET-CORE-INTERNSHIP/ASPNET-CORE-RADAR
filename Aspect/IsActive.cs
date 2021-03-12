@@ -7,6 +7,8 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace ASPNETAOP.Aspect
 {
@@ -14,53 +16,59 @@ namespace ASPNETAOP.Aspect
     [PSerializable]
     public sealed class IsActive : OnMethodBoundaryAspect
     {
-        public override void OnEntry(MethodExecutionArgs args)
+        public override async void OnEntry(MethodExecutionArgs args)
         {
-            Console.WriteLine("Aspect regularid, hashed, new " + AppHttpContext.Current.Session.Id + ", " + Hash.CurrentHashed(AppHttpContext.Current.Session.Id));
+            long sessionId = Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
+            Console.WriteLine("5");
 
-            HttpClient client = new HttpClient();
-            String connectionString = "https://localhost:44316/api/UserLoginItems/" + Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
-            Task<UserLoginItem> userLogin = GetJsonHttpClient(connectionString, client); ;
-
-            if(userLogin != null || userLogin.Result != null || userLogin.Result.LoginDate != null)
+            List<UserLoginItem> reservationList = new List<UserLoginItem>();
+            using (var httpClient = new HttpClient())
             {
-                //Compare current time with the last accessed time
-                DateTime timeAccessed = DateTime.Now;
-                TimeSpan span = timeAccessed.Subtract(userLogin.Result.LoginDate);
-
-                //If the session had been inactive for more than 30 minutes, remove the session
-                if (span.Minutes >= 0)
+                using (var response = await httpClient.GetAsync("https://localhost:44316/api/UserLoginItems/"))
                 {
-                    long sessionId = Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
-
-                    using (var clientGet = new HttpClient())
-                    {
-                        clientGet.BaseAddress = new Uri("https://localhost:44316/api/");
-
-                        var deleteTask = clientGet.DeleteAsync("UserLoginItems/" + sessionId);
-                        deleteTask.Wait();
-
-                        var result = deleteTask.Result;
-                    }
-
-                    String[] loginInfo = {userLogin.Result.Usermail, userLogin.Result.Userpassword };
-                    SendUserLogin(loginInfo, Hash.CurrentHashed(AppHttpContext.Current.Session.Id));
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    reservationList = JsonConvert.DeserializeObject<List<UserLoginItem>>(apiResponse);
                 }
-                else
+            }
+
+            foreach (UserLoginItem item in reservationList)
+            {
+                if (item.Id == sessionId)
                 {
-                    long sessionId = Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
+                    //Compare current time with the last accessed time
+                    DateTime timeAccessed = DateTime.Now;
+                    TimeSpan span = timeAccessed.Subtract(item.LoginDate);
 
-                    using (var clientGet = new HttpClient())
+                    //If the session had been inactive for more than 30 minutes, remove the session
+                    if (span.Minutes <= 30)
                     {
-                        clientGet.BaseAddress = new Uri("https://localhost:44316/api/");
+                        using (var clientGet = new HttpClient())
+                        {
+                            clientGet.BaseAddress = new Uri("https://localhost:44316/api/");
 
-                        var deleteTask = clientGet.DeleteAsync("UserLoginItems/" + sessionId);
-                        deleteTask.Wait();
+                            var deleteTask = clientGet.DeleteAsync("UserLoginItems/" + sessionId);
+                            deleteTask.Wait();
 
-                        var result = deleteTask.Result;
+                            var result = deleteTask.Result;
+                        }
+
+                        String[] loginInfo = { item.Usermail, item.Userpassword };
+                        SendUserLogin(loginInfo, Hash.CurrentHashed(AppHttpContext.Current.Session.Id));
                     }
+                    else
+                    {
+                        using (var clientGet = new HttpClient())
+                        {
+                            clientGet.BaseAddress = new Uri("https://localhost:44316/api/");
 
-                    throw new UserSessionExpired();
+                            var deleteTask = clientGet.DeleteAsync("UserLoginItems/" + sessionId);
+                            deleteTask.Wait();
+
+                            var result = deleteTask.Result;
+                        }
+
+                        throw new UserSessionExpiredException();
+                    }
                 }
             }
         }
@@ -79,23 +87,15 @@ namespace ASPNETAOP.Aspect
             var postResponse = await httpClient.PostAsJsonAsync(uri, postUser);
             postResponse.EnsureSuccessStatusCode();
         }
+    }
 
-        private static async Task<UserLoginItem> GetJsonHttpClient(string uri, HttpClient httpClient)
-        {
-            try { return await httpClient.GetFromJsonAsync<UserLoginItem>(uri); }
-            catch (HttpRequestException) { Console.WriteLine("An error occurred."); }
-            catch (NotSupportedException) { Console.WriteLine("The content type is not supported."); }
-            catch (JsonException) { Console.WriteLine("Invalid JSON."); }
+    public class UserSessionExpiredException : Exception
+    {
+        public UserSessionExpiredException() { }
 
-            return null;
-        }
+        public UserSessionExpiredException(String message) : base(message) { }
     }
 }
 
 
-public class UserSessionExpired : Exception
-{
-    public UserSessionExpired() { }
 
-    public UserSessionExpired(String message) : base(message) { }
-}
