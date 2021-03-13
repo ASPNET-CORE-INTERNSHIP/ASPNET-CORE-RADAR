@@ -11,6 +11,9 @@ namespace ASPNETAOP.Models
         [Key]
         public Guid ID { get; set; }
 
+        [Display(Name = "User Friendly Name")]
+        public String? name { get; set; }
+
         [Display(Name = "Oscillator type")]
         [Required(ErrorMessage = "Please enter the transmitter's oscillator type")]
         public String oscillator_type { get; set; }

@@ -11,6 +11,9 @@ namespace ASPNETAOP.Models
         [Key]
         public Guid ID { get; set; }
 
+        [Display(Name = "User Friendly Name")]
+        public String? name { get; set; }
+
         [Display(Name = "Type")]
         [Required(ErrorMessage = "Please enter the scan type")]
         public String type { get; set; }

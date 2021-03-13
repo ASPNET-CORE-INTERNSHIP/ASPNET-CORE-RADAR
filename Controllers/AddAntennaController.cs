@@ -25,19 +25,43 @@ namespace ASPNETAOP.Controllers
         }
 
         [HttpPost]
-        public IActionResult NewAntenna(AddAntenna antenna, Guid id, SqlCommand? cmd_transmitter_receiver)
+        public IActionResult NewAntenna(AddAntenna antenna, Guid id)
         {
-            //Guid id = Guid.NewGuid();
             using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
             {
                 using (SqlCommand cmd = new SqlCommand())
                 {
                     cmd.Connection = con;
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = @"INSERT INTO Antenna(ID, type, horizontal_beamwidth, vertical_beamwidth, polarization, number_of_feed, horizontal_dimension, vertical_dimension, duty, transmitter_id, receiver_id, location) 
-                            VALUES(@ID, @type, @horizontal_beamwidth, @vertical_beamwidth, @polarization, @number_of_feed, @horizontal_dimension, @vertical_dimension, @duty, @transmitter_id, @receiver_id, @location)";
+                    cmd.CommandText = @"INSERT INTO Antenna(ID, name, type, horizontal_beamwidth, vertical_beamwidth, polarization, number_of_feed, horizontal_dimension, vertical_dimension, duty, transmitter_id, receiver_id, location) 
+                            VALUES(@ID, @name, @type, @horizontal_beamwidth, @vertical_beamwidth, @polarization, @number_of_feed, @horizontal_dimension, @vertical_dimension, @duty, @transmitter_id, @receiver_id, @location)";
                     Guid key = Guid.NewGuid();
                     cmd.Parameters.AddWithValue("@ID", key);
+                    if (String.IsNullOrEmpty(antenna.name))
+                    {
+                        /*con.Open();
+                        String s = "";
+                        String def_name;
+                        //If the antenna name is null we give a default name that includes its transmitter name
+                        //According to my page routing system we create the receiver before transmitter, so if an antenna is a receiver antenna or receiver-transmitter type of antenna
+                        //-in default we can use receiver name otherwise we will use transmitter name. 
+                        //If page routing system changes this naming procedure will give an error.
+                        if (antenna.duty.ToLower().Equals("transmitter"))
+                            s = "Select name from Transmitter where ID = " + @id.ToString().ToUpper();
+                        else
+                            s = "Select name from Receiver where ID = " + @id.ToString().ToUpper();
+                        SqlCommand command = new SqlCommand(s, con);
+                        command.ExecuteNonQuery();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            def_name = reader["name"].ToString() + "'s antenna";
+                        }
+
+                        con.Close();*/
+                        cmd.Parameters.AddWithValue("@name", "receivers antenna");
+                    }
+                    else
+                        cmd.Parameters.AddWithValue("@name", antenna.name);
                     cmd.Parameters.AddWithValue("@type", antenna.type);
                     cmd.Parameters.AddWithValue("@horizontal_beamwidth", antenna.horizontal_beamwidth);
                     cmd.Parameters.AddWithValue("@vertical_beamwidth", antenna.vertical_beamwidth);

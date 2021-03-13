@@ -38,10 +38,11 @@ namespace ASPNETAOP.Controllers
                 {
                     cmd.Connection = con;
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = @"INSERT INTO Location(ID, country, city, geographic_latitude, geographic_longitude, airborne) 
-                            VALUES(@ID, @country, @city, @geographic_latitude,@geographic_longitude,@airborne)";
+                    cmd.CommandText = @"INSERT INTO Location(ID, name,country, city, geographic_latitude, geographic_longitude, airborne) 
+                            VALUES(@ID, @name, @country, @city, @geographic_latitude,@geographic_longitude,@airborne)";
                     Guid key = Guid.NewGuid();
                     cmd.Parameters.AddWithValue("@ID", key);
+                    cmd.Parameters.AddWithValue("@ID", loc.name);
                     cmd.Parameters.AddWithValue("@country", loc.country);
                     cmd.Parameters.AddWithValue("@city", loc.city);
                     cmd.Parameters.AddWithValue("@geographic_latitude", loc.geographic_latitude);

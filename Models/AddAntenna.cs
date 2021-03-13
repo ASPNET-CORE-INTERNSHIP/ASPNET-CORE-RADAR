@@ -8,6 +8,9 @@ namespace ASPNETAOP.Models
         [Key]
         public Guid ID { get; set; }
 
+        [Display(Name = "User Friendly Name")]
+        public String? name { get; set; }
+
         [Display(Name = "Type")]
         [Required(ErrorMessage = "Please enter the antenna type")]
         public String type { get; set; }
@@ -41,11 +44,9 @@ namespace ASPNETAOP.Models
         public String duty { get; set; }
 
         [Display(Name = "If this antenna is works for transmitting please enter Transmitter ID")]
-        [Required(ErrorMessage = "Please enter the antenna's Transmitter ID in xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx format")]
         public Guid? transmitter_id { get; set; }
 
         [Display(Name = "If this antenna is works for receiving please enter Receiver ID")]
-        [Required(ErrorMessage = "Please enter the antenna's Receiver ID in xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx format")]
         public Guid? receiver_id { get; set; }
 
         [Display(Name = "Please enter antenna's location")]

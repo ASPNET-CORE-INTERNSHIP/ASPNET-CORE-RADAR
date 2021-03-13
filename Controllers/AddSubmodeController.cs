@@ -37,10 +37,11 @@ namespace ASPNETAOP.Controllers
                 {
                     cmd.Connection = con;
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = @"INSERT INTO Radar(ID, mode_id, PW, PRI, min_frequency, max_frequency, scan_id) 
-                            VALUES(@ID, @mode_id, @PW, @PRI, @min_frequency, @max_frequency, @scan_id)";
+                    cmd.CommandText = @"INSERT INTO Radar(ID, name, mode_id, PW, PRI, min_frequency, max_frequency, scan_id) 
+                            VALUES(@ID, @name, @mode_id, @PW, @PRI, @min_frequency, @max_frequency, @scan_id)";
                     Guid key = Guid.NewGuid();
                     cmd.Parameters.AddWithValue("@ID", key);
+                    cmd.Parameters.AddWithValue("@name", sm.name);
                     cmd.Parameters.AddWithValue("@mode_id", sm.mode_id);
                     cmd.Parameters.AddWithValue("@PW", sm.PW);
                     cmd.Parameters.AddWithValue("@PRI", sm.PRI);

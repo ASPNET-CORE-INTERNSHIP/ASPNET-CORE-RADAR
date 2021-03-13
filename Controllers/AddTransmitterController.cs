@@ -36,10 +36,11 @@ namespace ASPNETAOP.Controllers
                 {
                     cmd.Connection = con;
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = @"INSERT INTO Radar(ID, oscillator_type, modulation_type, max_frequency, min_frequency, power) 
-                            VALUES(@ID, @oscillator_type, @modulation_type, @max_frequency, @min_frequency, @power)";
+                    cmd.CommandText = @"INSERT INTO Radar(ID, name, oscillator_type, modulation_type, max_frequency, min_frequency, power) 
+                            VALUES(@ID, @name, @oscillator_type, @modulation_type, @max_frequency, @min_frequency, @power)";
                     Guid key = Guid.NewGuid();
                     cmd.Parameters.AddWithValue("@ID", key);
+                    cmd.Parameters.AddWithValue("@name", transmitter.name);
                     cmd.Parameters.AddWithValue("@oscillator_type", transmitter.oscillator_type);
                     cmd.Parameters.AddWithValue("@modulation_type", transmitter.modulation_type);
                     cmd.Parameters.AddWithValue("@max_frequency", transmitter.max_frequency);

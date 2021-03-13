@@ -102,84 +102,93 @@ Program was written in C#, therefore, a special environment for the aforemention
 5. Execute the following queries to create necessary tables
 ````java
     CREATE TABLE Transmitter(
-	ID uniqueidentifier PRIMARY KEY NOT NULL,
-	modulation_type nvarchar(500),
-	max_frequency INT,
-	min_frequency INT,
-	power INT
+	    ID uniqueidentifier PRIMARY KEY NOT NULL,
+	    name nvarchar(100),
+	    oscillator_type nvarchar(500) NOT NULL,
+	    modulation_type nvarchar(500),
+	    max_frequency INT,
+	    min_frequency INT,
+	    power INT
     );
 
     CREATE TABLE Receiver(
-	ID uniqueidentifier PRIMARY KEY NOT NULL,
-	listening_time float NOT NULL,
-	rest_time float NOT NULL,
-	recovery_time float NOT NULL
+	    ID uniqueidentifier PRIMARY KEY NOT NULL,
+	    name nvarchar(100),
+	    listening_time float NOT NULL,
+	    rest_time float NOT NULL,
+	    recovery_time float NOT NULL
     );
 
     CREATE TABLE Antenna (
-	ID uniqueidentifier PRIMARY KEY NOT NULL,
-	type nvarchar(50) NOT NULL CHECK (type IN('parabolic', 'cassegrain', 'phased array')),
-	horizontal_beamwidth FLOAT,
-	vertical_beamwidth FLOAT,
-	polarization nvarchar(500) NOT NULL,
-	number_of_feed INT,
-	horizontal_dimension FLOAT,
-	vertical_dimension FLOAT,
-	duty nvarchar(500) NOT NULL,
-	transmitter_id uniqueidentifier FOREIGN KEY REFERENCES Transmitter(ID) ON DELETE CASCADE ON UPDATE CASCADE DEFAULT ('00000000-0000-0000-0000-000000000000'),
-	receiver_id uniqueidentifier FOREIGN KEY REFERENCES Receiver(ID) ON DELETE CASCADE ON UPDATE CASCADE DEFAULT ('00000000-0000-0000-0000-000000000000'),
-	location nvarchar(500)
+	    ID uniqueidentifier PRIMARY KEY NOT NULL,
+	    name nvarchar(100),
+	    type nvarchar(50) NOT NULL CHECK (type IN('parabolic', 'cassegrain', 'phased array')),
+	    horizontal_beamwidth FLOAT,
+	    vertical_beamwidth FLOAT,
+	    polarization nvarchar(500) NOT NULL,
+	    number_of_feed INT,
+	    horizontal_dimension FLOAT,
+	    vertical_dimension FLOAT,
+	    duty nvarchar(500) NOT NULL,
+	    transmitter_id uniqueidentifier FOREIGN KEY REFERENCES Transmitter(ID) ON DELETE CASCADE ON UPDATE CASCADE DEFAULT ('00000000-0000-0000-0000-000000000000'),
+	    receiver_id uniqueidentifier FOREIGN KEY REFERENCES Receiver(ID) ON DELETE CASCADE ON UPDATE CASCADE DEFAULT ('00000000-0000-0000-0000-000000000000'),
+	    location nvarchar(500)
     );
 
     CREATE TABLE Scan(
-	ID uniqueidentifier PRIMARY KEY NOT NULL,
-	type nvarchar(500) NOT NULL,
-	main_aspect nvarchar(500) CHECK (main_aspect IN('north', 'west', 'south', 'east', 'changeable')),
-	scan_angle float,
-	scan_rate float,
-	hits_per_scan INT
+	    ID uniqueidentifier PRIMARY KEY NOT NULL,
+	    name nvarchar(500),
+	    type nvarchar(500) NOT NULL,
+	    main_aspect nvarchar(500) CHECK (main_aspect IN('north', 'west', 'south', 'east', 'changeable')),
+	    scan_angle float,
+	    scan_rate float,
+	    hits_per_scan INT
     );
 
     CREATE TABLE AntennaScan(
-	antenna_id uniqueidentifier FOREIGN KEY REFERENCES Antenna(ID) ON DELETE CASCADE ON UPDATE CASCADE,
-	scan_id uniqueidentifier FOREIGN KEY REFERENCES Scan(ID) ON DELETE CASCADE ON UPDATE CASCADE,
-	primary key (antenna_id, scan_id)
+	    antenna_id uniqueidentifier FOREIGN KEY REFERENCES Antenna(ID) ON DELETE CASCADE ON UPDATE CASCADE,
+	    scan_id uniqueidentifier FOREIGN KEY REFERENCES Scan(ID) ON DELETE CASCADE ON UPDATE CASCADE,
+	    primary key (antenna_id, scan_id)
     );
 
 
     CREATE TABLE Location(
-	ID uniqueidentifier PRIMARY KEY NOT NULL,
-	country nvarchar(500) NOT NULL,
-	city nvarchar(500) NOT NULL,
-	geographic_latitude nvarchar(500) NOT NULL,
-	geographic_longitude nvarchar(500) NOT NULL,
-	airborne nvarchar(500) DEFAULT 'Non-airborne radar'
+	    ID uniqueidentifier PRIMARY KEY NOT NULL,
+	    name nvarchar(500),
+	    country nvarchar(500) NOT NULL,
+	    city nvarchar(500) NOT NULL,
+	    geographic_latitude nvarchar(500) NOT NULL,
+	    geographic_longitude nvarchar(500) NOT NULL,
+	    airborne nvarchar(500) DEFAULT 'Non-airborne radar'
     );
 
-CREATE TABLE Radar(
-	ID uniqueidentifier PRIMARY KEY NOT NULL,
-	system nvarchar(500) NOT NULL CHECK (system IN('early warning', 'missile guidance', 'target tracking', 'target acquisition', 'airborne intercept', 'fire control', 'surface search', 'battlefield surveillance', 'air mapping', 'countermortar', 'ground surveillance', 'man portable' )),
-	configuration nvarchar(500) NOT NULL CHECK (configuration IN('bistatic', 'continious wave', 'doppler', 'fm-cw', 'monopulse', 'passive', 'planar array', 'pulse doppler')),
-	transmitter_id uniqueidentifier FOREIGN KEY REFERENCES Transmitter(ID) ON DELETE CASCADE ON UPDATE CASCADE,
-	receiver_id uniqueidentifier FOREIGN KEY REFERENCES Receiver(ID) ON DELETE CASCADE ON UPDATE CASCADE,
-	location_id uniqueidentifier FOREIGN KEY REFERENCES Location(ID) ON DELETE CASCADE ON UPDATE CASCADE
+    CREATE TABLE Radar(
+	    ID uniqueidentifier PRIMARY KEY NOT NULL,
+	    name nvarchar(500),
+	    system nvarchar(500) NOT NULL CHECK (system IN('early warning', 'missile guidance', 'target tracking', 'target acquisition', 'airborne intercept', 'fire control', 'surface search', 'battlefield surveillance', 'air mapping', 'countermortar', 'ground surveillance', 'man portable' )),
+	    configuration nvarchar(500) NOT NULL CHECK (configuration IN('bistatic', 'continious wave', 'doppler', 'fm-cw', 'monopulse', 'passive', 'planar array', 'pulse doppler')),
+	    transmitter_id uniqueidentifier FOREIGN KEY REFERENCES Transmitter(ID) ON DELETE CASCADE ON UPDATE CASCADE,
+	    receiver_id uniqueidentifier FOREIGN KEY REFERENCES Receiver(ID) ON DELETE CASCADE ON UPDATE CASCADE,
+	    location_id uniqueidentifier FOREIGN KEY REFERENCES Location(ID) ON DELETE CASCADE ON UPDATE CASCADE
     );
 
     CREATE TABLE Mode(
-	ID uniqueidentifier PRIMARY KEY NOT NULL,
-	name nvarchar(500),
-	radar_id uniqueidentifier FOREIGN KEY REFERENCES Radar(ID) ON DELETE CASCADE ON UPDATE CASCADE
+	    ID uniqueidentifier PRIMARY KEY NOT NULL,
+	    name nvarchar(500),
+	    radar_id uniqueidentifier FOREIGN KEY REFERENCES Radar(ID) ON DELETE CASCADE ON UPDATE CASCADE
     );
 
     CREATE TABLE Submode(
-	ID uniqueidentifier PRIMARY KEY NOT NULL,
-	mode_id uniqueidentifier FOREIGN KEY REFERENCES Mode(ID) ON DELETE CASCADE ON UPDATE CASCADE,
-	PW float,
-	PRI float,
-	min_frequency INT,
-	max_frequency INT,
-	scan_id uniqueidentifier FOREIGN KEY REFERENCES Scan(ID) ON DELETE CASCADE ON UPDATE CASCADE
+	    ID uniqueidentifier PRIMARY KEY NOT NULL,
+	    name nvarchar(100),
+	    mode_id uniqueidentifier FOREIGN KEY REFERENCES Mode(ID) ON DELETE CASCADE ON UPDATE CASCADE,
+	    PW float,
+	    PRI float,
+	    min_frequency INT,
+	    max_frequency INT,
+	    scan_id uniqueidentifier FOREIGN KEY REFERENCES Scan(ID) ON DELETE CASCADE ON UPDATE CASCADE
     );
+
     
 ````
 6. Select "Add Connection" after right clicking on "Data Connections" in "Server Explorer" from the view panel of the Visual Studio 

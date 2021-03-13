@@ -11,6 +11,9 @@ namespace ASPNETAOP.Models
         [Key]
         public Guid ID { get; set; }
 
+        [Display(Name = "User Friendly Name")]
+        public String? name { get; set; }
+
         [Display(Name = "Mode ID")]
         [Required(ErrorMessage = "Please enter the Mode ID")]
         public Guid mode_id { get; set; }

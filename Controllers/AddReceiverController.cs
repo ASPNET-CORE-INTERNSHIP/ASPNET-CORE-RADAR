@@ -36,9 +36,10 @@ namespace ASPNETAOP.Controllers
                 {
                     cmd.Connection = con;
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = @"INSERT INTO Receiver(ID, listening_time, rest_time, recovery_time) 
-                            VALUES(@ID, @listening_time, @rest_time, @recovery_time)";
+                    cmd.CommandText = @"INSERT INTO Receiver(ID, name, listening_time, rest_time, recovery_time) 
+                            VALUES(@ID, @name, @listening_time, @rest_time, @recovery_time)";
                     cmd.Parameters.AddWithValue("@ID", key);
+                    cmd.Parameters.AddWithValue("@name", receiver.name);
                     cmd.Parameters.AddWithValue("@listening_time", receiver.listening_time);
                     cmd.Parameters.AddWithValue("@rest_time", receiver.rest_time);
                     cmd.Parameters.AddWithValue("@recovery_time", receiver.recovery_time);

@@ -36,10 +36,11 @@ namespace ASPNETAOP.Controllers
                 {
                     cmd.Connection = con;
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = @"INSERT INTO Radar(ID, type, main_aspect, scan_angle, scan_rate, hits_per_scan) 
-                            VALUES(@ID, @type, @main_aspect, @scan_angle, @scan_rate, @hits_per_scan)";
+                    cmd.CommandText = @"INSERT INTO Radar(ID, name, type, main_aspect, scan_angle, scan_rate, hits_per_scan) 
+                            VALUES(@ID, @name, @type, @main_aspect, @scan_angle, @scan_rate, @hits_per_scan)";
                     Guid key = Guid.NewGuid();
                     cmd.Parameters.AddWithValue("@ID", key);
+                    cmd.Parameters.AddWithValue("@name", scan.name);
                     cmd.Parameters.AddWithValue("@type", scan.type);
                     cmd.Parameters.AddWithValue("@main_aspect", scan.main_aspect);
                     cmd.Parameters.AddWithValue("@scan_angle", scan.scan_angle);

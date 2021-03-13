@@ -12,6 +12,9 @@ namespace ASPNETAOP.Models
         [Key]
         public Guid ID { get; set; }
 
+        [Display(Name = "User Friendly Name")]
+        public String? name { get; set; }
+
         [Display(Name = "System")]
         [Required(ErrorMessage = "Please enter the radar's system")]
         public String system { get; set; }
