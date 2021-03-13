@@ -75,7 +75,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Turn back</a>
+    <input type="button" title="Next" value="Next" onclick="location.href='@Url.Action("GoToTransmitter", "AddAntenna", new { id = @TempData["ReceiverID"] })'" />
 </div>
 
 @section Scripts {

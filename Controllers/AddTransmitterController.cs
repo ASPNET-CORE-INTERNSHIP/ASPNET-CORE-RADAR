@@ -11,7 +11,8 @@ using System.Threading.Tasks;
 namespace ASPNETAOP.Controllers
 {
     public class AddTransmitterController : Controller
-    {//We need configuration for calling db.
+    {
+        //We need configuration for calling db.
         private IConfiguration _configuration;
         public AddTransmitterController(IConfiguration Configuration) { _configuration = Configuration; }
 
@@ -26,9 +27,9 @@ namespace ASPNETAOP.Controllers
             return View();
         }
 
-
+        //id represents the receiver id so when it comes to create a radar we will use this value.
         [HttpPost]
-        public IActionResult NewTrasmitter(AddTransmitter transmitter)
+        public IActionResult NewTrasmitter(AddTransmitter transmitter, Guid? id)
         {
             using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
             {
@@ -36,17 +37,15 @@ namespace ASPNETAOP.Controllers
                 {
                     cmd.Connection = con;
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = @"INSERT INTO Radar(ID, name, oscillator_type, modulation_type, max_frequency, min_frequency, power) 
-                            VALUES(@ID, @name, @oscillator_type, @modulation_type, @max_frequency, @min_frequency, @power)";
+                    cmd.CommandText = @"INSERT INTO Transmitter(ID, name, modulation_type, max_frequency, min_frequency, power) 
+                            VALUES(@ID, @name, @modulation_type, @max_frequency, @min_frequency, @power)";
                     Guid key = Guid.NewGuid();
                     cmd.Parameters.AddWithValue("@ID", key);
                     cmd.Parameters.AddWithValue("@name", transmitter.name);
-                    cmd.Parameters.AddWithValue("@oscillator_type", transmitter.oscillator_type);
                     cmd.Parameters.AddWithValue("@modulation_type", transmitter.modulation_type);
                     cmd.Parameters.AddWithValue("@max_frequency", transmitter.max_frequency);
                     cmd.Parameters.AddWithValue("@min_frequency", transmitter.min_frequency);
                     cmd.Parameters.AddWithValue("@power", transmitter.power);
-
                     try
                     {
                         con.Open();
@@ -54,6 +53,7 @@ namespace ASPNETAOP.Controllers
                         if (i != 0)
                             ViewData["Message"] = "New Transmitter added";
                         con.Close();
+                        return RedirectToAction("NewAntenna", "AddAntenna", new { @id = key });
                     }
                     catch (SqlException e)
                     {
@@ -62,7 +62,6 @@ namespace ASPNETAOP.Controllers
 
                 }
             }
-
             return View(transmitter);
         }
     }

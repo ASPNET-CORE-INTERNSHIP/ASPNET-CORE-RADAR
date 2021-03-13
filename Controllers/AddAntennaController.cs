@@ -27,6 +27,7 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult NewAntenna(AddAntenna antenna, Guid id)
         {
+            TempData["ReceiverID"] = id;
             using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
             {
                 using (SqlCommand cmd = new SqlCommand())
@@ -108,6 +109,11 @@ namespace ASPNETAOP.Controllers
             }
 
             return View(antenna);
+        }
+
+        public IActionResult GoToTransmitter(Guid id)
+        {
+            return RedirectToAction("NewTransmitter", "AddTransmitter", new { @id = id });
         }
     }
 }

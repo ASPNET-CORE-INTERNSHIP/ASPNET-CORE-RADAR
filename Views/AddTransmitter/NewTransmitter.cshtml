@@ -4,7 +4,7 @@
     ViewData["Title"] = "NewTransmitter";
 }
 
-<h1>Add Receiver</h1>
+<h1>Add Transmitter</h1>
 
 <hr />
 <div class="row">
@@ -18,7 +18,7 @@
             </div>
             <label asp-for="modulation_type" class="control-label"></label>
             <select asp-for="modulation_type" class="form-select" aria-label="Default select example">
-                <option selected>Select the type of antenna</option>
+                <option selected>Select the modulation type</option>
                 <option value="AM-amplitude modulation">AM-amplitude modulation</option>
                 <option value="FM-frequency modulation">FM-frequency modulation</option>
                 <option value="FSK-frequency shift keying">FSK-frequency shift keying</option>
@@ -48,9 +48,6 @@
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Turn back</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

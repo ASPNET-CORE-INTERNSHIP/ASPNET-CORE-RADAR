@@ -14,10 +14,6 @@ namespace ASPNETAOP.Models
         [Display(Name = "User Friendly Name")]
         public String? name { get; set; }
 
-        [Display(Name = "Oscillator type")]
-        [Required(ErrorMessage = "Please enter the transmitter's oscillator type")]
-        public String oscillator_type { get; set; }
-
         [Display(Name = "Modulation type")]
         [Required(ErrorMessage = "Please enter the transmitter's modulation type")]
         public String modulation_type { get; set; }
