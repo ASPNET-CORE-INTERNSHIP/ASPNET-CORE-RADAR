@@ -29,20 +29,22 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult NewReceiver(AddReceiver receiver)
         {
+            Guid key = Guid.NewGuid();
             using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
             {
                 using (SqlCommand cmd = new SqlCommand())
                 {
                     cmd.Connection = con;
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = @"INSERT INTO Radar(ID, listening_time, rest_time, recovery_time) 
+                    cmd.CommandText = @"INSERT INTO Receiver(ID, listening_time, rest_time, recovery_time) 
                             VALUES(@ID, @listening_time, @rest_time, @recovery_time)";
-                    Guid key = Guid.NewGuid();
                     cmd.Parameters.AddWithValue("@ID", key);
                     cmd.Parameters.AddWithValue("@listening_time", receiver.listening_time);
                     cmd.Parameters.AddWithValue("@rest_time", receiver.rest_time);
                     cmd.Parameters.AddWithValue("@recovery_time", receiver.recovery_time);
 
+                    //give this receiver an ID so we can pass this receiver to Antenna
+                    receiver.ID = key;
                     try
                     {
                         con.Open();
@@ -50,6 +52,7 @@ namespace ASPNETAOP.Controllers
                         if (i != 0)
                             ViewData["Message"] = "New Receiver added";
                         con.Close();
+                        return RedirectToAction("NewAntenna", "AddAntenna", new { @id = key });
                     }
                     catch (SqlException e)
                     {
@@ -58,8 +61,8 @@ namespace ASPNETAOP.Controllers
 
                 }
             }
-
             return View(receiver);
+            
         }
     }
 }

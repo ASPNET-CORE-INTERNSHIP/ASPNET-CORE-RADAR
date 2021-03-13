@@ -25,8 +25,9 @@ namespace ASPNETAOP.Controllers
         }
 
         [HttpPost]
-        public IActionResult NewAntenna(AddAntenna antenna)
+        public IActionResult NewAntenna(AddAntenna antenna, Guid id, SqlCommand? cmd_transmitter_receiver)
         {
+            //Guid id = Guid.NewGuid();
             using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
             {
                 using (SqlCommand cmd = new SqlCommand())
@@ -45,8 +46,25 @@ namespace ASPNETAOP.Controllers
                     cmd.Parameters.AddWithValue("@horizontal_dimension", antenna.horizontal_dimension);
                     cmd.Parameters.AddWithValue("@vertical_dimension", antenna.vertical_dimension);
                     cmd.Parameters.AddWithValue("@duty", antenna.duty);
-                    cmd.Parameters.AddWithValue("@transmitter_id", antenna.transmitter_id);
-                    cmd.Parameters.AddWithValue("@receiver_id", antenna.receiver_id);
+                    //if the antenna is both receiver and transmitter antenna give it a receiver and a transmitter id
+                    if (antenna.duty.Equals("both"))
+                    {
+                        cmd.Parameters.AddWithValue("@transmitter_id", id);
+                        cmd.Parameters.AddWithValue("@receiver_id", id);
+                    }
+                    //if the antenna is a receiver antenna give it a receiver id
+                    else if (antenna.duty.Equals("receiver"))
+                    {
+                        cmd.Parameters.AddWithValue("@transmitter_id", DBNull.Value);
+                        cmd.Parameters.AddWithValue("@receiver_id", id);
+                    }
+                    //if the antenna is a transmitter antenna attach it a transmitter id
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@transmitter_id", id);
+                        cmd.Parameters.AddWithValue("@receiver_id", DBNull.Value);
+                    }
+                    
                     cmd.Parameters.AddWithValue("@location", antenna.location);
 
                     try
