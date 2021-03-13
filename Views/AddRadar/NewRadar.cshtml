@@ -4,7 +4,7 @@
     ViewData["Title"] = "NewRadar";
 }
 
-<h1>Add Scan</h1>
+<h1>Add Radar</h1>
 
 <hr />
 <div class="row">
@@ -19,7 +19,7 @@
                 </div>
                 <label asp-for="system" class="control-label"></label>
                 <select asp-for="system" class="form-select" aria-label="Default select example">
-                    <option selected>Select the aspect of antenna</option>
+                    <option selected>Select the system of this radar</option>
                     <option value="early warning">early warning</option>
                     <option value="missile guidance">missile guidance</option>
                     <option value="target tracking">target tracking</option>
@@ -38,7 +38,7 @@
             <div class="form-group">
                 <label asp-for="configuration" class="control-label"></label>
                 <select asp-for="configuration" class="form-select" aria-label="Default select example">
-                    <option selected>Select the aspect of antenna</option>
+                    <option selected>Select the configuration of this radar</option>
                     <option value="bistatic">bistatic</option>
                     <option value="continious wave">continious wavet</option>
                     <option value="doppler">doppler</option>

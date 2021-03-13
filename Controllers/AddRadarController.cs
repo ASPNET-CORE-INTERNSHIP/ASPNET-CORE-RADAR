@@ -29,9 +29,9 @@ namespace ASPNETAOP.Controllers
         }
 
         [HttpPost]
-        public IActionResult NewRadar(AddRadar radar, AddReceiver receiver)
+        public IActionResult NewRadar(AddRadar radar)
         {
-            using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
+            /*using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
             {
                 using (SqlCommand cmd = new SqlCommand())
                 {
@@ -64,7 +64,9 @@ namespace ASPNETAOP.Controllers
                 }
             }
 
-            return View(radar);
+            return View(radar);*/
+
+            return RedirectToAction("NewLocation", "AddLocation", new { @radar= radar});
         }
 
     }
