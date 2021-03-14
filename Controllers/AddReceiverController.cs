@@ -44,8 +44,6 @@ namespace ASPNETAOP.Controllers
                     cmd.Parameters.AddWithValue("@rest_time", receiver.rest_time);
                     cmd.Parameters.AddWithValue("@recovery_time", receiver.recovery_time);
 
-                    //give this receiver an ID so we can pass this receiver to Antenna
-                    receiver.ID = key;
                     try
                     {
                         con.Open();

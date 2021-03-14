@@ -65,8 +65,8 @@ namespace ASPNETAOP.Controllers
             }
 
             return View(radar);*/
-
-            return RedirectToAction("NewLocation", "AddLocation", new { @radar= radar});
+            //Console.WriteLine(radar.name+ " " + radar.configuration+" "+ "000000000000000000000000000000000000000000");
+            return RedirectToAction("NewLocation", "AddLocation", new { @radar_name = radar.name,  @radar_system = radar.system, @radar_configuration = radar.configuration }) ;
         }
 
     }
