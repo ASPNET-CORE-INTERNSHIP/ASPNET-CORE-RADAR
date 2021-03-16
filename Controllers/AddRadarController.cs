@@ -31,6 +31,9 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult NewRadar(AddRadar radar)
         {
+            //Because theese values should not be null we do not test them if at least one of them is null the program breaks
+            Guid receiver_id = (Guid)TempData["receiver_id"];
+            Guid transmitter_id = (Guid)TempData["transmitter_id"];
             /*using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
             {
                 using (SqlCommand cmd = new SqlCommand())

@@ -29,7 +29,33 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult NewTransmitter(AddTransmitter transmitter)
         {
+            Console.WriteLine("newTransmitter***********************************");
+            Guid? receiver_id = null;
+            String? AntennaDuty = null;
+            TempData["newProgram"] = "no";
+            if (TempData.ContainsKey("receiver_id"))
+            {
+                receiver_id = (Guid)TempData["receiver_id"];
+                Console.WriteLine(receiver_id + " receiver_id hello its transmitter***********************************");
+                //tempdata that we redirect to antenna controller again or pass the radar controller
+                TempData["receiver_id"] = receiver_id;
+                //tempdata that we may direct it to antenna view if the receiver has its own antenna(s)
+                TempData["ReceiverID"] = receiver_id;
+            }
+            if (TempData.ContainsKey("AntennaDuty"))
+            {
+                AntennaDuty = TempData["AntennaDuty"] as string;
+            }
             Guid key = Guid.NewGuid();
+
+            //tempdata that we direct to antenna controller or pass the radar directly
+            TempData["transmitter_id"] = key;
+            Console.WriteLine(key + " key of transmitter***********************************");
+
+            //tempdata that we direct to antenna view so we can handle the issue that users should not select receiver duty for a transmitter antenna
+            //Also manage the next button to direct to antenna controller or direct to radar controller
+            TempData["TransmitterID"] = key;
+
             using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
             {
                 using (SqlCommand cmd = new SqlCommand())
@@ -52,7 +78,15 @@ namespace ASPNETAOP.Controllers
                         if (i != 0)
                             ViewData["Message"] = "New Transmitter added";
                         con.Close();
-                        return RedirectToAction("NewAntenna", "AddAntenna", new { @id = key });
+                        //if the duty of antenna is both receiver and transmitter we do not need to add new antenna for transmitter and directly go to radar.
+                        if (AntennaDuty.ToString().Equals("both"))
+                        {
+                            return RedirectToAction("NewRadar", "AddRadar");
+                        }
+                        else
+                        {
+                            return RedirectToAction("NewAntenna", "AddAntenna");
+                        }
                     }
                     catch (SqlException e)
                     {

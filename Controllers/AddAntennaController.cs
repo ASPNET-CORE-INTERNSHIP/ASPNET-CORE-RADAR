@@ -25,9 +25,39 @@ namespace ASPNETAOP.Controllers
         }
 
         [HttpPost]
-        public IActionResult NewAntenna(AddAntenna antenna, Guid id)
+        public IActionResult NewAntenna(AddAntenna antenna)
         {
-            TempData["ReceiverID"] = id;
+            Console.WriteLine("newAntenna***********************************");
+            String isNewProgram = TempData["newProgram"] as string;
+            Guid? transmitter_id = null;
+            Guid? receiver_id = null;
+            if (TempData.ContainsKey("receiver_id"))
+            {
+                //this value comes from receiver controller
+                receiver_id = (Guid)TempData["receiver_id"];
+                Console.WriteLine(receiver_id + " receiver_id from controller***********************************");
+                //this receiver id should go to transmitter so we can carry it up to radar or go back
+                //to there if we add more than one antenna to a receiver
+                TempData["receiver_id"] = receiver_id;
+                //Anddd this is for antenna view. Because the receiver can have more than one antenna and we set a 
+                //control structure to duty select are of antenna view to prevent users to select wrong duty 
+                //(ex when receiver directs user to antenna page users cannot select transmitter duty)
+                //So we should send receiver id to antenna view when we add any type of antenna (again and again)
+                TempData["ReceiverID"] = receiver_id;
+                TempData["newProgram"] = "yes";
+            }
+            if (TempData.ContainsKey("transmitter_id") && isNewProgram.Equals("no"))
+            {
+                //this value comes from transmitter controller and EVEN THE CONTROLLER WHICH WE USE BEFORE WE EXECUTE CURRENT!!!!
+                transmitter_id = (Guid)TempData["transmitter_id"];
+                Console.WriteLine(transmitter_id + " transmitter_id to view***********************************");
+                TempData["transmitter_id"] = transmitter_id;
+                //Because the transmitter may have more than one antenna and we have a control if-else structure in antenna view
+                //we should send transmitter id to antenna view to prevent users wrong duty selection
+                TempData["TransmitterID"] = transmitter_id;
+                TempData["newProgram"] = "no";
+            }
+
             using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
             {
                 using (SqlCommand cmd = new SqlCommand())
@@ -57,7 +87,6 @@ namespace ASPNETAOP.Controllers
                         {
                             def_name = reader["name"].ToString() + "'s antenna";
                         }
-
                         con.Close();*/
                         cmd.Parameters.AddWithValue("@name", "receivers antenna");
                     }
@@ -71,25 +100,29 @@ namespace ASPNETAOP.Controllers
                     cmd.Parameters.AddWithValue("@horizontal_dimension", antenna.horizontal_dimension);
                     cmd.Parameters.AddWithValue("@vertical_dimension", antenna.vertical_dimension);
                     cmd.Parameters.AddWithValue("@duty", antenna.duty);
+
+                    //tempdata that we send it to receiver. With this value we can manage not to add redundant transmitter antenna if the antenna duty is 'both (receiver and transmitter)' 
+                    TempData["AntennaDuty"] = antenna.duty;
+
                     //if the antenna is both receiver and transmitter antenna give it a receiver and a transmitter id
                     if (antenna.duty.Equals("both"))
                     {
-                        cmd.Parameters.AddWithValue("@transmitter_id", id);
-                        cmd.Parameters.AddWithValue("@receiver_id", id);
+                        cmd.Parameters.AddWithValue("@transmitter_id", receiver_id);
+                        cmd.Parameters.AddWithValue("@receiver_id", receiver_id);
                     }
                     //if the antenna is a receiver antenna give it a receiver id
                     else if (antenna.duty.Equals("receiver"))
                     {
                         cmd.Parameters.AddWithValue("@transmitter_id", DBNull.Value);
-                        cmd.Parameters.AddWithValue("@receiver_id", id);
+                        cmd.Parameters.AddWithValue("@receiver_id", receiver_id);
                     }
                     //if the antenna is a transmitter antenna attach it a transmitter id
                     else
                     {
-                        cmd.Parameters.AddWithValue("@transmitter_id", id);
+                        cmd.Parameters.AddWithValue("@transmitter_id", transmitter_id);
                         cmd.Parameters.AddWithValue("@receiver_id", DBNull.Value);
                     }
-                    
+
                     cmd.Parameters.AddWithValue("@location", antenna.location);
 
                     try
@@ -111,9 +144,22 @@ namespace ASPNETAOP.Controllers
             return View(antenna);
         }
 
-        public IActionResult GoToTransmitter(Guid id)
+        public IActionResult GoToTransmitter(Guid receiver_id, String antenna_duty)
         {
-            return RedirectToAction("NewTransmitter", "AddTransmitter", new { @id = id });
+            TempData["ReceiverID"] = receiver_id; //id represents receiver id
+            TempData["AntennaDuty"] = antenna_duty;
+            Console.WriteLine(receiver_id + " receiver_id to transmitter!!***********************************");
+            Console.WriteLine(antenna_duty + " duty to transmitter!!***********************************");
+            return RedirectToAction("NewTransmitter", "AddTransmitter");
+        }
+
+        public IActionResult GoToRadar(Guid receiver_id, Guid transmitter_id)
+        {
+            TempData["ReceiverID"] = receiver_id;
+            TempData["TransmitterID"] = transmitter_id;
+            Console.WriteLine(receiver_id + " receiver_id to radar***********************************");
+            Console.WriteLine(transmitter_id + "transmitter_id to radar***********************************");
+            return RedirectToAction("NewRadar", "AddRadar");
         }
     }
 }

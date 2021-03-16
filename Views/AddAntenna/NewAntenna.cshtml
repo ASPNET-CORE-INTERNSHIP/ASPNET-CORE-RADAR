@@ -9,6 +9,8 @@
 <hr />
 <div class="row">
     <div class="col-md-9">
+        @{ var receiver_id = @TempData["ReceiverID"]; }
+        @{ var transmitter_id = @TempData["TransmitterID"]; }
         <form asp-action="NewAntenna">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -57,8 +59,20 @@
                 <span asp-validation-for="vertical_dimension" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <h1>@receiver_id</h1>
+                <h1>@transmitter_id</h1>
                 <label asp-for="duty" class="control-label"></label>
-                <input asp-for="duty" class="form-control" type="text" placeholder="Ex: receiver, transmitter, both">
+                <select asp-for="duty" class="form-select" aria-label="Default select example">
+                    @if (transmitter_id == null)
+                    {
+                        <option selected>receiver</option>
+                    }
+                    else if (transmitter_id != null)
+                            {
+                        <option selected>transmitter</option>
+                    }
+                    <option value="both">both</option>
+                </select>
                 <span asp-validation-for="duty" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -75,7 +89,14 @@
 </div>
 
 <div>
-    <input type="button" title="Next" value="Next" onclick="location.href='@Url.Action("GoToTransmitter", "AddAntenna", new { id = @TempData["ReceiverID"] })'" />
+    @if (transmitter_id != null)
+    {
+        <input type="button" title="Next" value="Next" onclick="location.href='@Url.Action("GoToRadar", "AddAntenna", new { receiver_id = receiver_id, transmitter_id = transmitter_id })'" />
+    }
+    else
+    {
+        <input type="button" title="Text" value="Text" onclick="location.href='@Url.Action("GoToTransmitter", "AddAntenna", new { receiver_id = receiver_id, antenna_duty = @TempData["AntennaDuty"] })'" />
+    }
 </div>
 
 @section Scripts {
