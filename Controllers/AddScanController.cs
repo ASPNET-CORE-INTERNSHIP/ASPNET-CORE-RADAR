@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,39 +29,98 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult NewScan(AddScan scan)
         {
-            using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
+
+            if (TempData.ContainsKey("radar_id") && TempData.ContainsKey("mode_id"))
             {
-                using (SqlCommand cmd = new SqlCommand())
+                Guid mode_id = (Guid)TempData["mode_id"];
+
+                Guid radar_id = (Guid)TempData["radar_id"];
+
+                String name = TempData["name"] as String;
+
+                float PW = (float)TempData["PW"];
+
+                float PRI = (float)TempData["RI"];
+
+                int min_frequency = (int)TempData["min_frequency"];
+
+                int max_frequency = (int)TempData["max_frequency"];
+
+                TempData.Remove("name");
+                TempData.Remove("PW");
+                TempData.Remove("PRI");
+                TempData.Remove("min_frequency");
+                TempData.Remove("max_frequency");
+                Console.WriteLine(name + " " + PW + " " + PRI + "-------------------------------------");
+                Console.WriteLine(mode_id + " /---0_0---/ " + radar_id);
+
+                using (SqlConnection connection = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
                 {
-                    cmd.Connection = con;
-                    cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = @"INSERT INTO Radar(ID, name, type, main_aspect, scan_angle, scan_rate, hits_per_scan) 
-                            VALUES(@ID, @name, @type, @main_aspect, @scan_angle, @scan_rate, @hits_per_scan)";
-                    Guid key = Guid.NewGuid();
-                    cmd.Parameters.AddWithValue("@ID", key);
-                    cmd.Parameters.AddWithValue("@name", scan.name);
-                    cmd.Parameters.AddWithValue("@type", scan.type);
-                    cmd.Parameters.AddWithValue("@main_aspect", scan.main_aspect);
-                    cmd.Parameters.AddWithValue("@scan_angle", scan.scan_angle);
-                    cmd.Parameters.AddWithValue("@scan_rate", scan.scan_rate);
-                    cmd.Parameters.AddWithValue("@hits_per_scan", scan.hits_per_scan);
+                    connection.Open();
+
+                    SqlCommand command = connection.CreateCommand();
+                    SqlTransaction transaction;
+
+                    // Start a local transaction.
+                    transaction = connection.BeginTransaction("SampleTransaction");
+
+                    // Must assign both transaction object and connection
+                    // to Command object for a pending local transaction
+                    command.Connection = connection;
+                    command.Transaction = transaction;
 
                     try
                     {
-                        con.Open();
-                        int i = cmd.ExecuteNonQuery();
-                        if (i != 0)
-                            ViewData["Message"] = "New scan added";
-                        con.Close();
-                    }
-                    catch (SqlException e)
-                    {
-                        ViewData["Message"] = e.Message.ToString() + " Error";
-                    }
+                        command.CommandText = @"INSERT INTO Scan(ID, name, type, main_aspect, scan_angle, scan_rate, hits_per_scan) 
+                            VALUES(@ID, @name, @type, @main_aspect, @scan_angle, @scan_rate, @hits_per_scan)";
+                        Guid key = Guid.NewGuid();
+                        command.Parameters.AddWithValue("@ID", key);
+                        command.Parameters.AddWithValue("@name", scan.name);
+                        command.Parameters.AddWithValue("@type", scan.type);
+                        command.Parameters.AddWithValue("@main_aspect", scan.main_aspect);
+                        command.Parameters.AddWithValue("@scan_angle", scan.scan_angle);
+                        command.Parameters.AddWithValue("@scan_rate", scan.scan_rate);
+                        command.Parameters.AddWithValue("@hits_per_scan", scan.hits_per_scan);
+                        command.ExecuteNonQuery();
 
+                        command.CommandText = @"INSERT INTO Submode(ID, name, mode_id, PW, PRI, min_frequency, max_frequency, scan_id) 
+                            VALUES(@ID, @name, @mode_id, @PW, @PRI, @min_frequency, @max_frequency, @scan_id)";
+                        Guid key_submode = Guid.NewGuid();
+                        command.Parameters.AddWithValue("@ID", key_submode);
+                        command.Parameters.AddWithValue("@name", name);
+                        command.Parameters.AddWithValue("@mode_id", mode_id);
+                        command.Parameters.AddWithValue("@PW", PW);
+                        command.Parameters.AddWithValue("@PRI", PRI);
+                        command.Parameters.AddWithValue("@min_frequency", min_frequency);
+                        command.Parameters.AddWithValue("@max_frequency", max_frequency);
+                        command.Parameters.AddWithValue("@scan_id", key);
+                        command.ExecuteNonQuery();
+
+                        // Attempt to commit the transaction.
+                        transaction.Commit();
+                        Console.WriteLine("Both records are written to database.");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Commit Exception Type: {0}", ex.GetType());
+                        Console.WriteLine("  Message: {0}", ex.Message);
+
+                        // Attempt to roll back the transaction.
+                        try
+                        {
+                            transaction.Rollback();
+                        }
+                        catch (Exception ex2)
+                        {
+                            // This catch block will handle any errors that may have occurred
+                            // on the server that would cause the rollback to fail, such as
+                            // a closed connection.
+                            Console.WriteLine("Rollback Exception Type: {0}", ex2.GetType());
+                            Console.WriteLine("  Message: {0}", ex2.Message);
+                        }
+                    }
                 }
             }
-
             return View(scan);
         }
     }

@@ -37,6 +37,14 @@ namespace ASPNETAOP.Controllers
                 String radar_name = TempData["radar_name"] as String;
                 String radar_configuration = TempData["radar_config"] as String;
                 String radar_system = TempData["radar_sys"] as String;
+
+                //remove tempdatas that we do not use again.
+                TempData.Remove("radar_sys");
+                TempData.Remove("radar_config");
+                TempData.Remove("radar_name");
+                TempData.Remove("rec_id");
+                TempData.Remove("tra_id");
+
                 Console.WriteLine(receiver_id + " " + transmitter_id + " " + radar_name + "-------------------------------------");
                 Console.WriteLine(radar_system + " " + radar_configuration);
 

@@ -33,8 +33,23 @@ namespace ASPNETAOP.Controllers
         {
             Guid radar_id = (Guid)TempData["radar_id"];
 
-            //because a radar may have more than one modes we should get back the radar_id, after we add each mode and submode.
-            TempData["RadarID"] = radar_id;
+            Guid key = Guid.NewGuid(); //id for mode
+
+            if (TempData.ContainsKey("mode_id"))
+            {
+                Guid mode_id = (Guid)TempData["mode_id"];
+            }
+            else
+            {
+                TempData["mode_id"] = key;
+            }
+            
+            //removethe radar_id tempdata so we can use this name again.
+
+            //because a radar may have more than one modes we should get back the radar_id, after we add each submode's scan and antennas.
+            //this data goes submode, then scan. With this id we can connect scans with antennas.
+            //TempData["RadarID"] = radar_id; //just changed the temp data name to be more understandable.
+
             using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
             {
                 using (SqlCommand cmd = new SqlCommand())
@@ -43,7 +58,6 @@ namespace ASPNETAOP.Controllers
                     cmd.CommandType = CommandType.Text;
                     cmd.CommandText = @"INSERT INTO Mode(ID, name, radar_id) 
                             VALUES(@ID, @name, @radar_id)";
-                    Guid key = Guid.NewGuid();
                     cmd.Parameters.AddWithValue("@ID", key);
                     cmd.Parameters.AddWithValue("@name", mod.name);
                     cmd.Parameters.AddWithValue("@radar_id", radar_id);
@@ -55,7 +69,8 @@ namespace ASPNETAOP.Controllers
                         if (i != 0)
                             ViewData["Message"] = "New mode added for " + radar_id + " radar";
                         con.Close();
-                        //send it to 
+
+                        //send it to submode because submode needs mode_id
                         TempData["mode_id"] = key;
                         return RedirectToAction("NewSubmode", "AddSubmode");
                     }

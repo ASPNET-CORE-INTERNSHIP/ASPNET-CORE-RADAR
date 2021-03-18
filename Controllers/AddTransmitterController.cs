@@ -66,7 +66,7 @@ namespace ASPNETAOP.Controllers
                             VALUES(@ID, @name, @modulation_type, @max_frequency, @min_frequency, @power)";
                     cmd.Parameters.AddWithValue("@ID", key);
                     cmd.Parameters.AddWithValue("@name", transmitter.name);
-                    cmd.Parameters.AddWithValue("@modulation_type", transmitter.name);
+                    cmd.Parameters.AddWithValue("@modulation_type", transmitter.modulation_type);
                     cmd.Parameters.AddWithValue("@max_frequency", transmitter.max_frequency);
                     cmd.Parameters.AddWithValue("@min_frequency", transmitter.min_frequency);
                     cmd.Parameters.AddWithValue("@power", transmitter.power);
