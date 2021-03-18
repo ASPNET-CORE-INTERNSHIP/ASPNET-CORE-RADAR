@@ -28,7 +28,7 @@ namespace ASPNETAOP.Controllers
         public IActionResult NewAntenna(AddAntenna antenna)
         {
             Console.WriteLine("newAntenna***********************************");
-            String isNewProgram = TempData["newProgram"] as string;
+            String NewProgram = TempData["newProgram"] as string;
             Guid? transmitter_id = null;
             Guid? receiver_id = null;
             if (TempData.ContainsKey("receiver_id"))
@@ -46,7 +46,7 @@ namespace ASPNETAOP.Controllers
                 TempData["ReceiverID"] = receiver_id;
                 TempData["newProgram"] = "yes";
             }
-            if (TempData.ContainsKey("transmitter_id") && isNewProgram.Equals("no"))
+            if (TempData.ContainsKey("transmitter_id") && NewProgram.Equals("no"))
             {
                 //this value comes from transmitter controller and EVEN THE CONTROLLER WHICH WE USE BEFORE WE EXECUTE CURRENT!!!!
                 transmitter_id = (Guid)TempData["transmitter_id"];

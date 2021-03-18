@@ -31,6 +31,10 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult NewMode(AddMode mod)
         {
+            Guid radar_id = (Guid)TempData["radar_id"];
+
+            //because a radar may have more than one modes we should get back the radar_id, after we add each mode and submode.
+            TempData["RadarID"] = radar_id;
             using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
             {
                 using (SqlCommand cmd = new SqlCommand())
@@ -42,15 +46,18 @@ namespace ASPNETAOP.Controllers
                     Guid key = Guid.NewGuid();
                     cmd.Parameters.AddWithValue("@ID", key);
                     cmd.Parameters.AddWithValue("@name", mod.name);
-                    cmd.Parameters.AddWithValue("@radar_id", mod.radar_id);
+                    cmd.Parameters.AddWithValue("@radar_id", radar_id);
 
                     try
                     {
                         con.Open();
                         int i = cmd.ExecuteNonQuery();
                         if (i != 0)
-                            ViewData["Message"] = "New mode added for " + mod.radar_id + " radar";
+                            ViewData["Message"] = "New mode added for " + radar_id + " radar";
                         con.Close();
+                        //send it to 
+                        TempData["mode_id"] = key;
+                        return RedirectToAction("NewSubmode", "AddSubmode");
                     }
                     catch (SqlException e)
                     {
@@ -61,5 +68,6 @@ namespace ASPNETAOP.Controllers
             }
             return View(mod);
         }
+
     }
 }

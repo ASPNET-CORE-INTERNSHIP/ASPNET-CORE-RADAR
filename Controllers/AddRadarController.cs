@@ -31,45 +31,45 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult NewRadar(AddRadar radar)
         {
-            //Because theese values should not be null we do not test them if at least one of them is null the program breaks
-            Guid receiver_id = (Guid)TempData["receiver_id"];
-            Guid transmitter_id = (Guid)TempData["transmitter_id"];
-            /*using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
+            if (TempData.ContainsKey("ReceiverID") && TempData.ContainsKey("TransmitterID"))
             {
-                using (SqlCommand cmd = new SqlCommand())
-                {
-                    cmd.Connection = con;
-                    cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = @"INSERT INTO Radar(ID, name,system, configuration, receiver_id, transmitter_id, location_id) 
-                            VALUES(@ID, @name, @system, @configuration, @receiver_id, @transmitter_id, @location_id)";
-                    Guid key = Guid.NewGuid();
-                    cmd.Parameters.AddWithValue("@ID", key);
-                    cmd.Parameters.AddWithValue("@name", radar.name);
-                    cmd.Parameters.AddWithValue("@system", radar.system);
-                    cmd.Parameters.AddWithValue("@configuration", radar.configuration);
-                    cmd.Parameters.AddWithValue("@receiver_id", radar.receiver_id);
-                    cmd.Parameters.AddWithValue("@receiver_id", radar.transmitter_id);
-                    cmd.Parameters.AddWithValue("@location_id", radar.location_id);
-
-                    try
-                    {
-                        con.Open();
-                        int i = cmd.ExecuteNonQuery();
-                        if (i != 0)
-                            ViewData["Message"] = "New Radar added";
-                        con.Close();
-                    }
-                    catch (SqlException e)
-                    {
-                        ViewData["Message"] = e.Message.ToString() + " Error";
-                    }
-
-                }
+                Guid receiver_id = (Guid)TempData["ReceiverID"];
+                Guid transmitter_id = (Guid)TempData["TransmitterID"];
+                TempData["rec_id"] = receiver_id;
+                TempData["tra_id"] = transmitter_id;
+                Console.WriteLine(receiver_id + " " + transmitter_id + "----------------------------------");
+            }
+            else { 
+                //GO BACK
             }
 
-            return View(radar);*/
-            //Console.WriteLine(radar.name+ " " + radar.configuration+" "+ "000000000000000000000000000000000000000000");
-            return RedirectToAction("NewLocation", "AddLocation", new { @radar_name = radar.name,  @radar_system = radar.system, @radar_configuration = radar.configuration }) ;
+
+            //If the radar name is null we give a default name that specifies its number
+            if (String.IsNullOrEmpty(radar.name))
+            {
+                String def_name;
+                string stmt = "SELECT COUNT(*) FROM Radar";
+                int count = 0;
+
+                using (SqlConnection thisConnection = new SqlConnection("Data Source=DATASOURCE"))
+                {
+                    using (SqlCommand cmdCount = new SqlCommand(stmt, thisConnection))
+                    {
+                        thisConnection.Open();
+                        count = (int)cmdCount.ExecuteScalar();
+                    }
+                }
+                def_name = "Radar " + count;
+                TempData["radar_name"] = def_name;
+            }
+            else
+            {
+                TempData["radar_name"] = radar.name;
+            }
+
+            TempData["radar_config"] = radar.configuration;
+            TempData["radar_sys"] = radar.system;
+            return RedirectToAction("NewLocation", "AddLocation");
         }
 
     }

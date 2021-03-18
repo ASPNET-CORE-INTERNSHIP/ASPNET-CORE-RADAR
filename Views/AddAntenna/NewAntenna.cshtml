@@ -9,6 +9,8 @@
 <hr />
 <div class="row">
     <div class="col-md-9">
+        @{ String newProgram = @TempData["newProgram"] as String; }
+        @{ TempData["newProgram"] = newProgram; }
         @{ var receiver_id = @TempData["ReceiverID"]; }
         @{ var transmitter_id = @TempData["TransmitterID"]; }
         <form asp-action="NewAntenna">
@@ -45,7 +47,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="number_of_feed" class="control-label"></label>
-                <input asp-for="number_of_feed" class="form-control" />
+                <input asp-for="number_of_feed" class="form-control" type="number" placeholder="0" step="1" />
                 <span asp-validation-for="number_of_feed" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -59,16 +61,16 @@
                 <span asp-validation-for="vertical_dimension" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <h1>@receiver_id</h1>
-                <h1>@transmitter_id</h1>
+                <h5>@receiver_id</h5>
+                <h5>@transmitter_id</h5>
                 <label asp-for="duty" class="control-label"></label>
                 <select asp-for="duty" class="form-select" aria-label="Default select example">
-                    @if (transmitter_id == null)
+                    @if (transmitter_id == null || newProgram.Equals("yes"))
                     {
                         <option selected>receiver</option>
                     }
-                    else if (transmitter_id != null)
-                            {
+                    else if (transmitter_id != null && newProgram.Equals("no"))
+                    {
                         <option selected>transmitter</option>
                     }
                     <option value="both">both</option>
