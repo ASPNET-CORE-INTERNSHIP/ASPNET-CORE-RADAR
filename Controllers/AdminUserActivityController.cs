@@ -22,7 +22,7 @@ namespace ASPNETAOP.Controllers
         }
 
         [IsAuthenticated]
-        [IsAuthorized]
+        [IsAuthorized("45EADA4A-CFB8-46A9-8DDB-5A1ACCC89D2A")]
         public IActionResult UserActivity()
         {
             TempData["ResultMessage"] = "Admin";
@@ -32,7 +32,7 @@ namespace ASPNETAOP.Controllers
             var model = new List<AdminUserActivity>();
             using (SqlConnection sqlconn = new SqlConnection(connection))
             {
-                string sqlquery = "select AI.UserID, AI.Username, AI.Usermail, AR.Rolename, AcS.LoginDate, AcS.IsLoggedIn from AccountInfo AI, AccountSessions AcS, UserRoles UR, AccountRoles AR where AI.Usermail=AcS.Usermail AND UR.UserID=AI.UserID AND AR.Roleid=UR.Roleid;";
+                string sqlquery = "select AI.UserID, AI.Username, AI.Usermail, AR.Rolename, AcS.LoginDate, AcS.IsLoggedIn from AccountInfo AI, AccountSessions AcS, UserRoles UR, AccountRoles AR where AI.UserID=AcS.UserID AND UR.UserID=AI.UserID AND AR.Roleid=UR.Roleid;";
                 using (SqlCommand sqlcomm = new SqlCommand(sqlquery, sqlconn))
                 {
                     sqlconn.Open();
@@ -47,7 +47,7 @@ namespace ASPNETAOP.Controllers
                             user.Username = (string)reader["Username"];
                             user.Usermail = (string)reader["Usermail"];
                             user.Rolename = (string)reader["Rolename"];
-                            user.LoginDate = (string)reader["LoginDate"];
+                            user.LoginDate = (DateTime)reader["LoginDate"];
                             user.IsLoggedIn = (int)reader["IsLoggedIn"];
 
                             model.Add(user);

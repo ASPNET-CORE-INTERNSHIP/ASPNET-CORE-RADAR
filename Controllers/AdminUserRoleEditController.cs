@@ -25,7 +25,7 @@ namespace ASPNETAOP.Controllers
         }
 
         [IsAuthenticated]
-        [IsAuthorized]
+        [IsAuthorized("8CAD996A-39EA-4B04-AA60-8069C6A665E9")]
         public IActionResult UserEdit(AdminUserRoleEdit ur)
         {
             TempData["ResultMessage"] = "Admin";

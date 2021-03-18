@@ -14,9 +14,17 @@ namespace ASPNETAOP.Aspect
     [PSerializable]
     public sealed class IsAuthorizedAttribute : OnMethodBoundaryAspect
     {
+        private String GUID = "";
+        public IsAuthorizedAttribute(string GUID)
+        {
+            this.GUID = GUID;
+        }
+
         public override async void OnEntry(MethodExecutionArgs args)
         {
             long sessionId = Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
+
+            Console.WriteLine("GUID -> " + GUID);
 
             List<UserLoginItem> reservationList = new List<UserLoginItem>();
             using (var httpClient = new HttpClient())
@@ -35,6 +43,7 @@ namespace ASPNETAOP.Aspect
                     if (item.UserRole != 1) throw new UserPermissionNotEnoughException();
                 }
             }
+
         }
     }
 

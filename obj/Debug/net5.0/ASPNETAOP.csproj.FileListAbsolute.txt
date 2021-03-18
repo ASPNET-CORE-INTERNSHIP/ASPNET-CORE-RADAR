@@ -781,3 +781,4 @@ C:\Users\Cenk\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\ASPNETAOP.genrunti
 C:\Users\Cenk\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\PostSharp\postsharp.app.config
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Shared\done.cshtml.g.cs
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AddScan\NewScan.cshtml.g.cs
+C:\Users\Cenk\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Shared\done.cshtml.g.cs

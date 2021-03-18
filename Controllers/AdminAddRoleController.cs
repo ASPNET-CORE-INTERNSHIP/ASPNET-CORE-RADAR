@@ -26,7 +26,7 @@ namespace ASPNETAOP.Controllers
         }
 
         [IsAuthenticated]
-        [IsAuthorized]
+        [IsAuthorized("1371A9F7-25FC-4EDC-B82B-ADB3CCEE485B")]
         public IActionResult AddRole(AdminAddRole ur)
         {
             TempData["ResultMessage"] = "Admin";

@@ -22,7 +22,7 @@ namespace ASPNETAOP.Controllers
         }   
 
         [IsAuthenticated]
-        [IsAuthorized]
+        [IsAuthorized("CD3EC045-30FC-49C5-BF71-A1109D895FD4")]
         public IActionResult UserList()
         {
             TempData["ResultMessage"] = "Admin";

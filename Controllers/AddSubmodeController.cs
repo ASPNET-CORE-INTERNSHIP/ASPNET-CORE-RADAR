@@ -61,4 +61,4 @@ DELETE FROM Radar WHERE name = 'Friendly ';
 DELETE FROM Mode WHERE name ='Friendly ';
 DELETE FROM Submode WHERE PW<60;
 */
-        }
+}
