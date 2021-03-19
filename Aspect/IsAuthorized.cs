@@ -6,6 +6,7 @@ using System.Net.Http;
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Data.SqlClient;
 
 namespace ASPNETAOP.Aspect
 {
@@ -24,8 +25,6 @@ namespace ASPNETAOP.Aspect
         {
             long sessionId = Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
 
-            Console.WriteLine("GUID -> " + GUID);
-
             List<UserLoginItem> reservationList = new List<UserLoginItem>();
             using (var httpClient = new HttpClient())
             {
@@ -40,7 +39,41 @@ namespace ASPNETAOP.Aspect
             {
                 if (item.Id.Equals(sessionId)) 
                 {
-                    if (item.UserRole != 1) throw new UserPermissionNotEnoughException();
+                    String connection = "Server=DESKTOP-II1M7LK;Database=AccountDb;Trusted_Connection=True;MultipleActiveResultSets=true";
+
+                    bool isAllowed = false;
+                    
+                    using (SqlConnection sqlconn = new SqlConnection(connection))
+                    {
+                        string sqlquery = "SELECT RA.Roleallow, RD.Roledeny FROM RoleAllow RA, RoleDeny RD, UserRoles UR WHERE RA.Roleid = UR.Roleid AND RD.Roleid = UR.Roleid AND UR.UserID = '" + item.UserID + "'";
+                        using (SqlCommand sqlcomm = new SqlCommand(sqlquery, sqlconn))
+                        {
+                            sqlconn.Open();
+                            SqlDataReader reader = sqlcomm.ExecuteReader();
+
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    var user = new RolePermission();
+
+                                    String Roleallow = (string)reader["Roleallow"];
+                                    String Roledeny = (string)reader["Roledeny"];
+
+                                    Console.WriteLine("Allowed: " + Roleallow);
+                                    Console.WriteLine("Denied: " + Roledeny);
+
+                                    Console.WriteLine("GUID: " + GUID);
+
+                                    if (Roleallow.Equals(GUID)) isAllowed = true;
+                                    if (Roledeny.Equals(GUID)) throw new UserPermissionNotEnoughException();
+                                }
+                                reader.Close();
+                            }
+                        }
+                    }
+
+                    if (!isAllowed) throw new UserPermissionNotEnoughException();
                 }
             }
 

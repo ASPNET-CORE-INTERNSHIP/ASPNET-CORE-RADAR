@@ -61,11 +61,13 @@ namespace ASPNETAOP
                     {
                         await context.Response.WriteAsync("You have to be logged in<br><br>\r\n");
                     }
-                    else if (exceptionHandlerPathFeature?.Error is Aspect.UserPermissionNotEnoughException)
+                    
+                    if (exceptionHandlerPathFeature?.Error is Aspect.UserPermissionNotEnoughException)
                     {
                         await context.Response.WriteAsync("You don't have the necessary permission in<br><br>\r\n");
                     }
-                    else if (exceptionHandlerPathFeature?.Error is Aspect.UserSessionExpiredException)
+                    
+                    if (exceptionHandlerPathFeature?.Error is Aspect.UserSessionExpiredException)
                     {
                         await context.Response.WriteAsync("Session has expired in<br><br>\r\n");
                     }
