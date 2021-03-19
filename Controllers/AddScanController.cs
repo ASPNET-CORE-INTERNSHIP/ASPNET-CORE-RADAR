@@ -11,7 +11,6 @@ namespace ASPNETAOP.Controllers
 {
     public class AddScanController : Controller
     {
-        //We need configuration for calling db.
         private IConfiguration _configuration;
         public AddScanController(IConfiguration Configuration) { _configuration = Configuration; }
 
@@ -27,7 +26,7 @@ namespace ASPNETAOP.Controllers
         }
 
         [HttpPost]
-        public IActionResult NewScan(AddScan scan)
+        public IActionResult NewScan(AddScan scan, AddSubmode sm)
         {
 
             if (TempData.ContainsKey("radar_id") && TempData.ContainsKey("mode_id"))
@@ -36,22 +35,6 @@ namespace ASPNETAOP.Controllers
 
                 Guid radar_id = (Guid)TempData["radar_id"];
 
-                String name = TempData["name"] as String;
-
-                float PW = (float)TempData["PW"];
-
-                float PRI = (float)TempData["RI"];
-
-                int min_frequency = (int)TempData["min_frequency"];
-
-                int max_frequency = (int)TempData["max_frequency"];
-
-                TempData.Remove("name");
-                TempData.Remove("PW");
-                TempData.Remove("PRI");
-                TempData.Remove("min_frequency");
-                TempData.Remove("max_frequency");
-                Console.WriteLine(name + " " + PW + " " + PRI + "-------------------------------------");
                 Console.WriteLine(mode_id + " /---0_0---/ " + radar_id);
 
                 using (SqlConnection connection = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
@@ -84,15 +67,15 @@ namespace ASPNETAOP.Controllers
                         command.ExecuteNonQuery();
 
                         command.CommandText = @"INSERT INTO Submode(ID, name, mode_id, PW, PRI, min_frequency, max_frequency, scan_id) 
-                            VALUES(@ID, @name, @mode_id, @PW, @PRI, @min_frequency, @max_frequency, @scan_id)";
+                            VALUES(@id, @name_sm, @mode_id, @PW, @PRI, @min_frequency, @max_frequency, @scan_id)";
                         Guid key_submode = Guid.NewGuid();
-                        command.Parameters.AddWithValue("@ID", key_submode);
-                        command.Parameters.AddWithValue("@name", name);
+                        command.Parameters.AddWithValue("@id", key_submode);
+                        command.Parameters.AddWithValue("@name_sm", sm.name);
                         command.Parameters.AddWithValue("@mode_id", mode_id);
-                        command.Parameters.AddWithValue("@PW", PW);
-                        command.Parameters.AddWithValue("@PRI", PRI);
-                        command.Parameters.AddWithValue("@min_frequency", min_frequency);
-                        command.Parameters.AddWithValue("@max_frequency", max_frequency);
+                        command.Parameters.AddWithValue("@PW", sm.PW);
+                        command.Parameters.AddWithValue("@PRI", sm.PW);
+                        command.Parameters.AddWithValue("@min_frequency", sm.min_frequency);
+                        command.Parameters.AddWithValue("@max_frequency", sm.max_frequency);
                         command.Parameters.AddWithValue("@scan_id", key);
                         command.ExecuteNonQuery();
 

@@ -43,7 +43,11 @@ namespace ASPNETAOP.Controllers
                 TempData.Remove("radar_config");
                 TempData.Remove("radar_name");
                 TempData.Remove("rec_id");
+                TempData.Remove("receiver_id");
                 TempData.Remove("tra_id");
+                TempData.Remove("transmitter_id");
+                TempData.Remove("ReceiverID");
+                TempData.Remove("TransmitterID");
 
                 Console.WriteLine(receiver_id + " " + transmitter_id + " " + radar_name + "-------------------------------------");
                 Console.WriteLine(radar_system + " " + radar_configuration);

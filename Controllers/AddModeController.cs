@@ -44,12 +44,6 @@ namespace ASPNETAOP.Controllers
                 TempData["mode_id"] = key;
             }
             
-            //removethe radar_id tempdata so we can use this name again.
-
-            //because a radar may have more than one modes we should get back the radar_id, after we add each submode's scan and antennas.
-            //this data goes submode, then scan. With this id we can connect scans with antennas.
-            //TempData["RadarID"] = radar_id; //just changed the temp data name to be more understandable.
-
             using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
             {
                 using (SqlCommand cmd = new SqlCommand())
