@@ -29,6 +29,7 @@ namespace ASPNETAOP.Models
         public Guid ID { get; set; }
 
         [Display(Name = "User Friendly Name")]
+#nullable enable
         public String? name { get; set; }
 
         [Display(Name = "Mode ID")]

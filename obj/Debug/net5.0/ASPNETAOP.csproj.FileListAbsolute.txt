@@ -783,3 +783,4 @@ C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Shared\
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AddScan\NewScan.cshtml.g.cs
 C:\Users\Cenk\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Shared\done.cshtml.g.cs
 C:\Users\Cenk\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\ASPNETAOP.csprojAssemblyReference.cache
+C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AddAntennaScan\NewAntennaScan.cshtml.g.cs

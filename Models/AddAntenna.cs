@@ -9,6 +9,7 @@ namespace ASPNETAOP.Models
         public Guid ID { get; set; }
 
         [Display(Name = "User Friendly Name")]
+#nullable enable
         public String? name { get; set; }
 
         [Display(Name = "Type")]
@@ -28,7 +29,6 @@ namespace ASPNETAOP.Models
         public String polarization { get; set; }
 
         [Display(Name = "Number Of Feed")]
-        [Required(ErrorMessage = "Please enter the antenna's number of feed")]
         public int number_of_feed { get; set; }
 
         [Display(Name = "Horizontal Dimension in xxx.xx format")]

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,14 +29,63 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult NewScan(AddScan scan, AddSubmode sm)
         {
-
             if (TempData.ContainsKey("radar_id") && TempData.ContainsKey("mode_id"))
             {
                 Guid mode_id = (Guid)TempData["mode_id"];
 
                 Guid radar_id = (Guid)TempData["radar_id"];
 
-                Console.WriteLine(mode_id + " /---0_0---/ " + radar_id);
+                Guid receiver_id = (Guid)TempData["rec_id"];
+
+                Guid transmitter_id = (Guid)TempData["tra_id"];
+
+                Console.WriteLine(mode_id + " /---0_0---/ " + radar_id + " /---0_0---/ " + receiver_id + " /---0_0---/ " +transmitter_id);
+
+                //generate a list for antennas to display in view
+                //so the user can select antennas which empolys current scan type
+                List<AddAntenna> AntennaList = new List<AddAntenna>();
+
+                //view'e taşı
+                using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = con;
+                        cmd.CommandType = CommandType.Text;
+                        cmd.CommandText = @"SELECT * FROM Antenna WHERE receiver_id = @receiver_id or transmitter_id = @transmitter_id";
+                        cmd.Parameters.AddWithValue("@receiver_id", receiver_id);
+                        cmd.Parameters.AddWithValue("@transmitter_id", transmitter_id);
+
+                        try
+                        {
+                            con.Open();
+                            SqlDataReader reader = cmd.ExecuteReader();
+                            while (reader.Read())
+                            {
+                                AddAntenna antenna = new AddAntenna();
+                                antenna.ID = reader.GetGuid("ID");
+                                antenna.name = reader.GetString("name");
+                                antenna.type = reader.GetString("type");
+                                antenna.horizontal_beamwidth = (float)reader.GetDouble("horizontal_beamwidth");
+                                antenna.vertical_beamwidth = (float)reader.GetDouble("vertical_beamwidth");
+                                antenna.polarization = reader.GetString("polarization");
+                                antenna.number_of_feed = reader.GetInt32("number_of_feed");
+                                antenna.horizontal_dimension = (float)reader.GetDouble("horizontal_dimension");
+                                antenna.vertical_dimension = (float)reader.GetDouble("vertical_dimension");
+                                antenna.duty = reader.GetString("duty");
+                                antenna.location = reader.GetString("location");
+                                AntennaList.Add(antenna);
+                            }
+                            //TempData["Antennas"] = AntennaList;
+                            con.Close();
+                        }
+                        catch (SqlException e)
+                        {
+                            ViewData["Message"] = e.Message.ToString() + " Error";
+                        }
+
+                    }
+                }
 
                 using (SqlConnection connection = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
                 {
@@ -82,6 +132,7 @@ namespace ASPNETAOP.Controllers
                         // Attempt to commit the transaction.
                         transaction.Commit();
                         Console.WriteLine("Both records are written to database.");
+                        //return RedirectToAction("AddAntennaScans", "AntennaScans", new { id = key});
                     }
                     catch (Exception ex)
                     {
@@ -106,5 +157,6 @@ namespace ASPNETAOP.Controllers
             }
             return View(scan);
         }
+
     }
 }

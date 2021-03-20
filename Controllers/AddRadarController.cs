@@ -34,7 +34,7 @@ namespace ASPNETAOP.Controllers
             //IF you want to start addaing radar and do not want to add specific transmitter or receiver use below code and  comment other
             //For testing routing between scan and submode i use this code and comment the code which is 
             //not commented for now :\
-            Guid receiver_id = Guid.NewGuid();
+            /*Guid receiver_id = Guid.NewGuid();
             using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
             {
                 using (SqlCommand cmd = new SqlCommand())
@@ -91,8 +91,8 @@ namespace ASPNETAOP.Controllers
             TempData["radar_config"] = radar.configuration;
             TempData["radar_sys"] = radar.system;
             return RedirectToAction("NewLocation", "AddLocation");
-
-            /*if (TempData.ContainsKey("ReceiverID") && TempData.ContainsKey("TransmitterID"))
+            */
+            if (TempData.ContainsKey("ReceiverID") && TempData.ContainsKey("TransmitterID"))
             {
                 Guid receiver_id = (Guid)TempData["ReceiverID"];
                 Guid transmitter_id = (Guid)TempData["TransmitterID"];
@@ -134,7 +134,7 @@ namespace ASPNETAOP.Controllers
                     return RedirectToAction("NewReceiver", "AddReceiver");
                 else
                     return RedirectToAction("NewTransmitter", "AddTransmitter");
-            }*/
+            }
 
         }
 

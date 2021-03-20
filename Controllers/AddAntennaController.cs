@@ -27,7 +27,6 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult NewAntenna(AddAntenna antenna)
         {
-            Console.WriteLine("newAntenna***********************************");
             String NewProgram = TempData["newProgram"] as string;
             Guid? transmitter_id = null;
             Guid? receiver_id = null;
@@ -35,7 +34,6 @@ namespace ASPNETAOP.Controllers
             {
                 //this value comes from receiver controller
                 receiver_id = (Guid)TempData["receiver_id"];
-                Console.WriteLine(receiver_id + " receiver_id from controller***********************************");
                 //this receiver id should go to transmitter so we can carry it up to radar or go back
                 //to there if we add more than one antenna to a receiver
                 TempData["receiver_id"] = receiver_id;
@@ -50,7 +48,6 @@ namespace ASPNETAOP.Controllers
             {
                 //this value comes from transmitter controller and EVEN THE CONTROLLER WHICH WE USE BEFORE WE EXECUTE CURRENT!!!!
                 transmitter_id = (Guid)TempData["transmitter_id"];
-                Console.WriteLine(transmitter_id + " transmitter_id to view***********************************");
                 TempData["transmitter_id"] = transmitter_id;
                 //Because the transmitter may have more than one antenna and we have a control if-else structure in antenna view
                 //we should send transmitter id to antenna view to prevent users wrong duty selection
@@ -96,7 +93,10 @@ namespace ASPNETAOP.Controllers
                     cmd.Parameters.AddWithValue("@horizontal_beamwidth", antenna.horizontal_beamwidth);
                     cmd.Parameters.AddWithValue("@vertical_beamwidth", antenna.vertical_beamwidth);
                     cmd.Parameters.AddWithValue("@polarization", antenna.polarization);
-                    cmd.Parameters.AddWithValue("@number_of_feed", antenna.number_of_feed);
+                    if (antenna.duty.Equals("receiver"))
+                        cmd.Parameters.AddWithValue("@number_of_feed", 0);
+                    else
+                        cmd.Parameters.AddWithValue("@number_of_feed", antenna.number_of_feed);
                     cmd.Parameters.AddWithValue("@horizontal_dimension", antenna.horizontal_dimension);
                     cmd.Parameters.AddWithValue("@vertical_dimension", antenna.vertical_dimension);
                     cmd.Parameters.AddWithValue("@duty", antenna.duty);
