@@ -39,13 +39,9 @@ namespace ASPNETAOP.Controllers
 
                 Guid transmitter_id = (Guid)TempData["tra_id"];
 
-                Console.WriteLine(mode_id + " /---0_0---/ " + radar_id + " /---0_0---/ " + receiver_id + " /---0_0---/ " +transmitter_id);
-
                 //generate a list for antennas to display in view
                 //so the user can select antennas which empolys current scan type
-                List<AddAntenna> AntennaList = new List<AddAntenna>();
-
-                //view'e taşı
+                IList<AddAntenna> AntennaList = new List<AddAntenna>();
                 using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
                 {
                     using (SqlCommand cmd = new SqlCommand())
@@ -74,10 +70,15 @@ namespace ASPNETAOP.Controllers
                                 antenna.vertical_dimension = (float)reader.GetDouble("vertical_dimension");
                                 antenna.duty = reader.GetString("duty");
                                 antenna.location = reader.GetString("location");
+                                Console.WriteLine(antenna.duty + " /---------/ " + antenna.name);
                                 AntennaList.Add(antenna);
                             }
-                            //TempData["Antennas"] = AntennaList;
+                            ViewBag.antennas = AntennaList;
                             con.Close();
+                            foreach (AddAntenna antenna1 in ViewBag.antennas)
+                            {
+                                Console.WriteLine(antenna1.name + " " + antenna1.ID);
+                            }
                         }
                         catch (SqlException e)
                         {
@@ -132,7 +133,7 @@ namespace ASPNETAOP.Controllers
                         // Attempt to commit the transaction.
                         transaction.Commit();
                         Console.WriteLine("Both records are written to database.");
-                        //return RedirectToAction("AddAntennaScans", "AntennaScans", new { id = key});
+                        return RedirectToAction("NewAntennaScan", "AddAntennaScan", new { id = key});
                     }
                     catch (Exception ex)
                     {

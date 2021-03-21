@@ -19,11 +19,6 @@ namespace ASPNETAOP.Controllers
             return View();
         }
 
-        public IActionResult NewAntennaScan()
-        {
-            return View();
-        }
-
         public IActionResult NewAntennaScan(AddAntennaScan ascans, Guid id)
         {
             using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))

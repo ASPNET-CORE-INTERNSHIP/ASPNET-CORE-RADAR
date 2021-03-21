@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "DtFjsWFTjmkan7oc1wGwMyHUy2tR0Yefm9jFBdzbCtKhvLk8onOxVGTA3MBzHd8udGir8xfzOHI04LsfnCtl3Q==",
+  "dgSpecHash": "rIkDnn6ZCwtGtYDJFsLDsrMowP3op+SKcIvsuQiKAe2zKwOjjwH9THB+8NlYwKp2edwWv5CrcY7PgW0/nP+aQw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\ENA\\Source\\Repos\\ASPNET-CORE-RADAR\\ASPNETAOP.csproj",
+  "projectFilePath": "C:\\Users\\ENA\\Source\\Repos\\ASPNET-CORE-RADARc\\ASPNETAOP.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ENA\\.nuget\\packages\\humanizer.core\\2.2.0\\humanizer.core.2.2.0.nupkg.sha512",
     "C:\\Users\\ENA\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
@@ -140,8 +140,8 @@
     "C:\\Users\\ENA\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\ENA\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Users\\ENA\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.0.1\\microsoft.aspnetcore.app.ref.3.0.1.nupkg.sha512",
-    "C:\\Users\\ENA\\.nuget\\packages\\microsoft.netcore.app.ref\\3.0.0\\microsoft.netcore.app.ref.3.0.0.nupkg.sha512",
-    "C:\\Users\\ENA\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\3.0.0\\microsoft.windowsdesktop.app.ref.3.0.0.nupkg.sha512"
+    "C:\\Users\\ENA\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\3.0.0\\microsoft.windowsdesktop.app.ref.3.0.0.nupkg.sha512",
+    "C:\\Users\\ENA\\.nuget\\packages\\microsoft.netcore.app.ref\\3.0.0\\microsoft.netcore.app.ref.3.0.0.nupkg.sha512"
   ],
   "logs": []
 }

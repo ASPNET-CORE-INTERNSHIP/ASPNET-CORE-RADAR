@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ASPNETAOP.Models
@@ -52,5 +53,11 @@ namespace ASPNETAOP.Models
         [Display(Name = "Please enter antenna's location")]
         [Required(ErrorMessage = "Please enter antenna's location")]
         public String location { get; set; }
+    }
+
+    public class IndexViewModel
+    {
+        public IList<AddAntenna> AddAntenna { get; set; }
+        public string Message { get; set; }
     }
 }

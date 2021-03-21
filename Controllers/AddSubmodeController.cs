@@ -32,7 +32,6 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult NewSubmode(AddSubmode sm)
         {
-            Console.WriteLine(sm.name + " " + (float)sm.PW + " " + (float)sm.PRI + "-------------------------------------");
             return RedirectToAction("NewScan", "AddScan", new { sm = new AddSubmode (sm.name, sm.PW, sm.PRI, sm.min_frequency, sm.max_frequency) });
             //bu kısımda hata veriyor sebebini anlamadım
         }
