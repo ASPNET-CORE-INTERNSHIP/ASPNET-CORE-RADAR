@@ -29,65 +29,62 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult NewScan(AddScan scan, AddSubmode sm)
         {
-            if (TempData.ContainsKey("radar_id") && TempData.ContainsKey("mode_id"))
+            /*Guid receiver_id = (Guid)TempData["rec_id"];
+
+            Guid transmitter_id = (Guid)TempData["tra_id"];
+
+            //generate a list for antennas to display in view
+            //so the user can select antennas which empolys current scan type
+            IList<AddAntenna> AntennaList = new List<AddAntenna>();
+            using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = con;
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = @"SELECT * FROM Antenna WHERE receiver_id = @receiver_id or transmitter_id = @transmitter_id";
+                    cmd.Parameters.AddWithValue("@receiver_id", receiver_id);
+                    cmd.Parameters.AddWithValue("@transmitter_id", transmitter_id);
+
+                    try
+                    {
+                        con.Open();
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            AddAntenna antenna = new AddAntenna();
+                            antenna.ID = reader.GetGuid("ID");
+                            antenna.name = reader.GetString("name");
+                            antenna.type = reader.GetString("type");
+                            antenna.horizontal_beamwidth = (float)reader.GetDouble("horizontal_beamwidth");
+                            antenna.vertical_beamwidth = (float)reader.GetDouble("vertical_beamwidth");
+                            antenna.polarization = reader.GetString("polarization");
+                            antenna.number_of_feed = reader.GetInt32("number_of_feed");
+                            antenna.horizontal_dimension = (float)reader.GetDouble("horizontal_dimension");
+                            antenna.vertical_dimension = (float)reader.GetDouble("vertical_dimension");
+                            antenna.duty = reader.GetString("duty");
+                            antenna.location = reader.GetString("location");
+                            Console.WriteLine(antenna.duty + " /---------/ " + antenna.name);
+                            AntennaList.Add(antenna);
+                        }
+                        TempData["antennas"] = AntennaList;
+                        con.Close();
+                        //foreach (AddAntenna antenna1 in TempData["antennas"])
+                        //{
+                           // Console.WriteLine(antenna1.name + " " + antenna1.ID);
+                        //}
+                    }
+                    catch (SqlException e)
+                    {
+                        ViewData["Message"] = e.Message.ToString() + " Error";
+                    }
+
+                }
+            }*/
+
+            if (TempData.ContainsKey("mode_id"))
             {
                 Guid mode_id = (Guid)TempData["mode_id"];
-
-                Guid radar_id = (Guid)TempData["radar_id"];
-
-                Guid receiver_id = (Guid)TempData["rec_id"];
-
-                Guid transmitter_id = (Guid)TempData["tra_id"];
-
-                //generate a list for antennas to display in view
-                //so the user can select antennas which empolys current scan type
-                IList<AddAntenna> AntennaList = new List<AddAntenna>();
-                using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
-                {
-                    using (SqlCommand cmd = new SqlCommand())
-                    {
-                        cmd.Connection = con;
-                        cmd.CommandType = CommandType.Text;
-                        cmd.CommandText = @"SELECT * FROM Antenna WHERE receiver_id = @receiver_id or transmitter_id = @transmitter_id";
-                        cmd.Parameters.AddWithValue("@receiver_id", receiver_id);
-                        cmd.Parameters.AddWithValue("@transmitter_id", transmitter_id);
-
-                        try
-                        {
-                            con.Open();
-                            SqlDataReader reader = cmd.ExecuteReader();
-                            while (reader.Read())
-                            {
-                                AddAntenna antenna = new AddAntenna();
-                                antenna.ID = reader.GetGuid("ID");
-                                antenna.name = reader.GetString("name");
-                                antenna.type = reader.GetString("type");
-                                antenna.horizontal_beamwidth = (float)reader.GetDouble("horizontal_beamwidth");
-                                antenna.vertical_beamwidth = (float)reader.GetDouble("vertical_beamwidth");
-                                antenna.polarization = reader.GetString("polarization");
-                                antenna.number_of_feed = reader.GetInt32("number_of_feed");
-                                antenna.horizontal_dimension = (float)reader.GetDouble("horizontal_dimension");
-                                antenna.vertical_dimension = (float)reader.GetDouble("vertical_dimension");
-                                antenna.duty = reader.GetString("duty");
-                                antenna.location = reader.GetString("location");
-                                Console.WriteLine(antenna.duty + " /---------/ " + antenna.name);
-                                AntennaList.Add(antenna);
-                            }
-                            ViewBag.antennas = AntennaList;
-                            con.Close();
-                            foreach (AddAntenna antenna1 in ViewBag.antennas)
-                            {
-                                Console.WriteLine(antenna1.name + " " + antenna1.ID);
-                            }
-                        }
-                        catch (SqlException e)
-                        {
-                            ViewData["Message"] = e.Message.ToString() + " Error";
-                        }
-
-                    }
-                }
-
                 using (SqlConnection connection = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
                 {
                     connection.Open();
@@ -117,6 +114,8 @@ namespace ASPNETAOP.Controllers
                         command.Parameters.AddWithValue("@hits_per_scan", scan.hits_per_scan);
                         command.ExecuteNonQuery();
 
+                        TempData["scan_id"] = key;
+
                         command.CommandText = @"INSERT INTO Submode(ID, name, mode_id, PW, PRI, min_frequency, max_frequency, scan_id) 
                             VALUES(@id, @name_sm, @mode_id, @PW, @PRI, @min_frequency, @max_frequency, @scan_id)";
                         Guid key_submode = Guid.NewGuid();
@@ -133,7 +132,7 @@ namespace ASPNETAOP.Controllers
                         // Attempt to commit the transaction.
                         transaction.Commit();
                         Console.WriteLine("Both records are written to database.");
-                        return RedirectToAction("NewAntennaScan", "AddAntennaScan", new { id = key});
+                        return RedirectToAction("NewAntennaScan", "AddAntennaScan");
                     }
                     catch (Exception ex)
                     {
