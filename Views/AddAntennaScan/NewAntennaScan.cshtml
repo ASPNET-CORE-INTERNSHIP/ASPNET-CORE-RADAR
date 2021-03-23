@@ -1,4 +1,4 @@
-﻿@model ASPNETAOP.Models.AddAntennaScan
+@model List<ASPNETAOP.Models.AddAntenna>
 
 @{
     ViewData["Title"] = "NewAntennaScan";
@@ -12,14 +12,17 @@
         <form asp-action="NewAntennaScan">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div>
-                @foreach (AddAntenna antenna in ViewBag.antennas)
+                @foreach (var antenna in Model)
                 {
-                    <div>@antenna.name</div>
-                    <div>@antenna.duty</div>
-                }
+                    <div>
+                        <h1>@antenna.name</h1>
+                    </div>
+                    <div>
+                        <h1>@antenna.duty</h1>
+                    </div>}
             </div>
             <div class="form-group">
-                <input type="submit" value="Add" class="btn btn-primary" />
+                <input type="submit" value="NewAntennaScan" class="btn btn-primary" />
             </div>
             <b>@ViewData["Message"]</b>
         </form>
