@@ -30,6 +30,10 @@ namespace ASPNETAOP.Controllers
             //generate a list for antennas to display in view
             //so the user can select antennas which empolys current scan type
             IList<AddAntenna> AntennaList = new List<AddAntenna>();
+            
+            //New model consisting of a list
+            var model = new List<AddAntenna>();
+            
             using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
             {
                 using (SqlCommand cmd = new SqlCommand())
@@ -60,6 +64,9 @@ namespace ASPNETAOP.Controllers
                             antenna.location = reader.GetString("location");
                             Console.WriteLine(antenna.duty + " /---------/ " + antenna.name);
                             AntennaList.Add(antenna);
+                           
+                            //Adding the antenna information to the newly created model
+                            model.Add(antenna);
                         }
                         TempData["antennas"] = AntennaList;
                         con.Close();
@@ -75,7 +82,9 @@ namespace ASPNETAOP.Controllers
 
                 }
             }
-            return View();
+            
+            //returning the model for the cshmtl page to access it
+            return View(model);
         }
 
         public IActionResult NewAntennaScan(AddAntennaScan ascans)
