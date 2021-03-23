@@ -29,6 +29,29 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult NewReceiver(AddReceiver receiver)
         {
+            //If the receiver name is null we give a default name that specifies its number
+            String rec_name = null;
+            if (String.IsNullOrEmpty(receiver.name))
+            {
+                string stmt = "SELECT COUNT(*) FROM Receiver";
+                int count = 0;
+
+                using (SqlConnection thisConnection = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
+                {
+                    using (SqlCommand cmdCount = new SqlCommand(stmt, thisConnection))
+                    {
+                        thisConnection.Open();
+                        count = (int)cmdCount.ExecuteScalar();
+                    }
+                }
+                count = count + 1;
+                rec_name = "Receiver " + count;
+            }
+            else
+            {
+                rec_name = receiver.name;
+            }
+
             Guid key = Guid.NewGuid();
             using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
             {
@@ -39,7 +62,7 @@ namespace ASPNETAOP.Controllers
                     cmd.CommandText = @"INSERT INTO Receiver(ID, name, listening_time, rest_time, recovery_time) 
                             VALUES(@ID, @name, @listening_time, @rest_time, @recovery_time)";
                     cmd.Parameters.AddWithValue("@ID", key);
-                    cmd.Parameters.AddWithValue("@name", receiver.name);
+                    cmd.Parameters.AddWithValue("@name", rec_name);
                     cmd.Parameters.AddWithValue("@listening_time", receiver.listening_time);
                     cmd.Parameters.AddWithValue("@rest_time", receiver.rest_time);
                     cmd.Parameters.AddWithValue("@recovery_time", receiver.recovery_time);
@@ -63,7 +86,6 @@ namespace ASPNETAOP.Controllers
                             //and the program automaticly determines that it is an transmitter antenna. So when we add new receiver
                             //it means we create new radar.
                             TempData["newProgram"] = "yes";
-                            Console.WriteLine("newReceiver***********************************");
                             return RedirectToAction("NewAntenna", "AddAntenna");
                         }
                     }

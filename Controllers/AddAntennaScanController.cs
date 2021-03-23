@@ -21,17 +21,12 @@ namespace ASPNETAOP.Controllers
 
         public IActionResult NewAntennaScan()
         {
-            Guid radar_id = (Guid)TempData["radar_id"];
-
             Guid receiver_id = (Guid)TempData["rec_id"];
 
             Guid transmitter_id = (Guid)TempData["tra_id"];
 
-            //generate a list for antennas to display in view
-            //so the user can select antennas which empolys current scan type
-            IList<AddAntenna> AntennaList = new List<AddAntenna>();
-            
             //New model consisting of a list
+            //so the user can select antennas which empolys current scan type
             var model = new List<AddAntenna>();
             
             using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
@@ -62,18 +57,11 @@ namespace ASPNETAOP.Controllers
                             antenna.vertical_dimension = (float)reader.GetDouble("vertical_dimension");
                             antenna.duty = reader.GetString("duty");
                             antenna.location = reader.GetString("location");
-                            Console.WriteLine(antenna.duty + " /---------/ " + antenna.name);
-                            AntennaList.Add(antenna);
                            
                             //Adding the antenna information to the newly created model
                             model.Add(antenna);
                         }
-                        TempData["antennas"] = AntennaList;
                         con.Close();
-                        foreach (AddAntenna antenna1 in ViewBag.antennas)
-                        {
-                            Console.WriteLine(antenna1.name + " " + antenna1.ID);
-                        }
                     }
                     catch (SqlException e)
                     {

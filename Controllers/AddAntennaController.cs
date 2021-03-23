@@ -55,6 +55,54 @@ namespace ASPNETAOP.Controllers
                 TempData["newProgram"] = "no";
             }
 
+            String def_name = null;
+            if (String.IsNullOrEmpty(antenna.name))
+            {
+                String transmitter_or_receiver_name = null;
+                using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = con;
+                        cmd.CommandType = CommandType.Text;
+                        if (antenna.duty.Equals("transmitter"))
+                        {
+                            cmd.CommandText = @"SELECT name FROM Transmitter WHERE ID = @id";
+                            cmd.Parameters.AddWithValue("@id", transmitter_id);
+                        }
+                        else
+                        {
+                            cmd.CommandText = @"SELECT name FROM Receiver WHERE ID = @id";
+                            cmd.Parameters.AddWithValue("@id", receiver_id);
+                        }
+
+                        try
+                        {
+                            con.Open();
+                            SqlDataReader reader = cmd.ExecuteReader();
+                            while (reader.Read())
+                            {
+                                transmitter_or_receiver_name = reader.GetString("name");
+                            }
+                            con.Close();
+                        }
+                        catch (SqlException e)
+                        {
+                            ViewData["Message"] = e.Message.ToString() + " Error";
+                            def_name = "an error occured";
+                        }
+
+                    }
+                }
+
+                if (antenna.duty.Equals("both"))
+                    def_name = "Monostatic radar antenna with receiver name: " + transmitter_or_receiver_name;
+                else
+                    def_name = transmitter_or_receiver_name + "s antenna";
+            }
+            else
+                def_name = antenna.name;
+
             using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
             {
                 using (SqlCommand cmd = new SqlCommand())
@@ -65,36 +113,13 @@ namespace ASPNETAOP.Controllers
                             VALUES(@ID, @name, @type, @horizontal_beamwidth, @vertical_beamwidth, @polarization, @number_of_feed, @horizontal_dimension, @vertical_dimension, @duty, @transmitter_id, @receiver_id, @location)";
                     Guid key = Guid.NewGuid();
                     cmd.Parameters.AddWithValue("@ID", key);
-                    if (String.IsNullOrEmpty(antenna.name))
-                    {
-                        /*con.Open();
-                        String s = "";
-                        String def_name;
-                        //If the antenna name is null we give a default name that includes its transmitter name
-                        //According to my page routing system we create the receiver before transmitter, so if an antenna is a receiver antenna or receiver-transmitter type of antenna
-                        //-in default we can use receiver name otherwise we will use transmitter name. 
-                        //If page routing system changes this naming procedure will give an error.
-                        if (antenna.duty.ToLower().Equals("transmitter"))
-                            s = "Select name from Transmitter where ID = " + @id.ToString().ToUpper();
-                        else
-                            s = "Select name from Receiver where ID = " + @id.ToString().ToUpper();
-                        SqlCommand command = new SqlCommand(s, con);
-                        command.ExecuteNonQuery();
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            def_name = reader["name"].ToString() + "'s antenna";
-                        }
-                        con.Close();*/
-                        cmd.Parameters.AddWithValue("@name", "receivers antenna");
-                    }
-                    else
-                        cmd.Parameters.AddWithValue("@name", antenna.name);
+                    cmd.Parameters.AddWithValue("@name", def_name);
                     cmd.Parameters.AddWithValue("@type", antenna.type);
                     cmd.Parameters.AddWithValue("@horizontal_beamwidth", antenna.horizontal_beamwidth);
                     cmd.Parameters.AddWithValue("@vertical_beamwidth", antenna.vertical_beamwidth);
                     cmd.Parameters.AddWithValue("@polarization", antenna.polarization);
                     if (antenna.duty.Equals("receiver"))
-                        cmd.Parameters.AddWithValue("@number_of_feed", 0);
+                        cmd.Parameters.AddWithValue("@number_of_feed", 1);
                     else
                         cmd.Parameters.AddWithValue("@number_of_feed", antenna.number_of_feed);
                     cmd.Parameters.AddWithValue("@horizontal_dimension", antenna.horizontal_dimension);
@@ -148,8 +173,6 @@ namespace ASPNETAOP.Controllers
         {
             TempData["ReceiverID"] = receiver_id; //id represents receiver id
             TempData["AntennaDuty"] = antenna_duty;
-            Console.WriteLine(receiver_id + " receiver_id to transmitter!!***********************************");
-            Console.WriteLine(antenna_duty + " duty to transmitter!!***********************************");
             return RedirectToAction("NewTransmitter", "AddTransmitter");
         }
 
@@ -157,8 +180,6 @@ namespace ASPNETAOP.Controllers
         {
             TempData["ReceiverID"] = receiver_id;
             TempData["TransmitterID"] = transmitter_id;
-            Console.WriteLine(receiver_id + " receiver_id to radar***********************************");
-            Console.WriteLine(transmitter_id + "transmitter_id to radar***********************************");
             return RedirectToAction("NewRadar", "AddRadar");
         }
     }

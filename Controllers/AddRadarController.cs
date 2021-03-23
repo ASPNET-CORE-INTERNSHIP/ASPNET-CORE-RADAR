@@ -98,7 +98,6 @@ namespace ASPNETAOP.Controllers
                 Guid transmitter_id = (Guid)TempData["TransmitterID"];
                 TempData["rec_id"] = receiver_id;
                 TempData["tra_id"] = transmitter_id;
-                Console.WriteLine(receiver_id + " " + transmitter_id + "----------------------------------");
 
                 //If the radar name is null we give a default name that specifies its number
                 if (String.IsNullOrEmpty(radar.name))

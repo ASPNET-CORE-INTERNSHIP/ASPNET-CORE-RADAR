@@ -33,7 +33,7 @@ namespace ASPNETAOP.Controllers
         {
             Guid radar_id = (Guid)TempData["radar_id"];
 
-            Guid key = Guid.NewGuid(); //id for mode
+            Guid? key = null;
 
             if (TempData.ContainsKey("mode_id"))
             {
@@ -41,6 +41,7 @@ namespace ASPNETAOP.Controllers
             }
             else
             {
+                key = Guid.NewGuid(); //id for mode
                 TempData["mode_id"] = key;
             }
             

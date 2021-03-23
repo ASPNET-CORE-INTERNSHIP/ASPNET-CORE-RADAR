@@ -29,59 +29,6 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult NewScan(AddScan scan, AddSubmode sm)
         {
-            /*Guid receiver_id = (Guid)TempData["rec_id"];
-
-            Guid transmitter_id = (Guid)TempData["tra_id"];
-
-            //generate a list for antennas to display in view
-            //so the user can select antennas which empolys current scan type
-            IList<AddAntenna> AntennaList = new List<AddAntenna>();
-            using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
-            {
-                using (SqlCommand cmd = new SqlCommand())
-                {
-                    cmd.Connection = con;
-                    cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = @"SELECT * FROM Antenna WHERE receiver_id = @receiver_id or transmitter_id = @transmitter_id";
-                    cmd.Parameters.AddWithValue("@receiver_id", receiver_id);
-                    cmd.Parameters.AddWithValue("@transmitter_id", transmitter_id);
-
-                    try
-                    {
-                        con.Open();
-                        SqlDataReader reader = cmd.ExecuteReader();
-                        while (reader.Read())
-                        {
-                            AddAntenna antenna = new AddAntenna();
-                            antenna.ID = reader.GetGuid("ID");
-                            antenna.name = reader.GetString("name");
-                            antenna.type = reader.GetString("type");
-                            antenna.horizontal_beamwidth = (float)reader.GetDouble("horizontal_beamwidth");
-                            antenna.vertical_beamwidth = (float)reader.GetDouble("vertical_beamwidth");
-                            antenna.polarization = reader.GetString("polarization");
-                            antenna.number_of_feed = reader.GetInt32("number_of_feed");
-                            antenna.horizontal_dimension = (float)reader.GetDouble("horizontal_dimension");
-                            antenna.vertical_dimension = (float)reader.GetDouble("vertical_dimension");
-                            antenna.duty = reader.GetString("duty");
-                            antenna.location = reader.GetString("location");
-                            Console.WriteLine(antenna.duty + " /---------/ " + antenna.name);
-                            AntennaList.Add(antenna);
-                        }
-                        TempData["antennas"] = AntennaList;
-                        con.Close();
-                        //foreach (AddAntenna antenna1 in TempData["antennas"])
-                        //{
-                           // Console.WriteLine(antenna1.name + " " + antenna1.ID);
-                        //}
-                    }
-                    catch (SqlException e)
-                    {
-                        ViewData["Message"] = e.Message.ToString() + " Error";
-                    }
-
-                }
-            }*/
-
             if (TempData.ContainsKey("mode_id"))
             {
                 Guid mode_id = (Guid)TempData["mode_id"];
@@ -131,7 +78,7 @@ namespace ASPNETAOP.Controllers
 
                         // Attempt to commit the transaction.
                         transaction.Commit();
-                        Console.WriteLine("Both records are written to database.");
+                        Console.WriteLine("Both records (submode and scan) are written to database.");
                         return RedirectToAction("NewAntennaScan", "AddAntennaScan");
                     }
                     catch (Exception ex)
@@ -149,7 +96,7 @@ namespace ASPNETAOP.Controllers
                             // This catch block will handle any errors that may have occurred
                             // on the server that would cause the rollback to fail, such as
                             // a closed connection.
-                            Console.WriteLine("Rollback Exception Type: {0}", ex2.GetType());
+                            Console.WriteLine("Rollback Exception in scan controller Type: {0}", ex2.GetType());
                             Console.WriteLine("  Message: {0}", ex2.Message);
                         }
                     }

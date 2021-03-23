@@ -42,15 +42,12 @@ namespace ASPNETAOP.Controllers
                 TempData.Remove("radar_sys");
                 TempData.Remove("radar_config");
                 TempData.Remove("radar_name");
-                //TempData.Remove("rec_id");
+                TempData.Remove("rec_id");
                 TempData.Remove("receiver_id");
-                //TempData.Remove("tra_id");
+                TempData.Remove("tra_id");
                 TempData.Remove("transmitter_id");
                 TempData.Remove("ReceiverID");
                 TempData.Remove("TransmitterID");
-
-                Console.WriteLine(receiver_id + " " + transmitter_id + " " + radar_name + "-------------------------------------");
-                Console.WriteLine(radar_system + " " + radar_configuration);
 
                 using (SqlConnection connection = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
                 {
@@ -97,7 +94,7 @@ namespace ASPNETAOP.Controllers
                         TempData["radar_id"] = key;
                         // Attempt to commit the transaction.
                         transaction.Commit();
-                        Console.WriteLine("Both records are written to database.");
+                        Console.WriteLine("Both records (radar and its location) are written to database.");
                         return RedirectToAction("NewMode", "AddMode");
                     }
                     catch (Exception ex)
