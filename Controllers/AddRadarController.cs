@@ -94,8 +94,8 @@ namespace ASPNETAOP.Controllers
             */
             if (TempData.ContainsKey("ReceiverID") && TempData.ContainsKey("TransmitterID"))
             {
-                Guid receiver_id = (Guid)TempData["ReceiverID"];
-                Guid transmitter_id = (Guid)TempData["TransmitterID"];
+                Guid receiver_id = (Guid)TempData.Peek("ReceiverID");
+                Guid transmitter_id = (Guid)TempData.Peek("TransmitterID");
                 TempData["rec_id"] = receiver_id;
                 TempData["tra_id"] = transmitter_id;
 

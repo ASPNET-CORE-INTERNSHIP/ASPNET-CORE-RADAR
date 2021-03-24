@@ -31,7 +31,7 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult NewMode(AddMode mod)
         {
-            Guid radar_id = (Guid)TempData["radar_id"];
+            Guid radar_id = (Guid)TempData.Peek("radar_id");
 
             //after adding submodes and scans we might want to add more modes to this radar so keep it in tempdata
             TempData["radar_id"] = radar_id;

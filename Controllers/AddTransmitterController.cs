@@ -34,7 +34,7 @@ namespace ASPNETAOP.Controllers
             TempData["newProgram"] = "no";
             if (TempData.ContainsKey("receiver_id"))
             {
-                receiver_id = (Guid)TempData["receiver_id"];
+                receiver_id = (Guid)TempData.Peek("receiver_id");
                 //tempdata that we redirect to antenna controller again or pass the radar controller
                 TempData["receiver_id"] = receiver_id;
                 //tempdata that we may direct it to antenna view if the receiver has its own antenna(s)

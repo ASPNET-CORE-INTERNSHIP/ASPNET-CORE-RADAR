@@ -27,13 +27,13 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult NewAntenna(AddAntenna antenna)
         {
-            String NewProgram = TempData["newProgram"] as string;
+            String NewProgram = TempData.Peek("newProgram") as string;
             Guid? transmitter_id = null;
             Guid? receiver_id = null;
             if (TempData.ContainsKey("receiver_id"))
             {
                 //this value comes from receiver controller
-                receiver_id = (Guid)TempData["receiver_id"];
+                receiver_id = (Guid)TempData.Peek("receiver_id");
                 //this receiver id should go to transmitter so we can carry it up to radar or go back
                 //to there if we add more than one antenna to a receiver
                 TempData["receiver_id"] = receiver_id;
@@ -47,7 +47,7 @@ namespace ASPNETAOP.Controllers
             if (TempData.ContainsKey("transmitter_id") && NewProgram.Equals("no"))
             {
                 //this value comes from transmitter controller and EVEN THE CONTROLLER WHICH WE USE BEFORE WE EXECUTE CURRENT!!!!
-                transmitter_id = (Guid)TempData["transmitter_id"];
+                transmitter_id = (Guid)TempData.Peek("transmitter_id");
                 TempData["transmitter_id"] = transmitter_id;
                 //Because the transmitter may have more than one antenna and we have a control if-else structure in antenna view
                 //we should send transmitter id to antenna view to prevent users wrong duty selection

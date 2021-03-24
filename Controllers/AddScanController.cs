@@ -31,7 +31,7 @@ namespace ASPNETAOP.Controllers
         {
             if (TempData.ContainsKey("mode_id"))
             {
-                Guid mode_id = (Guid)TempData["mode_id"];
+                Guid mode_id = (Guid)TempData.Peek("mode_id");
                 //because we might add more submodes to this mode after scan we will use this tempdata.
                 TempData["mode_id"] = mode_id;
 

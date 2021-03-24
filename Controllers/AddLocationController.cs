@@ -32,11 +32,11 @@ namespace ASPNETAOP.Controllers
         {
             if (TempData.ContainsKey("rec_id") && TempData.ContainsKey("tra_id") && TempData.ContainsKey("radar_name") && TempData.ContainsKey("radar_config") && TempData.ContainsKey("radar_sys"))
             {
-                Guid receiver_id = (Guid)TempData["rec_id"];
-                Guid transmitter_id = (Guid)TempData["tra_id"];
-                String radar_name = TempData["radar_name"] as String;
-                String radar_configuration = TempData["radar_config"] as String;
-                String radar_system = TempData["radar_sys"] as String;
+                Guid receiver_id = (Guid)TempData.Peek("rec_id");
+                Guid transmitter_id = (Guid)TempData.Peek("tra_id");
+                String radar_name = TempData.Peek("radar_name") as String;
+                String radar_configuration = TempData.Peek("radar_config") as String;
+                String radar_system = TempData.Peek("radar_sys") as String;
 
                 //we will use them when we display antennas in addantennascan.
                 TempData["rec_id"] = receiver_id;

@@ -21,28 +21,10 @@ namespace ASPNETAOP.Controllers
 
         public IActionResult NewAntennaScan()
         {
-            Guid? receiver_id = null;
-            Guid? transmitter_id = null;
-            if (TempData.ContainsKey("rec_id"))
-            {
-                receiver_id = (Guid)TempData["rec_id"];
-                Console.WriteLine(receiver_id + " receiver id");
-            }
-            else
-            {
-                receiver_id = Guid.NewGuid();
-                Console.WriteLine("receiveridnotfound");
-            }
-            if (TempData.ContainsKey("rec_id")) 
-            { 
-                transmitter_id = (Guid)TempData["tra_id"];
-                Console.WriteLine(transmitter_id + " transmitter one");
-            }
-            else
-            {
-                transmitter_id = Guid.NewGuid();
-                Console.WriteLine("receiveridnotfound");
-            }
+            if (TempData["rec_id"] == null && TempData["tra_id"] == null) return RedirectToAction("Login", "UserLogin");
+
+            Guid receiver_id = (Guid)TempData.Peek("rec_id");
+            Guid transmitter_id = (Guid)TempData.Peek("tra_id");
 
             //New model consisting of a list
             //so the user can select antennas which empolys current scan type
@@ -94,12 +76,12 @@ namespace ASPNETAOP.Controllers
             return View(model);
         }
 
-        public IActionResult NewAntennaScan(AddAntennaScan ascans)
+        public IActionResult NewAntennaScanParam(AddAntennaScan ascans)
         {
             if (TempData.ContainsKey("scan_id"))
             {
 
-                Guid id = (Guid)TempData["scan_id"];
+                Guid id = (Guid)TempData.Peek("scan_id");
 
                 using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
                 {
