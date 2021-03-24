@@ -12,14 +12,25 @@
         <form asp-action="NewAntennaScan">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div>
-                @foreach (var antenna in Model)
-                {
-                    <div>
-                        <h1>@antenna.name</h1>
-                    </div>
-                    <div>
-                        <h1>@antenna.duty</h1>
-                    </div>}
+                @{
+                    if (Model != null) { 
+                        @foreach (var antenna in Model)
+                        {
+                            <div>
+                                <h1>@antenna.name</h1>
+                            </div>
+                            <div>
+                                <h1>@antenna.duty</h1>
+                            </div>
+                        }
+                    }
+                    else
+                        {
+                        <div>
+                            <h1>ERRORRRR</h1>
+                        </div>
+                        }
+                    }
             </div>
             <div class="form-group">
                 <input type="submit" value="NewAntennaScan" class="btn btn-primary" />

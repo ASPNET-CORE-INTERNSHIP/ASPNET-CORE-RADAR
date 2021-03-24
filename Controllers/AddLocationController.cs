@@ -38,16 +38,9 @@ namespace ASPNETAOP.Controllers
                 String radar_configuration = TempData["radar_config"] as String;
                 String radar_system = TempData["radar_sys"] as String;
 
-                //remove tempdatas that we do not use again.
-                TempData.Remove("radar_sys");
-                TempData.Remove("radar_config");
-                TempData.Remove("radar_name");
-                TempData.Remove("rec_id");
-                TempData.Remove("receiver_id");
-                TempData.Remove("tra_id");
-                TempData.Remove("transmitter_id");
-                TempData.Remove("ReceiverID");
-                TempData.Remove("TransmitterID");
+                //we will use them when we display antennas in addantennascan.
+                TempData["rec_id"] = receiver_id;
+                TempData["tra_id"] = transmitter_id;
 
                 using (SqlConnection connection = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
                 {

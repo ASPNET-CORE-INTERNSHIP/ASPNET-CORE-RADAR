@@ -33,17 +33,11 @@ namespace ASPNETAOP.Controllers
         {
             Guid radar_id = (Guid)TempData["radar_id"];
 
-            Guid? key = null;
+            //after adding submodes and scans we might want to add more modes to this radar so keep it in tempdata
+            TempData["radar_id"] = radar_id;
 
-            if (TempData.ContainsKey("mode_id"))
-            {
-                Guid mode_id = (Guid)TempData["mode_id"];
-            }
-            else
-            {
-                key = Guid.NewGuid(); //id for mode
-                TempData["mode_id"] = key;
-            }
+            Guid key = Guid.NewGuid(); //id for mode
+            TempData["mode_id"] = key;
             
             using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
             {
