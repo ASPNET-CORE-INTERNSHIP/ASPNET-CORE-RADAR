@@ -64,8 +64,6 @@
                 <span asp-validation-for="vertical_dimension" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <h5>@receiver_id</h5>
-                <h5>@transmitter_id</h5>
                 <label asp-for="duty" class="control-label"></label>
                 <select asp-for="duty" class="form-select" aria-label="Default select example">
                     @if (transmitter_id == null || newProgram.Equals("yes"))
@@ -100,7 +98,7 @@
     }
     else
     {
-        <input type="button" title="Text" value="Text" onclick="location.href='@Url.Action("GoToTransmitter", "AddAntenna", new { receiver_id = receiver_id, antenna_duty = @TempData["AntennaDuty"] })'" />
+        <input type="button" title="Next" value="Next" onclick="location.href='@Url.Action("GoToTransmitter", "AddAntenna", new { receiver_id = receiver_id, antenna_duty = @TempData["AntennaDuty"] })'" />
     }
 </div>
 

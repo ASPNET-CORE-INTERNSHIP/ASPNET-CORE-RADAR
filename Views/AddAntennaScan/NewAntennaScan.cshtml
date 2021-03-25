@@ -1,4 +1,4 @@
-@model List<ASPNETAOP.Models.AddAntenna>
+@model ASPNETAOP.Models.AddAntenna.AntennaList
 
 @{
     ViewData["Title"] = "NewAntennaScan";
@@ -9,25 +9,54 @@
 <hr />
 <div class="row">
     <div class="col-md-9">
+        @{ Guid radar_id = (Guid)@TempData["radar_id"];}
+        @{ Guid mode_id = (Guid)@TempData["mode_id"];}
+        @{ TempData["mode_id"] = mode_id;}
+        @{ TempData["radar_id"] = radar_id;}
         <form asp-action="NewAntennaScan">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div>
-                @{
-                    if (Model != null) { 
-                        @foreach (var antenna in Model)
-                        {
-                            <div>
-                                <td>@antenna.name</td>
-                            </div>
-                            <div>
-                                <td>@antenna.duty</td>
-                            </div>
-                        }
-                    }
+            <table class="table">
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Horizontal Beamwidth</th>
+                    <th>Vertical Beamwidth</th>
+                    <th>Polarization</th>
+                    <th>Number of Feed</th>
+                    <th>Horizontal Dimension</th>
+                    <th>Vertical Dimension</th>
+                    <th>Location</th>
+                    <th>Select</th>
+                </tr>
+                @for (int i = 0; i < Model.antennas.Count; i++)
+                {
+                    <tr>
+                        <td>@Model.antennas[i].name</td>
+                        <td>@Model.antennas[i].type</td>
+                        <td>@Model.antennas[i].horizontal_beamwidth</td>
+                        <td>@Model.antennas[i].vertical_beamwidth</td>
+                        <td>@Model.antennas[i].polarization</td>
+                        <td>@Model.antennas[i].number_of_feed</td>
+                        <td>@Model.antennas[i].horizontal_dimension</td>
+                        <td>@Model.antennas[i].vertical_dimension</td>
+                        <td>@Model.antennas[i].location</td>
+                        <td>@Html.CheckBoxFor(m => Model.antennas[i].IsChecked)</td>
+                    </tr>
                 }
-            </div>
+            </table>
             <div class="form-group">
-                <input type="submit" value="NewAntennaScan" class="btn btn-primary" />
+            </div>
+            <div>
+                <input type="submit" value="Add" class="btn btn-primary" />
+            </div>
+            <div>
+                <input type="button" title="AddSubmode" value="Add Submode" onclick="location.href='@Url.Action("GoToSubmode", "AddAntennaScan", new { radar_id = radar_id, mode_id = mode_id })'" />
+            </div>
+            <div>
+                <input type="button" title="AddMode" value="Add Mode" onclick="location.href='@Url.Action("GoToMode", "AddAntennaScan", new { radar_id = radar_id })'" />
+            </div>
+            <div>
+                <input type="button" title="Done" value="DONE!" onclick="location.href='@Url.Action("Done", "AddAntennaScan", new { radar_id = radar_id })'" />
             </div>
             <b>@ViewData["Message"]</b>
         </form>

@@ -32,8 +32,31 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult NewSubmode(AddSubmode sm)
         {
-            return RedirectToAction("NewScan", "AddScan", new { sm = new AddSubmode (sm.name, sm.PW, sm.PRI, sm.min_frequency, sm.max_frequency) });
-            //bu kısımda hata veriyor sebebini anlamadım
+            Guid receiver_id = (Guid)TempData.Peek("rec_id");
+            Guid transmitter_id = (Guid)TempData.Peek("tra_id");
+            //we will use them when we display antennas in addantennascan.
+            TempData["rec_id"] = receiver_id;
+            TempData["tra_id"] = transmitter_id;
+
+            if (TempData.ContainsKey("mode_id") && TempData.ContainsKey("radar_id"))
+            {
+                Guid radar_id = (Guid)TempData.Peek("radar_id");
+
+                //after adding submodes and scans we might want to add more modes to this radar so keep it in tempdata
+                TempData["radar_id"] = radar_id;
+
+                //after adding scans we might want to add more submodes to this radar so keep it in tempdata
+                Guid mode_id = (Guid)TempData.Peek("mode_id");
+                TempData["mode_id"] = mode_id;
+
+                return RedirectToAction("NewScan", "AddScan", new { sm = new AddSubmode(sm.name, sm.PW, sm.PRI, sm.min_frequency, sm.max_frequency) });
+                //bu kısımda hata veriyor sebebini anlamadım
+            }
+            else 
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
         }
 
     }

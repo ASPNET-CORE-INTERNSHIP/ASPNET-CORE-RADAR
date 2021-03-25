@@ -38,7 +38,13 @@ namespace ASPNETAOP.Controllers
 
             Guid key = Guid.NewGuid(); //id for mode
             TempData["mode_id"] = key;
-            
+
+            Guid receiver_id = (Guid)TempData.Peek("rec_id");
+            Guid transmitter_id = (Guid)TempData.Peek("tra_id");
+            //we will use them when we display antennas in addantennascan.
+            TempData["rec_id"] = receiver_id;
+            TempData["tra_id"] = transmitter_id;
+
             using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
             {
                 using (SqlCommand cmd = new SqlCommand())

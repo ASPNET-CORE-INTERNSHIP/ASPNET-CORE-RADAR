@@ -53,5 +53,13 @@ namespace ASPNETAOP.Models
         [Display(Name = "Please enter antenna's location")]
         [Required(ErrorMessage = "Please enter antenna's location")]
         public String location { get; set; }
+
+        //we will use it when building relationships between antenna and scans
+        public bool IsChecked { get; set; } = false;
+
+        public class AntennaList
+        {
+           public List<AddAntenna>? antennas { get; set; }
+        }
     }
 }

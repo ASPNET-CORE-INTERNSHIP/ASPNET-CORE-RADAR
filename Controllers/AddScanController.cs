@@ -29,10 +29,15 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult NewScan(AddScan scan, AddSubmode sm)
         {
-            if (TempData.ContainsKey("mode_id"))
+            if (TempData.ContainsKey("mode_id")&& TempData.ContainsKey("radar_id"))
             {
+                Guid radar_id = (Guid)TempData.Peek("radar_id");
+
+                //after adding submodes and scans we might want to add more modes to this radar so keep it in tempdata
+                TempData["radar_id"] = radar_id;
+
+                //after adding scans we might want to add more submodes to this radar so keep it in tempdata
                 Guid mode_id = (Guid)TempData.Peek("mode_id");
-                //because we might add more submodes to this mode after scan we will use this tempdata.
                 TempData["mode_id"] = mode_id;
 
                 using (SqlConnection connection = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
@@ -82,6 +87,7 @@ namespace ASPNETAOP.Controllers
                         // Attempt to commit the transaction.
                         transaction.Commit();
                         Console.WriteLine("Both records (submode and scan) are written to database.");
+                        TempData["relationship_builded"] = "no";
                         return RedirectToAction("NewAntennaScan", "AddAntennaScan");
                     }
                     catch (Exception ex)
