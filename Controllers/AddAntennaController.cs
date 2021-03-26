@@ -27,34 +27,7 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult NewAntenna(AddAntenna antenna)
         {
-            String NewProgram = TempData.Peek("newProgram") as string;
-            Guid? transmitter_id = null;
-            Guid? receiver_id = null;
-            if (TempData.ContainsKey("receiver_id"))
-            {
-                //this value comes from receiver controller
-                receiver_id = (Guid)TempData.Peek("receiver_id");
-                //this receiver id should go to transmitter so we can carry it up to radar or go back
-                //to there if we add more than one antenna to a receiver
-                TempData["receiver_id"] = receiver_id;
-                //Anddd this is for antenna view. Because the receiver can have more than one antenna and we set a 
-                //control structure to duty select are of antenna view to prevent users to select wrong duty 
-                //(ex when receiver directs user to antenna page users cannot select transmitter duty)
-                //So we should send receiver id to antenna view when we add any type of antenna (again and again)
-                TempData["ReceiverID"] = receiver_id;
-                TempData["newProgram"] = "yes";
-            }
-            if (TempData.ContainsKey("transmitter_id") && NewProgram.Equals("no"))
-            {
-                //this value comes from transmitter controller and EVEN THE CONTROLLER WHICH WE USE BEFORE WE EXECUTE CURRENT!!!!
-                transmitter_id = (Guid)TempData.Peek("transmitter_id");
-                TempData["transmitter_id"] = transmitter_id;
-                //Because the transmitter may have more than one antenna and we have a control if-else structure in antenna view
-                //we should send transmitter id to antenna view to prevent users wrong duty selection
-                TempData["TransmitterID"] = transmitter_id;
-                TempData["newProgram"] = "no";
-            }
-
+            Guid receiver_id = Datas.ReceiverID;
             String def_name = null;
             if (String.IsNullOrEmpty(antenna.name))
             {
@@ -67,6 +40,7 @@ namespace ASPNETAOP.Controllers
                         cmd.CommandType = CommandType.Text;
                         if (antenna.duty.Equals("transmitter"))
                         {
+                            Guid transmitter_id = Datas.TransmitterID;
                             cmd.CommandText = @"SELECT name FROM Transmitter WHERE ID = @id";
                             cmd.Parameters.AddWithValue("@id", transmitter_id);
                         }
@@ -126,8 +100,9 @@ namespace ASPNETAOP.Controllers
                     cmd.Parameters.AddWithValue("@vertical_dimension", antenna.vertical_dimension);
                     cmd.Parameters.AddWithValue("@duty", antenna.duty);
 
-                    //tempdata that we send it to receiver. With this value we can manage not to add redundant transmitter antenna if the antenna duty is 'both (receiver and transmitter)' 
-                    TempData["AntennaDuty"] = antenna.duty;
+                    Datas.AntennaDuty = antenna.duty;
+
+                    Console.WriteLine(Datas.AntennaDuty+ "-------duty");
 
                     //if the antenna is both receiver and transmitter antenna give it a receiver and a transmitter id
                     if (antenna.duty.Equals("both"))
@@ -144,6 +119,7 @@ namespace ASPNETAOP.Controllers
                     //if the antenna is a transmitter antenna attach it a transmitter id
                     else
                     {
+                        Guid transmitter_id = Datas.TransmitterID;
                         cmd.Parameters.AddWithValue("@transmitter_id", transmitter_id);
                         cmd.Parameters.AddWithValue("@receiver_id", DBNull.Value);
                     }
@@ -169,17 +145,13 @@ namespace ASPNETAOP.Controllers
             return View(antenna);
         }
 
-        public IActionResult GoToTransmitter(Guid receiver_id, String antenna_duty)
+        public IActionResult GoToTransmitter()
         {
-            TempData["ReceiverID"] = receiver_id; //id represents receiver id
-            TempData["AntennaDuty"] = antenna_duty;
             return RedirectToAction("NewTransmitter", "AddTransmitter");
         }
 
-        public IActionResult GoToRadar(Guid receiver_id, Guid transmitter_id)
+        public IActionResult GoToRadar()
         {
-            TempData["ReceiverID"] = receiver_id;
-            TempData["TransmitterID"] = transmitter_id;
             return RedirectToAction("NewRadar", "AddRadar");
         }
     }

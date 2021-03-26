@@ -66,7 +66,7 @@ namespace ASPNETAOP.Controllers
                     cmd.Parameters.AddWithValue("@listening_time", receiver.listening_time);
                     cmd.Parameters.AddWithValue("@rest_time", receiver.rest_time);
                     cmd.Parameters.AddWithValue("@recovery_time", receiver.recovery_time);
-
+                    Datas.ReceiverID = key;
                     try
                     {
                         con.Open();
@@ -76,16 +76,6 @@ namespace ASPNETAOP.Controllers
                         con.Close();
                         if (ModelState.IsValid)
                         {
-                            //this receiver id goes to controller of antenna
-                            TempData["receiver_id"] = key;
-                            //this receiver id goes to view of antenna
-                            TempData["ReceiverID"] = key;
-
-                            //I use newProgram variable because when i try to add second (or more) receiver antenna
-                            //the transmitter antenna id which i used in previous antenna comes from antenna view to antenna controller
-                            //and the program automaticly determines that it is an transmitter antenna. So when we add new receiver
-                            //it means we create new radar.
-                            TempData["newProgram"] = "yes";
                             return RedirectToAction("NewAntenna", "AddAntenna");
                         }
                     }

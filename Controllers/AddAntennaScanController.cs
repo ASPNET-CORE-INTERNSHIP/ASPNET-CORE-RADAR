@@ -22,28 +22,6 @@ namespace ASPNETAOP.Controllers
 
         public IActionResult NewAntennaScan()
         {
-            if (TempData["rec_id"] == null && TempData["tra_id"] == null && TempData.ContainsKey("mode_id") && TempData.ContainsKey("radar_id")) return RedirectToAction("NewReceiver", "AddReceiver");
-
-            Guid radar_id = (Guid)TempData.Peek("radar_id");
-            //after adding submodes and scans we might want to add more modes to this radar so keep it in tempdata
-            TempData["radar_id"] = radar_id;
-
-            //after adding scans we might want to add more submodes to this radar so keep it in tempdata
-            Guid mode_id = (Guid)TempData.Peek("mode_id");
-            TempData["mode_id"] = mode_id;
-
-            if (!TempData.ContainsKey("scan_id"))
-            {
-                return RedirectToAction("NewSubmode", "AddSubmode");
-            }
-            else
-                TempData["scan_id"] = (Guid)TempData.Peek("scan_id");
-
-            Guid receiver_id = (Guid)TempData.Peek("rec_id");
-            Guid transmitter_id = (Guid)TempData.Peek("tra_id");
-            TempData["rec_id"] = receiver_id;
-            TempData["tra_id"] = transmitter_id;
-
             //New variable consisting of a list of antennas
             //so the user can select antennas which empolys current scan type
             List<AddAntenna> antennas = new List<AddAntenna>();
@@ -55,8 +33,8 @@ namespace ASPNETAOP.Controllers
                     cmd.Connection = con;
                     cmd.CommandType = CommandType.Text;
                     cmd.CommandText = @"SELECT * FROM Antenna WHERE receiver_id = @receiver_id or transmitter_id = @transmitter_id";
-                    cmd.Parameters.AddWithValue("@receiver_id", receiver_id);
-                    cmd.Parameters.AddWithValue("@transmitter_id", transmitter_id);
+                    cmd.Parameters.AddWithValue("@receiver_id", Datas.ReceiverID);
+                    cmd.Parameters.AddWithValue("@transmitter_id", Datas.TransmitterID);
 
                     try
                     {
@@ -97,82 +75,55 @@ namespace ASPNETAOP.Controllers
 
         public IActionResult NewAntennaScanParam(AddAntenna.AntennaList ascans)
         {
-            if (TempData.ContainsKey("mode_id") && TempData.ContainsKey("radar_id"))
+            foreach (var antenna in ascans.antennas)
             {
-                Guid radar_id = (Guid)TempData.Peek("radar_id");
-
-                //after adding submodes and scans we might want to add more modes to this radar so keep it in tempdata
-                TempData["radar_id"] = radar_id;
-
-                //after adding scans we might want to add more submodes to this radar so keep it in tempdata
-                Guid mode_id = (Guid)TempData.Peek("mode_id");
-                TempData["mode_id"] = mode_id;
-            }
-
-            if (TempData.ContainsKey("scan_id"))
-            {
-                Guid id = (Guid)TempData.Peek("scan_id");
-
-                foreach (var antenna in ascans.antennas)
+                if (antenna.IsChecked)
                 {
-                    if (antenna.IsChecked)
+                    using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
                     {
-                        using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
+                        using (SqlCommand cmd = new SqlCommand())
                         {
-                            using (SqlCommand cmd = new SqlCommand())
-                            {
-                                cmd.Connection = con;
-                                cmd.CommandType = CommandType.Text;
-                                cmd.CommandText = @"INSERT INTO AntennaScan(antenna_id, scan_id) 
+                            cmd.Connection = con;
+                            cmd.CommandType = CommandType.Text;
+                            cmd.CommandText = @"INSERT INTO AntennaScan(antenna_id, scan_id) 
                             VALUES(@antenna_id, @scan_id)";
-                                cmd.Parameters.AddWithValue("@antenna_id", antenna.ID);
-                                cmd.Parameters.AddWithValue("@scan_id", id);
+                            cmd.Parameters.AddWithValue("@antenna_id", antenna.ID);
+                            cmd.Parameters.AddWithValue("@scan_id", Datas.ScanID);
 
-                                try
-                                {
-                                    con.Open();
-                                    int i = cmd.ExecuteNonQuery();
-                                    if (i != 0)
-                                        ViewData["Message"] = "New Relationship between antenna and scans added";
-                                    con.Close();
-                                }
-                                catch (SqlException e)
-                                {
-                                    ViewData["Message"] = e.Message.ToString() + " Error";
-                                }
-
+                            try
+                            {
+                                con.Open();
+                                int i = cmd.ExecuteNonQuery();
+                                if (i != 0)
+                                    ViewData["Message"] = "New Relationship between antenna and scans added";
+                                con.Close();
                             }
+                            catch (SqlException e)
+                            {
+                                ViewData["Message"] = e.Message.ToString() + " Error";
+                            }
+
                         }
                     }
-
-                    antenna.IsChecked = false;
                 }
-            }
-            else
-            {
-                Console.WriteLine("ERROR123");
+
+                antenna.IsChecked = false;
             }
             return View(ascans);
         }
 
-        public IActionResult GoToSubmode(Guid radar_id, Guid mode_id)
+        public IActionResult GoToSubmode()
         {
-            TempData["radar_id"] = radar_id;
-            TempData["mode_id"] = mode_id;
             return RedirectToAction("NewSubmode", "AddSubmode");
         }
 
-        public IActionResult GoToMode(Guid radar_id)
+        public IActionResult GoToMode()
         {
-            TempData["radar_id"] = radar_id;
-            TempData.Remove("mode_id");
             return RedirectToAction("NewMode", "AddMode");
         }
 
-        public IActionResult Done(Guid radar_id)
+        public IActionResult Done()
         {
-            TempData["radar_id"] = radar_id;
-            TempData.Remove("mode_id");
             return View("~/Views/done.cshtml");
         }
     }

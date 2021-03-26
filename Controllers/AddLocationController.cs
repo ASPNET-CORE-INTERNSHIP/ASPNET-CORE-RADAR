@@ -30,90 +30,72 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult NewLocation(AddLocation loc)
         {
-            if (TempData.ContainsKey("rec_id") && TempData.ContainsKey("tra_id") && TempData.ContainsKey("radar_name") && TempData.ContainsKey("radar_config") && TempData.ContainsKey("radar_sys"))
+            using (SqlConnection connection = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
             {
-                Guid receiver_id = (Guid)TempData.Peek("rec_id");
-                Guid transmitter_id = (Guid)TempData.Peek("tra_id");
-                String radar_name = TempData.Peek("radar_name") as String;
-                String radar_configuration = TempData.Peek("radar_config") as String;
-                String radar_system = TempData.Peek("radar_sys") as String;
+                connection.Open();
 
-                //we will use them when we display antennas in addantennascan.
-                TempData["rec_id"] = receiver_id;
-                TempData["tra_id"] = transmitter_id;
+                SqlCommand command = connection.CreateCommand();
+                SqlTransaction transaction;
 
-                using (SqlConnection connection = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
+                // Start a local transaction.
+                transaction = connection.BeginTransaction("SampleTransaction");
+
+                // Must assign both transaction object and connection
+                // to Command object for a pending local transaction
+                command.Connection = connection;
+                command.Transaction = transaction;
+
+                try
                 {
-                    connection.Open();
+                    Guid key_location = Guid.NewGuid();
+                    command.CommandText = @"INSERT INTO Location(ID, name, country, city, geographic_latitude, geographic_longitude, airborne) 
+                            VALUES(@ID, @name, @country, @city, @geographic_latitude,@geographic_longitude,@airborne)";
+                    command.Parameters.AddWithValue("@ID", key_location);
+                    command.Parameters.AddWithValue("@name", loc.name);
+                    command.Parameters.AddWithValue("@country", loc.country);
+                    command.Parameters.AddWithValue("@city", loc.city);
+                    command.Parameters.AddWithValue("@geographic_latitude", loc.geographic_latitude);
+                    command.Parameters.AddWithValue("@geographic_longitude", loc.geographic_longitude);
+                    command.Parameters.AddWithValue("@airborne", loc.airborne);
+                    command.ExecuteNonQuery();
 
-                    SqlCommand command = connection.CreateCommand();
-                    SqlTransaction transaction;
+                    command.CommandText = @"INSERT INTO Radar(ID, name, system, configuration, receiver_id, transmitter_id, location_id) 
+                            VALUES(@id, @name_radar, @system, @configuration, @receiver_id, @transmitter_id, @location_id)";
+                    Guid key = Guid.NewGuid();
+                    Datas.RadarID = key;
+                    command.Parameters.AddWithValue("@id", key);
+                    command.Parameters.AddWithValue("@name_radar", Datas.RadarName);
+                    command.Parameters.AddWithValue("@system", Datas.RadarSystem);
+                    command.Parameters.AddWithValue("@configuration", Datas.RadarConfiguration);
+                    command.Parameters.AddWithValue("@receiver_id", Datas.ReceiverID);
+                    command.Parameters.AddWithValue("@transmitter_id", Datas.TransmitterID);
+                    command.Parameters.AddWithValue("@location_id", key_location);
+                    command.ExecuteNonQuery();
 
-                    // Start a local transaction.
-                    transaction = connection.BeginTransaction("SampleTransaction");
+                    // Attempt to commit the transaction.
+                    transaction.Commit();
+                    Console.WriteLine("Both records (radar and its location) are written to database.");
+                    return RedirectToAction("NewMode", "AddMode");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Commit Exception Type: {0}", ex.GetType());
+                    Console.WriteLine("  Message: {0}", ex.Message);
 
-                    // Must assign both transaction object and connection
-                    // to Command object for a pending local transaction
-                    command.Connection = connection;
-                    command.Transaction = transaction;
-
+                    // Attempt to roll back the transaction.
                     try
                     {
-                        Guid key_location = Guid.NewGuid();
-                        command.CommandText = @"INSERT INTO Location(ID, name, country, city, geographic_latitude, geographic_longitude, airborne) 
-                            VALUES(@ID, @name, @country, @city, @geographic_latitude,@geographic_longitude,@airborne)";
-                        command.Parameters.AddWithValue("@ID", key_location);
-                        command.Parameters.AddWithValue("@name", loc.name);
-                        command.Parameters.AddWithValue("@country", loc.country);
-                        command.Parameters.AddWithValue("@city", loc.city);
-                        command.Parameters.AddWithValue("@geographic_latitude", loc.geographic_latitude);
-                        command.Parameters.AddWithValue("@geographic_longitude", loc.geographic_longitude);
-                        command.Parameters.AddWithValue("@airborne", loc.airborne);
-                        command.ExecuteNonQuery();
-
-                        command.CommandText = @"INSERT INTO Radar(ID, name, system, configuration, receiver_id, transmitter_id, location_id) 
-                            VALUES(@id, @name_radar, @system, @configuration, @receiver_id, @transmitter_id, @location_id)";
-                        Guid key = Guid.NewGuid();
-                        command.Parameters.AddWithValue("@id", key);
-                        command.Parameters.AddWithValue("@name_radar", radar_name);
-                        command.Parameters.AddWithValue("@system", radar_system);
-                        command.Parameters.AddWithValue("@configuration", radar_configuration);
-                        command.Parameters.AddWithValue("@receiver_id", receiver_id);
-                        command.Parameters.AddWithValue("@transmitter_id", transmitter_id);
-                        command.Parameters.AddWithValue("@location_id", key_location);
-                        command.ExecuteNonQuery();
-
-                        //We will send it to mode table
-                        TempData["radar_id"] = key;
-                        // Attempt to commit the transaction.
-                        transaction.Commit();
-                        Console.WriteLine("Both records (radar and its location) are written to database.");
-                        return RedirectToAction("NewMode", "AddMode");
+                        transaction.Rollback();
                     }
-                    catch (Exception ex)
+                    catch (Exception ex2)
                     {
-                        Console.WriteLine("Commit Exception Type: {0}", ex.GetType());
-                        Console.WriteLine("  Message: {0}", ex.Message);
-
-                        // Attempt to roll back the transaction.
-                        try
-                        {
-                            transaction.Rollback();
-                        }
-                        catch (Exception ex2)
-                        {
-                            // This catch block will handle any errors that may have occurred
-                            // on the server that would cause the rollback to fail, such as
-                            // a closed connection.
-                            Console.WriteLine("Rollback Exception Type: {0}", ex2.GetType());
-                            Console.WriteLine("  Message: {0}", ex2.Message);
-                        }
+                        // This catch block will handle any errors that may have occurred
+                        // on the server that would cause the rollback to fail, such as
+                        // a closed connection.
+                        Console.WriteLine("Rollback Exception Type: {0}", ex2.GetType());
+                        Console.WriteLine("  Message: {0}", ex2.Message);
                     }
                 }
-            }
-            else
-            {
-                //GO BACK
             }
             return View(loc);
         }

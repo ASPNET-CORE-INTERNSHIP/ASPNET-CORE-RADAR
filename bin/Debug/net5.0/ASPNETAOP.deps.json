@@ -34,6 +34,7 @@
     ".NETCoreApp,Version=v5.0": {
       "ASPNETAOP/1.0.0": {
         "dependencies": {
+          "FluentNHibernate": "3.1.0",
           "Microsoft.Data.SqlClient": "2.1.1",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "5.0.1",
           "PostSharp": "6.8.9",
@@ -224,7 +225,7 @@
           "System.Linq.Reference": "5.0.0.0",
           "System.Linq.Expressions.Reference": "5.0.0.0",
           "System.Linq.Parallel": "5.0.0.0",
-          "System.Linq.Queryable": "5.0.0.0",
+          "System.Linq.Queryable.Reference": "5.0.0.0",
           "System.Memory.Reference": "5.0.0.0",
           "System.Net": "4.0.0.0",
           "System.Net.Http.Reference": "5.0.0.0",
@@ -270,9 +271,9 @@
           "System.Runtime.Loader": "5.0.0.0",
           "System.Runtime.Numerics.Reference": "5.0.0.0",
           "System.Runtime.Serialization": "4.0.0.0",
-          "System.Runtime.Serialization.Formatters": "5.0.0.0",
+          "System.Runtime.Serialization.Formatters.Reference": "5.0.0.0",
           "System.Runtime.Serialization.Json": "5.0.0.0",
-          "System.Runtime.Serialization.Primitives": "5.0.0.0",
+          "System.Runtime.Serialization.Primitives.Reference": "5.0.0.0",
           "System.Runtime.Serialization.Xml": "5.0.0.0",
           "System.Security.AccessControl.Reference": "5.0.0.0",
           "System.Security.Claims": "5.0.0.0",
@@ -331,6 +332,34 @@
           "ASPNETAOP.dll": {}
         }
       },
+      "Antlr3.Runtime/3.5.1": {
+        "dependencies": {
+          "NETStandard.Library": "1.6.1"
+        },
+        "runtime": {
+          "lib/netstandard1.1/Antlr3.Runtime.dll": {
+            "assemblyVersion": "3.5.0.2",
+            "fileVersion": "3.5.1.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard1.1/Antlr3.Runtime.dll": {}
+        }
+      },
+      "FluentNHibernate/3.1.0": {
+        "dependencies": {
+          "NHibernate": "5.3.3"
+        },
+        "runtime": {
+          "lib/netcoreapp2.0/FluentNHibernate.dll": {
+            "assemblyVersion": "3.1.0.0",
+            "fileVersion": "3.1.0.0"
+          }
+        },
+        "compile": {
+          "lib/netcoreapp2.0/FluentNHibernate.dll": {}
+        }
+      },
       "Humanizer.Core/2.2.0": {
         "dependencies": {
           "NETStandard.Library": "1.6.1"
@@ -340,6 +369,21 @@
             "assemblyVersion": "2.2.0.0",
             "fileVersion": "2.2.0.0"
           }
+        }
+      },
+      "Iesi.Collections/4.0.4": {
+        "dependencies": {
+          "NETStandard.Library": "1.6.1",
+          "System.Runtime.Serialization.Formatters": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard1.3/Iesi.Collections.dll": {
+            "assemblyVersion": "4.0.0.4000",
+            "fileVersion": "4.0.4.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard1.3/Iesi.Collections.dll": {}
         }
       },
       "Microsoft.AspNetCore.Html.Abstractions/2.2.0": {
@@ -988,6 +1032,24 @@
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         }
       },
+      "NHibernate/5.3.3": {
+        "dependencies": {
+          "Antlr3.Runtime": "3.5.1",
+          "Iesi.Collections": "4.0.4",
+          "Remotion.Linq": "2.2.0",
+          "Remotion.Linq.EagerFetching": "2.2.0",
+          "System.Configuration.ConfigurationManager": "5.0.0"
+        },
+        "runtime": {
+          "lib/netcoreapp2.0/NHibernate.dll": {
+            "assemblyVersion": "5.3.0.0",
+            "fileVersion": "5.3.3.0"
+          }
+        },
+        "compile": {
+          "lib/netcoreapp2.0/NHibernate.dll": {}
+        }
+      },
       "PostSharp/6.8.9": {
         "dependencies": {
           "PostSharp.Redist": "6.8.9"
@@ -1002,6 +1064,50 @@
         },
         "compile": {
           "lib/net5.0/PostSharp.dll": {}
+        }
+      },
+      "Remotion.Linq/2.2.0": {
+        "dependencies": {
+          "System.Collections": "4.3.0",
+          "System.Diagnostics.Debug": "4.3.0",
+          "System.Linq": "4.3.0",
+          "System.Linq.Expressions": "4.3.0",
+          "System.Linq.Queryable": "4.0.1",
+          "System.ObjectModel": "4.3.0",
+          "System.Reflection": "4.3.0",
+          "System.Reflection.Extensions": "4.3.0",
+          "System.Runtime": "4.3.0",
+          "System.Runtime.Extensions": "4.3.0",
+          "System.Threading": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard1.0/Remotion.Linq.dll": {
+            "assemblyVersion": "2.2.0.0",
+            "fileVersion": "2.2.0.30000"
+          }
+        },
+        "compile": {
+          "lib/netstandard1.0/Remotion.Linq.dll": {}
+        }
+      },
+      "Remotion.Linq.EagerFetching/2.2.0": {
+        "dependencies": {
+          "Remotion.Linq": "2.2.0",
+          "System.Collections": "4.3.0",
+          "System.Linq": "4.3.0",
+          "System.Linq.Expressions": "4.3.0",
+          "System.ObjectModel": "4.3.0",
+          "System.Reflection": "4.3.0",
+          "System.Runtime": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard1.0/Remotion.Linq.EagerFetching.dll": {
+            "assemblyVersion": "2.2.0.0",
+            "fileVersion": "2.2.0.30000"
+          }
+        },
+        "compile": {
+          "lib/netstandard1.0/Remotion.Linq.EagerFetching.dll": {}
         }
       },
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
@@ -1457,6 +1563,18 @@
           "System.Threading": "4.3.0"
         }
       },
+      "System.Linq.Queryable/4.0.1": {
+        "dependencies": {
+          "System.Collections": "4.3.0",
+          "System.Diagnostics.Debug": "4.3.0",
+          "System.Linq": "4.3.0",
+          "System.Linq.Expressions": "4.3.0",
+          "System.Reflection": "4.3.0",
+          "System.Reflection.Extensions": "4.3.0",
+          "System.Resources.ResourceManager": "4.3.0",
+          "System.Runtime": "4.3.0"
+        }
+      },
       "System.Memory/4.5.4": {},
       "System.Net.Http/4.3.0": {
         "dependencies": {
@@ -1646,6 +1764,21 @@
           "System.Resources.ResourceManager": "4.3.0",
           "System.Runtime": "4.3.0",
           "System.Runtime.Extensions": "4.3.0"
+        }
+      },
+      "System.Runtime.Serialization.Formatters/4.3.0": {
+        "dependencies": {
+          "System.Collections": "4.3.0",
+          "System.Reflection": "4.3.0",
+          "System.Resources.ResourceManager": "4.3.0",
+          "System.Runtime": "4.3.0",
+          "System.Runtime.Serialization.Primitives": "4.3.0"
+        }
+      },
+      "System.Runtime.Serialization.Primitives/4.3.0": {
+        "dependencies": {
+          "System.Resources.ResourceManager": "4.3.0",
+          "System.Runtime": "4.3.0"
         }
       },
       "System.Security.AccessControl/5.0.0": {
@@ -2977,7 +3110,7 @@
         },
         "compileOnly": true
       },
-      "System.Linq.Queryable/5.0.0.0": {
+      "System.Linq.Queryable.Reference/5.0.0.0": {
         "compile": {
           "System.Linq.Queryable.dll": {}
         },
@@ -3253,7 +3386,7 @@
         },
         "compileOnly": true
       },
-      "System.Runtime.Serialization.Formatters/5.0.0.0": {
+      "System.Runtime.Serialization.Formatters.Reference/5.0.0.0": {
         "compile": {
           "System.Runtime.Serialization.Formatters.dll": {}
         },
@@ -3265,7 +3398,7 @@
         },
         "compileOnly": true
       },
-      "System.Runtime.Serialization.Primitives/5.0.0.0": {
+      "System.Runtime.Serialization.Primitives.Reference/5.0.0.0": {
         "compile": {
           "System.Runtime.Serialization.Primitives.dll": {}
         },
@@ -3579,12 +3712,33 @@
       "serviceable": false,
       "sha512": ""
     },
+    "Antlr3.Runtime/3.5.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ZwCEpLCLZXkjzf1lYEixp9hgVlYYk33ACHn6xjFyVhGRi2BpoYQez0qtatbetdylASWYTG+cGz0CGR4z66JM4w==",
+      "path": "antlr3.runtime/3.5.1",
+      "hashPath": "antlr3.runtime.3.5.1.nupkg.sha512"
+    },
+    "FluentNHibernate/3.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-hPBdWol6CRPDoG6Qfmy14uR7zwrQB9ElitQhSIei829I1lMmVvoK9C0eFux8tMuCeNKi0NeDl0+4JFj+O32zQw==",
+      "path": "fluentnhibernate/3.1.0",
+      "hashPath": "fluentnhibernate.3.1.0.nupkg.sha512"
+    },
     "Humanizer.Core/2.2.0": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-rsYXB7+iUPP8AHgQ8JP2UZI2xK2KhjcdGr9E6zX3CsZaTLCaw8M35vaAJRo1rfxeaZEVMuXeaquLVCkZ7JcZ5Q==",
       "path": "humanizer.core/2.2.0",
       "hashPath": "humanizer.core.2.2.0.nupkg.sha512"
+    },
+    "Iesi.Collections/4.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-jlebSjv2a7amYfKXEUsPDSf2Yi9r0/FkvvT6Dy7ehl7z8du+dTGqKDu+fYbnE+WuIz/v3prYm1jpBljMrY1p+Q==",
+      "path": "iesi.collections/4.0.4",
+      "hashPath": "iesi.collections.4.0.4.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Html.Abstractions/2.2.0": {
       "type": "package",
@@ -3845,6 +3999,13 @@
       "path": "newtonsoft.json/11.0.2",
       "hashPath": "newtonsoft.json.11.0.2.nupkg.sha512"
     },
+    "NHibernate/5.3.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ar4yr/NgtkysCK46UsEPmraqlAsfDOgpda9tWDRhN0K/N/A2X3rDOFaVg3f+ab3L6oy/+C2hAcUM7sZIBFhq+g==",
+      "path": "nhibernate/5.3.3",
+      "hashPath": "nhibernate.5.3.3.nupkg.sha512"
+    },
     "PostSharp/6.8.9": {
       "type": "package",
       "serviceable": true,
@@ -3858,6 +4019,20 @@
       "sha512": "sha512-3lMqQUNq24aDRed1SH8CGH5gGkdhyY+2kqjjr3BqR/LRZBH8kEHd3Tg8H6MMx7n8vkdHkVsthLmJ76DXY7IBUQ==",
       "path": "postsharp.redist/6.8.9",
       "hashPath": "postsharp.redist.6.8.9.nupkg.sha512"
+    },
+    "Remotion.Linq/2.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-fK/76UmpC0FXBlGDFVPLJHQlDLYnGC+XY3eoDgCgbtrhi0vzbXDQ3n/IYHhqSKqXQfGw/u04A1drWs7rFVkRjw==",
+      "path": "remotion.linq/2.2.0",
+      "hashPath": "remotion.linq.2.2.0.nupkg.sha512"
+    },
+    "Remotion.Linq.EagerFetching/2.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-d6bkH5kROJPFsdvDy4yQved9I4ickamytPByPyuQcH9dk1ef4jciajo50vTQhheyOHeWOgLh97UvkiHV8QSgeQ==",
+      "path": "remotion.linq.eagerfetching/2.2.0",
+      "hashPath": "remotion.linq.eagerfetching.2.2.0.nupkg.sha512"
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
       "type": "package",
@@ -4209,6 +4384,13 @@
       "path": "system.linq.expressions/4.3.0",
       "hashPath": "system.linq.expressions.4.3.0.nupkg.sha512"
     },
+    "System.Linq.Queryable/4.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Yn/WfYe9RoRfmSLvUt2JerP0BTGGykCZkQPgojaxgzF2N0oPo+/AhB8TXOpdCcNlrG3VRtsamtK2uzsp3cqRVw==",
+      "path": "system.linq.queryable/4.0.1",
+      "hashPath": "system.linq.queryable.4.0.1.nupkg.sha512"
+    },
     "System.Memory/4.5.4": {
       "type": "package",
       "serviceable": true,
@@ -4362,6 +4544,20 @@
       "sha512": "sha512-yMH+MfdzHjy17l2KESnPiF2dwq7T+xLnSJar7slyimAkUh/gTrS9/UQOtv7xarskJ2/XDSNvfLGOBQPjL7PaHQ==",
       "path": "system.runtime.numerics/4.3.0",
       "hashPath": "system.runtime.numerics.4.3.0.nupkg.sha512"
+    },
+    "System.Runtime.Serialization.Formatters/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-KT591AkTNFOTbhZlaeMVvfax3RqhH1EJlcwF50Wm7sfnBLuHiOeZRRKrr1ns3NESkM20KPZ5Ol/ueMq5vg4QoQ==",
+      "path": "system.runtime.serialization.formatters/4.3.0",
+      "hashPath": "system.runtime.serialization.formatters.4.3.0.nupkg.sha512"
+    },
+    "System.Runtime.Serialization.Primitives/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Wz+0KOukJGAlXjtKr+5Xpuxf8+c8739RI1C+A2BoQZT+wMCCoMDDdO8/4IRHfaVINqL78GO8dW8G2lW/e45Mcw==",
+      "path": "system.runtime.serialization.primitives/4.3.0",
+      "hashPath": "system.runtime.serialization.primitives.4.3.0.nupkg.sha512"
     },
     "System.Security.AccessControl/5.0.0": {
       "type": "package",
@@ -5444,7 +5640,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "System.Linq.Queryable/5.0.0.0": {
+    "System.Linq.Queryable.Reference/5.0.0.0": {
       "type": "referenceassembly",
       "serviceable": false,
       "sha512": ""
@@ -5674,7 +5870,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "System.Runtime.Serialization.Formatters/5.0.0.0": {
+    "System.Runtime.Serialization.Formatters.Reference/5.0.0.0": {
       "type": "referenceassembly",
       "serviceable": false,
       "sha512": ""
@@ -5684,7 +5880,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "System.Runtime.Serialization.Primitives/5.0.0.0": {
+    "System.Runtime.Serialization.Primitives.Reference/5.0.0.0": {
       "type": "referenceassembly",
       "serviceable": false,
       "sha512": ""

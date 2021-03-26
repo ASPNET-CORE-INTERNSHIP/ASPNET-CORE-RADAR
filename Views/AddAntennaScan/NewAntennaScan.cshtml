@@ -9,10 +9,6 @@
 <hr />
 <div class="row">
     <div class="col-md-9">
-        @{ Guid radar_id = (Guid)@TempData["radar_id"];}
-        @{ Guid mode_id = (Guid)@TempData["mode_id"];}
-        @{ TempData["mode_id"] = mode_id;}
-        @{ TempData["radar_id"] = radar_id;}
         <form asp-action="NewAntennaScan">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <table class="table">
@@ -50,13 +46,13 @@
                 <input type="submit" value="Add" class="btn btn-primary" />
             </div>
             <div>
-                <input type="button" title="AddSubmode" value="Add Submode" onclick="location.href='@Url.Action("GoToSubmode", "AddAntennaScan", new { radar_id = radar_id, mode_id = mode_id })'" />
+                <input type="button" title="AddSubmode" value="Add Submode" onclick="location.href='@Url.Action("GoToSubmode", "AddAntennaScan")'" />
             </div>
             <div>
-                <input type="button" title="AddMode" value="Add Mode" onclick="location.href='@Url.Action("GoToMode", "AddAntennaScan", new { radar_id = radar_id })'" />
+                <input type="button" title="AddMode" value="Add Mode" onclick="location.href='@Url.Action("GoToMode", "AddAntennaScan")'" />
             </div>
             <div>
-                <input type="button" title="Done" value="DONE!" onclick="location.href='@Url.Action("Done", "AddAntennaScan", new { radar_id = radar_id })'" />
+                <input type="button" title="Done" value="DONE!" onclick="location.href='@Url.Action("Done", "AddAntennaScan")'" />
             </div>
             <b>@ViewData["Message"]</b>
         </form>

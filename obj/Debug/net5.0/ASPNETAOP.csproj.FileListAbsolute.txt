@@ -1285,3 +1285,9 @@ C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR-\obj\Debug\net5.0\ASPNETAOP.dll
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR-\obj\Debug\net5.0\ASPNETAOP.pdb
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR-\obj\Debug\net5.0\ASPNETAOP.genruntimeconfig.cache
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR-\obj\Debug\net5.0\PostSharp\postsharp.app.config
+C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\Antlr3.Runtime.dll
+C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\FluentNHibernate.dll
+C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\Iesi.Collections.dll
+C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\NHibernate.dll
+C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\Remotion.Linq.dll
+C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\Remotion.Linq.EagerFetching.dll

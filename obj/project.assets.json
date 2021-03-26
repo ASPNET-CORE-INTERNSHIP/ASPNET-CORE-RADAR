@@ -2,6 +2,30 @@
   "version": 3,
   "targets": {
     "net5.0": {
+      "Antlr3.Runtime/3.5.1": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0"
+        },
+        "compile": {
+          "lib/netstandard1.1/Antlr3.Runtime.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.1/Antlr3.Runtime.dll": {}
+        }
+      },
+      "FluentNHibernate/3.1.0": {
+        "type": "package",
+        "dependencies": {
+          "NHibernate": "5.3.3"
+        },
+        "compile": {
+          "lib/netcoreapp2.0/FluentNHibernate.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp2.0/FluentNHibernate.dll": {}
+        }
+      },
       "Humanizer.Core/2.2.0": {
         "type": "package",
         "dependencies": {
@@ -12,6 +36,19 @@
         },
         "runtime": {
           "lib/netstandard1.0/Humanizer.dll": {}
+        }
+      },
+      "Iesi.Collections/4.0.4": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1",
+          "System.Runtime.Serialization.Formatters": "4.3.0"
+        },
+        "compile": {
+          "lib/netstandard1.3/Iesi.Collections.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/Iesi.Collections.dll": {}
         }
       },
       "Microsoft.AspNetCore.Html.Abstractions/2.2.0": {
@@ -606,7 +643,7 @@
           "System.Runtime": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {}
+          "ref/netstandard1.3/Microsoft.Win32.Primitives.dll": {}
         }
       },
       "Microsoft.Win32.Registry/4.7.0": {
@@ -708,6 +745,22 @@
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         }
       },
+      "NHibernate/5.3.3": {
+        "type": "package",
+        "dependencies": {
+          "Antlr3.Runtime": "[3.5.1, 4.0.0)",
+          "Iesi.Collections": "[4.0.4, 5.0.0)",
+          "Remotion.Linq": "[2.2.0, 3.0.0)",
+          "Remotion.Linq.EagerFetching": "[2.2.0, 3.0.0)",
+          "System.Configuration.ConfigurationManager": "4.4.1"
+        },
+        "compile": {
+          "lib/netcoreapp2.0/NHibernate.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp2.0/NHibernate.dll": {}
+        }
+      },
       "PostSharp/6.8.9": {
         "type": "package",
         "dependencies": {
@@ -731,6 +784,46 @@
         },
         "runtime": {
           "lib/net5.0/PostSharp.dll": {}
+        }
+      },
+      "Remotion.Linq/2.2.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Collections": "4.0.11",
+          "System.Diagnostics.Debug": "4.0.11",
+          "System.Linq": "4.1.0",
+          "System.Linq.Expressions": "4.1.0",
+          "System.Linq.Queryable": "4.0.1",
+          "System.ObjectModel": "4.0.12",
+          "System.Reflection": "4.1.0",
+          "System.Reflection.Extensions": "4.0.1",
+          "System.Runtime": "4.1.0",
+          "System.Runtime.Extensions": "4.1.0",
+          "System.Threading": "4.0.11"
+        },
+        "compile": {
+          "lib/netstandard1.0/Remotion.Linq.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.0/Remotion.Linq.dll": {}
+        }
+      },
+      "Remotion.Linq.EagerFetching/2.2.0": {
+        "type": "package",
+        "dependencies": {
+          "Remotion.Linq": "2.2.0",
+          "System.Collections": "4.0.11",
+          "System.Linq": "4.1.0",
+          "System.Linq.Expressions": "4.1.0",
+          "System.ObjectModel": "4.0.12",
+          "System.Reflection": "4.1.0",
+          "System.Runtime": "4.1.0"
+        },
+        "compile": {
+          "lib/netstandard1.0/Remotion.Linq.EagerFetching.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.0/Remotion.Linq.EagerFetching.dll": {}
         }
       },
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
@@ -945,7 +1038,7 @@
           "System.Runtime": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.6/_._": {}
+          "ref/netstandard1.6/System.AppContext.dll": {}
         },
         "runtime": {
           "lib/netstandard1.6/System.AppContext.dll": {}
@@ -993,7 +1086,7 @@
           "System.Threading.Tasks": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {}
+          "ref/netstandard1.3/System.Collections.Concurrent.dll": {}
         },
         "runtime": {
           "lib/netstandard1.3/System.Collections.Concurrent.dll": {}
@@ -1145,7 +1238,7 @@
           "System.Text.Encoding": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {}
+          "ref/netstandard1.3/System.Console.dll": {}
         }
       },
       "System.Data.SqlClient/4.8.2": {
@@ -1211,7 +1304,7 @@
           "System.Runtime": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.5/_._": {}
+          "ref/netstandard1.5/System.Diagnostics.Tracing.dll": {}
         }
       },
       "System.Drawing.Common/5.0.0": {
@@ -1256,7 +1349,7 @@
           "System.Runtime": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {}
+          "ref/netstandard1.3/System.Globalization.Calendars.dll": {}
         }
       },
       "System.Globalization.Extensions/4.3.0": {
@@ -1329,7 +1422,7 @@
           "runtime.native.System.IO.Compression": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {}
+          "ref/netstandard1.3/System.IO.Compression.dll": {}
         },
         "runtimeTargets": {
           "runtimes/unix/lib/netstandard1.3/System.IO.Compression.dll": {
@@ -1356,7 +1449,7 @@
           "System.Text.Encoding": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {}
+          "ref/netstandard1.3/System.IO.Compression.ZipFile.dll": {}
         },
         "runtime": {
           "lib/netstandard1.3/System.IO.Compression.ZipFile.dll": {}
@@ -1375,7 +1468,7 @@
           "System.Threading.Tasks": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {}
+          "ref/netstandard1.3/System.IO.FileSystem.dll": {}
         }
       },
       "System.IO.FileSystem.Primitives/4.3.0": {
@@ -1384,7 +1477,7 @@
           "System.Runtime": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {}
+          "ref/netstandard1.3/System.IO.FileSystem.Primitives.dll": {}
         },
         "runtime": {
           "lib/netstandard1.3/System.IO.FileSystem.Primitives.dll": {}
@@ -1434,6 +1527,25 @@
           "lib/netstandard1.6/System.Linq.Expressions.dll": {}
         }
       },
+      "System.Linq.Queryable/4.0.1": {
+        "type": "package",
+        "dependencies": {
+          "System.Collections": "4.0.11",
+          "System.Diagnostics.Debug": "4.0.11",
+          "System.Linq": "4.1.0",
+          "System.Linq.Expressions": "4.1.0",
+          "System.Reflection": "4.1.0",
+          "System.Reflection.Extensions": "4.0.1",
+          "System.Resources.ResourceManager": "4.0.1",
+          "System.Runtime": "4.1.0"
+        },
+        "compile": {
+          "ref/netstandard1.0/System.Linq.Queryable.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/System.Linq.Queryable.dll": {}
+        }
+      },
       "System.Memory/4.5.4": {
         "type": "package",
         "compile": {
@@ -1474,7 +1586,7 @@
           "runtime.native.System.Security.Cryptography.OpenSsl": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {}
+          "ref/netstandard1.3/System.Net.Http.dll": {}
         },
         "runtimeTargets": {
           "runtimes/unix/lib/netstandard1.6/System.Net.Http.dll": {
@@ -1496,7 +1608,7 @@
           "System.Runtime.Handles": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {}
+          "ref/netstandard1.3/System.Net.Primitives.dll": {}
         }
       },
       "System.Net.Sockets/4.3.0": {
@@ -1510,7 +1622,7 @@
           "System.Threading.Tasks": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {}
+          "ref/netstandard1.3/System.Net.Sockets.dll": {}
         }
       },
       "System.ObjectModel/4.3.0": {
@@ -1701,7 +1813,7 @@
           "System.Runtime": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {}
+          "ref/netstandard1.3/System.Runtime.Handles.dll": {}
         }
       },
       "System.Runtime.InteropServices/4.3.0": {
@@ -1715,7 +1827,7 @@
           "System.Runtime.Handles": "4.3.0"
         },
         "compile": {
-          "ref/netcoreapp1.1/_._": {}
+          "ref/netcoreapp1.1/System.Runtime.InteropServices.dll": {}
         }
       },
       "System.Runtime.InteropServices.RuntimeInformation/4.3.0": {
@@ -1730,7 +1842,7 @@
           "runtime.native.System": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.1/_._": {}
+          "ref/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll": {}
         },
         "runtime": {
           "lib/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll": {}
@@ -1755,10 +1867,39 @@
           "System.Runtime.Extensions": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.1/_._": {}
+          "ref/netstandard1.1/System.Runtime.Numerics.dll": {}
         },
         "runtime": {
           "lib/netstandard1.3/System.Runtime.Numerics.dll": {}
+        }
+      },
+      "System.Runtime.Serialization.Formatters/4.3.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Collections": "4.3.0",
+          "System.Reflection": "4.3.0",
+          "System.Resources.ResourceManager": "4.3.0",
+          "System.Runtime": "4.3.0",
+          "System.Runtime.Serialization.Primitives": "4.3.0"
+        },
+        "compile": {
+          "ref/netstandard1.3/System.Runtime.Serialization.Formatters.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.4/System.Runtime.Serialization.Formatters.dll": {}
+        }
+      },
+      "System.Runtime.Serialization.Primitives/4.3.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Resources.ResourceManager": "4.3.0",
+          "System.Runtime": "4.3.0"
+        },
+        "compile": {
+          "ref/netstandard1.3/System.Runtime.Serialization.Primitives.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/System.Runtime.Serialization.Primitives.dll": {}
         }
       },
       "System.Security.AccessControl/5.0.0": {
@@ -1799,7 +1940,7 @@
           "runtime.native.System.Security.Cryptography.OpenSsl": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.6/_._": {}
+          "ref/netstandard1.6/System.Security.Cryptography.Algorithms.dll": {}
         },
         "runtimeTargets": {
           "runtimes/osx/lib/netstandard1.6/System.Security.Cryptography.Algorithms.dll": {
@@ -1879,7 +2020,7 @@
           "runtime.native.System.Security.Cryptography.OpenSsl": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {}
+          "ref/netstandard1.3/System.Security.Cryptography.Encoding.dll": {}
         },
         "runtimeTargets": {
           "runtimes/unix/lib/netstandard1.3/System.Security.Cryptography.Encoding.dll": {
@@ -1934,7 +2075,7 @@
           "System.Threading.Tasks": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {}
+          "ref/netstandard1.3/System.Security.Cryptography.Primitives.dll": {}
         },
         "runtime": {
           "lib/netstandard1.3/System.Security.Cryptography.Primitives.dll": {}
@@ -1985,7 +2126,7 @@
           "runtime.native.System.Security.Cryptography.OpenSsl": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.4/_._": {}
+          "ref/netstandard1.4/System.Security.Cryptography.X509Certificates.dll": {}
         },
         "runtimeTargets": {
           "runtimes/unix/lib/netstandard1.6/System.Security.Cryptography.X509Certificates.dll": {
@@ -2068,7 +2209,7 @@
           "System.Text.Encoding": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {}
+          "ref/netstandard1.3/System.Text.Encoding.Extensions.dll": {}
         }
       },
       "System.Text.Encodings.Web/4.5.0": {
@@ -2086,7 +2227,7 @@
           "System.Runtime": "4.3.0"
         },
         "compile": {
-          "ref/netcoreapp1.1/_._": {}
+          "ref/netcoreapp1.1/System.Text.RegularExpressions.dll": {}
         },
         "runtime": {
           "lib/netstandard1.6/System.Text.RegularExpressions.dll": {}
@@ -2133,7 +2274,7 @@
           "System.Runtime": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.2/_._": {}
+          "ref/netstandard1.2/System.Threading.Timer.dll": {}
         }
       },
       "System.Windows.Extensions/5.0.0": {
@@ -2174,7 +2315,7 @@
           "System.Threading.Tasks.Extensions": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {}
+          "ref/netstandard1.3/System.Xml.ReaderWriter.dll": {}
         },
         "runtime": {
           "lib/netstandard1.3/System.Xml.ReaderWriter.dll": {}
@@ -2197,7 +2338,7 @@
           "System.Xml.ReaderWriter": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {}
+          "ref/netstandard1.3/System.Xml.XDocument.dll": {}
         },
         "runtime": {
           "lib/netstandard1.3/System.Xml.XDocument.dll": {}
@@ -2206,6 +2347,46 @@
     }
   },
   "libraries": {
+    "Antlr3.Runtime/3.5.1": {
+      "sha512": "ZwCEpLCLZXkjzf1lYEixp9hgVlYYk33ACHn6xjFyVhGRi2BpoYQez0qtatbetdylASWYTG+cGz0CGR4z66JM4w==",
+      "type": "package",
+      "path": "antlr3.runtime/3.5.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "antlr3.runtime.3.5.1.nupkg.sha512",
+        "antlr3.runtime.nuspec",
+        "lib/net20/Antlr3.Runtime.dll",
+        "lib/net20/Antlr3.Runtime.xml",
+        "lib/net40-client/Antlr3.Runtime.dll",
+        "lib/net40-client/Antlr3.Runtime.xml",
+        "lib/netstandard1.1/Antlr3.Runtime.dll",
+        "lib/netstandard1.1/Antlr3.Runtime.xml",
+        "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/Antlr3.Runtime.dll",
+        "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/Antlr3.Runtime.xml"
+      ]
+    },
+    "FluentNHibernate/3.1.0": {
+      "sha512": "hPBdWol6CRPDoG6Qfmy14uR7zwrQB9ElitQhSIei829I1lMmVvoK9C0eFux8tMuCeNKi0NeDl0+4JFj+O32zQw==",
+      "type": "package",
+      "path": "fluentnhibernate/3.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "fluentnhibernate.3.1.0.nupkg.sha512",
+        "fluentnhibernate.nuspec",
+        "lib/net461/FluentNHibernate.dll",
+        "lib/net461/FluentNHibernate.pdb",
+        "lib/net461/FluentNHibernate.xml",
+        "lib/netcoreapp2.0/FluentNHibernate.dll",
+        "lib/netcoreapp2.0/FluentNHibernate.pdb",
+        "lib/netcoreapp2.0/FluentNHibernate.xml",
+        "lib/netstandard2.0/FluentNHibernate.dll",
+        "lib/netstandard2.0/FluentNHibernate.pdb",
+        "lib/netstandard2.0/FluentNHibernate.xml",
+        "logo-nuget.png"
+      ]
+    },
     "Humanizer.Core/2.2.0": {
       "sha512": "rsYXB7+iUPP8AHgQ8JP2UZI2xK2KhjcdGr9E6zX3CsZaTLCaw8M35vaAJRo1rfxeaZEVMuXeaquLVCkZ7JcZ5Q==",
       "type": "package",
@@ -2216,6 +2397,25 @@
         "humanizer.core.2.2.0.nupkg.sha512",
         "humanizer.core.nuspec",
         "lib/netstandard1.0/Humanizer.dll"
+      ]
+    },
+    "Iesi.Collections/4.0.4": {
+      "sha512": "jlebSjv2a7amYfKXEUsPDSf2Yi9r0/FkvvT6Dy7ehl7z8du+dTGqKDu+fYbnE+WuIz/v3prYm1jpBljMrY1p+Q==",
+      "type": "package",
+      "path": "iesi.collections/4.0.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "iesi.collections.4.0.4.nupkg.sha512",
+        "iesi.collections.nuspec",
+        "lib/net40/Iesi.Collections.dll",
+        "lib/net40/Iesi.Collections.xml",
+        "lib/net461/Iesi.Collections.dll",
+        "lib/net461/Iesi.Collections.xml",
+        "lib/netstandard1.0/Iesi.Collections.dll",
+        "lib/netstandard1.0/Iesi.Collections.xml",
+        "lib/netstandard1.3/Iesi.Collections.dll",
+        "lib/netstandard1.3/Iesi.Collections.xml"
       ]
     },
     "Microsoft.AspNetCore.Html.Abstractions/2.2.0": {
@@ -3520,6 +3720,41 @@
         "newtonsoft.json.nuspec"
       ]
     },
+    "NHibernate/5.3.3": {
+      "sha512": "ar4yr/NgtkysCK46UsEPmraqlAsfDOgpda9tWDRhN0K/N/A2X3rDOFaVg3f+ab3L6oy/+C2hAcUM7sZIBFhq+g==",
+      "type": "package",
+      "path": "nhibernate/5.3.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "ConfigurationTemplates/FireBird.cfg.xml",
+        "ConfigurationTemplates/HANA.cfg.xml",
+        "ConfigurationTemplates/MSSQL.cfg.xml",
+        "ConfigurationTemplates/MySql.cfg.xml",
+        "ConfigurationTemplates/Oracle-Managed.cfg.xml",
+        "ConfigurationTemplates/Oracle.cfg.xml",
+        "ConfigurationTemplates/PostgreSQL.cfg.xml",
+        "ConfigurationTemplates/SQLite.cfg.xml",
+        "ConfigurationTemplates/SapSQLAnywhere.cfg.xml",
+        "ConfigurationTemplates/SqlServerCe.cfg.xml",
+        "ConfigurationTemplates/SybaseASE.cfg.xml",
+        "ConfigurationTemplates/SybaseSQLAnywhere.cfg.xml",
+        "NHibernate-NuGet.png",
+        "NHibernate.license.txt",
+        "NHibernate.readme.md",
+        "NHibernate.releasenotes.txt",
+        "lib/net461/NHibernate.dll",
+        "lib/net461/NHibernate.xml",
+        "lib/netcoreapp2.0/NHibernate.dll",
+        "lib/netcoreapp2.0/NHibernate.xml",
+        "lib/netstandard2.0/NHibernate.dll",
+        "lib/netstandard2.0/NHibernate.xml",
+        "nhibernate-configuration.xsd",
+        "nhibernate-mapping.xsd",
+        "nhibernate.5.3.3.nupkg.sha512",
+        "nhibernate.nuspec"
+      ]
+    },
     "PostSharp/6.8.9": {
       "sha512": "XVM7KL2KrAU5AGET4gjZA2O9mVTSvUvSguc3Yn7WEF0wamY+CLm7CfBYD5V9AaczmrvvaCScns96bi8YgdRCxw==",
       "type": "package",
@@ -3578,6 +3813,48 @@
         "lib/netstandard2.0/PostSharp.xml",
         "postsharp.redist.6.8.9.nupkg.sha512",
         "postsharp.redist.nuspec"
+      ]
+    },
+    "Remotion.Linq/2.2.0": {
+      "sha512": "fK/76UmpC0FXBlGDFVPLJHQlDLYnGC+XY3eoDgCgbtrhi0vzbXDQ3n/IYHhqSKqXQfGw/u04A1drWs7rFVkRjw==",
+      "type": "package",
+      "path": "remotion.linq/2.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net35/Remotion.Linq.XML",
+        "lib/net35/Remotion.Linq.dll",
+        "lib/net40/Remotion.Linq.XML",
+        "lib/net40/Remotion.Linq.dll",
+        "lib/net45/Remotion.Linq.XML",
+        "lib/net45/Remotion.Linq.dll",
+        "lib/netstandard1.0/Remotion.Linq.dll",
+        "lib/netstandard1.0/Remotion.Linq.xml",
+        "lib/portable-net45+win+wpa81+wp80/Remotion.Linq.dll",
+        "lib/portable-net45+win+wpa81+wp80/Remotion.Linq.xml",
+        "remotion.linq.2.2.0.nupkg.sha512",
+        "remotion.linq.nuspec"
+      ]
+    },
+    "Remotion.Linq.EagerFetching/2.2.0": {
+      "sha512": "d6bkH5kROJPFsdvDy4yQved9I4ickamytPByPyuQcH9dk1ef4jciajo50vTQhheyOHeWOgLh97UvkiHV8QSgeQ==",
+      "type": "package",
+      "path": "remotion.linq.eagerfetching/2.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net35/Remotion.Linq.EagerFetching.XML",
+        "lib/net35/Remotion.Linq.EagerFetching.dll",
+        "lib/net40/Remotion.Linq.EagerFetching.XML",
+        "lib/net40/Remotion.Linq.EagerFetching.dll",
+        "lib/net45/Remotion.Linq.EagerFetching.XML",
+        "lib/net45/Remotion.Linq.EagerFetching.dll",
+        "lib/netstandard1.0/Remotion.Linq.EagerFetching.dll",
+        "lib/netstandard1.0/Remotion.Linq.EagerFetching.xml",
+        "lib/portable-net45+win+wpa81+wp80/Remotion.Linq.EagerFetching.dll",
+        "lib/portable-net45+win+wpa81+wp80/Remotion.Linq.EagerFetching.xml",
+        "remotion.linq.eagerfetching.2.2.0.nupkg.sha512",
+        "remotion.linq.eagerfetching.nuspec"
       ]
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
@@ -5205,6 +5482,65 @@
         "system.linq.expressions.nuspec"
       ]
     },
+    "System.Linq.Queryable/4.0.1": {
+      "sha512": "Yn/WfYe9RoRfmSLvUt2JerP0BTGGykCZkQPgojaxgzF2N0oPo+/AhB8TXOpdCcNlrG3VRtsamtK2uzsp3cqRVw==",
+      "type": "package",
+      "path": "system.linq.queryable/4.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "ThirdPartyNotices.txt",
+        "dotnet_library_license.txt",
+        "lib/monoandroid10/_._",
+        "lib/monotouch10/_._",
+        "lib/net45/_._",
+        "lib/netcore50/System.Linq.Queryable.dll",
+        "lib/netstandard1.3/System.Linq.Queryable.dll",
+        "lib/portable-net45+win8+wp8+wpa81/_._",
+        "lib/win8/_._",
+        "lib/wp80/_._",
+        "lib/wpa81/_._",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/monoandroid10/_._",
+        "ref/monotouch10/_._",
+        "ref/net45/_._",
+        "ref/netcore50/System.Linq.Queryable.dll",
+        "ref/netcore50/System.Linq.Queryable.xml",
+        "ref/netcore50/de/System.Linq.Queryable.xml",
+        "ref/netcore50/es/System.Linq.Queryable.xml",
+        "ref/netcore50/fr/System.Linq.Queryable.xml",
+        "ref/netcore50/it/System.Linq.Queryable.xml",
+        "ref/netcore50/ja/System.Linq.Queryable.xml",
+        "ref/netcore50/ko/System.Linq.Queryable.xml",
+        "ref/netcore50/ru/System.Linq.Queryable.xml",
+        "ref/netcore50/zh-hans/System.Linq.Queryable.xml",
+        "ref/netcore50/zh-hant/System.Linq.Queryable.xml",
+        "ref/netstandard1.0/System.Linq.Queryable.dll",
+        "ref/netstandard1.0/System.Linq.Queryable.xml",
+        "ref/netstandard1.0/de/System.Linq.Queryable.xml",
+        "ref/netstandard1.0/es/System.Linq.Queryable.xml",
+        "ref/netstandard1.0/fr/System.Linq.Queryable.xml",
+        "ref/netstandard1.0/it/System.Linq.Queryable.xml",
+        "ref/netstandard1.0/ja/System.Linq.Queryable.xml",
+        "ref/netstandard1.0/ko/System.Linq.Queryable.xml",
+        "ref/netstandard1.0/ru/System.Linq.Queryable.xml",
+        "ref/netstandard1.0/zh-hans/System.Linq.Queryable.xml",
+        "ref/netstandard1.0/zh-hant/System.Linq.Queryable.xml",
+        "ref/portable-net45+win8+wp8+wpa81/_._",
+        "ref/win8/_._",
+        "ref/wp80/_._",
+        "ref/wpa81/_._",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "system.linq.queryable.4.0.1.nupkg.sha512",
+        "system.linq.queryable.nuspec"
+      ]
+    },
     "System.Memory/4.5.4": {
       "sha512": "1MbJTHS1lZ4bS4FmsJjnuGJOu88ZzTT2rLvrhW7Ygic+pC0NWA+3hgAen0HRdsocuQXCkUTdFn9yHJJhsijDXw==",
       "type": "package",
@@ -6415,6 +6751,108 @@
         "system.runtime.numerics.nuspec"
       ]
     },
+    "System.Runtime.Serialization.Formatters/4.3.0": {
+      "sha512": "KT591AkTNFOTbhZlaeMVvfax3RqhH1EJlcwF50Wm7sfnBLuHiOeZRRKrr1ns3NESkM20KPZ5Ol/ueMq5vg4QoQ==",
+      "type": "package",
+      "path": "system.runtime.serialization.formatters/4.3.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "ThirdPartyNotices.txt",
+        "dotnet_library_license.txt",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net46/System.Runtime.Serialization.Formatters.dll",
+        "lib/netstandard1.4/System.Runtime.Serialization.Formatters.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net46/System.Runtime.Serialization.Formatters.dll",
+        "ref/netstandard1.3/System.Runtime.Serialization.Formatters.dll",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "system.runtime.serialization.formatters.4.3.0.nupkg.sha512",
+        "system.runtime.serialization.formatters.nuspec"
+      ]
+    },
+    "System.Runtime.Serialization.Primitives/4.3.0": {
+      "sha512": "Wz+0KOukJGAlXjtKr+5Xpuxf8+c8739RI1C+A2BoQZT+wMCCoMDDdO8/4IRHfaVINqL78GO8dW8G2lW/e45Mcw==",
+      "type": "package",
+      "path": "system.runtime.serialization.primitives/4.3.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "ThirdPartyNotices.txt",
+        "dotnet_library_license.txt",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net45/_._",
+        "lib/net46/System.Runtime.Serialization.Primitives.dll",
+        "lib/netcore50/System.Runtime.Serialization.Primitives.dll",
+        "lib/netstandard1.3/System.Runtime.Serialization.Primitives.dll",
+        "lib/portable-net45+win8+wp8+wpa81/_._",
+        "lib/win8/_._",
+        "lib/wp80/_._",
+        "lib/wpa81/_._",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net45/_._",
+        "ref/net46/System.Runtime.Serialization.Primitives.dll",
+        "ref/netcore50/System.Runtime.Serialization.Primitives.dll",
+        "ref/netcore50/System.Runtime.Serialization.Primitives.xml",
+        "ref/netcore50/de/System.Runtime.Serialization.Primitives.xml",
+        "ref/netcore50/es/System.Runtime.Serialization.Primitives.xml",
+        "ref/netcore50/fr/System.Runtime.Serialization.Primitives.xml",
+        "ref/netcore50/it/System.Runtime.Serialization.Primitives.xml",
+        "ref/netcore50/ja/System.Runtime.Serialization.Primitives.xml",
+        "ref/netcore50/ko/System.Runtime.Serialization.Primitives.xml",
+        "ref/netcore50/ru/System.Runtime.Serialization.Primitives.xml",
+        "ref/netcore50/zh-hans/System.Runtime.Serialization.Primitives.xml",
+        "ref/netcore50/zh-hant/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.0/System.Runtime.Serialization.Primitives.dll",
+        "ref/netstandard1.0/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.0/de/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.0/es/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.0/fr/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.0/it/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.0/ja/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.0/ko/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.0/ru/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.0/zh-hans/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.0/zh-hant/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.3/System.Runtime.Serialization.Primitives.dll",
+        "ref/netstandard1.3/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.3/de/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.3/es/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.3/fr/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.3/it/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.3/ja/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.3/ko/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.3/ru/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.3/zh-hans/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.3/zh-hant/System.Runtime.Serialization.Primitives.xml",
+        "ref/portable-net45+win8+wp8+wpa81/_._",
+        "ref/win8/_._",
+        "ref/wp80/_._",
+        "ref/wpa81/_._",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "runtimes/aot/lib/netcore50/System.Runtime.Serialization.Primitives.dll",
+        "system.runtime.serialization.primitives.4.3.0.nupkg.sha512",
+        "system.runtime.serialization.primitives.nuspec"
+      ]
+    },
     "System.Security.AccessControl/5.0.0": {
       "sha512": "dagJ1mHZO3Ani8GH0PHpPEe/oYO+rVdbQjvjJkBRNQkX4t0r1iaeGn8+/ybkSLEan3/slM0t59SVdHzuHf2jmw==",
       "type": "package",
@@ -7550,6 +7988,7 @@
   },
   "projectFileDependencyGroups": {
     "net5.0": [
+      "FluentNHibernate >= 3.1.0",
       "Microsoft.Data.SqlClient >= 2.1.1",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 5.0.1",
       "PostSharp >= 6.8.9",
@@ -7605,6 +8044,10 @@
       "net5.0": {
         "targetAlias": "net5.0",
         "dependencies": {
+          "FluentNHibernate": {
+            "target": "Package",
+            "version": "[3.1.0, )"
+          },
           "Microsoft.Data.SqlClient": {
             "target": "Package",
             "version": "[2.1.1, )"

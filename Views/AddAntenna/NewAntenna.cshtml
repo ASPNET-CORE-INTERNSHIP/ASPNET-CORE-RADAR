@@ -9,10 +9,9 @@
 <hr />
 <div class="row">
     <div class="col-md-9">
-        @{ String newProgram = @TempData["newProgram"] as String; }
-        @{ TempData["newProgram"] = newProgram; }
-        @{ var receiver_id = @TempData["ReceiverID"]; }
-        @{ var transmitter_id = @TempData["TransmitterID"]; }
+        @{ String newProgram = Datas.newProgram; }
+        @{ var receiver_id = Datas.ReceiverID; }
+        @{ var transmitter_id = Datas.TransmitterID; }
         <form asp-action="NewAntenna">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -66,11 +65,11 @@
             <div class="form-group">
                 <label asp-for="duty" class="control-label"></label>
                 <select asp-for="duty" class="form-select" aria-label="Default select example">
-                    @if (transmitter_id == null || newProgram.Equals("yes"))
+                    @if (newProgram.Equals("yes"))
                     {
                         <option selected>receiver</option>
                     }
-                    else if (transmitter_id != null && newProgram.Equals("no"))
+                    else if (newProgram.Equals("no"))
                     {
                         <option selected>transmitter</option>
                     }
@@ -92,13 +91,13 @@
 </div>
 
 <div>
-    @if (transmitter_id != null)
+    @if (newProgram.Equals("no"))
     {
-        <input type="button" title="Next" value="Next" onclick="location.href='@Url.Action("GoToRadar", "AddAntenna", new { receiver_id = receiver_id, transmitter_id = transmitter_id })'" />
+        <input type="button" title="Next" value="Next" onclick="location.href='@Url.Action("GoToRadar", "AddAntenna")'" />
     }
     else
     {
-        <input type="button" title="Next" value="Next" onclick="location.href='@Url.Action("GoToTransmitter", "AddAntenna", new { receiver_id = receiver_id, antenna_duty = @TempData["AntennaDuty"] })'" />
+        <input type="button" title="Next" value="Next" onclick="location.href='@Url.Action("GoToTransmitter", "AddAntenna")'" />
     }
 </div>
 

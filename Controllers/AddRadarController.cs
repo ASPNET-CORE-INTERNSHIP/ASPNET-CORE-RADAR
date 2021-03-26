@@ -31,49 +31,31 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult NewRadar(AddRadar radar)
         {
-            if (TempData.ContainsKey("ReceiverID") && TempData.ContainsKey("TransmitterID"))
+            //If the radar name is null we give a default name that specifies its number
+            if (String.IsNullOrEmpty(radar.name))
             {
-                Guid receiver_id = (Guid)TempData.Peek("ReceiverID");
-                Guid transmitter_id = (Guid)TempData.Peek("TransmitterID");
-                TempData["rec_id"] = receiver_id;
-                TempData["tra_id"] = transmitter_id;
+                String def_name;
+                string stmt = "SELECT COUNT(*) FROM Radar";
+                int count = 0;
 
-                //If the radar name is null we give a default name that specifies its number
-                if (String.IsNullOrEmpty(radar.name))
+                using (SqlConnection thisConnection = new SqlConnection("Data Source=DATASOURCE"))
                 {
-                    String def_name;
-                    string stmt = "SELECT COUNT(*) FROM Radar";
-                    int count = 0;
-
-                    using (SqlConnection thisConnection = new SqlConnection("Data Source=DATASOURCE"))
+                    using (SqlCommand cmdCount = new SqlCommand(stmt, thisConnection))
                     {
-                        using (SqlCommand cmdCount = new SqlCommand(stmt, thisConnection))
-                        {
-                            thisConnection.Open();
-                            count = (int)cmdCount.ExecuteScalar();
-                        }
+                        thisConnection.Open();
+                        count = (int)cmdCount.ExecuteScalar();
                     }
-                    count = count + 1;
-                    def_name = "Radar " + count;
-                    TempData["radar_name"] = def_name;
                 }
-                else
-                {
-                    TempData["radar_name"] = radar.name;
-                }
-
-                TempData["radar_config"] = radar.configuration;
-                TempData["radar_sys"] = radar.system;
-                return RedirectToAction("NewLocation", "AddLocation");
+                count = count + 1;
+                def_name = "Radar " + count;
             }
-            else {
-                //GO BACK
-                if(!TempData.ContainsKey("ReceiverID"))
-                    return RedirectToAction("NewReceiver", "AddReceiver");
-                else
-                    return RedirectToAction("NewTransmitter", "AddTransmitter");
+            else
+            {
+                Datas.RadarName = radar.name;
             }
-
+            Datas.RadarSystem = radar.system;
+            Datas.RadarConfiguration = radar.configuration;
+            return RedirectToAction("NewLocation", "AddLocation");
         }
 
     }
