@@ -1,0 +1,33 @@
+﻿@model ASPNETAOP.Models.Mode
+
+@{
+    ViewData["Title"] = "NewMode";
+}
+
+<h1>Add Mode</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-9">
+        <form asp-action="NewMode">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="name" class="control-label"></label>
+                <input asp-for="name" class="form-control" type="text">
+                <span asp-validation-for="name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add" class="btn btn-primary" />
+            </div>
+            <b>@ViewData["Message"]</b>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Turn back</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
