@@ -42,14 +42,16 @@ namespace ASPNETAOP.Controllers
                     Guid key = Guid.NewGuid();
                     cmd.Parameters.AddWithValue("@ID", key);
                     cmd.Parameters.AddWithValue("@name", mod.name);
-                    cmd.Parameters.AddWithValue("@radar_id", Datas.RadarID);
-                    Datas.ModeID = key;
+                    cmd.Parameters.AddWithValue("@radar_id", Datas.Radar.ID);
+
+                    Datas.Mode = new AddMode(key, mod.name, Datas.Radar.ID);
+
                     try
                     {
                         con.Open();
                         int i = cmd.ExecuteNonQuery();
                         if (i != 0)
-                            ViewData["Message"] = "New mode added for " + Datas.RadarID + " radar";
+                            ViewData["Message"] = "New mode added for " + Datas.Radar.ID + " radar";
                         con.Close();
                         return RedirectToAction("NewSubmode", "AddSubmode");
                     }

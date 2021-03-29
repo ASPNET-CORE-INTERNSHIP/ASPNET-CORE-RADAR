@@ -32,11 +32,8 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult NewSubmode(AddSubmode sm)
         {
-            Datas.SubmodeName = sm.name;
-            Datas.PRI = sm.PRI;
-            Datas.PW = sm.PW;
-            Datas.min_frequency = sm.min_frequency;
-            Datas.max_frequency = sm.max_frequency;
+            Datas.Submode= new AddSubmode(sm.name, sm.PRI, sm.PW, sm.max_frequency, sm.min_frequency);
+
             return RedirectToAction("NewScan", "AddScan");
         }
 

@@ -33,8 +33,8 @@ namespace ASPNETAOP.Controllers
                     cmd.Connection = con;
                     cmd.CommandType = CommandType.Text;
                     cmd.CommandText = @"SELECT * FROM Antenna WHERE receiver_id = @receiver_id or transmitter_id = @transmitter_id";
-                    cmd.Parameters.AddWithValue("@receiver_id", Datas.ReceiverID);
-                    cmd.Parameters.AddWithValue("@transmitter_id", Datas.TransmitterID);
+                    cmd.Parameters.AddWithValue("@receiver_id", Datas.Receiver.ID);
+                    cmd.Parameters.AddWithValue("@transmitter_id", Datas.Transmitter.ID);
 
                     try
                     {
@@ -88,7 +88,7 @@ namespace ASPNETAOP.Controllers
                             cmd.CommandText = @"INSERT INTO AntennaScan(antenna_id, scan_id) 
                             VALUES(@antenna_id, @scan_id)";
                             cmd.Parameters.AddWithValue("@antenna_id", antenna.ID);
-                            cmd.Parameters.AddWithValue("@scan_id", Datas.ScanID);
+                            cmd.Parameters.AddWithValue("@scan_id", Datas.Scan.ID);
 
                             try
                             {
@@ -124,7 +124,7 @@ namespace ASPNETAOP.Controllers
 
         public IActionResult Done()
         {
-            return View("~/Views/done.cshtml");
+            return View("~/Views/Shared/done.cshtml");
         }
     }
 }

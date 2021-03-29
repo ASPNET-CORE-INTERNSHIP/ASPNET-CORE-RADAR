@@ -5,6 +5,16 @@ namespace ASPNETAOP.Models
 {
     public class AddReceiver
     {
+        public AddReceiver() { }
+        public AddReceiver(Guid key, string rec_name, float listening_time, float rest_time, float recovery_time)
+        {
+            this.ID = key;
+            this.name = rec_name;
+            this.listening_time = listening_time;
+            this.rest_time = rest_time;
+            this.recovery_time = recovery_time;
+        }
+
         [Key]
         public Guid ID { get; set; }
 

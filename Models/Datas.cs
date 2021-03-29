@@ -7,35 +7,20 @@ namespace ASPNETAOP.Models
 {
     public class Datas
     {
-        public static Guid ReceiverID { get; set; }
+        public static AddReceiver Receiver { get; set; }
 
         public static String newProgram { get; set; } = "yes";
 
-        public static Guid TransmitterID { get; set; }
+        public static AddTransmitter Transmitter { get; set; }
 
-        public static String AntennaDuty { get; set; }
+        public static AddAntenna Antenna { get; set; }
 
-        public static String RadarName { get; set; }
+        public static AddRadar Radar { get; set; }
 
-        public static String RadarSystem { get; set; }
+        public static AddMode Mode { get; set; }
 
-        public static String RadarConfiguration { get; set; }
+        public static AddSubmode Submode { get; set; }
 
-        public static Guid RadarID { get; set; }
-
-        public static Guid ModeID { get; set; }
-
-        //below for submode
-        public static String SubmodeName { get; set; }
-
-        public static float PW { get; set; }
-
-        public static float PRI { get; set; }
-
-        public static int min_frequency { get; set; }
-
-        public static int max_frequency { get; set; }
-
-        public static Guid ScanID { get; set; }
+        public static AddScan Scan { get; set; }
     }
 }

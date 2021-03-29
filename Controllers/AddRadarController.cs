@@ -32,9 +32,9 @@ namespace ASPNETAOP.Controllers
         public IActionResult NewRadar(AddRadar radar)
         {
             //If the radar name is null we give a default name that specifies its number
+            String def_name;
             if (String.IsNullOrEmpty(radar.name))
             {
-                String def_name;
                 string stmt = "SELECT COUNT(*) FROM Radar";
                 int count = 0;
 
@@ -51,10 +51,9 @@ namespace ASPNETAOP.Controllers
             }
             else
             {
-                Datas.RadarName = radar.name;
+                def_name = radar.name;
             }
-            Datas.RadarSystem = radar.system;
-            Datas.RadarConfiguration = radar.configuration;
+            Datas.Radar = new AddRadar(def_name, radar.system, radar.configuration);
             return RedirectToAction("NewLocation", "AddLocation");
         }
 

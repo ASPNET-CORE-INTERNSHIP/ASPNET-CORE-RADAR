@@ -8,6 +8,18 @@ namespace ASPNETAOP.Models
 {
     public class AddScan
     {
+        public AddScan() { }
+        public AddScan(Guid key, string name, string type, string main_aspect, float scan_angle, float scan_rate, int hits_per_scan)
+        {
+            this.ID = key;
+            this.name = name;
+            this.type = type;
+            this.main_aspect = main_aspect;
+            this.scan_angle = scan_angle;
+            this.scan_rate = scan_rate;
+            this.hits_per_scan = hits_per_scan;
+        }
+
         [Key]
         public Guid ID { get; set; }
 

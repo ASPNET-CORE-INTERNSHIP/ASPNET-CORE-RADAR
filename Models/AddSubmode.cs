@@ -8,14 +8,7 @@ namespace ASPNETAOP.Models
 {
     public class AddSubmode
     {
-        public AddSubmode()
-        {
-            this.name = "0submode0";
-            PW = 0;
-            PRI = 0;
-            this.min_frequency = 0;
-            this.max_frequency = 0;
-        }
+        public AddSubmode() { }
         public AddSubmode(string name, float pW, float pRI, int min_frequency, int max_frequency)
         {
             this.name = name;

@@ -6,6 +6,24 @@ namespace ASPNETAOP.Models
 {
     public class AddAntenna
     {
+        public AddAntenna() { }
+        public AddAntenna(Guid key, string def_name, string type, float horizontal_beamwidth, float vertical_beamwidth, string polarization, int number_of_feed, float horizontal_dimension, float vertical_dimension, string duty, Guid? transmitter_id, Guid? receiver_id, string location)
+        {
+            this.ID = key;
+            this.name = def_name;
+            this.type = type;
+            this.horizontal_beamwidth = horizontal_beamwidth;
+            this.vertical_beamwidth = vertical_beamwidth;
+            this.polarization = polarization;
+            this.number_of_feed = number_of_feed;
+            this.horizontal_dimension = horizontal_dimension;
+            this.vertical_dimension = vertical_dimension;
+            this.duty = duty;
+            this.transmitter_id = transmitter_id;
+            this.receiver_id = receiver_id;
+            this.location = location;
+        }
+
         [Key]
         public Guid ID { get; set; }
 

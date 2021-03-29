@@ -66,7 +66,16 @@ namespace ASPNETAOP.Controllers
                     cmd.Parameters.AddWithValue("@listening_time", receiver.listening_time);
                     cmd.Parameters.AddWithValue("@rest_time", receiver.rest_time);
                     cmd.Parameters.AddWithValue("@recovery_time", receiver.recovery_time);
-                    Datas.ReceiverID = key;
+
+                    AddReceiver r = new AddReceiver(key, rec_name, receiver.listening_time, receiver.rest_time, receiver.recovery_time);
+                    Datas.Receiver = r;
+                    Datas.Transmitter = new AddTransmitter();
+                    Datas.Submode = new AddSubmode();
+                    Datas.Scan = new AddScan();
+                    Datas.Radar = new AddRadar();
+
+                    Datas.newProgram = "yes";
+
                     try
                     {
                         con.Open();

@@ -9,6 +9,14 @@ namespace ASPNETAOP.Models
 {
     public class AddRadar
     {
+        public AddRadar() { }
+        public AddRadar(string def_name, string system, string configuration)
+        {
+            this.name = def_name;
+            this.system = system;
+            this.configuration = configuration;
+        }
+
         [Key]
         public Guid ID { get; set; }
 

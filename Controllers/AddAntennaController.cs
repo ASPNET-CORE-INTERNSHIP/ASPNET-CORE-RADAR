@@ -27,7 +27,7 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult NewAntenna(AddAntenna antenna)
         {
-            Guid receiver_id = Datas.ReceiverID;
+            Guid receiver_id = Datas.Receiver.ID;
             String def_name = null;
             if (String.IsNullOrEmpty(antenna.name))
             {
@@ -40,7 +40,7 @@ namespace ASPNETAOP.Controllers
                         cmd.CommandType = CommandType.Text;
                         if (antenna.duty.Equals("transmitter"))
                         {
-                            Guid transmitter_id = Datas.TransmitterID;
+                            Guid transmitter_id = Datas.Transmitter.ID;
                             cmd.CommandText = @"SELECT name FROM Transmitter WHERE ID = @id";
                             cmd.Parameters.AddWithValue("@id", transmitter_id);
                         }
@@ -100,26 +100,25 @@ namespace ASPNETAOP.Controllers
                     cmd.Parameters.AddWithValue("@vertical_dimension", antenna.vertical_dimension);
                     cmd.Parameters.AddWithValue("@duty", antenna.duty);
 
-                    Datas.AntennaDuty = antenna.duty;
-
-                    Console.WriteLine(Datas.AntennaDuty+ "-------duty");
-
                     //if the antenna is both receiver and transmitter antenna give it a receiver and a transmitter id
                     if (antenna.duty.Equals("both"))
                     {
+                        Datas.Antenna = new AddAntenna(key, def_name, antenna.type, antenna.horizontal_beamwidth, antenna.vertical_beamwidth, antenna.polarization, antenna.number_of_feed, antenna.horizontal_dimension, antenna.vertical_dimension, antenna.duty, receiver_id, receiver_id, antenna.location);
                         cmd.Parameters.AddWithValue("@transmitter_id", receiver_id);
                         cmd.Parameters.AddWithValue("@receiver_id", receiver_id);
                     }
                     //if the antenna is a receiver antenna give it a receiver id
                     else if (antenna.duty.Equals("receiver"))
                     {
+                        Datas.Antenna = new AddAntenna(key, def_name, antenna.type, antenna.horizontal_beamwidth, antenna.vertical_beamwidth, antenna.polarization, antenna.number_of_feed, antenna.horizontal_dimension, antenna.vertical_dimension, antenna.duty, null, receiver_id, antenna.location);
                         cmd.Parameters.AddWithValue("@transmitter_id", DBNull.Value);
                         cmd.Parameters.AddWithValue("@receiver_id", receiver_id);
                     }
                     //if the antenna is a transmitter antenna attach it a transmitter id
                     else
                     {
-                        Guid transmitter_id = Datas.TransmitterID;
+                        Datas.Antenna = new AddAntenna(key, def_name, antenna.type, antenna.horizontal_beamwidth, antenna.vertical_beamwidth, antenna.polarization, antenna.number_of_feed, antenna.horizontal_dimension, antenna.vertical_dimension, antenna.duty, receiver_id, null, antenna.location);
+                        Guid transmitter_id = Datas.Transmitter.ID;
                         cmd.Parameters.AddWithValue("@transmitter_id", transmitter_id);
                         cmd.Parameters.AddWithValue("@receiver_id", DBNull.Value);
                     }

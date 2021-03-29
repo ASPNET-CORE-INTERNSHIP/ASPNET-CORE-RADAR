@@ -8,6 +8,14 @@ namespace ASPNETAOP.Models
 {
     public class AddMode
     {
+        public AddMode() { }
+        public AddMode(Guid key, string name, Guid id)
+        {
+            this.ID = key;
+            this.name = name;
+            this.radar_id = id;
+        }
+
         [Key]
         public Guid ID { get; set; }
 

@@ -58,14 +58,14 @@ namespace ASPNETAOP.Controllers
                     command.Parameters.AddWithValue("@hits_per_scan", scan.hits_per_scan);
                     command.ExecuteNonQuery();
 
-                    Datas.ScanID = key;
+                    Datas.Scan = new AddScan(key, scan.name, scan.type, scan.main_aspect, scan.scan_angle, scan.scan_rate, scan.hits_per_scan);
 
                     command.CommandText = @"INSERT INTO Submode(ID, name, mode_id, PW, PRI, min_frequency, max_frequency, scan_id) 
                             VALUES(@id, @name_sm, @mode_id, @PW, @PRI, @min_frequency, @max_frequency, @scan_id)";
                     Guid key_submode = Guid.NewGuid();
                     command.Parameters.AddWithValue("@id", key_submode);
                     command.Parameters.AddWithValue("@name_sm", sm.name);
-                    command.Parameters.AddWithValue("@mode_id", Datas.ModeID);
+                    command.Parameters.AddWithValue("@mode_id", Datas.Mode.ID);
                     command.Parameters.AddWithValue("@PW", sm.PW);
                     command.Parameters.AddWithValue("@PRI", sm.PW);
                     command.Parameters.AddWithValue("@min_frequency", sm.min_frequency);

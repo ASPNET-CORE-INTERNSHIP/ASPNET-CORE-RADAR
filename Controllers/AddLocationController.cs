@@ -62,13 +62,13 @@ namespace ASPNETAOP.Controllers
                     command.CommandText = @"INSERT INTO Radar(ID, name, system, configuration, receiver_id, transmitter_id, location_id) 
                             VALUES(@id, @name_radar, @system, @configuration, @receiver_id, @transmitter_id, @location_id)";
                     Guid key = Guid.NewGuid();
-                    Datas.RadarID = key;
+                    Datas.Radar.ID = key;
                     command.Parameters.AddWithValue("@id", key);
-                    command.Parameters.AddWithValue("@name_radar", Datas.RadarName);
-                    command.Parameters.AddWithValue("@system", Datas.RadarSystem);
-                    command.Parameters.AddWithValue("@configuration", Datas.RadarConfiguration);
-                    command.Parameters.AddWithValue("@receiver_id", Datas.ReceiverID);
-                    command.Parameters.AddWithValue("@transmitter_id", Datas.TransmitterID);
+                    command.Parameters.AddWithValue("@name_radar", Datas.Radar.name);
+                    command.Parameters.AddWithValue("@system", Datas.Radar.system);
+                    command.Parameters.AddWithValue("@configuration", Datas.Radar.configuration);
+                    command.Parameters.AddWithValue("@receiver_id", Datas.Receiver.ID);
+                    command.Parameters.AddWithValue("@transmitter_id", Datas.Transmitter.ID);
                     command.Parameters.AddWithValue("@location_id", key_location);
                     command.ExecuteNonQuery();
 

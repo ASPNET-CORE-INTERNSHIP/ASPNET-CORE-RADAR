@@ -54,9 +54,8 @@ namespace ASPNETAOP.Controllers
             }
 
             Guid key = Guid.NewGuid();
-            Datas.TransmitterID = key;
-
-            Console.WriteLine(Datas.TransmitterID+" tra_id");
+            AddTransmitter transmitter_temp = new AddTransmitter(key, def_name,transmitter.modulation_type, transmitter.max_frequency, transmitter.min_frequency, transmitter.power);
+            Datas.Transmitter = transmitter_temp;
 
             using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
             {
@@ -81,7 +80,7 @@ namespace ASPNETAOP.Controllers
                             ViewData["Message"] = "New Transmitter added";
                         con.Close();
                         //if the duty of antenna is both receiver and transmitter we do not need to add new antenna for transmitter and directly go to radar.
-                        if (Datas.AntennaDuty.Equals("both"))
+                        if (Datas.Antenna.duty.Equals("both"))
                         {
                             return RedirectToAction("NewRadar", "AddRadar");
                         }
