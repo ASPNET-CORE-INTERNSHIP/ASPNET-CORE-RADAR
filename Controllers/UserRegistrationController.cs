@@ -38,21 +38,12 @@ namespace ASPNETAOP.Controllers
             return View(ur);
         }
         
-        //Post request to Web Api with the given user credentials
-        public void SendUserRegister(String[] registerInfo, long sessionId)
+        //Post request to Web Api with the user information
+        public async void SendUserRegister(String[] registerInfo, long sessionId)
         {
             HttpClient client = new HttpClient();
-
-            PostUserLogin("https://localhost:44316/api/UserLoginItems", client, registerInfo, sessionId);
-        }
-
-        //Helper method for the SendUserLogin
-        private static async Task PostUserLogin(string uri, HttpClient httpClient, String[] registerInfo, long sessionId)
-        {
-            var postUser = new UserLoginItem { Id = sessionId, Username = registerInfo[0], Usermail = registerInfo[1], Userpassword = registerInfo[2], isUserLoggedIn = 4 };
-
-            var postResponse = await httpClient.PostAsJsonAsync(uri, postUser);
-
+            var postUser = new UserRegisterItem { Id = sessionId, Username = registerInfo[0], Usermail = registerInfo[1], Userpassword = registerInfo[2] };
+            var postResponse = await client.PostAsJsonAsync("https://localhost:44316/api/UserRegisterItems", postUser);
             postResponse.EnsureSuccessStatusCode();
         }
     }

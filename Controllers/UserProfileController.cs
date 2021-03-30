@@ -26,22 +26,26 @@ namespace ASPNETAOP.Controllers
         {
             long sessionId = Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
 
-            List<UserLoginItem> reservationList = new List<UserLoginItem>();
+            //Retrieve the user information
+            List<UserLoginItem> userList = new List<UserLoginItem>();
             using (var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.GetAsync("https://localhost:44316/api/UserLoginItems/"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    reservationList = JsonConvert.DeserializeObject<List<UserLoginItem>>(apiResponse);
+                    userList = JsonConvert.DeserializeObject<List<UserLoginItem>>(apiResponse);
                 }
             }
 
-            foreach (UserLoginItem item in reservationList)
+            
+            foreach (UserLoginItem item in userList)
             {
                 if (item.Id == sessionId)
                 {
+                    //Display basic information about the current user
                     ViewData["message"] = "User name: " + item.Username + "\r\n Mail: " + item.Usermail;
 
+                    //Change the layout according to the user role
                     if (item.UserRole == 1) { TempData["ResultMessage"] = "Admin"; }
                     else { TempData["ResultMessage"] = "Regular"; }
                 }

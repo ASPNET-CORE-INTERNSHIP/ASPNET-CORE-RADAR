@@ -51,14 +51,8 @@ namespace ASPNETAOP.Controllers
         public async void SendUserLogin(String[] loginInfo, long sessionId)
         {
             HttpClient client = new HttpClient();
-            await PostUserLogin("https://localhost:44316/api/UserLoginItems", client, loginInfo, sessionId);
-        }
-
-        //Helper method for the SendUserLogin
-        private static async Task PostUserLogin(string uri, HttpClient httpClient, String[] loginInfo, long sessionId)
-        {
             var postUser = new UserLoginItem { Id = sessionId, Usermail = loginInfo[0], Userpassword = loginInfo[1], isUserLoggedIn = 0 };
-            var postResponse = await httpClient.PostAsJsonAsync(uri, postUser);
+            var postResponse = await client.PostAsJsonAsync("https://localhost:44316/api/UserLoginItems", postUser);
             postResponse.EnsureSuccessStatusCode();
         }
     }
