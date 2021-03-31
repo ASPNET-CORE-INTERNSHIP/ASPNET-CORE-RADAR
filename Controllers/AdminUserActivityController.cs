@@ -25,6 +25,7 @@ namespace ASPNETAOP.Controllers
         [IsAuthorized("45EADA4A-CFB8-46A9-8DDB-5A1ACCC89D2A")]
         public IActionResult UserActivity()
         {
+            //Used to display pages accessible by admins on the top menu
             TempData["ResultMessage"] = "Admin";
 
             String connection = _configuration.GetConnectionString("localDatabase");

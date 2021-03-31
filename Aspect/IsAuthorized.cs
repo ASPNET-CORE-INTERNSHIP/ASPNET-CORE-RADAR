@@ -23,8 +23,6 @@ namespace ASPNETAOP.Aspect
 
         public override async void OnEntry(MethodExecutionArgs args)
         {
-            long sessionId = Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
-
             List<UserLoginItem> reservationList = new List<UserLoginItem>();
             using (var httpClient = new HttpClient())
             {
@@ -37,10 +35,10 @@ namespace ASPNETAOP.Aspect
 
             foreach (UserLoginItem item in reservationList)
             {
-                if (item.Id.Equals(sessionId)) 
+                //Find the current session
+                if (item.Id.Equals(Hash.CurrentHashed(AppHttpContext.Current.Session.Id))) 
                 {
                     String connection = "Server=DESKTOP-II1M7LK;Database=AccountDb;Trusted_Connection=True;MultipleActiveResultSets=true";
-
                     bool isAllowed = false;
                     
                     using (SqlConnection sqlconn = new SqlConnection(connection))
@@ -60,12 +58,10 @@ namespace ASPNETAOP.Aspect
                                     String Roleallow = (string)reader["Roleallow"];
                                     String Roledeny = (string)reader["Roledeny"];
 
-                                    Console.WriteLine("Allowed: " + Roleallow);
-                                    Console.WriteLine("Denied: " + Roledeny);
-
-                                    Console.WriteLine("GUID: " + GUID);
-
+                                    //Check if the user has a permission to visit the given GUID
                                     if (Roleallow.Equals(GUID)) isAllowed = true;
+
+                                    //if the user is restricted from the GUID, throw an exception
                                     if (Roledeny.Equals(GUID)) throw new UserPermissionNotEnoughException();
                                 }
                                 reader.Close();
@@ -80,7 +76,7 @@ namespace ASPNETAOP.Aspect
         }
     }
 
-    // Special type of error to indicate that the current user is not an admin
+    // Special type of error to indicate that the current user doesn't have the permission to visit a page
     public class UserPermissionNotEnoughException : Exception
     {
         public UserPermissionNotEnoughException() { }

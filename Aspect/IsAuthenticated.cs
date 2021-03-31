@@ -16,17 +16,14 @@ namespace ASPNETAOP.Aspect
     [PSerializable]
     public sealed class IsAuthenticatedAttribute : OnMethodBoundaryAspect
     {
-        private String cookie = "";
-        public IsAuthenticatedAttribute(string cookie)
-        {
-            this.cookie = cookie;
-        }
-
+ 
         public override async void OnEntry(MethodExecutionArgs args)
         {
-            long sessionId = Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
-    
-            if(cookie == null) { Console.WriteLine("COOKIE IS NULL"); }
+            String cookie = AppHttpContext.Current.Request.Cookies["UserSession"];
+            if (cookie == null || cookie.Length == 0) throw new UserNotLoggedInException();
+
+            /*
+            if (cookie == null) { Console.WriteLine("COOKIE -> " + cookie); }
             else { Console.WriteLine("COOKIE NOT NULL"); }
 
             List<UserLoginItem> reservationList = new List<UserLoginItem>();
@@ -47,6 +44,7 @@ namespace ASPNETAOP.Aspect
             }
 
             if(!isPresent) throw new UserNotLoggedInException(); //check if the current user has an active session
+            */
         }
     }
 

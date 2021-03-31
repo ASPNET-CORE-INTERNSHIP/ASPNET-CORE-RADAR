@@ -21,7 +21,7 @@ namespace ASPNETAOP.Controllers
             return View();
         }
 
-        [IsActive]
+        [IsAuthenticated]
         public async Task<IActionResult> Profile()
         {
             long sessionId = Hash.CurrentHashed(AppHttpContext.Current.Session.Id);

@@ -20,11 +20,6 @@ namespace ASPNETAOP.Controllers
             return View();
         }
 
-        public IActionResult RolePermission()
-        {
-            return RedirectToAction("RolePermission", "AdminRolePermission");
-        }
-
         [IsAuthenticated]
         [IsAuthorized("1371A9F7-25FC-4EDC-B82B-ADB3CCEE485B")]
         public IActionResult AddRole(AdminAddRole ur)
@@ -34,7 +29,6 @@ namespace ASPNETAOP.Controllers
             String connection = _configuration.GetConnectionString("localDatabase");
             using (SqlConnection sqlconn = new SqlConnection(connection))
             {
-                // Number 2 for the Roleid indicates RegularUser
                 string sqlquery = "insert into AccountRoles(Rolename) values ('" + ur.Rolename + "')";
                 using (SqlCommand sqlcomm = new SqlCommand(sqlquery, sqlconn))
                 {

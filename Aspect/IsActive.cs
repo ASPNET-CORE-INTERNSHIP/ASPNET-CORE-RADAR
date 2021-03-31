@@ -20,6 +20,10 @@ namespace ASPNETAOP.Aspect
         {
             long sessionId = Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
 
+            String cookie = AppHttpContext.Current.Request.Cookies["UserSession"];
+
+            if (cookie == null) { Console.WriteLine("COOKIE NOT NULL"); }
+            else { Console.WriteLine("COOKIE ->" + cookie); }
 
             List<UserLoginItem> reservationList = new List<UserLoginItem>();
             using (var httpClient = new HttpClient())
