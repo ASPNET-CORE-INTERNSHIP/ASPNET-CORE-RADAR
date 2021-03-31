@@ -1463,4 +1463,3 @@ C:\Users\Cenk\OneDrive\Desktop\Test2\ASPNET-CORE-RADAR-main\obj\Debug\net5.0\ASP
 C:\Users\Cenk\OneDrive\Desktop\Test2\ASPNET-CORE-RADAR-main\obj\Debug\net5.0\ASPNETAOP.pdb
 C:\Users\Cenk\OneDrive\Desktop\Test2\ASPNET-CORE-RADAR-main\obj\Debug\net5.0\ASPNETAOP.genruntimeconfig.cache
 C:\Users\Cenk\OneDrive\Desktop\Test2\ASPNET-CORE-RADAR-main\obj\Debug\net5.0\PostSharp\postsharp.app.config
-C:\Users\Cenk\OneDrive\Desktop\Test2\ASPNET-CORE-RADAR-main\obj\Debug\net5.0\ASPNETAOP.csprojAssemblyReference.cache

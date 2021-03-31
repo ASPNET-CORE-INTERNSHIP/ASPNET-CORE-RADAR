@@ -24,7 +24,8 @@ namespace ASPNETAOP.Controllers
             return View();
         }
 
-        public IActionResult Login(UserLogin ur)
+        //First method
+        public IActionResult Login(UserLogin userCredentials)
         {
             //Necessary to prevent HttpContext.Session.Id from changing with every request
             Guid guid = Guid.NewGuid();
@@ -37,32 +38,31 @@ namespace ASPNETAOP.Controllers
 
             //Check if the necessary boxes are filled
             //if so, send a POST Request to the Web Api
-            if (ur.Usermail != null && ur.Userpassword != null) {
-                String[] loginInfo = { ur.Usermail, ur.Userpassword };
-                SendUserLogin(loginInfo, Hash.CurrentHashed(AppHttpContext.Current.Session.Id));
+            if (userCredentials.Usermail != null && userCredentials.Userpassword != null) {
+                String[] userCredentialsArray = { userCredentials.Usermail, userCredentials.Userpassword};
 
-                //if user credentials are correct, a new entitiy will be added to ActivitySession table
+                SendUserLogin(userCredentialsArray, Hash.CurrentHashed(AppHttpContext.Current.Session.Id), guid);
                 return RedirectToAction("Profile", "UserProfile");
             }
 
-            return View(ur);
+            return View(userCredentials);
         }
 
+        //Additional method with aspect to ensure that user session has been added by Web Server
+        //User is redirected to profile page only if authentication by IsAuthenticated aspect is succesfful
         [IsAuthenticated]
-        public IActionResult ConfirmAction(UserLogin ur)
+        public IActionResult ConfirmAction()
         {
             return RedirectToAction("Profile", "UserProfile");
         }
 
         //Post request to Web Api with the given user credentials
-        public async void SendUserLogin(String[] loginInfo, long sessionId)
+        public async void SendUserLogin(String[] userCredentials, long sessionId, Guid guid)
         {
             HttpClient client = new HttpClient();
-            var postUser = new UserLoginItem { Id = sessionId, Usermail = loginInfo[0], Userpassword = loginInfo[1], isUserLoggedIn = 0 };
+            var postUser = new UserLoginItem { Id = sessionId, Usermail = userCredentials[0], Userpassword = userCredentials[1], SessionID = guid};
             var postResponse = await client.PostAsJsonAsync("https://localhost:44316/api/UserLoginItems", postUser);
             postResponse.EnsureSuccessStatusCode();
         }
-
-
     }
 }

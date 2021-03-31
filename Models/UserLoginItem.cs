@@ -5,7 +5,6 @@ namespace ASPNETAOP.Models
     public class UserLoginItem
     {
         public long Id { get; set; }
-
         public int UserID { get; set; }
         public string Username { get; set; }
         public string Usermail { get; set; }
@@ -13,9 +12,7 @@ namespace ASPNETAOP.Models
         public int UserRole { get; set; }
 
         public DateTime LoginDate { get; set; }
-
-        //0 - Login Request
-        //4 - User Registration Request
+        public Guid SessionID { get; set; }
         public int isUserLoggedIn { get; set; }
     }
 }

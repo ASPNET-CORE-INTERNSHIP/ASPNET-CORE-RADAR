@@ -20,6 +20,7 @@ namespace ASPNETAOP.Aspect
         {
             long sessionId = Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
 
+
             List<UserLoginItem> reservationList = new List<UserLoginItem>();
             using (var httpClient = new HttpClient())
             {

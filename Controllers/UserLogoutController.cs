@@ -27,9 +27,10 @@ namespace ASPNETAOP.Controllers
 
                 var deleteTask = client.DeleteAsync("UserLoginItems/" + sessionId);
                 deleteTask.Wait();
-
-                var result = deleteTask.Result;
             }
+
+            // deletes the cookie
+            Response.Cookies.Delete("UserSession");
 
             return RedirectToAction("Login", "UserLogin");
         }
