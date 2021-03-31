@@ -199,10 +199,11 @@ Program was written in C#, therefore, a special environment for the aforemention
 
 8. Copy the connection string from the "properties" for the server added in the previous step in "Data Connections" & paste it to localDatabase in appsettings.json
 9. Install Postgres from Package Manager Console under the Tools menu of the Visual Studio (Required for aspects)
-10. Click on "Register license" from the PostSharp options in the Extensions dropdown of Visual Studio
-10. Install [ASPNETAOP-WebServer](https://github.com/cenkgokturk/ASPNET-CORE-MVC-WEB-SERVER) and open it in a seperate Visual Studio window 
-11. Click "Start without debugging" for the ASPNETAOP-WebServer project
-12. Do the same thing for ASPNETAOP *
-13. Both projects will be opened in your default browser. Unless you want to debug, you don't have to interact with the WebServer 
+10. Install NHibernate from Package manager console using ``PM>>Install-Package NHibernate`` command
+11. Click on "Register license" from the PostSharp options in the Extensions dropdown of Visual Studio
+12. Install [ASPNETAOP-WebServer](https://github.com/cenkgokturk/ASPNET-CORE-MVC-WEB-SERVER) and open it in a seperate Visual Studio window 
+13. Click "Start without debugging" for the ASPNETAOP-WebServer project
+14. Do the same thing for ASPNETAOP *
+15. Both projects will be opened in your default browser. Unless you want to debug, you don't have to interact with the WebServer 
 
 * If there is an error regarding the Aspects or the SQL Connections, right click on PSerializable attribute in either of the Aspects and select "Install PostSharp.Redist"
