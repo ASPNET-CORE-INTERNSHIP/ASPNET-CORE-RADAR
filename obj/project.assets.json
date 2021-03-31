@@ -745,7 +745,7 @@
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         }
       },
-      "NHibernate/5.3.3": {
+      "NHibernate/5.3.7": {
         "type": "package",
         "dependencies": {
           "Antlr3.Runtime": "[3.5.1, 4.0.0)",
@@ -3720,10 +3720,10 @@
         "newtonsoft.json.nuspec"
       ]
     },
-    "NHibernate/5.3.3": {
-      "sha512": "ar4yr/NgtkysCK46UsEPmraqlAsfDOgpda9tWDRhN0K/N/A2X3rDOFaVg3f+ab3L6oy/+C2hAcUM7sZIBFhq+g==",
+    "NHibernate/5.3.7": {
+      "sha512": "eawJB7IrM5ZVc/zb9eOwU0CZBuK5dtUfmo45JG0tTm0bg/stL0uOPIjl/HlJyP1GLDOTFvWvZ/as0niTe/YgLw==",
       "type": "package",
-      "path": "nhibernate/5.3.3",
+      "path": "nhibernate/5.3.7",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -3751,7 +3751,7 @@
         "lib/netstandard2.0/NHibernate.xml",
         "nhibernate-configuration.xsd",
         "nhibernate-mapping.xsd",
-        "nhibernate.5.3.3.nupkg.sha512",
+        "nhibernate.5.3.7.nupkg.sha512",
         "nhibernate.nuspec"
       ]
     },
@@ -7991,6 +7991,7 @@
       "FluentNHibernate >= 3.1.0",
       "Microsoft.Data.SqlClient >= 2.1.1",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 5.0.1",
+      "NHibernate >= 5.3.7",
       "PostSharp >= 6.8.9",
       "PostSharp.Redist >= 6.8.9",
       "System.Configuration.ConfigurationManager >= 5.0.0",
@@ -7998,20 +7999,28 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Cenk\\.nuget\\packages\\": {}
+    "C:\\Users\\ENA\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
+    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Cenk\\OneDrive\\Desktop\\Test2\\ASPNET-CORE-RADAR-main\\ASPNETAOP.csproj",
+      "projectUniqueName": "C:\\Users\\ENA\\Source\\Repos\\ASPNET-CORE-RADAR\\ASPNETAOP.csproj",
       "projectName": "ASPNETAOP",
-      "projectPath": "C:\\Users\\Cenk\\OneDrive\\Desktop\\Test2\\ASPNET-CORE-RADAR-main\\ASPNETAOP.csproj",
-      "packagesPath": "C:\\Users\\Cenk\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Cenk\\OneDrive\\Desktop\\Test2\\ASPNET-CORE-RADAR-main\\obj\\",
+      "projectPath": "C:\\Users\\ENA\\Source\\Repos\\ASPNET-CORE-RADAR\\ASPNETAOP.csproj",
+      "packagesPath": "C:\\Users\\ENA\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ENA\\Source\\Repos\\ASPNET-CORE-RADAR\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+      ],
       "configFilePaths": [
-        "C:\\Users\\Cenk\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\ENA\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net5.0"
@@ -8047,6 +8056,10 @@
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
             "target": "Package",
             "version": "[5.0.1, )"
+          },
+          "NHibernate": {
+            "target": "Package",
+            "version": "[5.3.7, )"
           },
           "PostSharp": {
             "target": "Package",
@@ -8097,7 +8110,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
       }
     }
   }

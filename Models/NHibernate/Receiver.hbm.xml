@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" auto-import="true" assembly="ASPNETAOP" namespace="ASPNETAOP.Models">
+	<class name="Receiver" table="Receiver" dynamic-update="true" >
+		<cache usage="read-write"/>
+		<id name="ID" column="ID" type="Guid">
+			<generator class="native" />
+		</id>
+		<property name="name" />
+		<property name="listening_time" />
+		<property name="rest_time" />
+		<property name="recovery_time" />
+	</class>
+</hibernate-mapping>
+

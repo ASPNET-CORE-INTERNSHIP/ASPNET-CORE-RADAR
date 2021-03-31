@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" auto-import="true" assembly="ASPNETAOP" namespace="ASPNETAOP.Models">
+	<class name="Antenna" table="Antenna" dynamic-update="true" >
+		<cache usage="read-write"/>
+		<id name="ID" column="ID" type="Guid">
+			<generator class="native" />
+		</id>
+		<property name="name" />
+		<property name="type" />
+		<property name="horizontal_beamwidth" />
+		<property name="vertical_beamwidth" />
+		<property name="polarization" />
+		<property name="number_of_feed" />
+		<property name="horizontal_dimension" />
+		<property name="vertical_dimension" />
+		<property name="duty" />
+		<property name="transmitter_id" />
+		<property name="receiver_id" />
+		<property name="location" />
+	</class>
+</hibernate-mapping>
