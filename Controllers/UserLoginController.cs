@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System;
+using System.Web;
 using Microsoft.AspNetCore.Http;
 
 namespace ASPNETAOP.Controllers
@@ -26,7 +27,13 @@ namespace ASPNETAOP.Controllers
         public IActionResult Login(UserLogin ur)
         {
             //Necessary to prevent HttpContext.Session.Id from changing with every request
-            HttpContext.Session.SetString("Session", new Guid().ToString());
+            Guid guid = Guid.NewGuid();
+            HttpContext.Session.SetString("Session", guid.ToString());
+
+            //Create a cookie
+            CookieOptions option = new CookieOptions();
+            option.Expires = DateTime.Now.AddMinutes(30);
+            Response.Cookies.Append("UserSession", guid.ToString(), option);
 
             //Check if the necessary boxes are filled
             //if so, send a POST Request to the Web Api
@@ -55,5 +62,7 @@ namespace ASPNETAOP.Controllers
             var postResponse = await client.PostAsJsonAsync("https://localhost:44316/api/UserLoginItems", postUser);
             postResponse.EnsureSuccessStatusCode();
         }
+
+
     }
 }

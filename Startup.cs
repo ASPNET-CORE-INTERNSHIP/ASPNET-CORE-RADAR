@@ -21,26 +21,24 @@ namespace ASPNETAOP
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDistributedMemoryCache();
 
+            //Required for Sessions 
             services.AddSession(opt =>
             {
                 opt.IdleTimeout = TimeSpan.FromSeconds(10000);
                 opt.Cookie.IsEssential = true;
             });
 
-            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
-
             services.AddControllersWithViews();
+            services.AddHttpContextAccessor();
+
             services.AddSingleton<IConfiguration>(Configuration);
-            //Add service for accessing current HttpContext
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseSession();
@@ -57,6 +55,7 @@ namespace ASPNETAOP
 
                     var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
 
+                    //Handling possible errors from Aspects
                     if (exceptionHandlerPathFeature?.Error is Aspect.UserNotLoggedInException)
                     {
                         await context.Response.WriteAsync("You have to be logged in<br><br>\r\n");
@@ -78,7 +77,6 @@ namespace ASPNETAOP
                     await context.Response.WriteAsync(new string(' ', 512));
                 });
             });
-
 
             if (!env.IsDevelopment()) { app.UseHsts(); }
 
