@@ -27,8 +27,10 @@ namespace ASPNETAOP.Controllers
         //First method
         public IActionResult Login(UserLogin userCredentials)
         {
-            //Necessary to prevent HttpContext.Session.Id from changing with every request
             Guid guid = Guid.NewGuid();
+
+            //HttpContext is replaced with the new cookie system
+            //In the upcoming versions, any lines using HttpContext.Session will be removed
             HttpContext.Session.SetString("Session", guid.ToString());
 
             //Create a cookie
@@ -60,8 +62,11 @@ namespace ASPNETAOP.Controllers
         public async void SendUserLogin(String[] userCredentials, long sessionId, Guid guid)
         {
             HttpClient client = new HttpClient();
-            var postUser = new UserLoginItem { Id = sessionId, Usermail = userCredentials[0], Userpassword = userCredentials[1], SessionID = guid};
-            var postResponse = await client.PostAsJsonAsync("https://localhost:44316/api/UserLoginItems", postUser);
+
+            Console.WriteLine("Main project GUID -> " + guid);
+
+            var postUser = new UserInfoItem { Id = guid, Usermail = userCredentials[0], Userpassword = userCredentials[1]};
+            var postResponse = await client.PostAsJsonAsync("https://localhost:44316/api/UserInfoItems", postUser);
             postResponse.EnsureSuccessStatusCode();
         }
     }

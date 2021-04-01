@@ -18,18 +18,20 @@ namespace ASPNETAOP.Controllers
 
         public IActionResult Logout()
         {
-            long sessionId = Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
+            //Retrieve the user guid from the cookie
+            String cookie = Request.Cookies["UserSession"];
+            Guid guid = new Guid(cookie);
 
-            // sends a Delete HTTP request
+            //sends a Delete HTTP request
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://localhost:44316/api/");
 
-                var deleteTask = client.DeleteAsync("UserLoginItems/" + sessionId);
+                var deleteTask = client.DeleteAsync("UserInfoItems/" + guid);
                 deleteTask.Wait();
             }
 
-            // deletes the cookie
+            //deletes the cookie
             Response.Cookies.Delete("UserSession");
 
             return RedirectToAction("Login", "UserLogin");

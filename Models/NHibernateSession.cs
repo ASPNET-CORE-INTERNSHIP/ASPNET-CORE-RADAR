@@ -11,13 +11,13 @@ namespace ASPNETAOAP.Models
 {
     public class NHIbernateSession
     {
-        
+        /*
         public static ISession OpenSession()
         {
 
             var configuration = new Configuration();
 
-            var configurationPath = AppHttpContext.Current.Server.MapPath(@"~\Models\Nhibernate\hibernate.cfg.xml");
+            var configurationPath = HttpContext.Server.MapPath(@"~\Models\Nhibernate\hibernate.cfg.xml");
 
             configuration.Configure(configurationPath);
 
@@ -62,5 +62,6 @@ namespace ASPNETAOAP.Models
             return sessionFactory.OpenSession();
 
         }
+        */
     }
 }

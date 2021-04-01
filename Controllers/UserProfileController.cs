@@ -24,23 +24,25 @@ namespace ASPNETAOP.Controllers
         [IsAuthenticated]
         public async Task<IActionResult> Profile()
         {
-            long sessionId = Hash.CurrentHashed(AppHttpContext.Current.Session.Id);
+            //Retrieve the user guid from the cookie
+            String cookie = Request.Cookies["UserSession"];
+            Guid guid = new Guid(cookie);
 
-            //Retrieve the user information
-            List<UserLoginItem> userList = new List<UserLoginItem>();
+            //Retrieve the user information from the web server
+            List<UserInfoItem> userList = new List<UserInfoItem>();
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:44316/api/UserLoginItems/"))
+                using (var response = await httpClient.GetAsync("https://localhost:44316/api/UserInfoItems/"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    userList = JsonConvert.DeserializeObject<List<UserLoginItem>>(apiResponse);
+                    userList = JsonConvert.DeserializeObject<List<UserInfoItem>>(apiResponse);
                 }
             }
 
-            
-            foreach (UserLoginItem item in userList)
+            //find the account information of the active session
+            foreach (UserInfoItem item in userList)
             {
-                if (item.Id == sessionId)
+                if (item.Id == guid)
                 {
                     //Display basic information about the current user
                     ViewData["message"] = "User name: " + item.Username + "\r\n Mail: " + item.Usermail;

@@ -29,6 +29,7 @@
           "FluentNHibernate": "3.1.0",
           "Microsoft.Data.SqlClient": "2.1.1",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "5.0.1",
+          "NHibernate": "5.3.7",
           "PostSharp": "6.8.9",
           "PostSharp.Redist": "6.8.9",
           "System.Configuration.ConfigurationManager": "5.0.0",
@@ -340,7 +341,7 @@
       },
       "FluentNHibernate/3.1.0": {
         "dependencies": {
-          "NHibernate": "5.3.3"
+          "NHibernate": "5.3.7"
         },
         "runtime": {
           "lib/netcoreapp2.0/FluentNHibernate.dll": {
@@ -1024,7 +1025,7 @@
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         }
       },
-      "NHibernate/5.3.3": {
+      "NHibernate/5.3.7": {
         "dependencies": {
           "Antlr3.Runtime": "3.5.1",
           "Iesi.Collections": "4.0.4",
@@ -1035,7 +1036,7 @@
         "runtime": {
           "lib/netcoreapp2.0/NHibernate.dll": {
             "assemblyVersion": "5.3.0.0",
-            "fileVersion": "5.3.3.0"
+            "fileVersion": "5.3.7.0"
           }
         },
         "compile": {
@@ -3999,12 +4000,12 @@
       "path": "newtonsoft.json/11.0.2",
       "hashPath": "newtonsoft.json.11.0.2.nupkg.sha512"
     },
-    "NHibernate/5.3.3": {
+    "NHibernate/5.3.7": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-ar4yr/NgtkysCK46UsEPmraqlAsfDOgpda9tWDRhN0K/N/A2X3rDOFaVg3f+ab3L6oy/+C2hAcUM7sZIBFhq+g==",
-      "path": "nhibernate/5.3.3",
-      "hashPath": "nhibernate.5.3.3.nupkg.sha512"
+      "sha512": "sha512-eawJB7IrM5ZVc/zb9eOwU0CZBuK5dtUfmo45JG0tTm0bg/stL0uOPIjl/HlJyP1GLDOTFvWvZ/as0niTe/YgLw==",
+      "path": "nhibernate/5.3.7",
+      "hashPath": "nhibernate.5.3.7.nupkg.sha512"
     },
     "PostSharp/6.8.9": {
       "type": "package",
