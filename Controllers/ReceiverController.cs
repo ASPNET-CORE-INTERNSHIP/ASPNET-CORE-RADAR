@@ -1,4 +1,5 @@
 using ASPNETAOP.Models;
+using ASPNETAOP.Session;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -10,9 +11,17 @@ namespace ASPNETAOP.Controllers
 {
     public class ReceiverController : Controller
     {
-        //We need configuration for calling db.
+       /*
         private IConfiguration _configuration;
         public ReceiverController(IConfiguration Configuration) { _configuration = Configuration; }
+       */
+
+        private readonly NHibernateMapperSession _session;
+
+        public ReceiverController(NHibernateMapperSession session)
+        {
+            _session = session;
+        }
 
         [Route("Home/Index")]
         public IActionResult Index()
@@ -27,7 +36,7 @@ namespace ASPNETAOP.Controllers
 
 
         [HttpPost]
-        public IActionResult NewReceiver(Receiver receiver)
+        public async System.Threading.Tasks.Task<IActionResult> NewReceiverAsync(Receiver receiver)
         {
             //If the receiver name is null we give a default name that specifies its number
             String rec_name = null;
@@ -53,48 +62,58 @@ namespace ASPNETAOP.Controllers
             }
 
             Guid key = Guid.NewGuid();
-            using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
-            {
-                using (SqlCommand cmd = new SqlCommand())
-                {
-                    cmd.Connection = con;
-                    cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = @"INSERT INTO Receiver(ID, name, listening_time, rest_time, recovery_time) 
-                            VALUES(@ID, @name, @listening_time, @rest_time, @recovery_time)";
-                    cmd.Parameters.AddWithValue("@ID", key);
-                    cmd.Parameters.AddWithValue("@name", rec_name);
-                    cmd.Parameters.AddWithValue("@listening_time", receiver.listening_time);
-                    cmd.Parameters.AddWithValue("@rest_time", receiver.rest_time);
-                    cmd.Parameters.AddWithValue("@recovery_time", receiver.recovery_time);
+            //await _session.Save(book);
+            Receiver r = new Receiver(key, rec_name, receiver.listening_time, receiver.rest_time, receiver.recovery_time);
+            Datas.Receiver = r;
+            Datas.Transmitter = new Transmitter();
+            Datas.Submode = new Submode();
+            Datas.Scan = new Scan();
+            Datas.Radar = new Radar();
 
-                    Receiver r = new Receiver(key, rec_name, receiver.listening_time, receiver.rest_time, receiver.recovery_time);
-                    Datas.Receiver = r;
-                    Datas.Transmitter = new Transmitter();
-                    Datas.Submode = new Submode();
-                    Datas.Scan = new Scan();
-                    Datas.Radar = new Radar();
+            Datas.newProgram = "yes";
+            await _session.Save(r);
+            /* using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
+             {
+                 using (SqlCommand cmd = new SqlCommand())
+                 {
+                     cmd.Connection = con;
+                     cmd.CommandType = CommandType.Text;
+                     cmd.CommandText = @"INSERT INTO Receiver(ID, name, listening_time, rest_time, recovery_time) 
+                             VALUES(@ID, @name, @listening_time, @rest_time, @recovery_time)";
+                     cmd.Parameters.AddWithValue("@ID", key);
+                     cmd.Parameters.AddWithValue("@name", rec_name);
+                     cmd.Parameters.AddWithValue("@listening_time", receiver.listening_time);
+                     cmd.Parameters.AddWithValue("@rest_time", receiver.rest_time);
+                     cmd.Parameters.AddWithValue("@recovery_time", receiver.recovery_time);
 
-                    Datas.newProgram = "yes";
+                     Receiver r = new Receiver(key, rec_name, receiver.listening_time, receiver.rest_time, receiver.recovery_time);
+                     Datas.Receiver = r;
+                     Datas.Transmitter = new Transmitter();
+                     Datas.Submode = new Submode();
+                     Datas.Scan = new Scan();
+                     Datas.Radar = new Radar();
 
-                    try
-                    {
-                        con.Open();
-                        int i = cmd.ExecuteNonQuery();
-                        if (i != 0)
-                            ViewData["Message"] = "New Receiver added";
-                        con.Close();
-                        if (ModelState.IsValid)
-                        {
-                            return RedirectToAction("NewAntenna", "Antenna");
-                        }
-                    }
-                    catch (SqlException e)
-                    {
-                        ViewData["Message"] = e.Message.ToString() + " Error";
-                    }
+                     Datas.newProgram = "yes";
 
-                }
-            }
+                     try
+                     {
+                         con.Open();
+                         int i = cmd.ExecuteNonQuery();
+                         if (i != 0)
+                             ViewData["Message"] = "New Receiver added";
+                         con.Close();
+                         if (ModelState.IsValid)
+                         {
+                             return RedirectToAction("NewAntenna", "Antenna");
+                         }
+                     }
+                     catch (SqlException e)
+                     {
+                         ViewData["Message"] = e.Message.ToString() + " Error";
+                     }
+
+                 }
+             }*/
             return View(receiver);
             
         }
