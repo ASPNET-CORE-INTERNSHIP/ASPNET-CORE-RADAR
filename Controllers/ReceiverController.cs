@@ -11,17 +11,17 @@ namespace ASPNETAOP.Controllers
 {
     public class ReceiverController : Controller
     {
-       /*
+       
         private IConfiguration _configuration;
         public ReceiverController(IConfiguration Configuration) { _configuration = Configuration; }
-       */
+       
 
-        private readonly NHibernateMapperSession _session;
+        /*private readonly NHibernateMapperSession _session;
 
         public ReceiverController(NHibernateMapperSession session)
         {
             _session = session;
-        }
+        }*/
 
         [Route("Home/Index")]
         public IActionResult Index()
@@ -63,7 +63,7 @@ namespace ASPNETAOP.Controllers
 
             Guid key = Guid.NewGuid();
             //await _session.Save(book);
-            Receiver r = new Receiver(key, rec_name, receiver.listening_time, receiver.rest_time, receiver.recovery_time);
+            /*Receiver r = new Receiver(key, rec_name, receiver.listening_time, receiver.rest_time, receiver.recovery_time);
             Datas.Receiver = r;
             Datas.Transmitter = new Transmitter();
             Datas.Submode = new Submode();
@@ -71,8 +71,8 @@ namespace ASPNETAOP.Controllers
             Datas.Radar = new Radar();
 
             Datas.newProgram = "yes";
-            await _session.Save(r);
-            /* using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
+            await _session.Save(r);*/
+             using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
              {
                  using (SqlCommand cmd = new SqlCommand())
                  {
@@ -113,7 +113,7 @@ namespace ASPNETAOP.Controllers
                      }
 
                  }
-             }*/
+             }
             return View(receiver);
             
         }

@@ -14,6 +14,7 @@ namespace ASPNETAOP.Controllers
     public class AntennaScanController : Controller
     {
         private IConfiguration _configuration;
+
         public AntennaScanController(IConfiguration Configuration) { _configuration = Configuration; }
         public IActionResult Index()
         {
@@ -25,7 +26,7 @@ namespace ASPNETAOP.Controllers
             //New variable consisting of a list of antennas
             //so the user can select antennas which empolys current scan type
             List<Antenna> antennas = new List<Antenna>();
-            
+
             using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
             {
                 using (SqlCommand cmd = new SqlCommand())
@@ -75,7 +76,43 @@ namespace ASPNETAOP.Controllers
 
         public IActionResult NewAntennaScanParam(Antenna.AntennaList ascans)
         {
-            foreach (var antenna in ascans.antennas)
+            for(int i = 0; i < ascans.antennas.Count; i++)
+            {
+                Antenna antenna = ascans.antennas[i];
+                if (antenna.IsChecked)
+                {
+                    using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
+                    {
+                        using (SqlCommand cmd = new SqlCommand())
+                        {
+                            cmd.Connection = con;
+                            cmd.CommandType = CommandType.Text;
+                            cmd.CommandText = @"INSERT INTO AntennaScan(antenna_id, scan_id) 
+                                VALUES(@antenna_id, @scan_id)";
+                            Console.WriteLine(antenna.ID + antenna.name + " /////////////////////");
+                            cmd.Parameters.AddWithValue("@antenna_id", antenna.ID);
+                            cmd.Parameters.AddWithValue("@scan_id", Datas.Scan.ID);
+
+                            try
+                            {
+                                con.Open();
+                                int j = cmd.ExecuteNonQuery();
+                                if (j != 0)
+                                    ViewData["Message"] = "New Relationship between antenna and scans added";
+                                con.Close();
+                            }
+                            catch (SqlException e)
+                            {
+                                ViewData["Message"] = e.Message.ToString() + " Error";
+                            }
+
+                        }
+                    }
+                }
+
+                //antenna.IsChecked = false;
+            }
+            /*foreach (Antenna antenna in ascans.antennas)
             {
                 if (antenna.IsChecked)
                 {
@@ -87,6 +124,7 @@ namespace ASPNETAOP.Controllers
                             cmd.CommandType = CommandType.Text;
                             cmd.CommandText = @"INSERT INTO AntennaScan(antenna_id, scan_id) 
                             VALUES(@antenna_id, @scan_id)";
+                            Console.WriteLine(antenna.ID + antenna.name + " /////////////////////");
                             cmd.Parameters.AddWithValue("@antenna_id", antenna.ID);
                             cmd.Parameters.AddWithValue("@scan_id", Datas.Scan.ID);
 
@@ -107,8 +145,9 @@ namespace ASPNETAOP.Controllers
                     }
                 }
 
-                antenna.IsChecked = false;
-            }
+                //antenna.IsChecked = false;
+            }*/
+
             return View(ascans);
         }
 

@@ -1282,7 +1282,6 @@ C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\Iesi.Collections.dl
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\NHibernate.dll
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\Remotion.Linq.dll
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\Remotion.Linq.EagerFetching.dll
-C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AntennaScan\NewAntennaScan.cshtml.g.cs
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Antenna\NewAntenna.cshtml.g.cs
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Location\NewLocation.cshtml.g.cs
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Mode\NewMode.cshtml.g.cs
@@ -1463,3 +1462,5 @@ C:\Users\Cenk\OneDrive\Desktop\Test2\ASPNET-CORE-RADAR-main\obj\Debug\net5.0\ASP
 C:\Users\Cenk\OneDrive\Desktop\Test2\ASPNET-CORE-RADAR-main\obj\Debug\net5.0\ASPNETAOP.pdb
 C:\Users\Cenk\OneDrive\Desktop\Test2\ASPNET-CORE-RADAR-main\obj\Debug\net5.0\ASPNETAOP.genruntimeconfig.cache
 C:\Users\Cenk\OneDrive\Desktop\Test2\ASPNET-CORE-RADAR-main\obj\Debug\net5.0\PostSharp\postsharp.app.config
+C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AntennaScan\NewAntennaScan.cshtml.g.cs
+C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AntennaScan\NewAntennaScanParam.cshtml.g.cs

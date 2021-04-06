@@ -75,7 +75,6 @@ namespace ASPNETAOP.Controllers
 
                     // Attempt to commit the transaction.
                     transaction.Commit();
-                    Console.WriteLine("Both records (submode and scan) are written to database.");
                     return RedirectToAction("NewAntennaScan", "AntennaScan");
                 }
                 catch (Exception ex)

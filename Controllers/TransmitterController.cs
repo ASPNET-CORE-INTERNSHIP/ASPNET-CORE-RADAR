@@ -79,21 +79,54 @@ namespace ASPNETAOP.Controllers
                         if (i != 0)
                             ViewData["Message"] = "New Transmitter added";
                         con.Close();
-                        //if the duty of antenna is both receiver and transmitter we do not need to add new antenna for transmitter and directly go to radar.
-                        if (Datas.Antenna.duty.Equals("both"))
-                        {
-                            return RedirectToAction("NewRadar", "Radar");
-                        }
-                        else
-                        {
-                            return RedirectToAction("NewAntenna", "Antenna");
-                        }
                     }
                     catch (SqlException e)
                     {
                         ViewData["Message"] = e.Message.ToString() + " Error";
                     }
+                }
+                //if the duty of antenna is both receiver and transmitter we do not need to add new antenna for transmitter and directly go to radar.
+                if (Datas.Antenna.duty.Equals("both"))
+                {
+                    Antenna antenna = Datas.Antenna;
+                    using (SqlCommand cmd1 = new SqlCommand())
+                    {
+                        cmd1.Connection = con;
+                        cmd1.CommandType = CommandType.Text;
+                        cmd1.CommandText = @"INSERT INTO Antenna(ID, name, type, horizontal_beamwidth, vertical_beamwidth, polarization, number_of_feed, horizontal_dimension, vertical_dimension, duty, transmitter_id, receiver_id, location) 
+                            VALUES(@ID, @name, @type, @horizontal_beamwidth, @vertical_beamwidth, @polarization, @number_of_feed, @horizontal_dimension, @vertical_dimension, @duty, @transmitter_id, @receiver_id, @location)";
+                        cmd1.Parameters.AddWithValue("@ID", antenna.ID);
+                        cmd1.Parameters.AddWithValue("@name", antenna.name);
+                        cmd1.Parameters.AddWithValue("@type", antenna.type);
+                        cmd1.Parameters.AddWithValue("@horizontal_beamwidth", antenna.horizontal_beamwidth);
+                        cmd1.Parameters.AddWithValue("@vertical_beamwidth", antenna.vertical_beamwidth);
+                        cmd1.Parameters.AddWithValue("@polarization", antenna.polarization);
+                        cmd1.Parameters.AddWithValue("@number_of_feed", antenna.number_of_feed);
+                        cmd1.Parameters.AddWithValue("@horizontal_dimension", antenna.horizontal_dimension);
+                        cmd1.Parameters.AddWithValue("@vertical_dimension", antenna.vertical_dimension);
+                        cmd1.Parameters.AddWithValue("@duty", antenna.duty);
+                        cmd1.Parameters.AddWithValue("@transmitter_id", key);
+                        cmd1.Parameters.AddWithValue("@receiver_id", Datas.Receiver.ID);
+                        cmd1.Parameters.AddWithValue("@location", antenna.location);
 
+                        try
+                        {
+                            con.Open();
+                            int i = cmd1.ExecuteNonQuery();
+                            if (i != 0)
+                                ViewData["Message"] = "New Antenna added";
+                            con.Close();
+                        }
+                        catch (SqlException e)
+                        {
+                            ViewData["Message"] = e.Message.ToString() + " Error";
+                        }
+                    }
+                    return RedirectToAction("NewRadar", "Radar");
+                }
+                else
+                {
+                    return RedirectToAction("NewAntenna", "Antenna");
                 }
             }
             return View(transmitter);
