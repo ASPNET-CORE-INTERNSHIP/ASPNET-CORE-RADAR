@@ -34,6 +34,47 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public async System.Threading.Tasks.Task<IActionResult> NewReceiverAsync(Receiver receiver)
         {
+            //we add useless receiver and transmitter to db because in antenna we have both transmitter and receiver id attributes
+            //but an transmitter antenna only needs valid transmitter id and receiver antennas only need valid receiver id.
+            //however we cannot set a null value to a transmirrer antenna's receiver id (because of foreign key constraint)
+            Receiver useless_r = new Receiver(Guid.NewGuid(), "useless", 0, 0, 0);
+            Transmitter useless_t = new Transmitter(Guid.NewGuid(), "useless", "AM-amplitude modulation", 0, 0, 0);
+            Datas.uselessReceiver = useless_r;
+            Datas.uselessTransmitter = useless_t;
+            try
+            {
+                _session.BeginTransaction();
+
+                await _session.SaveReceiver(useless_r);
+                await _session.Commit();
+            }
+            catch (Exception e)
+            {
+                // log exception here
+                ViewData["Message"] = e.Message.ToString() + " Error";
+                await _session.Rollback();
+            }
+            finally
+            {
+                _session.CloseTransaction();
+            }
+            try
+            {
+                _session.BeginTransaction();
+
+                await _session.SaveTransmitter(useless_t);
+                await _session.Commit();
+            }
+            catch (Exception e)
+            {
+                // log exception here
+                ViewData["Message"] = e.Message.ToString() + " Error";
+                await _session.Rollback();
+            }
+            finally
+            {
+                _session.CloseTransaction();
+            }
             //If the receiver name is null we give a default name that specifies its number
             String rec_name = null;
             if (String.IsNullOrEmpty(receiver.name))
@@ -53,7 +94,6 @@ namespace ASPNETAOP.Controllers
                 {
                     _session.CloseTransaction();
                 }
-                count = count + 1;
                 rec_name = "Receiver " + count;
             }
             else

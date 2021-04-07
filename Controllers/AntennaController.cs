@@ -86,7 +86,7 @@ namespace ASPNETAOP.Controllers
             //if the antenna is a receiver antenna give it a receiver id
             else if (antenna.duty.Equals("receiver"))
             {
-                Antenna a = new Antenna(key, def_name, antenna.type, antenna.horizontal_beamwidth, antenna.vertical_beamwidth, antenna.polarization, antenna.number_of_feed, antenna.horizontal_dimension, antenna.vertical_dimension, antenna.duty, receiver_id, null, antenna.location);
+                Antenna a = new Antenna(key, def_name, antenna.type, antenna.horizontal_beamwidth, antenna.vertical_beamwidth, antenna.polarization, 1, antenna.horizontal_dimension, antenna.vertical_dimension, antenna.duty, receiver_id, Datas.uselessTransmitter.ID, antenna.location);
                 try
                 {
                     _session.BeginTransaction();
@@ -110,7 +110,7 @@ namespace ASPNETAOP.Controllers
             else
             {
                 Guid transmitter_id = Datas.Transmitter.ID;
-                Antenna a = new Antenna(key, def_name, antenna.type, antenna.horizontal_beamwidth, antenna.vertical_beamwidth, antenna.polarization, antenna.number_of_feed, antenna.horizontal_dimension, antenna.vertical_dimension, antenna.duty, null, transmitter_id, antenna.location);
+                Antenna a = new Antenna(key, def_name, antenna.type, antenna.horizontal_beamwidth, antenna.vertical_beamwidth, antenna.polarization, antenna.number_of_feed, antenna.horizontal_dimension, antenna.vertical_dimension, antenna.duty, Datas.uselessReceiver.ID, transmitter_id, antenna.location);
                 try
                 {
                     _session.BeginTransaction();

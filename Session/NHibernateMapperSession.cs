@@ -64,7 +64,20 @@ namespace ASPNETAOP.Session
             await _session.DeleteAsync(entity);
         }
 
-        public void SaveAntenna(Antenna entity)
+        public async Task SaveTransmitter(Transmitter entity)
+        {
+            Console.WriteLine(entity.name + " " + entity.modulation_type + " " + entity.max_frequency + " " + entity.min_frequency+ "  " + entity.power);
+            ISQLQuery query = _session.CreateSQLQuery("INSERT INTO Transmitter(:ID, :name, :modulation_type, :max_frequency, :min_frequency, :power)");
+            query.SetParameter("ID", entity.ID);
+            query.SetParameter("name", entity.name);
+            query.SetParameter("modulation_type", entity.modulation_type);
+            query.SetParameter("max_frequency", entity.max_frequency);
+            query.SetParameter("min_frequency", entity.min_frequency);
+            query.SetParameter("power", entity.power);
+            query.ExecuteUpdate();
+        }
+
+        public async Task SaveAntenna(Antenna entity)
         {
             ISQLQuery query = _session.CreateSQLQuery("INSERT INTO Antenna VALUES (:ID, :name, :type, :horizontal_beamwidth, :vertical_beamwidth, :polarization, :number_of_feed, :horizontal_dimension, :vertical_dimension, :duty, :transmitter_id, :receiver_id, :location)");
             query.SetParameter("ID", entity.ID);

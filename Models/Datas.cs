@@ -8,6 +8,8 @@ namespace ASPNETAOP.Models
 {
     public class Datas
     {
+        public static Receiver uselessReceiver { get; set; }
+        public static Transmitter uselessTransmitter { get; set; }
         public static Receiver Receiver { get; set; }
 
         public static String newProgram { get; set; } = "yes";

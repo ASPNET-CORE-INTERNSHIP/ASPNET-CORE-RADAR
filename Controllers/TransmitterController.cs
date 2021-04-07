@@ -1,4 +1,5 @@
 ﻿using ASPNETAOP.Models;
+using ASPNETAOP.Session;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -10,9 +11,12 @@ namespace ASPNETAOP.Controllers
 {
     public class TransmitterController : Controller
     {
-        //We need configuration for calling db.
-        private IConfiguration _configuration;
-        public TransmitterController(IConfiguration Configuration) { _configuration = Configuration; }
+        private readonly NHibernateMapperSession _session;
+
+        public TransmitterController(NHibernateMapperSession session)
+        {
+            _session = session;
+        }
 
         [Route("Home/Index")]
         public IActionResult Index()
@@ -88,6 +92,7 @@ namespace ASPNETAOP.Controllers
                 //if the duty of antenna is both receiver and transmitter we do not need to add new antenna for transmitter and directly go to radar.
                 if (Datas.Antenna.duty.Equals("both"))
                 {
+                    Datas.Antenna.transmitter_id = key;
                     Antenna antenna = Datas.Antenna;
                     using (SqlCommand cmd1 = new SqlCommand())
                     {
