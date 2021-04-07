@@ -38,10 +38,10 @@ namespace ASPNETAOP
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            /*var connStr = Configuration.GetConnectionString("RadarDB");
+            var connStr = Configuration.GetConnectionString("RadarDB");
 
             services.AddNHibernate(connStr);
-            services.AddControllersWithViews();*/
+            services.AddControllersWithViews();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

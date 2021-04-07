@@ -20,7 +20,10 @@ namespace ASPNETAOP.Controllers
         {
             return View();
         }
-
+        public IActionResult NewAntennaScanDoldur()
+        {
+            return NewAntennaScan();
+        }
         public IActionResult NewAntennaScan()
         {
             //New variable consisting of a list of antennas

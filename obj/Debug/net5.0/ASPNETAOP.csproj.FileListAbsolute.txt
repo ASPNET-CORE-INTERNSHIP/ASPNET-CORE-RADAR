@@ -287,7 +287,6 @@ C:\Users\Cenk\source\repos\ASPNET-CORE-MVC-AOP-APP-main\obj\Debug\net5.0\ASPNETA
 C:\Users\Cenk\source\repos\ASPNET-CORE-MVC-AOP-APP-main\obj\Debug\net5.0\ASPNETAOP.genruntimeconfig.cache
 C:\Users\Cenk\source\repos\ASPNET-CORE-MVC-AOP-APP-main\obj\Debug\net5.0\PostSharp\postsharp.app.config
 C:\Users\Cenk\source\repos\ASPNET-CORE-MVC-AOP-APP-main\bin\Debug\net5.0\ASPNETAOP.Views.pdb
-C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\ASPNETAOP.csprojAssemblyReference.cache
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\ASPNETAOP.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\ASPNETAOP.AssemblyInfoInputs.cache
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\ASPNETAOP.AssemblyInfo.cs
@@ -1464,3 +1463,4 @@ C:\Users\Cenk\OneDrive\Desktop\Test2\ASPNET-CORE-RADAR-main\obj\Debug\net5.0\ASP
 C:\Users\Cenk\OneDrive\Desktop\Test2\ASPNET-CORE-RADAR-main\obj\Debug\net5.0\PostSharp\postsharp.app.config
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AntennaScan\NewAntennaScan.cshtml.g.cs
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AntennaScan\NewAntennaScanParam.cshtml.g.cs
+C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\ASPNETAOP.csprojAssemblyReference.cache

@@ -12,16 +12,16 @@ namespace ASPNETAOP.Controllers
     public class ReceiverController : Controller
     {
        
-        private IConfiguration _configuration;
+        /*private IConfiguration _configuration;
         public ReceiverController(IConfiguration Configuration) { _configuration = Configuration; }
-       
+       */
 
-        /*private readonly NHibernateMapperSession _session;
+        private readonly NHibernateMapperSession _session;
 
         public ReceiverController(NHibernateMapperSession session)
         {
             _session = session;
-        }*/
+        }
 
         [Route("Home/Index")]
         public IActionResult Index()

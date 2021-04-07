@@ -1,76 +1,76 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Symbols LinesOfCode="1358" PostSharpLinesOfCode="0" EnhancedTypesCount="10" SchemaVersion="1" PostSharpVersion="6.8.9.0" xmlns="http://schemas.postsharp.org/2.0/symbols">
+<Symbols LinesOfCode="1363" PostSharpLinesOfCode="0" EnhancedTypesCount="10" SchemaVersion="1" PostSharpVersion="6.8.9.0" xmlns="http://schemas.postsharp.org/2.0/symbols">
   <Evolution Source="#1=M:[ASPNETAOP]ASPNETAOP.Controllers.UserProfileController::Profile()" Target="#2=M:[ASPNETAOP]ASPNETAOP.Controllers.UserProfileController+&lt;Profile&gt;d__1::MoveNext()" />
   <Class Class="#3=T:[PostSharp]PostSharp.Serialization.PSerializableAttribute">
-    <Instance Declaration="#4=T:[ASPNETAOP]ASPNETAOP.Aspect.IsActive" Id="4ad7b5ce6d1fb7dd">
+    <Instance Declaration="#4=T:[ASPNETAOP]ASPNETAOP.Aspect.IsActive" Id="4ad7b5ce4d58d8ba">
       <Target />
     </Instance>
-    <Instance Declaration="#5=T:[ASPNETAOP]ASPNETAOP.Aspect.IsAuthenticatedAttribute" Id="4ad7b5ceb562c7d7">
+    <Instance Declaration="#5=T:[ASPNETAOP]ASPNETAOP.Aspect.IsAuthenticatedAttribute" Id="4ad7b5ce41478ba9">
       <Target />
     </Instance>
-    <Instance Declaration="#6=T:[ASPNETAOP]ASPNETAOP.Aspect.IsAuthorizedAttribute" Id="4ad7b5ce6c2737bc">
+    <Instance Declaration="#6=T:[ASPNETAOP]ASPNETAOP.Aspect.IsAuthorizedAttribute" Id="4ad7b5ce911c88e8">
       <Target />
     </Instance>
   </Class>
   <Class Class="#5">
-    <Instance Declaration="#7=M:[ASPNETAOP]ASPNETAOP.Controllers.AdminAddRoleController::AddRole([ASPNETAOP]ASPNETAOP.Models.AdminAddRole)" Id="4ad7b5ce62de571d">
+    <Instance Declaration="#7=M:[ASPNETAOP]ASPNETAOP.Controllers.AdminAddRoleController::AddRole([ASPNETAOP]ASPNETAOP.Models.AdminAddRole)" Id="4ad7b5ce9caf3bae">
       <Target LinesAvoided="2">
         <JoinPoint Description="#8=Wrapped by advice(s) OnEntry" Ordinal="0" />
       </Target>
     </Instance>
-    <Instance Declaration="#9=M:[ASPNETAOP]ASPNETAOP.Controllers.AdminRolePermissionController::RolePermission([ASPNETAOP]ASPNETAOP.Models.AdminRolePermission)" Id="4ad7b5ce59e1fa9a">
+    <Instance Declaration="#9=M:[ASPNETAOP]ASPNETAOP.Controllers.AdminRolePermissionController::RolePermission([ASPNETAOP]ASPNETAOP.Models.AdminRolePermission)" Id="4ad7b5ce1b486277">
       <Target LinesAvoided="2">
         <JoinPoint Description="#8" Ordinal="2" />
       </Target>
     </Instance>
-    <Instance Declaration="#10=M:[ASPNETAOP]ASPNETAOP.Controllers.AdminUserActivityController::UserActivity()" Id="4ad7b5cec750b3e2">
+    <Instance Declaration="#10=M:[ASPNETAOP]ASPNETAOP.Controllers.AdminUserActivityController::UserActivity()" Id="4ad7b5cefe88e0da">
       <Target LinesAvoided="2">
         <JoinPoint Description="#8" Ordinal="4" />
       </Target>
     </Instance>
-    <Instance Declaration="#11=M:[ASPNETAOP]ASPNETAOP.Controllers.AdminUserListController::UserList()" Id="4ad7b5cec4c618dc">
+    <Instance Declaration="#11=M:[ASPNETAOP]ASPNETAOP.Controllers.AdminUserListController::UserList()" Id="4ad7b5ce5ff3bb8b">
       <Target LinesAvoided="2">
         <JoinPoint Description="#8" Ordinal="6" />
       </Target>
     </Instance>
-    <Instance Declaration="#12=M:[ASPNETAOP]ASPNETAOP.Controllers.AdminUserRoleEditController::UserEdit([ASPNETAOP]ASPNETAOP.Models.AdminUserRoleEdit)" Id="4ad7b5ce5aa75cf6">
+    <Instance Declaration="#12=M:[ASPNETAOP]ASPNETAOP.Controllers.AdminUserRoleEditController::UserEdit([ASPNETAOP]ASPNETAOP.Models.AdminUserRoleEdit)" Id="4ad7b5ce4c248ab7">
       <Target LinesAvoided="2">
         <JoinPoint Description="#8" Ordinal="8" />
       </Target>
     </Instance>
-    <Instance Declaration="#13=M:[ASPNETAOP]ASPNETAOP.Controllers.UserLoginController::ConfirmAction()" Id="4ad7b5ce123d2c62">
+    <Instance Declaration="#13=M:[ASPNETAOP]ASPNETAOP.Controllers.UserLoginController::ConfirmAction()" Id="4ad7b5cec55c1aff">
       <Target LinesAvoided="2">
         <JoinPoint Description="#8" Ordinal="10" />
       </Target>
     </Instance>
-    <Instance Declaration="#1" Id="4ad7b5cebb033cc9">
+    <Instance Declaration="#1" Id="4ad7b5ceabd9dda5">
       <Target LinesAvoided="2" Tags="premium">
         <JoinPoint Description="#8" Ordinal="11" />
       </Target>
     </Instance>
   </Class>
   <Class Class="#6">
-    <Instance Declaration="#7" Id="4ad7b5ce80355c4b">
+    <Instance Declaration="#7" Id="4ad7b5ce7d3f73ab">
       <Target LinesAvoided="2">
         <JoinPoint Description="#8" />
       </Target>
     </Instance>
-    <Instance Declaration="#9" Id="4ad7b5cee7349895">
+    <Instance Declaration="#9" Id="4ad7b5cede50c934">
       <Target LinesAvoided="2">
         <JoinPoint Description="#8" Ordinal="3" />
       </Target>
     </Instance>
-    <Instance Declaration="#10" Id="4ad7b5ce3e17a121">
+    <Instance Declaration="#10" Id="4ad7b5ce1dc9a26e">
       <Target LinesAvoided="2">
         <JoinPoint Description="#8" Ordinal="5" />
       </Target>
     </Instance>
-    <Instance Declaration="#11" Id="4ad7b5cecc54253d">
+    <Instance Declaration="#11" Id="4ad7b5ce4aadabbb">
       <Target LinesAvoided="2">
         <JoinPoint Description="#8" Ordinal="7" />
       </Target>
     </Instance>
-    <Instance Declaration="#12" Id="4ad7b5ce1dced107">
+    <Instance Declaration="#12" Id="4ad7b5ce745f5cee">
       <Target LinesAvoided="2">
         <JoinPoint Description="#8" Ordinal="9" />
       </Target>

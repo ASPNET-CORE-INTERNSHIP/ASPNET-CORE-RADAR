@@ -7,7 +7,7 @@ namespace ASPNETAOP.Models
     public class Receiver
     {
         public Receiver() { }
-        public Receiver(Guid key, string rec_name, float listening_time, float rest_time, float recovery_time)
+        public Receiver(Guid key, string rec_name, Double listening_time, Double rest_time, Double recovery_time)
         {
             this.ID = key;
             this.name = rec_name;
@@ -24,14 +24,14 @@ namespace ASPNETAOP.Models
 
         [Display(Name = "Listening time in nsec")]
         [Required(ErrorMessage = "Please enter the receiver's listening time in nsec")]
-        public virtual float listening_time { get; set; }
+        public virtual Double listening_time { get; set; }
 
         [Display(Name = "Rest time in nsec")]
         [Required(ErrorMessage = "Please enter the receiver's rest time in nsec")]
-        public virtual float rest_time { get; set; }
+        public virtual Double rest_time { get; set; }
 
         [Display(Name = "Recovery time in nsec")]
         [Required(ErrorMessage = "Please enter the receiver's recovery time in nsec")]
-        public virtual float recovery_time { get; set; }
+        public virtual Double recovery_time { get; set; }
     }
 }

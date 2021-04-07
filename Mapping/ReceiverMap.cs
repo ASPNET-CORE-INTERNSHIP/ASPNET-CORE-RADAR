@@ -31,17 +31,17 @@ namespace ASPNETAOP.Mapping
 
             Property(b => b.listening_time, x =>
             {
-                x.Type(NHibernateUtil.Decimal);
+                x.Type(NHibernateUtil.Double);
             });
 
             Property(b => b.rest_time, x =>
             {
-                x.Type(NHibernateUtil.Decimal);
+                x.Type(NHibernateUtil.Double);
             });
 
             Property(b => b.recovery_time, x =>
             {
-                x.Type(NHibernateUtil.Decimal);
+                x.Type(NHibernateUtil.Double);
             });
             /*
     //or use this mapping 
