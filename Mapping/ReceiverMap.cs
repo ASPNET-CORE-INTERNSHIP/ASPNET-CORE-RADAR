@@ -43,20 +43,6 @@ namespace ASPNETAOP.Mapping
             {
                 x.Type(NHibernateUtil.Double);
             });
-            /*
-    //or use this mapping 
-              public class ReceiverMap: ClassMap < Receiver > { 
-                public ReceiverMap() {   
-                    Table("Receiver");
-                    Id(x => x.ID);  
-                    Map(x => x.name);  
-                    Map(x => x.listening_time);  
-                    Map(x => x.rest_time);  
-                    Map(x => x.recovery_time);  
-                    //References(x => x.Radar).Column("ReceiverId").Not.Nullable();
-                }  
-            }
-             */
 
             Table("Receiver");
         }

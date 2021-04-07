@@ -1,5 +1,6 @@
 ﻿using ASPNETAOP.Models;
 using NHibernate;
+using NHibernate.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,14 +42,57 @@ namespace ASPNETAOP.Session
             }
         }
 
-        public async Task Save(Receiver entity)
+        public async Task SaveReceiver(Receiver entity)
         {
-            await _session.SaveOrUpdateAsync(entity);
+            ISQLQuery query = _session.CreateSQLQuery("INSERT INTO Receiver VALUES (:ID, :name, :listening_time, :rest_time, :recovery_time)");
+            query.SetParameter("ID", entity.ID);
+            query.SetParameter("name", entity.name);
+            query.SetParameter("listening_time", entity.listening_time);
+            query.SetParameter("rest_time", entity.rest_time);
+            query.SetParameter("recovery_time", entity.recovery_time);
+            query.ExecuteUpdate();
         }
 
-        public async Task Delete(Receiver entity)
+        public async Task<int> GetReceiverNumber()
+        {
+            var num = _session.CreateSQLQuery("SELECT COUNT(*) FROM Receiver").UniqueResult<int>();
+            return num;
+        }
+
+        public async Task DeleteReceiver(Receiver entity)
         {
             await _session.DeleteAsync(entity);
+        }
+
+        public void SaveAntenna(Antenna entity)
+        {
+            ISQLQuery query = _session.CreateSQLQuery("INSERT INTO Antenna VALUES (:ID, :name, :type, :horizontal_beamwidth, :vertical_beamwidth, :polarization, :number_of_feed, :horizontal_dimension, :vertical_dimension, :duty, :transmitter_id, :receiver_id, :location)");
+            query.SetParameter("ID", entity.ID);
+            query.SetParameter("name", entity.name);
+            query.SetParameter("type", entity.type);
+            query.SetParameter("horizontal_beamwidth", entity.horizontal_beamwidth);
+            query.SetParameter("vertical_beamwidth", entity.vertical_beamwidth);
+            query.SetParameter("polarization", entity.polarization);
+            query.SetParameter("number_of_feed", entity.number_of_feed);
+            query.SetParameter("horizontal_dimension", entity.horizontal_dimension);
+            query.SetParameter("vertical_dimension", entity.vertical_dimension);
+            query.SetParameter("duty", entity.duty);
+            query.SetParameter("transmitter_id", entity.transmitter_id);
+            query.SetParameter("receiver_id", entity.receiver_id);
+            query.SetParameter("location", entity.location);
+            query.ExecuteUpdate();
+        }
+
+        public async Task<String> SelectTransmitter(Guid ID)
+        {
+            var transmitter_name = _session.CreateSQLQuery("SELECT name FROM Transmitter WHERE ID = :ID").SetParameter("ID", ID).UniqueResult<string>();
+            return transmitter_name;
+        }
+
+        public async Task<String> SelectReceiver(Guid ID)
+        {
+            var transmitter_name = _session.CreateSQLQuery("SELECT name FROM Receiver WHERE ID = :ID").SetParameter("ID", ID).UniqueResult<string>();
+            return transmitter_name;
         }
     }
 }
