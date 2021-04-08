@@ -10,6 +10,17 @@ namespace ASPNETAOP.Models
     public class Submode
     {
         public Submode() { }
+        public Submode(Guid ID, String name, Guid mode_id, float PW, float PRI, int min_frequency, int max_frequency, Guid scan_id)
+        {
+            this.ID = ID;
+            this.mode_id = mode_id;
+            this.name = name;
+            this.PW = PW;
+            this.PRI = PRI;
+            this.min_frequency = min_frequency;
+            this.max_frequency = max_frequency;
+            this.scan_id = scan_id;
+        }
         public Submode(string name, float pW, float pRI, int min_frequency, int max_frequency)
         {
             this.name = name;
@@ -20,34 +31,34 @@ namespace ASPNETAOP.Models
         }
 
         [Key]
-        public Guid ID { get; set; }
+        public virtual Guid ID { get; set; }
 
         [Display(Name = "User Friendly Name")]
 #nullable enable
-        public String? name { get; set; }
+        public virtual String? name { get; set; }
 
         [Display(Name = "Mode ID")]
         [Required(ErrorMessage = "Please enter the Mode ID")]
-        public Guid mode_id { get; set; }
+        public virtual Guid mode_id { get; set; }
 
         [Display(Name = "PW -pulse width-")]
         [Required(ErrorMessage = "Please enter the PW value")]
-        public float PW { get; set; }
+        public virtual float PW { get; set; }
 
         [Display(Name = "PRI -pulse receive interval-")]
         [Required(ErrorMessage = "Please enter the PRI value")]
-        public float PRI { get; set; }
+        public virtual float PRI { get; set; }
 
         [Display(Name = "Min Frequency")]
         [Required(ErrorMessage = "Please enter the geogmin frequency")]
-        public int min_frequency { get; set; }
+        public virtual int min_frequency { get; set; }
 
         [Display(Name = "Max Frequency")]
         [Required(ErrorMessage = "Please enter the max frequency")]
-        public int max_frequency { get; set; }
+        public virtual int max_frequency { get; set; }
 
         [Display(Name = "scan_id")]
         [Required(ErrorMessage = "Please enter the scan_id")]
-        public Guid scan_id { get; set; }
+        public virtual Guid scan_id { get; set; }
     }
 }

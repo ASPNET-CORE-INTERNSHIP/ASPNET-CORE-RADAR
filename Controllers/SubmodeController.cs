@@ -32,13 +32,13 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult NewSubmode(Submode sm)
         {
-            Datas.Submode= new Submode(sm.name, sm.PRI, sm.PW, sm.max_frequency, sm.min_frequency);
-
+            Submode sbm = new Submode(sm.name, sm.PRI, sm.PW, sm.max_frequency, sm.min_frequency);
+            Datas.Submode = sbm;
             return RedirectToAction("NewScan", "Scan");
         }
 
     }
-    /*SELECT* FROM Transmitter;
+/*SELECT* FROM Transmitter;
 SELECT* FROM Receiver;
 SELECT* FROM Antenna;
 SELECT* FROM Radar;

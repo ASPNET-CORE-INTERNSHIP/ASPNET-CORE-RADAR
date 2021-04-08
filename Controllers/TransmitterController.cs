@@ -31,26 +31,35 @@ namespace ASPNETAOP.Controllers
 
 
         [HttpPost]
-        public IActionResult NewTransmitter(Transmitter transmitter)
+        public async System.Threading.Tasks.Task<IActionResult> NewTransmitterAsync(Transmitter transmitter)
         {
             Datas.newProgram = "no";
+
             //If the transmitter name is null we give a default name that specifies its number
             String def_name = null;
+            //because we change the default name after the Radar added we we should keep it in mind to it is a default given name
+            bool isNamed = false;
             if (String.IsNullOrEmpty(transmitter.name))
             {
-                string stmt = "SELECT COUNT(*) FROM Transmitter";
                 int count = 0;
 
-                using (SqlConnection thisConnection = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
+                try
                 {
-                    using (SqlCommand cmdCount = new SqlCommand(stmt, thisConnection))
-                    {
-                        thisConnection.Open();
-                        count = (int)cmdCount.ExecuteScalar();
-                    }
+                    count = await _session.GetTransmitterNumber();
                 }
-                count = count + 1;
+                catch (Exception e)
+                {
+                    // log exception here
+                    ViewData["Message"] = e.Message.ToString() + " Error";
+                    await _session.Rollback();
+                }
+                finally
+                {
+                    _session.CloseTransaction();
+                }
                 def_name = "Transmitter " + count;
+                //keep it in mind
+                isNamed = true;
             }
             else
             {
@@ -59,81 +68,58 @@ namespace ASPNETAOP.Controllers
 
             Guid key = Guid.NewGuid();
             Transmitter transmitter_temp = new Transmitter(key, def_name,transmitter.modulation_type, transmitter.max_frequency, transmitter.min_frequency, transmitter.power);
+            transmitter_temp.Isnamed = isNamed;
+            //Add our transmitter to Datas model so we can use its id when we add Radar entity
             Datas.Transmitter = transmitter_temp;
 
-            using (SqlConnection con = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
+            //save our transmitter to database
+            try
             {
-                using (SqlCommand cmd = new SqlCommand())
-                {
-                    cmd.Connection = con;
-                    cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = @"INSERT INTO Transmitter(ID, name, modulation_type, max_frequency, min_frequency, power) 
-                            VALUES(@ID, @name, @modulation_type, @max_frequency, @min_frequency, @power)";
-                    cmd.Parameters.AddWithValue("@ID", key);
-                    cmd.Parameters.AddWithValue("@name", def_name);
-                    cmd.Parameters.AddWithValue("@modulation_type", transmitter.modulation_type);
-                    cmd.Parameters.AddWithValue("@max_frequency", transmitter.max_frequency);
-                    cmd.Parameters.AddWithValue("@min_frequency", transmitter.min_frequency);
-                    cmd.Parameters.AddWithValue("@power", transmitter.power);
-
-                    try
-                    {
-                        con.Open();
-                        int i = cmd.ExecuteNonQuery();
-                        if (i != 0)
-                            ViewData["Message"] = "New Transmitter added";
-                        con.Close();
-                    }
-                    catch (SqlException e)
-                    {
-                        ViewData["Message"] = e.Message.ToString() + " Error";
-                    }
-                }
-                //if the duty of antenna is both receiver and transmitter we do not need to add new antenna for transmitter and directly go to radar.
-                if (Datas.Antenna.duty.Equals("both"))
-                {
-                    Datas.Antenna.transmitter_id = key;
-                    Antenna antenna = Datas.Antenna;
-                    using (SqlCommand cmd1 = new SqlCommand())
-                    {
-                        cmd1.Connection = con;
-                        cmd1.CommandType = CommandType.Text;
-                        cmd1.CommandText = @"INSERT INTO Antenna(ID, name, type, horizontal_beamwidth, vertical_beamwidth, polarization, number_of_feed, horizontal_dimension, vertical_dimension, duty, transmitter_id, receiver_id, location) 
-                            VALUES(@ID, @name, @type, @horizontal_beamwidth, @vertical_beamwidth, @polarization, @number_of_feed, @horizontal_dimension, @vertical_dimension, @duty, @transmitter_id, @receiver_id, @location)";
-                        cmd1.Parameters.AddWithValue("@ID", antenna.ID);
-                        cmd1.Parameters.AddWithValue("@name", antenna.name);
-                        cmd1.Parameters.AddWithValue("@type", antenna.type);
-                        cmd1.Parameters.AddWithValue("@horizontal_beamwidth", antenna.horizontal_beamwidth);
-                        cmd1.Parameters.AddWithValue("@vertical_beamwidth", antenna.vertical_beamwidth);
-                        cmd1.Parameters.AddWithValue("@polarization", antenna.polarization);
-                        cmd1.Parameters.AddWithValue("@number_of_feed", antenna.number_of_feed);
-                        cmd1.Parameters.AddWithValue("@horizontal_dimension", antenna.horizontal_dimension);
-                        cmd1.Parameters.AddWithValue("@vertical_dimension", antenna.vertical_dimension);
-                        cmd1.Parameters.AddWithValue("@duty", antenna.duty);
-                        cmd1.Parameters.AddWithValue("@transmitter_id", key);
-                        cmd1.Parameters.AddWithValue("@receiver_id", Datas.Receiver.ID);
-                        cmd1.Parameters.AddWithValue("@location", antenna.location);
-
-                        try
-                        {
-                            con.Open();
-                            int i = cmd1.ExecuteNonQuery();
-                            if (i != 0)
-                                ViewData["Message"] = "New Antenna added";
-                            con.Close();
-                        }
-                        catch (SqlException e)
-                        {
-                            ViewData["Message"] = e.Message.ToString() + " Error";
-                        }
-                    }
-                    return RedirectToAction("NewRadar", "Radar");
-                }
-                else
-                {
-                    return RedirectToAction("NewAntenna", "Antenna");
-                }
+                _session.BeginTransaction();
+                await _session.SaveTransmitter(transmitter_temp);
+                await _session.Commit();
             }
+            catch (Exception e)
+            {
+                // log exception here
+                ViewData["Message"] = e.Message.ToString() + " Error";
+                await _session.Rollback();
+            }
+            finally
+            {
+                _session.CloseTransaction();
+            }
+
+            //if the duty of antenna is both receiver and transmitter we do not need to add new antenna for transmitter and directly go to radar.
+            if (Datas.Antenna.duty.Equals("both"))
+            {
+                Datas.Antenna.transmitter_id = key;
+                Antenna antenna = Datas.Antenna;
+                Datas.ListOfAntennas.Add(antenna);
+                try
+                {
+                    _session.BeginTransaction();
+                    _session.SaveAntenna(antenna);
+                    await _session.Commit();
+                    ViewData["Message"] = "New Antenna added";
+                }
+                catch (Exception e)
+                {
+                    // log exception here
+                    ViewData["Message"] = e.Message.ToString() + " Error";
+                    await _session.Rollback();
+                }
+                finally
+                {
+                    _session.CloseTransaction();
+                }
+                return RedirectToAction("NewRadar", "Radar");
+            }
+            else
+            {
+                return RedirectToAction("NewAntenna", "Antenna");
+            }
+
             return View(transmitter);
 
         }

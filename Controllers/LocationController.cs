@@ -1,4 +1,5 @@
 ﻿using ASPNETAOP.Models;
+using ASPNETAOP.Session;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -12,9 +13,12 @@ namespace ASPNETAOP.Controllers
 {
     public class LocationController : Controller
     {
-        //We need configuration for calling db.
-        private IConfiguration _configuration;
-        public LocationController(IConfiguration Configuration) { _configuration = Configuration; }
+        private readonly NHibernateMapperSession _session;
+
+        public LocationController(NHibernateMapperSession session)
+        {
+            _session = session;
+        }
 
         [Route("Home/Index")]
         public IActionResult Index()
@@ -28,75 +32,173 @@ namespace ASPNETAOP.Controllers
         }
 
         [HttpPost]
-        public IActionResult NewLocation(Location loc)
+        public async Task<IActionResult> NewLocationAsync(Location loc)
         {
-            using (SqlConnection connection = new SqlConnection(@"Server=localhost;Database=RADAR;Trusted_Connection=True;MultipleActiveResultSets=true"))
+            //handling user-may-occur mistakes
+            if (loc.city == null | loc.country == null | loc.geographic_latitude == null | loc.geographic_longitude == null)
             {
-                connection.Open();
+                return View(loc);
+                ViewData["Message"] = "Please do not leave empty Country, City, Geographic Latitude and Geographic Longitude areas";
+            }
 
-                SqlCommand command = connection.CreateCommand();
-                SqlTransaction transaction;
+            //defining Radar's and Location's key here
+            Guid key_location = Guid.NewGuid();
+            Guid key = Guid.NewGuid();
+            Datas.Radar.ID = key;
 
-                // Start a local transaction.
-                transaction = connection.BeginTransaction("SampleTransaction");
-
-                // Must assign both transaction object and connection
-                // to Command object for a pending local transaction
-                command.Connection = connection;
-                command.Transaction = transaction;
+            //If the location name is null we give a default name that specifies its country, city and area number  
+            String def_name = null;
+            if (String.IsNullOrEmpty(loc.name))
+            {
+                int count = 0;
 
                 try
                 {
-                    Guid key_location = Guid.NewGuid();
-                    command.CommandText = @"INSERT INTO Location(ID, name, country, city, geographic_latitude, geographic_longitude, airborne) 
-                            VALUES(@ID, @name, @country, @city, @geographic_latitude,@geographic_longitude,@airborne)";
-                    command.Parameters.AddWithValue("@ID", key_location);
-                    command.Parameters.AddWithValue("@name", loc.name);
-                    command.Parameters.AddWithValue("@country", loc.country);
-                    command.Parameters.AddWithValue("@city", loc.city);
-                    command.Parameters.AddWithValue("@geographic_latitude", loc.geographic_latitude);
-                    command.Parameters.AddWithValue("@geographic_longitude", loc.geographic_longitude);
-                    command.Parameters.AddWithValue("@airborne", loc.airborne);
-                    command.ExecuteNonQuery();
-
-                    command.CommandText = @"INSERT INTO Radar(ID, name, system, configuration, receiver_id, transmitter_id, location_id) 
-                            VALUES(@id, @name_radar, @system, @configuration, @receiver_id, @transmitter_id, @location_id)";
-                    Guid key = Guid.NewGuid();
-                    Datas.Radar.ID = key;
-                    command.Parameters.AddWithValue("@id", key);
-                    command.Parameters.AddWithValue("@name_radar", Datas.Radar.name);
-                    command.Parameters.AddWithValue("@system", Datas.Radar.system);
-                    command.Parameters.AddWithValue("@configuration", Datas.Radar.configuration);
-                    command.Parameters.AddWithValue("@receiver_id", Datas.Receiver.ID);
-                    command.Parameters.AddWithValue("@transmitter_id", Datas.Transmitter.ID);
-                    command.Parameters.AddWithValue("@location_id", key_location);
-                    command.ExecuteNonQuery();
-
-                    // Attempt to commit the transaction.
-                    transaction.Commit();
-                    Console.WriteLine("Both records (radar and its location) are written to database.");
-                    return RedirectToAction("NewMode", "Mode");
+                    count = await _session.GetLocationName(loc.country, loc.city);
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
-                    Console.WriteLine("Commit Exception Type: {0}", ex.GetType());
-                    Console.WriteLine("  Message: {0}", ex.Message);
+                    // log exception here
+                    ViewData["Message"] = e.Message.ToString() + " Error";
+                    await _session.Rollback();
+                }
+                finally
+                {
+                    _session.CloseTransaction();
+                }
+                count = count + 1;
+                def_name = loc.country + " " + loc.city + " " + count;
+            }
+            else
+            {
+                def_name = loc.name;
+            }
 
-                    // Attempt to roll back the transaction.
-                    try
-                    {
-                        transaction.Rollback();
-                    }
-                    catch (Exception ex2)
-                    {
-                        // This catch block will handle any errors that may have occurred
-                        // on the server that would cause the rollback to fail, such as
-                        // a closed connection.
-                        Console.WriteLine("Rollback Exception Type: {0}", ex2.GetType());
-                        Console.WriteLine("  Message: {0}", ex2.Message);
-                    }
+            //rename Radar, Transmitter and Antennas again
+            String radar_name = Datas.Radar.name;
+            if (Datas.Radar.Isnamed == true)
+            {
+                radar_name = key_location + "Radar";
+            }
+
+            if (Datas.Transmitter.Isnamed == true)
+            {
+                Guid id = Datas.Transmitter.ID;
+                String newName = radar_name + "'s Transmitter";
+                try
+                {
+                    _session.BeginTransaction();
+                    _session.RenameTransmitter(id, newName);
+                    await _session.Commit();
+                }
+                catch (Exception e)
+                {
+                    // log exception here
+                    ViewData["Message"] = e.Message.ToString() + " Error";
+                    await _session.Rollback();
+                }
+                finally
+                {
+                    _session.CloseTransaction();
                 }
             }
+
+            if (Datas.Receiver.Isnamed == true)
+            {
+                Guid id = Datas.Receiver.ID;
+                String newName = radar_name + "'s Receiver";
+                try
+                {
+                    _session.BeginTransaction();
+                    _session.RenameReceiver(id, newName);
+                    await _session.Commit();
+                }
+                catch (Exception e)
+                {
+                    // log exception here
+                    ViewData["Message"] = e.Message.ToString() + " Error";
+                    await _session.Rollback();
+                }
+                finally
+                {
+                    _session.CloseTransaction();
+                }
+            }
+
+            /*int count_receiver = 0;
+
+            int count_transmitter = 0;
+
+            int count_both = 0;
+
+
+            for (int i=0; i < Datas.ListOfAntennas.Count; i++)
+            {
+                Antenna antenna = Datas.ListOfAntennas[i];
+                if (antenna.Isnamed == true)
+                {
+                    String newName = "";
+                    if (antenna.duty.Equals("receiver"))
+                    {
+                        count_receiver = count_receiver + 1;
+                        newName = radar_name + "'s receiver antenna " + count_receiver;
+                    }
+
+                    else if (antenna.duty.Equals("transmitter"))
+                    {
+                        count_transmitter = count_transmitter + 1;
+                        newName = radar_name + "'s transmitter antenna " + count_transmitter;
+                    }
+
+                    else
+                    {
+                        count_both = count_both + 1;
+                        newName = radar_name + "'s multiple role antenna " + count_both;
+                    }
+
+                    try
+                    {
+                        _session.BeginTransaction();
+                        _session.RenameAntenna(antenna.ID, newName);
+                        await _session.Commit();
+                    }
+                    catch (Exception e)
+                    {
+                        // log exception here
+                        ViewData["Message"] = e.Message.ToString() + " Error";
+                        await _session.Rollback();
+                    }
+                    finally
+                    {
+                        _session.CloseTransaction();
+                    }
+                }
+            }*/
+
+            Location location_temp = new Location(key_location, def_name, loc.country, loc.city, loc.geographic_latitude, loc.geographic_longitude, loc.airborne);
+            Radar radar_temp = new Radar(key, radar_name, Datas.Radar.system, Datas.Radar.configuration, Datas.Receiver.ID, Datas.Transmitter.ID, key_location);
+
+            try
+            {
+                _session.BeginTransaction();
+                _session.SaveLocation(location_temp);
+                _session.SaveRadar(radar_temp);
+                await _session.Commit();
+                ViewData["Message"] = "Both records (Location and Radar) saved to the db";
+                return RedirectToAction("NewMode", "Mode");
+            }
+            catch (Exception e)
+            {
+                // log exception here
+                ViewData["Message"] = e.Message.ToString() + " Error";
+                await _session.Rollback();
+            }
+            finally
+            {
+                _session.CloseTransaction();
+            }
+            
+
             return View(loc);
         }
     }

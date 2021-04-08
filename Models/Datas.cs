@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using static ASPNETAOP.Models.Antenna;
 
 namespace ASPNETAOP.Models
 {
@@ -25,5 +26,7 @@ namespace ASPNETAOP.Models
         public static Submode Submode { get; set; }
 
         public static Scan Scan { get; set; }
+
+        public static List<Antenna> ListOfAntennas { get; set; }
     }
 }

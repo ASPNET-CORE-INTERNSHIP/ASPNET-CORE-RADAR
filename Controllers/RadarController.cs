@@ -1,4 +1,5 @@
 ﻿using ASPNETAOP.Models;
+using ASPNETAOP.Session;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -10,9 +11,12 @@ namespace ASPNETAOP.Controllers
 {
     public class RadarController : Controller
     {
-        //We need configuration for calling db.
-        private IConfiguration _configuration;
-        public RadarController(IConfiguration Configuration) { _configuration = Configuration; }
+        private readonly NHibernateMapperSession _session;
+
+        public RadarController(NHibernateMapperSession session)
+        {
+            _session = session;
+        }
 
         [Route("Home/Index")]
         public IActionResult Index()
@@ -26,32 +30,51 @@ namespace ASPNETAOP.Controllers
         }
 
         [HttpPost]
-        public IActionResult NewRadar(Radar radar)
+        public async Task<IActionResult> NewRadarAsync(Radar radar)
         {
-            //If the radar name is null we give a default name that specifies its number
+            //If the radar name is null we give a default name that specifies its number and change when the location added
             String def_name;
+            bool isNamed = false;
             if (String.IsNullOrEmpty(radar.name))
             {
-                string stmt = "SELECT COUNT(*) FROM Radar";
                 int count = 0;
 
-                using (SqlConnection thisConnection = new SqlConnection("Data Source=DATASOURCE"))
+                try
                 {
-                    using (SqlCommand cmdCount = new SqlCommand(stmt, thisConnection))
-                    {
-                        thisConnection.Open();
-                        count = (int)cmdCount.ExecuteScalar();
-                    }
+                    count = await _session.GetRadarNumber();
+                }
+                catch (Exception e)
+                {
+                    // log exception here
+                    ViewData["Message"] = e.Message.ToString() + " Error";
+                    await _session.Rollback();
+                }
+                finally
+                {
+                    _session.CloseTransaction();
                 }
                 count = count + 1;
                 def_name = "Radar " + count;
+                isNamed = true;
             }
             else
             {
                 def_name = radar.name;
             }
-            Datas.Radar = new Radar(def_name, radar.system, radar.configuration);
-            return RedirectToAction("NewLocation", "Location");
+
+            //handling user-may-occur mistakes
+            if (radar.system.StartsWith("Select") | radar.configuration.StartsWith("Select"))
+            {
+                return View(radar);
+                ViewData["Message"] = "Please select System and Configuration";
+            }
+            else
+            {
+                Datas.Radar = new Radar(def_name, radar.system, radar.configuration);
+                Datas.Radar.Isnamed = isNamed;
+                return RedirectToAction("NewLocation", "Location");
+            }
+            
         }
 
     }

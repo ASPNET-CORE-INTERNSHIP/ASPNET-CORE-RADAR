@@ -11,6 +11,7 @@ namespace ASPNETAOP.Models
     public class Radar
     {
         public Radar() { }
+
         public Radar(string def_name, string system, string configuration)
         {
             this.name = def_name;
@@ -18,30 +19,43 @@ namespace ASPNETAOP.Models
             this.configuration = configuration;
         }
 
+        public Radar(Guid key, string def_name, string system, string configuration, Guid transmitter_id, Guid receiver_id, Guid location_id)
+        {
+            this.ID = key;
+            this.name = def_name;
+            this.system = system;
+            this.configuration = configuration;
+            this.transmitter_id = transmitter_id;
+            this.receiver_id = receiver_id;
+            this.location_id = location_id;
+        }
+
         [Key]
-        public Guid ID { get; set; }
+        public virtual Guid ID { get; set; }
 
         [Display(Name = "User Friendly Name")]
-        public String? name { get; set; }
+        public virtual String? name { get; set; }
 
         [Display(Name = "System")]
         [Required(ErrorMessage = "Please enter the radar's system")]
-        public String system { get; set; }
+        public virtual String system { get; set; }
 
         [Display(Name = "Configuration")]
         [Required(ErrorMessage = "Please enter the radar's configuration")]
-        public String configuration { get; set; }
+        public virtual String configuration { get; set; }
 
         [Display(Name = "Add Transmitter")]
         [Required(ErrorMessage = "Please add a transmitter to this radar")]
-        public Guid transmitter_id { get; set; }
+        public virtual Guid transmitter_id { get; set; }
 
         [Display(Name = "Add Receiver")]
         [Required(ErrorMessage = "Please add a receiver to this radar")]
-        public Guid receiver_id { get; set; }
+        public virtual Guid receiver_id { get; set; }
 
         [Display(Name = "Add Location")]
         [Required(ErrorMessage = "Please add a receiver to this radar")]
-        public Guid location_id { get; set; }
+        public virtual Guid location_id { get; set; }
+
+        public virtual bool Isnamed { get; set; } = false;
     }
 }

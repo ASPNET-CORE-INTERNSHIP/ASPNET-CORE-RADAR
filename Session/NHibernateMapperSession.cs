@@ -64,10 +64,24 @@ namespace ASPNETAOP.Session
             await _session.DeleteAsync(entity);
         }
 
+        public async Task<String> SelectReceiver(Guid ID)
+        {
+            var transmitter_name = _session.CreateSQLQuery("SELECT name FROM Receiver WHERE ID = :ID").SetParameter("ID", ID).UniqueResult<string>();
+            return transmitter_name;
+        }
+
+        internal void RenameReceiver(Guid id, String newName)
+        {
+            ISQLQuery query = _session.CreateSQLQuery("UPDATE Receiver SET name = :name WHERE ID = :ID");
+            query.SetParameter("ID", id);
+            query.SetParameter("name", newName);
+            query.ExecuteUpdate();
+        }
+
+
         public async Task SaveTransmitter(Transmitter entity)
         {
-            Console.WriteLine(entity.name + " " + entity.modulation_type + " " + entity.max_frequency + " " + entity.min_frequency+ "  " + entity.power);
-            ISQLQuery query = _session.CreateSQLQuery("INSERT INTO Transmitter(:ID, :name, :modulation_type, :max_frequency, :min_frequency, :power)");
+            ISQLQuery query = _session.CreateSQLQuery("INSERT INTO Transmitter VALUES(:ID, :name, :modulation_type, :max_frequency, :min_frequency, :power)");
             query.SetParameter("ID", entity.ID);
             query.SetParameter("name", entity.name);
             query.SetParameter("modulation_type", entity.modulation_type);
@@ -75,6 +89,26 @@ namespace ASPNETAOP.Session
             query.SetParameter("min_frequency", entity.min_frequency);
             query.SetParameter("power", entity.power);
             query.ExecuteUpdate();
+        }
+
+        public async Task<int> GetTransmitterNumber()
+        {
+            var num = _session.CreateSQLQuery("SELECT COUNT(*) FROM Transmitter").UniqueResult<int>();
+            return num;
+        }
+
+        internal void RenameTransmitter(Guid id, String newName)
+        {
+            ISQLQuery query = _session.CreateSQLQuery("UPDATE Transmitter SET name = :name WHERE ID = :ID");
+            query.SetParameter("ID", id);
+            query.SetParameter("name", newName);
+            query.ExecuteUpdate();
+        }
+
+        public async Task<String> SelectTransmitter(Guid ID)
+        {
+            var transmitter_name = _session.CreateSQLQuery("SELECT name FROM Transmitter WHERE ID = :ID").SetParameter("ID", ID).UniqueResult<string>();
+            return transmitter_name;
         }
 
         public async Task SaveAntenna(Antenna entity)
@@ -96,16 +130,95 @@ namespace ASPNETAOP.Session
             query.ExecuteUpdate();
         }
 
-        public async Task<String> SelectTransmitter(Guid ID)
+        internal void RenameAntenna(Guid ID, string newName)
         {
-            var transmitter_name = _session.CreateSQLQuery("SELECT name FROM Transmitter WHERE ID = :ID").SetParameter("ID", ID).UniqueResult<string>();
-            return transmitter_name;
+            ISQLQuery query = _session.CreateSQLQuery("UPDATE Antenna SET name = :name WHERE ID = :ID");
+            query.SetParameter("ID", ID);
+            query.SetParameter("name", newName);
+            query.ExecuteUpdate();
         }
 
-        public async Task<String> SelectReceiver(Guid ID)
+        public List<Guid> SelectAntennasUsingReceiverOrTransmitter(Guid ID)
         {
-            var transmitter_name = _session.CreateSQLQuery("SELECT name FROM Receiver WHERE ID = :ID").SetParameter("ID", ID).UniqueResult<string>();
-            return transmitter_name;
+            String sql = "SELECT ID FROM Antenna WHERE receiver_id = :id OR transmitter_id = :id";
+            ISQLQuery query = _session.CreateSQLQuery(sql);
+            query.SetParameter("ID", ID);
+            List<Guid> results = (List<Guid>)query.List();
+            return results;
+        }
+
+        public async Task SaveRadar(Radar entity)
+        {
+            ISQLQuery query = _session.CreateSQLQuery("INSERT INTO Radar VALUES(:ID, :name, :system, :configuration, :transmitter_id, :receiver_id, :location_id)");
+            query.SetParameter("ID", entity.ID);
+            query.SetParameter("name", entity.name);
+            query.SetParameter("system", entity.system);
+            query.SetParameter("configuration", entity.configuration);
+            query.SetParameter("transmitter_id", entity.transmitter_id);
+            query.SetParameter("receiver_id", entity.receiver_id);
+            query.SetParameter("location_id", entity.location_id);
+            query.ExecuteUpdate();
+        }
+
+        public async Task<int> GetRadarNumber()
+        {
+            var num = _session.CreateSQLQuery("SELECT COUNT(*) FROM Radar").UniqueResult<int>();
+            return num;
+        }
+
+        public async Task SaveLocation(Location entity)
+        {
+            ISQLQuery query = _session.CreateSQLQuery("INSERT INTO Location VALUES(:ID, :name, :country, :city, :geographic_latitude, :geographic_longitude, :airborne)");
+            query.SetParameter("ID", entity.ID);
+            query.SetParameter("name", entity.name);
+            query.SetParameter("country", entity.country);
+            query.SetParameter("city", entity.city);
+            query.SetParameter("geographic_latitude", entity.geographic_latitude);
+            query.SetParameter("geographic_longitude", entity.geographic_longitude);
+            query.SetParameter("airborne", entity.airborne);
+            query.ExecuteUpdate();
+        }
+
+        public async Task<int> GetLocationName(String country, String city)
+        {
+            int number = _session.CreateSQLQuery("SELECT COUNT(*) FROM Location WHERE country = :country AND city = :city").SetParameter("country", country).SetParameter("city", city).UniqueResult<int>();
+            return number;
+        }
+
+        public async Task SaveMode(Mode entity)
+        {
+            ISQLQuery query = _session.CreateSQLQuery("INSERT INTO Mode VALUES(:ID, :name, :radar_id)");
+            query.SetParameter("ID", entity.ID);
+            query.SetParameter("name", entity.name);
+            query.SetParameter("country", entity.radar_id);
+            query.ExecuteUpdate();
+        }
+
+        public async Task SaveSubMode(Submode entity)
+        {
+            ISQLQuery query = _session.CreateSQLQuery("INSERT INTO Submode VALUES(:ID, :name, :mode_id, :PW, :PRI, :min_frequency, :max_frequency, :scan_id)");
+            query.SetParameter("ID", entity.ID);
+            query.SetParameter("name", entity.name);
+            query.SetParameter("mode_id", entity.mode_id);
+            query.SetParameter("PW", entity.PW);
+            query.SetParameter("PRI", entity.PRI);
+            query.SetParameter("min_frequency", entity.min_frequency);
+            query.SetParameter("max_frequency", entity.max_frequency);
+            query.SetParameter("scan_id", entity.scan_id);
+            query.ExecuteUpdate();
+        }
+
+        public async Task SaveScan(Scan entity)
+        {
+            ISQLQuery query = _session.CreateSQLQuery("INSERT INTO Scan VALUES(:ID, :name, :type, :main_aspect, :scan_angle, :scan_rate, :hits_per_scan)");
+            query.SetParameter("ID", entity.ID);
+            query.SetParameter("name", entity.name);
+            query.SetParameter("type", entity.type);
+            query.SetParameter("main_aspect", entity.main_aspect);
+            query.SetParameter("scan_angle", entity.scan_angle);
+            query.SetParameter("scan_rate", entity.scan_rate);
+            query.SetParameter("hits_per_scan", entity.hits_per_scan);
+            query.ExecuteUpdate();
         }
     }
 }

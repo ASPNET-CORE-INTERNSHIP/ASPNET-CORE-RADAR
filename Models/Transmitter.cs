@@ -9,6 +9,17 @@ namespace ASPNETAOP.Models
 {
     public class Transmitter
     {
+        public Transmitter() { }
+        public Transmitter(Guid id, String name, String modulation_type, int max_frequency, int min_frequency, int power)
+        {
+            this.ID = id;
+            this.name = name;
+            this.modulation_type = modulation_type;
+            this.max_frequency = max_frequency;
+            this.min_frequency = min_frequency;
+            this.power = power;
+        }
+
         [Key]
         public virtual Guid ID { get; set; }
 
@@ -31,15 +42,7 @@ namespace ASPNETAOP.Models
         [Required(ErrorMessage = "Please enter the power")]
         public virtual int power { get; set; }
 
-        public Transmitter() { }
-        public Transmitter(Guid id, String name, String modulation_type, int max_frequency, int min_frequency, int power)
-        {
-            this.ID = id;
-            this.name = name;
-            this.modulation_type = modulation_type;
-            this.max_frequency = max_frequency;
-            this.min_frequency = min_frequency;
-            this.power = power;
-        }
+        public virtual bool Isnamed { get; set; } = false;
+       
     }
 }

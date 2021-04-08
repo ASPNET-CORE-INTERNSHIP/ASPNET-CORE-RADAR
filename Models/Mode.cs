@@ -18,15 +18,15 @@ namespace ASPNETAOP.Models
         }
 
         [Key]
-        public Guid ID { get; set; }
+        public virtual Guid ID { get; set; }
 
         [Display(Name = "Mode name")]
         [Required(ErrorMessage = "Please enter the mode name")]
-        public String name { get; set; }
+        public virtual String name { get; set; }
 
         [Display(Name = "Radar ID")]
         [Required(ErrorMessage = "Please enter the radar which has ability to work with this mode")]
-        public Guid radar_id { get; set; }
+        public virtual Guid radar_id { get; set; }
 
     }
 }

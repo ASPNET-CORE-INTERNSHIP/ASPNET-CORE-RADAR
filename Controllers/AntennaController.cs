@@ -31,8 +31,19 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public async System.Threading.Tasks.Task<IActionResult> NewAntennaAsync(Antenna antenna)
         {
+            //handling user-may-occur mistakes
+            if (antenna.type.StartsWith("Select"))
+            {
+                return View(antenna);
+                ViewData["Message"] = "Please select Type";
+            }
+
             Guid receiver_id = Datas.Receiver.ID;
+
+            //if our antenna does not have a user friendly name we give it a default name with the code below.
             String def_name = null;
+            //because we change the default name after the Radar added we we should keep it in mind to it is a default given name
+            bool isNamed = false;
             if (String.IsNullOrEmpty(antenna.name))
             {
                 String transmitter_or_receiver_name = null;
@@ -70,6 +81,7 @@ namespace ASPNETAOP.Controllers
                 }
                 else
                     def_name = transmitter_or_receiver_name + "s antenna";
+                isNamed = true;
             }
             else
                 def_name = antenna.name;
@@ -77,20 +89,25 @@ namespace ASPNETAOP.Controllers
 
             Guid key = Guid.NewGuid();
             //if the antenna is both receiver and transmitter antenna give it a receiver and a transmitter id 
-            //Because we need a transmitter before adding an antenna which has a transmitter id we need a transmitter first 
+            //Because we need a transmitter before adding an antenna which serves as transmitter antenna we should create its transmitter first.
+            //After create a transmitter we can insert our antenna to database
             if (antenna.duty.Equals("both"))
             {
-                Datas.Antenna = new Antenna(key, def_name, antenna.type, antenna.horizontal_beamwidth, antenna.vertical_beamwidth, antenna.polarization, antenna.number_of_feed, antenna.horizontal_dimension, antenna.vertical_dimension, antenna.duty, receiver_id, receiver_id, antenna.location);
+                Datas.Antenna = new Antenna(key, def_name, antenna.type, antenna.horizontal_beamwidth, antenna.vertical_beamwidth, antenna.polarization, antenna.number_of_feed, antenna.horizontal_dimension, antenna.vertical_dimension, antenna.duty, Datas.Transmitter.ID, receiver_id, antenna.location);
+                Datas.Antenna.Isnamed = isNamed;
                 return GoToTransmitter();
             }
-            //if the antenna is a receiver antenna give it a receiver id
+            //if the antenna is a receiver antenna give it a receiver id to build a relationship between antenna and its receiver
             else if (antenna.duty.Equals("receiver"))
             {
-                Antenna a = new Antenna(key, def_name, antenna.type, antenna.horizontal_beamwidth, antenna.vertical_beamwidth, antenna.polarization, 1, antenna.horizontal_dimension, antenna.vertical_dimension, antenna.duty, receiver_id, Datas.uselessTransmitter.ID, antenna.location);
+                Antenna a = new Antenna(key, def_name, antenna.type, antenna.horizontal_beamwidth, antenna.vertical_beamwidth, antenna.polarization, 1, antenna.horizontal_dimension, antenna.vertical_dimension, antenna.duty, Datas.uselessTransmitter.ID, receiver_id, antenna.location);
+                a.Isnamed = isNamed;
+                //Save this antenna to Datas. So we can handle the problem that the user may add a receiver antenna instead of a transmitter antenna.
+                Datas.Antenna = a;
+                //save our antenna to db using NHibernate
                 try
                 {
                     _session.BeginTransaction();
-
                     _session.SaveAntenna(a);
                     await _session.Commit();
                     ViewData["Message"] = "New Antenna added";
@@ -106,11 +123,14 @@ namespace ASPNETAOP.Controllers
                     _session.CloseTransaction();
                 }
             }
-            //if the antenna is a transmitter antenna attach it a transmitter id
+            //if the antenna is a transmitter antenna define its a transmitter with giving an attribute transmitter id
             else
             {
                 Guid transmitter_id = Datas.Transmitter.ID;
-                Antenna a = new Antenna(key, def_name, antenna.type, antenna.horizontal_beamwidth, antenna.vertical_beamwidth, antenna.polarization, antenna.number_of_feed, antenna.horizontal_dimension, antenna.vertical_dimension, antenna.duty, Datas.uselessReceiver.ID, transmitter_id, antenna.location);
+                Antenna a = new Antenna(key, def_name, antenna.type, antenna.horizontal_beamwidth, antenna.vertical_beamwidth, antenna.polarization, antenna.number_of_feed, antenna.horizontal_dimension, antenna.vertical_dimension, antenna.duty, transmitter_id, Datas.uselessReceiver.ID, antenna.location);
+                a.Isnamed = isNamed;
+                //Save this antenna to Datas. So we can handle the problem that the user may add a receiver antenna instead of a transmitter antenna.
+                Datas.Antenna = a;
                 try
                 {
                     _session.BeginTransaction();

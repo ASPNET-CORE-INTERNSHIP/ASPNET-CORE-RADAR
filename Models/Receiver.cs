@@ -33,5 +33,7 @@ namespace ASPNETAOP.Models
         [Display(Name = "Recovery time in nsec")]
         [Required(ErrorMessage = "Please enter the receiver's recovery time in nsec")]
         public virtual Double recovery_time { get; set; }
+
+        public virtual bool Isnamed { get; set; } = false;
     }
 }

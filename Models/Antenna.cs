@@ -76,6 +76,8 @@ namespace ASPNETAOP.Models
         //we will use it when building relationships between antenna and scans
         public virtual bool IsChecked { get; set; } = false;
 
+        public virtual bool Isnamed { get; set; } = false;
+
         public class AntennaList
         {
            public List<Antenna>? antennas { get; set; }
