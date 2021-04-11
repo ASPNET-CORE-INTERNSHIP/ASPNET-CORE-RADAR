@@ -17,7 +17,7 @@ namespace ASPNETAOP.Models
 
         public static Transmitter Transmitter { get; set; }
 
-        public static Antenna Antenna { get; set; }
+        //public static Antenna Antenna { get; set; }
 
         public static Radar Radar { get; set; }
 

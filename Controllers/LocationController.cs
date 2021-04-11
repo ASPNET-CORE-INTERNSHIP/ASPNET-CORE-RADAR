@@ -78,7 +78,7 @@ namespace ASPNETAOP.Controllers
             String radar_name = Datas.Radar.name;
             if (Datas.Radar.Isnamed == true)
             {
-                radar_name = key_location + "Radar";
+                radar_name = "Radar in " + def_name;
             }
 
             if (Datas.Transmitter.Isnamed == true)
@@ -176,7 +176,11 @@ namespace ASPNETAOP.Controllers
             }*/
 
             Location location_temp = new Location(key_location, def_name, loc.country, loc.city, loc.geographic_latitude, loc.geographic_longitude, loc.airborne);
-            Radar radar_temp = new Radar(key, radar_name, Datas.Radar.system, Datas.Radar.configuration, Datas.Receiver.ID, Datas.Transmitter.ID, key_location);
+            Radar radar_temp = new Radar(key, radar_name, Datas.Radar.system, Datas.Radar.configuration, Datas.Transmitter.ID, Datas.Receiver.ID, key_location);
+            Datas.Radar.location_id = key_location;
+            Datas.Radar.name = radar_name;
+            Datas.Radar.transmitter_id = Datas.Transmitter.ID;
+            Datas.Radar.receiver_id = Datas.Receiver.ID;
 
             try
             {

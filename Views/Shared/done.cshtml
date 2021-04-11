@@ -3,21 +3,23 @@
 }
 
 <style>
-    h6 {
-        display: block;
-        font-size: 4.67em;
-        margin-top: 2em;
-        margin-bottom: 2em;
-        margin-left: 0;
-        margin-right: 0;
-        font-weight: bold;
+    .p1 {
+        font-family: "Times New Roman", Times, serif;
         color: blue;
+        font-size: large;
     }
+    .p2 {
+        font-family: "Times New Roman", Times, serif;
+        color: black;
+    }
+
 </style>
 <div class="text-center">
-    <h6 class="display-4">NEW RADAR @Datas.Radar.ID ADDED</h6>
+    <p class="p1">NEW RADAR </p>
+    <p class="p2">@Datas.Radar.ID </p>
+    <p class="p1">ADDED</p>
 </div>
 <div>
-    <h5 class="display-4">If you want to add new radar click </h5>
+    <p class="p2">If you want to add new radar click</p>
     <a class="nav-link text-dark" asp-area="" asp-controller="Receiver" asp-action="NewReceiver">HERE</a>
 </div>

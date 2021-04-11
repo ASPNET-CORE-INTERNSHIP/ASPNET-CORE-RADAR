@@ -54,7 +54,7 @@ namespace ASPNETAOP.Mapping
                 x.Type(NHibernateUtil.Int32);
             });
 
-            Table("ScanMap");
+            Table("Scan");
         }
     }
 }

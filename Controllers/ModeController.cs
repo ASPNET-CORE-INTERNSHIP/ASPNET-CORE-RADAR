@@ -44,7 +44,7 @@ namespace ASPNETAOP.Controllers
                 _session.BeginTransaction();
                 await _session.SaveMode(m);
                 await _session.Commit();
-                ViewData["Message"] = "New Receiver added";
+                ViewData["Message"] = "New Mode added";
                 return RedirectToAction("NewSubmode", "Submode");
             }
             catch (Exception e)

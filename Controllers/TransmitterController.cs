@@ -90,37 +90,7 @@ namespace ASPNETAOP.Controllers
                 _session.CloseTransaction();
             }
 
-            //if the duty of antenna is both receiver and transmitter we do not need to add new antenna for transmitter and directly go to radar.
-            if (Datas.Antenna.duty.Equals("both"))
-            {
-                Datas.Antenna.transmitter_id = key;
-                Antenna antenna = Datas.Antenna;
-                Datas.ListOfAntennas.Add(antenna);
-                try
-                {
-                    _session.BeginTransaction();
-                    _session.SaveAntenna(antenna);
-                    await _session.Commit();
-                    ViewData["Message"] = "New Antenna added";
-                }
-                catch (Exception e)
-                {
-                    // log exception here
-                    ViewData["Message"] = e.Message.ToString() + " Error";
-                    await _session.Rollback();
-                }
-                finally
-                {
-                    _session.CloseTransaction();
-                }
-                return RedirectToAction("NewRadar", "Radar");
-            }
-            else
-            {
-                return RedirectToAction("NewAntenna", "Antenna");
-            }
-
-            return View(transmitter);
+            return RedirectToAction("NewAntenna", "Antenna");
 
         }
     }

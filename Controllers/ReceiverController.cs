@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using NHibernate;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Runtime.InteropServices;
@@ -17,6 +18,9 @@ namespace ASPNETAOP.Controllers
         public ReceiverController(NHibernateMapperSession session)
         {
             _session = session;
+
+            //new list of antennas for new Radar
+            Datas.ListOfAntennas = new List<Antenna>();
         }
 
         [Route("Home/Index")]

@@ -46,7 +46,7 @@ namespace ASPNETAOP.Mapping
 
             Property(b => b.min_frequency, x =>
             {
-                x.Type(NHibernateUtil.StringClob);
+                x.Type(NHibernateUtil.Int32);
             });
 
             Property(b => b.max_frequency, x =>

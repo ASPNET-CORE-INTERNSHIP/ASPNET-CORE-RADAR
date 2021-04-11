@@ -190,7 +190,7 @@ namespace ASPNETAOP.Session
             ISQLQuery query = _session.CreateSQLQuery("INSERT INTO Mode VALUES(:ID, :name, :radar_id)");
             query.SetParameter("ID", entity.ID);
             query.SetParameter("name", entity.name);
-            query.SetParameter("country", entity.radar_id);
+            query.SetParameter("radar_id", entity.radar_id);
             query.ExecuteUpdate();
         }
 
@@ -218,6 +218,22 @@ namespace ASPNETAOP.Session
             query.SetParameter("scan_angle", entity.scan_angle);
             query.SetParameter("scan_rate", entity.scan_rate);
             query.SetParameter("hits_per_scan", entity.hits_per_scan);
+            query.ExecuteUpdate();
+        }
+
+        public async Task SaveAntennaScan(AntennaScan entity)
+        {
+            ISQLQuery query = _session.CreateSQLQuery("INSERT INTO AntennaScan VALUES(:antenna_id, :scan_id)");
+            query.SetParameter("antenna_id", entity.antenna_id);
+            query.SetParameter("scan_id", entity.scan_id);
+            query.ExecuteUpdate();
+        }
+
+        public async Task DeleteAntennaScan(AntennaScan entity)
+        {
+            ISQLQuery query = _session.CreateSQLQuery("DELETE FROM AntennaScan WHERE antenna_id = :antenna_id AND scan_id = :scan_id");
+            query.SetParameter("antenna_id", entity.antenna_id);
+            query.SetParameter("scan_id", entity.scan_id);
             query.ExecuteUpdate();
         }
     }
