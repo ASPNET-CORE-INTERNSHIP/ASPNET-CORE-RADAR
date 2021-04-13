@@ -1,0 +1,25 @@
+﻿@model List<ASPNETAOP.Models.AdminRadarList>
+
+@{
+    ViewData["Title"] = "RadarList";
+}
+
+<h1>Users</h1>
+
+<table class="table table-bordered table-responsive table-hover">
+    <tr>
+        <th>Radar</th>
+        <th>Receiver</th>
+        <th>Transmitter</th>
+        <th>Location</th>
+    </tr>
+    @foreach (var radar in Model)
+    {
+        <tr>
+            <td>@radar.radar</td>
+            <td>@radar.receiver</td>
+            <td>@radar.transmitter</td>
+            <td>@radar.location</td>
+        </tr>
+    }
+</table>
