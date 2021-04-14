@@ -91,6 +91,25 @@ namespace ASPNETAOP.Session
             query.ExecuteUpdate();
         }
 
+        public List<object> GetTransmitterName()
+        {
+            String sql = "SELECT name FROM Transmitter";
+            ISQLQuery query = _session.CreateSQLQuery(sql);
+            List<object> results = (List<object>)query.List();
+            return results;
+        }
+
+        public void UpdateTransmitter(string currentName, string newName, int max_frequency, int min_frequency, int power)
+        {
+            ISQLQuery query = _session.CreateSQLQuery("UPDATE Transmitter SET name = :newName, max_frequency = :max_frequency, min_frequency = :min_frequency, power = :power WHERE name = :currentName");
+            query.SetParameter("newName", newName);
+            query.SetParameter("currentName", currentName);
+            query.SetParameter("max_frequency", max_frequency);
+            query.SetParameter("min_frequency", min_frequency);
+            query.SetParameter("power", power);
+            query.ExecuteUpdate();
+        }
+
         public async Task<int> GetTransmitterNumber()
         {
             var num = _session.CreateSQLQuery("SELECT COUNT(*) FROM Transmitter").UniqueResult<int>();

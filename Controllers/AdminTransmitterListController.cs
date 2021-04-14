@@ -11,11 +11,11 @@ using ASPNETAOP.Session;
 namespace ASPNETAOP.Controllers
 {
     [Guid("151E61F1-1FE3-4FAD-B8EC-9034B676579E")]
-    public class AdminRadarListController : Controller
+    public class AdminTransmitterListController : Controller
     {
         private readonly Session.NHibernateMapperSession _session;
 
-        public AdminRadarListController(NHibernateMapperSession session)
+        public AdminTransmitterListController(NHibernateMapperSession session)
         {
             _session = session;
         }
@@ -25,23 +25,34 @@ namespace ASPNETAOP.Controllers
             return View();
         }   
 
-        [IsAuthenticated]
-        [IsAuthorized("151E61F1-1FE3-4FAD-B8EC-9034B676579E")]
-        public IActionResult RadarListAsync()
+        public IActionResult TransmitterList()
         {
             //Used to display the appropriate layout
             //in the upcoming versions, this part will be updated for the admins with the additional role controls
             TempData["ResultMessage"] = "Regular";
 
+            List<object> result = _session.GetTransmitterName();
+
             //Adding a model to a list to access them in the view
-            AdminRadarList tempList = new AdminRadarList();
-            tempList.transmitterName = Datas.Transmitter.name;
-            tempList.transmitter = Datas.Transmitter;
-            tempList.radar = Datas.Radar;
-            
-            var model = new List<AdminRadarList>();
+            var model = new List<AdminTransmitterList>();
+
+            for (int i=0; i<result.Count; i++)
+            {
+                AdminTransmitterList tempList = new AdminTransmitterList();
+                tempList.transmitterName = result[i];
+                Console.WriteLine(i + "th transmitter is " + result[i]);
+                model.Add(tempList);
+            }
+
 
             return View(model);
+        }
+
+        public IActionResult TransmitterEdit(AdminTransmitterEdit ae) 
+        {
+            _session.UpdateTransmitter(ae.name, ae.newName, ae.max_frequency, ae.min_frequency, ae.power);
+
+            return View(ae);
         }
     }
 }
