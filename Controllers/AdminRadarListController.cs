@@ -29,8 +29,16 @@ namespace ASPNETAOP.Controllers
         [IsAuthorized("151E61F1-1FE3-4FAD-B8EC-9034B676579E")]
         public IActionResult RadarListAsync()
         {
+            //Used to display the appropriate layout
+            //in the upcoming versions, this part will be updated for the admins with the additional role controls
             TempData["ResultMessage"] = "Regular";
 
+            //Adding a model to a list to access them in the view
+            AdminRadarList tempList = new AdminRadarList();
+            tempList.transmitterName = Datas.Transmitter.name;
+            tempList.transmitter = Datas.Transmitter;
+            tempList.radar = Datas.Radar;
+            
             var model = new List<AdminRadarList>();
 
             return View(model);
