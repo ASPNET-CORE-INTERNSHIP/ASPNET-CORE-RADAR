@@ -23,6 +23,16 @@ In order to control the user login attempt, user registration, user authenticati
 - UserProfile is a restricted page. When user clicks on profile menu on the home page, isAuthenticated Aspect checks whether the current user is logged in. If there is an active cookie, user is admitted. Otherwise, an exception is thrown out.
 - UserList requires both isAuthenticated and isAuthorization aspects. Former checks whether the user is logged in while the latter requires admin type user rule. If the requirements are fulfilled, name, mail address and session information for each of users are displayed.
 - UserEdit can be accessed only by logged in admin users similar to UserList. This page allows to update the roles of the selected users. 
+- AddReceiver page is the first page that user see when the creating process of a radar. In this page user fill the necessary entries to create receiver for new radar. Name is not a necessary entry, if the user does not give a name to receiver, the program gives default name. Then program automatically routes the user to AddAntenna page.
+- AddAntenna Page: In creating process user will come to this page twice. One for adding receiver antennas and the other for transmitter antennas. If the user adds multitasking antennas after added the receiver the radar creating process continues with the Monostatic Radar principles. If the user adds multitasking antennas after added the transmitter these antennas will be added normally.
+- AddTransmitter Page: In this page user should fill the necessary entries to create a transmitter for current radar. Name is not a necessary entry, if the user does not give a name to transmitter, the program gives default name.
+- AddRadar Page: In this page the user will determine radar's general properties.
+- AddLocation Page: This page is necessary to keep Radar's location in the database. If the radar is ground radar the user must fill the City, Country, Geographic Latitude and Geographic longitude areas. If the radar belongs to an aircraft the user should fill the airborne area with the name of aircraft.
+- AddMode Page: A radar can work with multiple ways. In AddMode page the user creates a special mode for current Radar. Then the program automatically routes user to AddSubmode Page. After finished all about the mode the user can return AddMode Page to create a new mode for this radar.
+- AddSubmode Page: In this page, the user can add different types of submodes to last created Mode. This page is reachable after AddMode Page and AntennaScan (the last page) page.
+- AddScan Page: Each submode has their own scan types. After created the submode page the user should specify the submode's scan type.
+- AntennaScan Page (Build Relationship Page): In the end of the radar creating process the user should specify which antenna works with which scan type. After this page the user can add new mode, submode or can go to the Done page.
+- Done: After created a whole radar and click the "Done!" button in the AntennaScan Page, the program routes user to this page which gives the added radar's ID.
 
 ## Necessary Programs/Libraries
 
