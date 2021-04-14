@@ -9,11 +9,11 @@
 <hr />
 <div class="row">
     <div class="col-md-9">
-        @{ String newProgram = Datas.newProgram; }
-        @{ var receiver_id = Datas.Receiver.ID; }
+        @{ String newProgram = Data.newProgram; }
+        @{ var receiver_id = Data.Receiver.ID; }
         @{ Guid? transmitter_id = null;
-            if (Datas.Transmitter != null)
-                transmitter_id = (Guid)Datas.Transmitter.ID;
+            if (Data.Transmitter != null)
+                transmitter_id = (Guid)Data.Transmitter.ID;
         }
         <form asp-action="NewAntenna">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>

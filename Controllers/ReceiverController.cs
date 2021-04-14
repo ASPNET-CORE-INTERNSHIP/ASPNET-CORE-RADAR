@@ -20,7 +20,7 @@ namespace ASPNETAOP.Controllers
             _session = session;
 
             //new list of antennas for new Radar
-            Datas.ListOfAntennas = new List<Antenna>();
+            Data.ListOfAntennas = new List<Antenna>();
         }
 
         [Route("Home/Index")]
@@ -43,8 +43,8 @@ namespace ASPNETAOP.Controllers
             //So create a useless transmitter and receiver, so we can fill the emptiness in antenna's receiver_id and transmitter_id attributes.
             Receiver useless_r = new Receiver(Guid.NewGuid(), "useless", 0, 0, 0);
             Transmitter useless_t = new Transmitter(Guid.NewGuid(), "useless", "AM-amplitude modulation", 0, 0, 0);
-            Datas.uselessReceiver = useless_r;
-            Datas.uselessTransmitter = useless_t;
+            Data.uselessReceiver = useless_r;
+            Data.uselessTransmitter = useless_t;
             try
             {
                 _session.BeginTransaction();
@@ -96,13 +96,13 @@ namespace ASPNETAOP.Controllers
             Guid key = Guid.NewGuid();
             Receiver r = new Receiver(key, rec_name, receiver.listening_time, receiver.rest_time, receiver.recovery_time);
             r.Isnamed = IsNamed;
-            Datas.Receiver = r;
-            Datas.Transmitter = new Transmitter();
-            Datas.Submode = new Submode();
-            Datas.Scan = new Scan();
-            Datas.Radar = new Radar();
+            Data.Receiver = r;
+            Data.Transmitter = new Transmitter();
+            Data.Submode = new Submode();
+            Data.Scan = new Scan();
+            Data.Radar = new Radar();
 
-            Datas.newProgram = "yes";
+            Data.newProgram = "yes";
             try
             {
                 _session.BeginTransaction();

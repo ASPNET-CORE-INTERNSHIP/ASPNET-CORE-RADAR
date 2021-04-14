@@ -70,11 +70,36 @@ namespace ASPNETAOP.Controllers
             }
             else
             {
-                Datas.Radar = new Radar(def_name, radar.system, radar.configuration);
-                Datas.Radar.Isnamed = isNamed;
+                Data.Radar = new Radar(def_name, radar.system, radar.configuration);
+                Data.Radar.Isnamed = isNamed;
                 return RedirectToAction("NewLocation", "Location");
             }
             
+        }
+
+        public async void DeleteRadar(Guid id)
+        {
+            try
+            {
+                _session.BeginTransaction();
+                Guid receiver_id = await _session.GetReceiverID(id);
+                Guid transmitter_id = await _session.GetTransmitterID(id);
+                await _session.DeleteReceiver(receiver_id);
+                await _session.DeleteTransmitter(transmitter_id);
+                await _session.DeleteScan(id);
+                await _session.Commit();
+                ViewData["Message"] = "Radar " + id + " removed From Database";
+            }
+            catch (Exception e)
+            {
+                // log exception here
+                ViewData["Message"] = e.Message.ToString() + " Error";
+                await _session.Rollback();
+            }
+            finally
+            {
+                _session.CloseTransaction();
+            }
         }
 
     }

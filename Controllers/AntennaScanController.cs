@@ -31,7 +31,7 @@ namespace ASPNETAOP.Controllers
             //New variable consisting of a list of antennas
             //so the user can select antennas which empolys current scan type
             AntennaList alist = new AntennaList();
-            alist.antennas = Datas.ListOfAntennas;
+            alist.antennas = Data.ListOfAntennas;
             //returning the model for the cshmtl page to access it
             return View(alist);
         }
@@ -46,7 +46,7 @@ namespace ASPNETAOP.Controllers
                 for (int i = 0; i < ascans.antennas.Count; i++)
                 {
                     Antenna antenna = ascans.antennas[i];
-                    AntennaScan ascan = new AntennaScan(antenna.ID, Datas.Scan.ID);
+                    AntennaScan ascan = new AntennaScan(antenna.ID, Data.Scan.ID);
 
                     if (antenna.IsChecked)
                     {
@@ -73,7 +73,7 @@ namespace ASPNETAOP.Controllers
             }
             finally
             {
-                Datas.ListOfAntennas = alist;
+                Data.ListOfAntennas = alist;
                 _session.CloseTransaction();
             }
             return RedirectToAction("NewAntennaScan", "AntennaScan");

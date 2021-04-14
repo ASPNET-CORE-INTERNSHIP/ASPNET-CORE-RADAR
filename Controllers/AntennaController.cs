@@ -38,7 +38,7 @@ namespace ASPNETAOP.Controllers
                 ViewData["Message"] = "Please select Type";
             }
 
-            Guid receiver_id = Datas.Receiver.ID;
+            Guid receiver_id = Data.Receiver.ID;
 
             //if our antenna does not have a user friendly name we give it a default name with the code below.
             String def_name = null;
@@ -49,7 +49,7 @@ namespace ASPNETAOP.Controllers
                 String transmitter_or_receiver_name = null;
                 if (antenna.duty.ToLower().Equals("transmitter"))
                 {
-                    Guid transmitter_id = Datas.Transmitter.ID;
+                    Guid transmitter_id = Data.Transmitter.ID;
                     try
                     {
                         transmitter_or_receiver_name = await _session.SelectTransmitter(transmitter_id);
@@ -93,25 +93,25 @@ namespace ASPNETAOP.Controllers
             //After create a transmitter we can insert our antenna to database
             if (antenna.duty.Equals("both"))
             {
-                Antenna a = new Antenna(key, def_name, antenna.type, antenna.horizontal_beamwidth, antenna.vertical_beamwidth, antenna.polarization, antenna.number_of_feed, antenna.horizontal_dimension, antenna.vertical_dimension, antenna.duty, Datas.Transmitter.ID, receiver_id, antenna.location);
+                Antenna a = new Antenna(key, def_name, antenna.type, antenna.horizontal_beamwidth, antenna.vertical_beamwidth, antenna.polarization, antenna.number_of_feed, antenna.horizontal_dimension, antenna.vertical_dimension, antenna.duty, Data.Transmitter.ID, receiver_id, antenna.location);
                 a.Isnamed = isNamed;
-                Datas.ListOfAntennas.Add(a);
+                Data.ListOfAntennas.Add(a);
             }
             //if the antenna is a receiver antenna give it a receiver id to build a relationship between antenna and its receiver
             else if (antenna.duty.Equals("receiver"))
             {
-                Antenna a = new Antenna(key, def_name, antenna.type, antenna.horizontal_beamwidth, antenna.vertical_beamwidth, antenna.polarization, 1, antenna.horizontal_dimension, antenna.vertical_dimension, antenna.duty, Datas.uselessTransmitter.ID, receiver_id, antenna.location);
+                Antenna a = new Antenna(key, def_name, antenna.type, antenna.horizontal_beamwidth, antenna.vertical_beamwidth, antenna.polarization, 1, antenna.horizontal_dimension, antenna.vertical_dimension, antenna.duty, Data.uselessTransmitter.ID, receiver_id, antenna.location);
                 a.Isnamed = isNamed;
-                Datas.ListOfAntennas.Add(a);
+                Data.ListOfAntennas.Add(a);
             }
             //if the antenna is a transmitter antenna define its a transmitter with giving an attribute transmitter id
             else
             {
-                Guid transmitter_id = Datas.Transmitter.ID;
-                Antenna a = new Antenna(key, def_name, antenna.type, antenna.horizontal_beamwidth, antenna.vertical_beamwidth, antenna.polarization, antenna.number_of_feed, antenna.horizontal_dimension, antenna.vertical_dimension, antenna.duty, transmitter_id, Datas.uselessReceiver.ID, antenna.location);
+                Guid transmitter_id = Data.Transmitter.ID;
+                Antenna a = new Antenna(key, def_name, antenna.type, antenna.horizontal_beamwidth, antenna.vertical_beamwidth, antenna.polarization, antenna.number_of_feed, antenna.horizontal_dimension, antenna.vertical_dimension, antenna.duty, transmitter_id, Data.uselessReceiver.ID, antenna.location);
                 a.Isnamed = isNamed;
                 //Save this antenna to Datas. So we can handle the problem that the user may add a receiver antenna instead of a transmitter antenna.
-                Datas.ListOfAntennas.Add(a);
+                Data.ListOfAntennas.Add(a);
             }
             return View(antenna);
         }
@@ -129,13 +129,13 @@ namespace ASPNETAOP.Controllers
             try
             {
                 _session.BeginTransaction();
-                for (int i = 0; i < Datas.ListOfAntennas.Count; i++)
+                for (int i = 0; i < Data.ListOfAntennas.Count; i++)
                 {
-                    Antenna antenna = Datas.ListOfAntennas[i];
+                    Antenna antenna = Data.ListOfAntennas[i];
                     Console.WriteLine(antenna.ID + " " + antenna.name + " " + antenna.polarization + " " + antenna.receiver_id + " " + antenna.transmitter_id);
                     if (antenna.duty.Equals("both"))
                     {
-                        antenna.transmitter_id = Datas.Transmitter.ID;
+                        antenna.transmitter_id = Data.Transmitter.ID;
                     }
                     _session.SaveAntenna(antenna);
                     ViewData["Message"] = "New Antenna added";
@@ -153,32 +153,6 @@ namespace ASPNETAOP.Controllers
             {
                 _session.CloseTransaction();
             }
-            /*for (int i = 0; i < Datas.ListOfAntennas.Count; i++)
-            {
-                Antenna antenna = Datas.ListOfAntennas[i];
-                Console.WriteLine(antenna.ID + " " + antenna.name + " " + antenna.polarization + " " + antenna.receiver_id + " " + antenna.transmitter_id);
-                if (antenna.duty.Equals("both"))
-                {
-                    antenna.transmitter_id = Datas.Transmitter.ID;
-                }
-                try
-                {
-                    _session.BeginTransaction();
-                    _session.SaveAntenna(antenna);
-                    await _session.Commit();
-                    ViewData["Message"] = "New Antenna added";
-                }
-                catch (Exception e)
-                {
-                    // log exception here
-                    ViewData["Message"] = e.Message.ToString() + " Error";
-                    await _session.Rollback();
-                }
-                finally
-                {
-                    _session.CloseTransaction();
-                }
-            }*/
             return RedirectToAction("NewRadar", "Radar");
         }
     }

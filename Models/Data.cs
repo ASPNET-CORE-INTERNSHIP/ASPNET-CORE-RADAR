@@ -7,7 +7,7 @@ using static ASPNETAOP.Models.Antenna;
 
 namespace ASPNETAOP.Models
 {
-    public class Datas
+    public class Data
     {
         public static Receiver uselessReceiver { get; set; }
         public static Transmitter uselessTransmitter { get; set; }

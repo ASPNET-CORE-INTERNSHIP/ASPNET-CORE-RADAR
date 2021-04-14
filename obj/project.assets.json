@@ -7999,20 +7999,28 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Cenk\\.nuget\\packages\\": {}
+    "C:\\Users\\ENA\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
+    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Cenk\\OneDrive\\Desktop\\Test2\\ASPNET-CORE-RADAR-main\\ASPNETAOP.csproj",
+      "projectUniqueName": "C:\\Users\\ENA\\Source\\Repos\\ASPNET-CORE-RADARv\\ASPNETAOP.csproj",
       "projectName": "ASPNETAOP",
-      "projectPath": "C:\\Users\\Cenk\\OneDrive\\Desktop\\Test2\\ASPNET-CORE-RADAR-main\\ASPNETAOP.csproj",
-      "packagesPath": "C:\\Users\\Cenk\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Cenk\\OneDrive\\Desktop\\Test2\\ASPNET-CORE-RADAR-main\\obj\\",
+      "projectPath": "C:\\Users\\ENA\\Source\\Repos\\ASPNET-CORE-RADARv\\ASPNETAOP.csproj",
+      "packagesPath": "C:\\Users\\ENA\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ENA\\Source\\Repos\\ASPNET-CORE-RADARv\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+      ],
       "configFilePaths": [
-        "C:\\Users\\Cenk\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\ENA\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net5.0"
@@ -8102,7 +8110,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   }

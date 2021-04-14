@@ -35,7 +35,7 @@ namespace ASPNETAOP.Controllers
         public async Task<IActionResult> NewLocationAsync(Location loc)
         {
             //handling user-may-occur mistakes
-            if (loc.city == null | loc.country == null | loc.geographic_latitude == null | loc.geographic_longitude == null)
+            if (loc.city == null && loc.country == null && loc.geographic_latitude == null && loc.geographic_longitude == null && loc.airborne == null)
             {
                 return View(loc);
                 ViewData["Message"] = "Please do not leave empty Country, City, Geographic Latitude and Geographic Longitude areas";
@@ -44,30 +44,60 @@ namespace ASPNETAOP.Controllers
             //defining Radar's and Location's key here
             Guid key_location = Guid.NewGuid();
             Guid key = Guid.NewGuid();
-            Datas.Radar.ID = key;
+            Data.Radar.ID = key;
 
             //If the location name is null we give a default name that specifies its country, city and area number  
             String def_name = null;
             if (String.IsNullOrEmpty(loc.name))
             {
-                int count = 0;
+                if (loc.city == null && loc.country == null && loc.geographic_latitude == null && loc.geographic_longitude == null && loc.airborne != null)
+                {
+                    int count = 0;
 
-                try
-                {
-                    count = await _session.GetLocationName(loc.country, loc.city);
+                    try
+                    {
+                        count = await _session.GetLocationName(loc.airborne);
+                    }
+                    catch (Exception e)
+                    {
+                        // log exception here
+                        ViewData["Message"] = e.Message.ToString() + " Error";
+                        await _session.Rollback();
+                    }
+                    finally
+                    {
+                        _session.CloseTransaction();
+                    }
+                    count = count + 1;
+                    def_name = loc.airborne + " " + count;
                 }
-                catch (Exception e)
+                else if (loc.city != null && loc.country != null && loc.geographic_latitude != null && loc.geographic_longitude != null)
                 {
-                    // log exception here
-                    ViewData["Message"] = e.Message.ToString() + " Error";
-                    await _session.Rollback();
+                    int count = 0;
+
+                    try
+                    {
+                        count = await _session.GetLocationName(loc.country, loc.city);
+                    }
+                    catch (Exception e)
+                    {
+                        // log exception here
+                        ViewData["Message"] = e.Message.ToString() + " Error";
+                        await _session.Rollback();
+                    }
+                    finally
+                    {
+                        _session.CloseTransaction();
+                    }
+                    count = count + 1;
+                    def_name = loc.country + " " + loc.city + " " + count;
                 }
-                finally
+                else
                 {
-                    _session.CloseTransaction();
+                    return View(loc);
+                    ViewData["Message"] = "Please fill at least airborne area or Country, City, Geographic Latitude and Geographic Longitude areas";
                 }
-                count = count + 1;
-                def_name = loc.country + " " + loc.city + " " + count;
+
             }
             else
             {
@@ -75,15 +105,15 @@ namespace ASPNETAOP.Controllers
             }
 
             //rename Radar, Transmitter and Antennas again
-            String radar_name = Datas.Radar.name;
-            if (Datas.Radar.Isnamed == true)
+            String radar_name = Data.Radar.name;
+            if (Data.Radar.Isnamed == true)
             {
                 radar_name = "Radar in " + def_name;
             }
 
-            if (Datas.Transmitter.Isnamed == true)
+            if (Data.Transmitter.Isnamed == true)
             {
-                Guid id = Datas.Transmitter.ID;
+                Guid id = Data.Transmitter.ID;
                 String newName = radar_name + "'s Transmitter";
                 try
                 {
@@ -103,9 +133,9 @@ namespace ASPNETAOP.Controllers
                 }
             }
 
-            if (Datas.Receiver.Isnamed == true)
+            if (Data.Receiver.Isnamed == true)
             {
-                Guid id = Datas.Receiver.ID;
+                Guid id = Data.Receiver.ID;
                 String newName = radar_name + "'s Receiver";
                 try
                 {
@@ -125,62 +155,12 @@ namespace ASPNETAOP.Controllers
                 }
             }
 
-            /*int count_receiver = 0;
-
-            int count_transmitter = 0;
-
-            int count_both = 0;
-
-
-            for (int i=0; i < Datas.ListOfAntennas.Count; i++)
-            {
-                Antenna antenna = Datas.ListOfAntennas[i];
-                if (antenna.Isnamed == true)
-                {
-                    String newName = "";
-                    if (antenna.duty.Equals("receiver"))
-                    {
-                        count_receiver = count_receiver + 1;
-                        newName = radar_name + "'s receiver antenna " + count_receiver;
-                    }
-
-                    else if (antenna.duty.Equals("transmitter"))
-                    {
-                        count_transmitter = count_transmitter + 1;
-                        newName = radar_name + "'s transmitter antenna " + count_transmitter;
-                    }
-
-                    else
-                    {
-                        count_both = count_both + 1;
-                        newName = radar_name + "'s multiple role antenna " + count_both;
-                    }
-
-                    try
-                    {
-                        _session.BeginTransaction();
-                        _session.RenameAntenna(antenna.ID, newName);
-                        await _session.Commit();
-                    }
-                    catch (Exception e)
-                    {
-                        // log exception here
-                        ViewData["Message"] = e.Message.ToString() + " Error";
-                        await _session.Rollback();
-                    }
-                    finally
-                    {
-                        _session.CloseTransaction();
-                    }
-                }
-            }*/
-
             Location location_temp = new Location(key_location, def_name, loc.country, loc.city, loc.geographic_latitude, loc.geographic_longitude, loc.airborne);
-            Radar radar_temp = new Radar(key, radar_name, Datas.Radar.system, Datas.Radar.configuration, Datas.Transmitter.ID, Datas.Receiver.ID, key_location);
-            Datas.Radar.location_id = key_location;
-            Datas.Radar.name = radar_name;
-            Datas.Radar.transmitter_id = Datas.Transmitter.ID;
-            Datas.Radar.receiver_id = Datas.Receiver.ID;
+            Radar radar_temp = new Radar(key, radar_name, Data.Radar.system, Data.Radar.configuration, Data.Transmitter.ID, Data.Receiver.ID, key_location);
+            Data.Radar.location_id = key_location;
+            Data.Radar.name = radar_name;
+            Data.Radar.transmitter_id = Data.Transmitter.ID;
+            Data.Radar.receiver_id = Data.Receiver.ID;
 
             try
             {
@@ -201,7 +181,7 @@ namespace ASPNETAOP.Controllers
             {
                 _session.CloseTransaction();
             }
-            
+
 
             return View(loc);
         }

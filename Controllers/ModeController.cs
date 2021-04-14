@@ -36,8 +36,8 @@ namespace ASPNETAOP.Controllers
         public async Task<IActionResult> NewModeAsync(Mode mod)
         {
             Guid key = Guid.NewGuid();
-            Mode m = new Mode(key, mod.name, Datas.Radar.ID);
-            Datas.Mode = m;
+            Mode m = new Mode(key, mod.name, Data.Radar.ID);
+            Data.Mode = m;
 
             try
             {
@@ -58,6 +58,27 @@ namespace ASPNETAOP.Controllers
                 _session.CloseTransaction();
             }
             return View(mod);
+        }
+
+        public async void DeleteModeAsync(Guid id)
+        {
+            try
+            {
+                _session.BeginTransaction();
+                await _session.DeleteMode(id);
+                await _session.Commit();
+                ViewData["Message"] = "Mode removed from database";
+            }
+            catch (Exception e)
+            {
+                // log exception here
+                ViewData["Message"] = e.Message.ToString() + " Error";
+                await _session.Rollback();
+            }
+            finally
+            {
+                _session.CloseTransaction();
+            }
         }
 
     }

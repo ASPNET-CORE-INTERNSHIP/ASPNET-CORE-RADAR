@@ -36,11 +36,11 @@ namespace ASPNETAOP.Controllers
         {
             Guid key = Guid.NewGuid();
             Scan s = new Scan(key, scan.name, scan.type, scan.main_aspect, scan.scan_angle, scan.scan_rate, scan.hits_per_scan);
-            Datas.Scan = s;
+            Data.Scan = s;
 
             Guid key_submode = Guid.NewGuid();
-            Submode sbm = new Submode(key_submode, Datas.Submode.name, Datas.Mode.ID, Datas.Submode.PW, Datas.Submode.PRI, Datas.Submode.min_frequency, Datas.Submode.max_frequency, key);
-            Datas.Submode = sbm;
+            Submode sbm = new Submode(key_submode, Data.Submode.name, Data.Mode.ID, Data.Submode.PW, Data.Submode.PRI, Data.Submode.min_frequency, Data.Submode.max_frequency, key);
+            Data.Submode = sbm;
 
             try
             {

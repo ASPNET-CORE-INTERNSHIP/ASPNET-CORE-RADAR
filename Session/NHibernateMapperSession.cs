@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ASPNETAOP.Session
 {
-    public class NHibernateMapperSession 
+    public class NHibernateMapperSession
     {
         private readonly ISession _session;
         private ITransaction _transaction;
@@ -59,9 +59,11 @@ namespace ASPNETAOP.Session
             return num;
         }
 
-        public async Task DeleteReceiver(Receiver entity)
+        public async Task DeleteMode(Guid id)
         {
-            await _session.DeleteAsync(entity);
+            ISQLQuery query = _session.CreateSQLQuery("DELETE FROM Mode WHERE ID = :ID");
+            query.SetParameter("ID", id);
+            query.ExecuteUpdate();
         }
 
         public async Task<String> SelectReceiver(Guid ID)
@@ -78,6 +80,18 @@ namespace ASPNETAOP.Session
             query.ExecuteUpdate();
         }
 
+        public async Task<Guid> GetReceiverID(Guid id)
+        {
+            Guid receiver_id = _session.CreateSQLQuery("SELECT receiver_id FROM Radar WHERE ID = :ID").UniqueResult<Guid>();
+            return receiver_id;
+        }
+
+        public async Task DeleteReceiver(Guid ID)
+        {
+            ISQLQuery query = _session.CreateSQLQuery("DELETE FROM Receiver WHERE ID = :ID");
+            query.SetParameter("ID", ID);
+            query.ExecuteUpdate();
+        }
 
         public async Task SaveTransmitter(Transmitter entity)
         {
@@ -116,6 +130,12 @@ namespace ASPNETAOP.Session
             return num;
         }
 
+        public async Task<Guid> GetTransmitterID(Guid id)
+        {
+            Guid transmitter_id = _session.CreateSQLQuery("SELECT transmitter_id FROM Radar WHERE ID = :ID").UniqueResult<Guid>();
+            return transmitter_id;
+        }
+
         internal void RenameTransmitter(Guid id, String newName)
         {
             ISQLQuery query = _session.CreateSQLQuery("UPDATE Transmitter SET name = :name WHERE ID = :ID");
@@ -128,6 +148,13 @@ namespace ASPNETAOP.Session
         {
             var transmitter_name = _session.CreateSQLQuery("SELECT name FROM Transmitter WHERE ID = :ID").SetParameter("ID", ID).UniqueResult<string>();
             return transmitter_name;
+        }
+
+        public async Task DeleteTransmitter(Guid ID)
+        {
+            ISQLQuery query = _session.CreateSQLQuery("DELETE FROM Transmitter WHERE ID = :ID");
+            query.SetParameter("ID", ID);
+            query.ExecuteUpdate();
         }
 
         public async Task SaveAntenna(Antenna entity)
@@ -185,6 +212,13 @@ namespace ASPNETAOP.Session
             return num;
         }
 
+        public async Task DeleteRadar(Guid id)
+        {
+            ISQLQuery query = _session.CreateSQLQuery("DELETE FROM Radar WHERE ID = :ID");
+            query.SetParameter("ID", id);
+            query.ExecuteUpdate();
+        }
+
         public async Task SaveLocation(Location entity)
         {
             ISQLQuery query = _session.CreateSQLQuery("INSERT INTO Location VALUES(:ID, :name, :country, :city, :geographic_latitude, :geographic_longitude, :airborne)");
@@ -201,6 +235,13 @@ namespace ASPNETAOP.Session
         public async Task<int> GetLocationName(String country, String city)
         {
             int number = _session.CreateSQLQuery("SELECT COUNT(*) FROM Location WHERE country = :country AND city = :city").SetParameter("country", country).SetParameter("city", city).UniqueResult<int>();
+            return number;
+        }
+
+
+        public async Task<int> GetLocationName(string airborne)
+        {
+            int number = _session.CreateSQLQuery("SELECT COUNT(*) FROM Location WHERE airborne = :airborne").SetParameter("airborne", airborne).UniqueResult<int>();
             return number;
         }
 
@@ -227,6 +268,13 @@ namespace ASPNETAOP.Session
             query.ExecuteUpdate();
         }
 
+        public async Task DeleteSubMode(Guid id)
+        {
+            ISQLQuery query = _session.CreateSQLQuery("DELETE FROM Submode WHERE ID = :ID");
+            query.SetParameter("ID", id);
+            query.ExecuteUpdate();
+        }
+
         public async Task SaveScan(Scan entity)
         {
             ISQLQuery query = _session.CreateSQLQuery("INSERT INTO Scan VALUES(:ID, :name, :type, :main_aspect, :scan_angle, :scan_rate, :hits_per_scan)");
@@ -238,6 +286,21 @@ namespace ASPNETAOP.Session
             query.SetParameter("scan_rate", entity.scan_rate);
             query.SetParameter("hits_per_scan", entity.hits_per_scan);
             query.ExecuteUpdate();
+        }
+
+        public async Task DeleteScan(Guid id)
+        {
+            ISQLQuery query = _session.CreateSQLQuery("DELETE FROM Scan WHERE EXISTS " +
+                "(SELECT ID FROM Submode WHERE mode_id IN( SELECT ID FROM Mode " +
+                "WHERE radar_id = :ID)); ");
+            query.SetParameter("ID", id);
+            query.ExecuteUpdate();
+        }
+
+        public async Task<Guid> GetScanID(Guid id)
+        {
+            Guid scan_id = _session.CreateSQLQuery("SELECT scan_id FROM Submode WHERE ID = :ID").SetParameter("ID", id).UniqueResult<Guid>();
+            return scan_id;
         }
 
         public async Task SaveAntennaScan(AntennaScan entity)
@@ -253,6 +316,13 @@ namespace ASPNETAOP.Session
             ISQLQuery query = _session.CreateSQLQuery("DELETE FROM AntennaScan WHERE antenna_id = :antenna_id AND scan_id = :scan_id");
             query.SetParameter("antenna_id", entity.antenna_id);
             query.SetParameter("scan_id", entity.scan_id);
+            query.ExecuteUpdate();
+        }
+
+        public async Task DeleteAntennaScanUsingScanID(Guid id)
+        {
+            ISQLQuery query = _session.CreateSQLQuery("DELETE FROM AntennaScan WHERE scan_id = :scan_id");
+            query.SetParameter("scan_id", id);
             query.ExecuteUpdate();
         }
     }
