@@ -1472,3 +1472,5 @@ C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AdminTr
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AdminTransmitterList\TransmitterList.cshtml.g.cs
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AdminRadarList\RadarList.cshtml.g.cs
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\EditRadar\Edit.cshtml.g.cs
+C:\Users\Cenk\OneDrive\Desktop\Test2\ASPNET-CORE-RADAR-main\obj\Debug\net5.0\Razor\Views\AdminRadarList\RadarList.cshtml.g.cs
+C:\Users\Cenk\OneDrive\Desktop\Test2\ASPNET-CORE-RADAR-main\obj\Debug\net5.0\Razor\Views\EditRadar\Edit.cshtml.g.cs

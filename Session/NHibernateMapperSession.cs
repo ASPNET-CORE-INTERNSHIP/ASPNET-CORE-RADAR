@@ -109,6 +109,7 @@ namespace ASPNETAOP.Session
             query.ExecuteUpdate();
         }
 
+
         public async Task SaveTransmitter(Transmitter entity)
         {
             ISQLQuery query = _session.CreateSQLQuery("INSERT INTO Transmitter VALUES(:ID, :name, :modulation_type, :max_frequency, :min_frequency, :power)");
@@ -220,6 +221,35 @@ namespace ASPNETAOP.Session
             query.SetParameter("receiver_id", entity.receiver_id);
             query.SetParameter("location_id", entity.location_id);
             query.ExecuteUpdate();
+        }
+
+        public List<Guid> GetRadarID()
+        {
+            String sql = "SELECT ID FROM Radar";
+            ISQLQuery query = _session.CreateSQLQuery(sql);
+            List<Guid> results = (List<Guid>)query.List<Guid>();
+            Console.WriteLine("GetRadarID" + results.Count);
+            return results;
+        }
+
+        public async Task<string> GetRadarName(int id)
+        {
+            var name = _session.CreateSQLQuery("SELECT name FROM Radar WHERE ID = :ID").SetParameter("ID", id).UniqueResult<string>();
+            return name;
+        }
+
+        public async Task<Radar> GetRadarGeneral(Guid id)
+        {
+            var name = _session.CreateSQLQuery("SELECT name FROM Radar WHERE ID = :ID").SetParameter("ID", id).UniqueResult<string>();
+            var system = _session.CreateSQLQuery("SELECT system FROM Radar WHERE ID = :ID").SetParameter("ID", id).UniqueResult<string>();
+            var configuration = _session.CreateSQLQuery("SELECT configuration FROM Radar WHERE ID = :ID").SetParameter("ID", id).UniqueResult<string>();
+
+            var transmitter_id = _session.CreateSQLQuery("SELECT transmitter_id FROM Radar WHERE ID = :ID").SetParameter("ID", id).UniqueResult<Guid>();
+            var receiver_id = _session.CreateSQLQuery("SELECT receiver_id FROM Radar WHERE ID = :ID").SetParameter("ID", id).UniqueResult<Guid>();
+            var location_id = _session.CreateSQLQuery("SELECT location_id FROM Radar WHERE ID = :ID").SetParameter("ID", id).UniqueResult<Guid>();
+
+            Radar radar = new Radar(name, system, configuration, transmitter_id, receiver_id, location_id);
+            return radar;
         }
 
         public async Task<int> GetRadarNumber()
