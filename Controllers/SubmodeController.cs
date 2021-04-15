@@ -36,6 +36,10 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public IActionResult NewSubmode(Submode sm)
         {
+            for (int i = 0; i < Data.ListOfAntennas.Count; i++)
+            {
+                Data.ListOfAntennas[i].IsChecked = false;
+            }
             Submode sbm = new Submode(sm.name, sm.PRI, sm.PW, sm.max_frequency, sm.min_frequency);
             Data.Submode = sbm;
             return RedirectToAction("NewScan", "Scan");

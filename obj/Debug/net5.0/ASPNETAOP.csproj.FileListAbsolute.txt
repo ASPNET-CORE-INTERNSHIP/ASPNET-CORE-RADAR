@@ -1468,3 +1468,6 @@ C:\Users\Cenk\OneDrive\Desktop\Test2\ASPNET-CORE-RADAR-main\obj\Debug\net5.0\ASP
 C:\Users\Cenk\OneDrive\Desktop\Test2\ASPNET-CORE-RADAR-main\obj\Debug\net5.0\Razor\Views\AntennaScan\NewAntennaScanParam.cshtml.g.cs
 C:\Users\Cenk\OneDrive\Desktop\Test2\ASPNET-CORE-RADAR-main\obj\Debug\net5.0\Razor\Views\AdminTransmitterList\TransmitterList.cshtml.g.cs
 C:\Users\Cenk\OneDrive\Desktop\Test2\ASPNET-CORE-RADAR-main\obj\Debug\net5.0\Razor\Views\AdminTransmitterList\TransmitterEdit.cshtml.g.cs
+C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AdminTransmitterList\TransmitterEdit.cshtml.g.cs
+C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AdminTransmitterList\TransmitterList.cshtml.g.cs
+C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AdminRadarList\RadarList.cshtml.g.cs

@@ -38,31 +38,6 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public async System.Threading.Tasks.Task<IActionResult> NewReceiverAsync(Receiver receiver)
         {
-            //In antenna table we have both receiver_id and transmitter_id attributes with foreign key constraint
-            //Because of foreign key constraint we cannot create a receiver antenna without using a transmitter_id. (Tried but DBNull.Value did not work as I want)
-            //So create a useless transmitter and receiver, so we can fill the emptiness in antenna's receiver_id and transmitter_id attributes.
-            Receiver useless_r = new Receiver(Guid.NewGuid(), "useless", 0, 0, 0);
-            Transmitter useless_t = new Transmitter(Guid.NewGuid(), "useless", "AM-amplitude modulation", 0, 0, 0);
-            Data.uselessReceiver = useless_r;
-            Data.uselessTransmitter = useless_t;
-            try
-            {
-                _session.BeginTransaction();
-                await _session.SaveTransmitter(useless_t);
-                await _session.SaveReceiver(useless_r);
-                await _session.Commit();
-            }
-            catch (Exception e)
-            {
-                // log exception here
-                ViewData["Message"] = e.Message.ToString() + " Error";
-                await _session.Rollback();
-            }
-            finally
-            {
-                _session.CloseTransaction();
-            }
-
             //If the receiver name is null we give a default name that specifies its number
             //because we change the default name after the Radar added we we should keep it in mind to it is a default given name
             bool IsNamed = false;

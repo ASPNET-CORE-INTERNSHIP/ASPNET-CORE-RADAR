@@ -1,0 +1,207 @@
+﻿@model List<ASPNETAOP.Models.RadarGeneral>
+
+@{
+    ViewData["Title"] = "RadarList";
+}
+
+<h1>Radar List</h1>
+<form asp-action="Edited">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="column">
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>System</th>
+                    <th>Configuration</th>
+                </tr>
+                @{
+                    var RadarName = ;
+                    var TransmitterName = ;
+                    var ReceiverName = ;
+                    var LocationName = radar.Location.name;
+
+                    <input type="hidden" id="@RadarName" name="@RadarName" value="@radar.Radar.name" />
+                    <input type="hidden" id="@TransmitterName" name="@TransmitterName" value="@radar.Transmitter.name" />
+                    <input type="hidden" id="@ReceiverName" name="@ReceiverName" value="@radar.Receiver.name" />
+                    <input type="hidden" id="@LocationName" name="@LocationName" value="@radar.Location.name" />
+
+                    <tr>
+                        <td>@</td>
+                        <td>@</td>
+                        <td>@</td>
+                        <td>@</td>
+                        <td>
+                            <a asp-action="RadarEdit">Edit Radar</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <div class="column">
+            <table>
+                <tr>
+                    <th>Receiver Name</th>
+                    <th>Listening Time</th>
+                    <th>Rest Time</th>
+                    <th>Recovery Time</th>
+                </tr>
+                @{
+                    var ReceiverName = Model.Radars.name;
+                    var ListeningTime = ;
+                    var RestTime = ;
+                    var RecoveryTime = ;
+
+                    <input type="hidden" id="@RadarName" name="@RadarName" value="@radar.Radar.name" />
+                    <input type="hidden" id="@TransmitterName" name="@TransmitterName" value="@radar.Transmitter.name" />
+                    <input type="hidden" id="@ReceiverName" name="@ReceiverName" value="@radar.Receiver.name" />
+                    <input type="hidden" id="@LocationName" name="@LocationName" value="@radar.Location.name" />
+
+                    <tr>
+                        <td>@</td>
+                        <td>@</td>
+                        <td>@</td>
+                        <td>@</td>
+                        <td>
+                            <a asp-action="ReceiverEdit">Edit Radar</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <table>
+                <tr>
+                    <th>Transmitter Name</th>
+                    <th>Modulation Type</th>
+                    <th>Max Frequency</th>
+                    <th>Min Frequency</th>
+                    <th>Power</th>
+                </tr>
+                @{
+                    var TransmitterName = Model.Radars.name;
+                    var ModulationType = ;
+                    var MaxFrequency = ;
+                    var MinFrequency = ;
+                    var Power = ;
+
+                    <input type="hidden" id="@RadarName" name="@RadarName" value="@radar.Radar.name" />
+                    <input type="hidden" id="@TransmitterName" name="@TransmitterName" value="@radar.Transmitter.name" />
+                    <input type="hidden" id="@ReceiverName" name="@ReceiverName" value="@radar.Receiver.name" />
+                    <input type="hidden" id="@LocationName" name="@LocationName" value="@radar.Location.name" />
+
+                    <tr>
+                        <td>@</td>
+                        <td>@</td>
+                        <td>@</td>
+                        <td>@</td>
+                        <td>@</td>
+                        <td>
+                            <a asp-action="TransmitterEdit">Edit Radar</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <div class="column">
+            <table>
+                <tr>
+                    <th>Location Name</th>
+                    <th>Country</th>
+                    <th>City</th>
+                    <th>Latitude</th>
+                    <th>Longitude</th>
+                    <th>Airborne</th>
+                </tr>
+                @{
+                    var TransmitterName = Model.Radars.name;
+                    var Country = ;
+                    var City = ;
+                    var Latitude = ;
+                    var Longitude = ;
+                    var Airborne =;
+
+                    <input type="hidden" id="@RadarName" name="@RadarName" value="@radar.Radar.name" />
+                    <input type="hidden" id="@TransmitterName" name="@TransmitterName" value="@radar.Transmitter.name" />
+                    <input type="hidden" id="@ReceiverName" name="@ReceiverName" value="@radar.Receiver.name" />
+                    <input type="hidden" id="@LocationName" name="@LocationName" value="@radar.Location.name" />
+
+                    <tr>
+                        <td>@</td>
+                        <td>@</td>
+                        <td>@</td>
+                        <td>@</td>
+                        <td>@</td>
+                        <td>@</td>
+                        <td>
+                            <a asp-action="ReceiverEdit">Edit Radar</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <table>
+                <tr>
+                    <th>Mode Name</th>
+                    
+                </tr>
+                @{
+                    var ModeName = Model.Mode.name;
+                    
+
+                    <input type="hidden" id="@RadarName" name="@RadarName" value="@radar.Radar.name" />
+                    
+
+                    <tr>
+                        <td>@</td>
+                        <td>@</td>
+                        <td>@</td>
+                        <td>@</td>
+                        <td>@</td>
+                        <td>
+                            <a asp-action="ModeEdit">Edit Radar</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <div class="column">
+            <table>
+                <tr>
+                    <th>Submode Name</th>
+                    <th>PW</th>
+                    <th>PRI</th>
+                    <th>Mode Name</th>
+                </tr>
+                @{
+                    var SubmodeName = Model.Radars.name;
+                    var PW = ;
+                    var PRI = ;
+                    var ModeName = ;
+
+                    <input type="hidden" id="@RadarName" name="@RadarName" value="@radar.Radar.name" />
+                    <input type="hidden" id="@TransmitterName" name="@TransmitterName" value="@radar.Transmitter.name" />
+                    <input type="hidden" id="@ReceiverName" name="@ReceiverName" value="@radar.Receiver.name" />
+                    <input type="hidden" id="@LocationName" name="@LocationName" value="@radar.Location.name" />
+
+                    <tr>
+                        <td>@</td>
+                        <td>@</td>
+                        <td>@</td>
+                        <td>@</td>
+                        <td>
+                            <a asp-action="SubmodeEdit">Edit Radar</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</form>
+
+   

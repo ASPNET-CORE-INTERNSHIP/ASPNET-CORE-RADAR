@@ -100,7 +100,7 @@ namespace ASPNETAOP.Controllers
             //if the antenna is a receiver antenna give it a receiver id to build a relationship between antenna and its receiver
             else if (antenna.duty.Equals("receiver"))
             {
-                Antenna a = new Antenna(key, def_name, antenna.type, antenna.horizontal_beamwidth, antenna.vertical_beamwidth, antenna.polarization, 1, antenna.horizontal_dimension, antenna.vertical_dimension, antenna.duty, Data.uselessTransmitter.ID, receiver_id, antenna.location);
+                Antenna a = new Antenna(key, def_name, antenna.type, antenna.horizontal_beamwidth, antenna.vertical_beamwidth, antenna.polarization, 1, antenna.horizontal_dimension, antenna.vertical_dimension, antenna.duty, null, receiver_id, antenna.location);
                 a.Isnamed = isNamed;
                 Data.ListOfAntennas.Add(a);
             }
@@ -108,7 +108,7 @@ namespace ASPNETAOP.Controllers
             else
             {
                 Guid transmitter_id = Data.Transmitter.ID;
-                Antenna a = new Antenna(key, def_name, antenna.type, antenna.horizontal_beamwidth, antenna.vertical_beamwidth, antenna.polarization, antenna.number_of_feed, antenna.horizontal_dimension, antenna.vertical_dimension, antenna.duty, transmitter_id, Data.uselessReceiver.ID, antenna.location);
+                Antenna a = new Antenna(key, def_name, antenna.type, antenna.horizontal_beamwidth, antenna.vertical_beamwidth, antenna.polarization, antenna.number_of_feed, antenna.horizontal_dimension, antenna.vertical_dimension, antenna.duty, transmitter_id, null, antenna.location);
                 a.Isnamed = isNamed;
                 //Save this antenna to Datas. So we can handle the problem that the user may add a receiver antenna instead of a transmitter antenna.
                 Data.ListOfAntennas.Add(a);

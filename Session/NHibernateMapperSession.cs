@@ -42,6 +42,22 @@ namespace ASPNETAOP.Session
             }
         }
 
+        public IQueryable<Receiver> Receivers => _session.Query<Receiver>();
+
+        public IQueryable<Transmitter> Transmitters => _session.Query<Transmitter>();
+
+        public IQueryable<Radar> Radars => _session.Query<Radar>();
+
+        public IQueryable<Location> Location => _session.Query<Location>();
+
+        public IQueryable<Antenna> Antennas => _session.Query<Antenna>();
+
+        public IQueryable<Mode> Modes => _session.Query<Mode>();
+
+        public IQueryable<Submode> Submode => _session.Query<Submode>();
+
+        public IQueryable<Scan> Scan => _session.Query<Scan>();
+
         public async Task SaveReceiver(Receiver entity)
         {
             ISQLQuery query = _session.CreateSQLQuery("INSERT INTO Receiver VALUES (:ID, :name, :listening_time, :rest_time, :recovery_time)");

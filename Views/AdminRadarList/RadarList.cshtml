@@ -1,0 +1,38 @@
+﻿@model List<ASPNETAOP.Models.RadarGeneral>
+
+@{
+    ViewData["Title"] = "RadarList";
+}
+
+<h1>Radar List</h1>
+
+<table class="table table-bordered table-responsive table-hover">
+    <tr>
+        <th>Radar Name</th>
+        <th>Transmitter Name</th>
+        <th>Receiver Name</th>
+        <th>Location Name</th>
+    </tr>
+    @foreach (RadarGeneral radar in Model)
+    {
+        var RadarName = radar.Radar.name;
+        var TransmitterName = radar.Transmitter.name;
+        var ReceiverName = radar.Receiver.name;
+        var LocationName = radar.Location.name;
+
+        <input type="hidden" id="@RadarName" name="@RadarName" value="@radar.Radar.name" />
+        <input type="hidden" id="@TransmitterName" name="@TransmitterName" value="@radar.Transmitter.name" />
+        <input type="hidden" id="@ReceiverName" name="@ReceiverName" value="@radar.Receiver.name" />
+        <input type="hidden" id="@LocationName" name="@LocationName" value="@radar.Location.name" />
+
+        <tr>
+            <td>@radar.Radar.name</td>
+            <td>@radar.Transmitter.name</td>
+            <td>@radar.Receiver.name</td>
+            <td>@radar.Location.name</td>
+            <td>
+                <a asp-action="RadarEdit">Edit Radar</a>
+            </td>
+        </tr>
+    }
+</table>
