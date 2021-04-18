@@ -238,6 +238,16 @@ namespace ASPNETAOP.Session
             return name;
         }
 
+        public void UpdateRadar(Guid ID, Guid transmitter_id, Guid receiver_id, Guid location_id)
+        {
+            ISQLQuery query = _session.CreateSQLQuery("UPDATE Radar SET transmitter_id = :transmitter_id, receiver_id = :receiver_id, location_id = :location_id WHERE ID = :ID");
+            query.SetParameter("ID", ID);
+            query.SetParameter("transmitter_id", transmitter_id);
+            query.SetParameter("receiver_id", receiver_id);
+            query.SetParameter("location_id", location_id);
+            query.ExecuteUpdate();
+        }
+
         public async Task<Transmitter> GetTransmitter(Guid id)
         {
             var name = _session.CreateSQLQuery("SELECT name FROM Transmitter WHERE ID = :ID").SetParameter("ID", id).UniqueResult<string>();

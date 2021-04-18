@@ -1,203 +1,50 @@
-﻿@model ASPNETAOP.Models.RadarGeneral
+﻿@model ASPNETAOP.Models.Radar
 
 @{
-    ViewData["Title"] = "RadarList";
+    ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
-<form asp-action="Edit">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div class="row">
-        <div class="column">
-            <table>
-                <tr>
-                    <th>Name</th>
-                    <th>System</th>
-                    <th>Configuration</th>
-                </tr>
+<h1>Permission Edit</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-9">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ID" class="control-label"></label>
+
                 @{
-                    var RadarName = Model.Radar.name;
-                    var System = Model.Radar.system;
-                    var Configuration = Model.Radar.configuration;
-
-                    <input type="hidden" id="@RadarName" name="@RadarName" value="@Model.Radar.name" />
-                    <input type="hidden" id="@System" name="@System" value="@Model.Radar.system" />
-                    <input type="hidden" id="@Configuration" name="@Configuration" value="@Model.Radar.configuration" />
-
-                    <tr>
-                        <td>@RadarName</td>
-                        <td>@System</td>
-                        <td>@Configuration</td>
-                        <td>
-                            <a asp-action="RadarEdit">Edit Radar</a>
-                        </td>
-                    </tr>
+                    Radar radar = ASPNETAOP.Models.RadarGeneral.currentRadarGeneral.Radar;
+                    <input asp-for="ID" class="form-control" type="text" placeholder="@radar.ID">
                 }
-            </table>
-        </div>
-        <div class="column">
-            <table>
-                <tr>
-                    <th>Receiver Name</th>
-                    <th>Listening Time</th>
-                    <th>Rest Time</th>
-                    <th>Recovery Time</th>
-                </tr>
-                @{
-                    var ReceiverName = Model.Receiver.name;
-                    var ListeningTime = Model.Receiver.listening_time;
-                    var RestTime = Model.Receiver.rest_time;
-                    var RecoveryTime = Model.Receiver.recovery_time;
-
-                    <input type="hidden" id="@ReceiverName" name="@ReceiverName" value="@Model.Receiver.name" />
-                    <input type="hidden" id="@ListeningTime" name="@ListeningTime" value="@Model.Receiver.listening_time" />
-                    <input type="hidden" id="@RestTime" name="@RestTime" value="@Model.Receiver.rest_time" />
-                    <input type="hidden" id="@RecoveryTime" name="@RecoveryTime" value="@Model.Receiver.recovery_time" />
-
-                    <tr>
-                        <td>@ReceiverName</td>
-                        <td>@ListeningTime</td>
-                        <td>@RestTime</td>
-                        <td>@RecoveryTime</td>
-                        <td>
-                            <a asp-action="ReceiverEdit">Edit Receiver</a>
-                        </td>
-                    </tr>
-                }
-            </table>
-        </div>
+                <span asp-validation-for="ID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="transmitter_id" class="control-label"></label>
+                <input asp-for="transmitter_id" class="form-control" />
+                <span asp-validation-for="transmitter_id" class="text-danger"></span>
+            </div>
+            <div>
+                <a asp-controller="AdminTransmitterList" asp-action="TransmitterEdit">Edit transmitter</a>
+            </div>
+            <div class="form-group">
+                <label asp-for="receiver_id" class="control-label"></label>
+                <input asp-for="receiver_id" class="form-control" />
+                <span asp-validation-for="receiver_id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="location_id" class="control-label"></label>
+                <input asp-for="location_id" class="form-control" />
+                <span asp-validation-for="location_id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Edit" class="btn btn-primary" />
+            </div>
+            <b>@ViewData["Message"]</b>
+        </form>
     </div>
-    <div class="row">
-        <div class="column">
-            <table>
-                <tr>
-                    <th>Transmitter Name</th>
-                    <th>Modulation Type</th>
-                    <th>Max Frequency</th>
-                    <th>Min Frequency</th>
-                    <th>Power</th>
-                </tr>
-                @{
-                    var TransmitterName = Model.Transmitter.name;
-                    var ModulationType = Model.Transmitter.modulation_type;
-                    var MaxFrequency = Model.Transmitter.max_frequency;
-                    var MinFrequency = Model.Transmitter.min_frequency;
-                    var Power = Model.Transmitter.power;
-
-                    <input type="hidden" id="@TransmitterName" name="@TransmitterName" value="@Model.Transmitter.name" />
-                    <input type="hidden" id="@ModulationType" name="@ModulationType" value="@Model.Transmitter.modulation_type" />
-                    <input type="hidden" id="@MaxFrequency" name="@MaxFrequency" value="@Model.Transmitter.max_frequency" />
-                    <input type="hidden" id="@MinFrequency" name="@MinFrequency" value="@Model.Transmitter.min_frequency" />
-                    <input type="hidden" id="@Power" name="@Power" value="@Model.Transmitter.power" />
-
-                    <tr>
-                        <td>@TransmitterName</td>
-                        <td>@ModulationType</td>
-                        <td>@MaxFrequency</td>
-                        <td>@MinFrequency</td>
-                        <td>@Power</td>
-                        <td>
-                            <a asp-action="TransmitterEdit">Edit Transmitterr</a>
-                        </td>
-                    </tr>
-                }
-            </table>
-        </div>
-        <div class="column">
-            <table>
-                <tr>
-                    <th>Location Name</th>
-                    <th>Country</th>
-                    <th>City</th>
-                    <th>Latitude</th>
-                    <th>Longitude</th>
-                    <th>Airborne</th>
-                </tr>
-                @{
-                    var LocationName = Model.Location.name;
-                    var Country = Model.Location.country;
-                    var City = Model.Location.city;
-                    var Latitude = Model.Location.geographic_latitude;
-                    var Longitude = Model.Location.geographic_longitude;
-                    var Airborne = Model.Location.airborne;
-
-                    <input type="hidden" id="@LocationName" name="@LocationName" value="@Model.Location.name" />
-                    <input type="hidden" id="@Country" name="@Country" value="@Model.Location.country" />
-                    <input type="hidden" id="@City" name="@City" value="@Model.Location.city" />
-                    <input type="hidden" id="@Latitude" name="@Latitude" value="@Model.Location.geographic_latitude" />
-                    <input type="hidden" id="@Longitude" name="@Longitude" value="@Model.Location.geographic_longitude" />
-                    <input type="hidden" id="@Airborne" name="@Airborne" value="@Model.Location.airborne" />
-
-                    <tr>
-                        <td>@LocationName</td>
-                        <td>@Country</td>
-                        <td>@City</td>
-                        <td>@Latitude</td>
-                        <td>@Longitude</td>
-                        <td>@Airborne</td>
-                        <td>
-                            <a asp-action="ReceiverEdit">Edit Radar</a>
-                        </td>
-                    </tr>
-                }
-            </table>
-        </div>
-    </div>
-    <div class="row">
-        <div class="column">
-            <table>
-                <tr>
-                    <th>Mode Name</th>
-                </tr>
-                @{for (int i = 0; i < Model.Mode.Count; i++)
-                    {
-                        var name = "Mode[" + i + "].name";
-                        <input type="hidden" id="@name" name="@name" value="@Model.Mode[i].name" />
-                        <tr>
-                            <td>@name</td>
-                            <td>
-                                <a asp-action="ModeEdit">Edit Radar</a>
-                            </td>
-                        </tr>
-                    }
-                }
-            </table>
-        </div>
-        <div class="column">
-            <table>
-                <tr>
-                    <th>Submode Name</th>
-                    <th>PW</th>
-                    <th>PRI</th>
-                    <th>Mode Name</th>
-                </tr>
-                @{for (int i = 0; i < Model.Submode.Count; i++)
-                    {
-                        var SubmodeName = "Submode[" + i + "].name";
-                        var PW = "Submode[" + i + "].PW";
-                        var PRI = "Submode[" + i + "].PRI";
-                        var ModeName = "Submode[" + i + "].mode_id";
-                        <input type="hidden" id="@SubmodeName" name="@SubmodeName" value="@Model.Submode[i].name" />
-                        <input type="hidden" id="@PW" name="@PW" value="@Model.Submode[i].PW" />
-                        <input type="hidden" id="@PRI" name="@PRI" value="@Model.Submode[i].PRI" />
-                        <input type="hidden" id="@ModeName" name="@ModeName" value="@Model.Submode[i].mode_id" />
-                        <tr>
-                        <tr>
-                            <td>@SubmodeName</td>
-                            <td>@PW</td>
-                            <td>@PRI</td>
-                            <td>@ModeName</td>
-                            <td>
-                                <a asp-action="SubmodeEdit">Edit Submode</a>
-                            </td>
-                        </tr>
-                        </tr>
-                    }
-                }
-            </table>
-        </div>
-    </div>
-</form>
+</div>
 
 
 @section Scripts {
