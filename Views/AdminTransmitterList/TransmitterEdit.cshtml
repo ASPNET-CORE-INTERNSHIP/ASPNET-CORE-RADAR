@@ -13,7 +13,12 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="name" class="control-label"></label>
-                <input asp-for="name" class="form-control" type="text">
+                @{
+                    Transmitter transmitter = ASPNETAOP.Models.RadarGeneral.currentRadarGeneral.Transmitter;
+                    <input asp-for="name" class="form-control" type="text" placeholder="@transmitter.name">
+                }
+
+
                 <span asp-validation-for="name" class="text-danger"></span>
             </div>
             <div class="form-group">

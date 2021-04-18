@@ -16,6 +16,14 @@ namespace ASPNETAOP.Models
             this.recovery_time = recovery_time;
         }
 
+        public Receiver(string rec_name, Double listening_time, Double rest_time, Double recovery_time)
+        {
+            this.name = rec_name;
+            this.listening_time = listening_time;
+            this.rest_time = rest_time;
+            this.recovery_time = recovery_time;
+        }
+
         [Key]
         public virtual Guid ID { get; set; }
 

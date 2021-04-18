@@ -8,6 +8,9 @@ namespace ASPNETAOP.Models
     public class RadarGeneral
     {
         public RadarGeneral() { }
+
+        public static readonly RadarGeneral currentRadarGeneral = new RadarGeneral();
+
         public RadarGeneral(Radar radar, Transmitter transmitter, Receiver receiver, Location loc)
         {
             this.Radar = radar;
@@ -15,6 +18,8 @@ namespace ASPNETAOP.Models
             this.Receiver = receiver;
             this.Location = loc;
         }
+
+        public RadarGeneral radarGeneral { get; set; }
 
         public Radar Radar { get; set; }
 

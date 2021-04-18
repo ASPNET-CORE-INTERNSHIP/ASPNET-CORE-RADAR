@@ -21,6 +21,16 @@ namespace ASPNETAOP.Models
             this.airborne = airborne;
         }
 
+        public Location(string def_name, string country, string city, string geographic_latitude, string geographic_longitude, string airborne)
+        {
+            this.name = def_name;
+            this.country = country;
+            this.city = city;
+            this.geographic_latitude = geographic_latitude;
+            this.geographic_longitude = geographic_longitude;
+            this.airborne = airborne;
+        }
+
         [Key]
         public virtual Guid ID { get; set; }
 

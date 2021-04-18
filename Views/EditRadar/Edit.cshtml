@@ -171,32 +171,35 @@
                     <th>PRI</th>
                     <th>Mode Name</th>
                 </tr>
-                    @{for (int i = 0; i < Model.Submode.Count; i++)
-                        {
-                            var SubmodeName = "Submode[" + i + "].name";
-                            var PW = "Submode[" + i + "].PW";
-                            var PRI = "Submode[" + i + "].PRI";
-                            var ModeName = "Submode[" + i + "].mode_id";
-                            <input type="hidden" id="@SubmodeName" name="@SubmodeName" value="@Model.Submode[i].name" />
-                            <input type="hidden" id="@PW" name="@PW" value="@Model.Submode[i].PW" />
-                            <input type="hidden" id="@PRI" name="@PRI" value="@Model.Submode[i].PRI" />
-                            <input type="hidden" id="@ModeName" name="@ModeName" value="@Model.Submode[i].mode_id" />
-                            <tr>
-                            <tr>
-                                <td>@SubmodeName</td>
-                                <td>@PW</td>
-                                <td>@PRI</td>
-                                <td>@ModeName</td>
-                                <td>
-                                    <a asp-action="SubmodeEdit">Edit Submode</a>
-                                </td>
-                            </tr>
-                            </tr>
-                        }
+                @{for (int i = 0; i < Model.Submode.Count; i++)
+                    {
+                        var SubmodeName = "Submode[" + i + "].name";
+                        var PW = "Submode[" + i + "].PW";
+                        var PRI = "Submode[" + i + "].PRI";
+                        var ModeName = "Submode[" + i + "].mode_id";
+                        <input type="hidden" id="@SubmodeName" name="@SubmodeName" value="@Model.Submode[i].name" />
+                        <input type="hidden" id="@PW" name="@PW" value="@Model.Submode[i].PW" />
+                        <input type="hidden" id="@PRI" name="@PRI" value="@Model.Submode[i].PRI" />
+                        <input type="hidden" id="@ModeName" name="@ModeName" value="@Model.Submode[i].mode_id" />
+                        <tr>
+                        <tr>
+                            <td>@SubmodeName</td>
+                            <td>@PW</td>
+                            <td>@PRI</td>
+                            <td>@ModeName</td>
+                            <td>
+                                <a asp-action="SubmodeEdit">Edit Submode</a>
+                            </td>
+                        </tr>
+                        </tr>
                     }
+                }
             </table>
         </div>
     </div>
 </form>
 
-   
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

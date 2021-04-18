@@ -238,6 +238,58 @@ namespace ASPNETAOP.Session
             return name;
         }
 
+        public async Task<Transmitter> GetTransmitter(Guid id)
+        {
+            var name = _session.CreateSQLQuery("SELECT name FROM Transmitter WHERE ID = :ID").SetParameter("ID", id).UniqueResult<string>();
+            var modulation_type = _session.CreateSQLQuery("SELECT modulation_type FROM Transmitter WHERE ID = :ID").SetParameter("ID", id).UniqueResult<string>();
+            int max_frequency = _session.CreateSQLQuery("SELECT max_frequency FROM Transmitter WHERE ID = :ID").SetParameter("ID", id).UniqueResult<int>();
+            int min_frequency = _session.CreateSQLQuery("SELECT min_frequency FROM Transmitter WHERE ID = :ID").SetParameter("ID", id).UniqueResult<int>();
+            int power = _session.CreateSQLQuery("SELECT power FROM Transmitter WHERE ID = :ID").SetParameter("ID", id).UniqueResult<int>();
+
+            Transmitter transmitter = new Transmitter(name, modulation_type, max_frequency, min_frequency, power);
+            return transmitter;
+        }
+
+        public async Task<Receiver> GetReceiver(Guid id)
+        {
+
+            var rec_name = _session.CreateSQLQuery("SELECT name FROM Receiver WHERE ID = :ID").SetParameter("ID", id).UniqueResult<string>();
+            double listening_time = _session.CreateSQLQuery("SELECT listening_time FROM Receiver WHERE ID = :ID").SetParameter("ID", id).UniqueResult<double>();
+            double rest_time = _session.CreateSQLQuery("SELECT rest_time FROM Receiver WHERE ID = :ID").SetParameter("ID", id).UniqueResult<double>();
+            double recovery_time = _session.CreateSQLQuery("SELECT recovery_time FROM Receiver WHERE ID = :ID").SetParameter("ID", id).UniqueResult<double>();
+
+            Receiver receiver = new Receiver(rec_name, listening_time, rest_time, recovery_time);
+            return receiver;
+        }
+        
+        public async Task<Location> GetLocation(Guid id)
+        {
+            var def_name = _session.CreateSQLQuery("SELECT name FROM Location WHERE ID = :ID").SetParameter("ID", id).UniqueResult<string>();
+            var country = _session.CreateSQLQuery("SELECT country FROM Location WHERE ID = :ID").SetParameter("ID", id).UniqueResult<string>();
+            var city = _session.CreateSQLQuery("SELECT city FROM Location WHERE ID = :ID").SetParameter("ID", id).UniqueResult<string>();
+            var geographic_latitude = _session.CreateSQLQuery("SELECT geographic_latitude FROM Location WHERE ID = :ID").SetParameter("ID", id).UniqueResult<string>();
+            var geographic_longitude = _session.CreateSQLQuery("SELECT geographic_longitude FROM Location WHERE ID = :ID").SetParameter("ID", id).UniqueResult<string>();
+            var airborne = _session.CreateSQLQuery("SELECT airborne FROM Location WHERE ID = :ID").SetParameter("ID", id).UniqueResult<string>();
+
+
+            Location location = new Location(def_name, country, city, geographic_latitude, geographic_longitude, airborne);
+            return location;
+        }
+
+        
+
+        public async Task<RadarGeneral> GetRadarGeneralInfo(Guid id)
+        {
+            Radar radar = await GetRadarGeneral(id);
+            Transmitter transmitter = await GetTransmitter(radar.transmitter_id);
+            Receiver receiver = await GetReceiver(radar.receiver_id);
+            Location location = await GetLocation(radar.location_id);
+
+            RadarGeneral radarGeneral = new RadarGeneral(radar, transmitter, receiver, location);
+
+            return radarGeneral;
+        }
+
         public async Task<Radar> GetRadarGeneral(Guid id)
         {
             var name = _session.CreateSQLQuery("SELECT name FROM Radar WHERE ID = :ID").SetParameter("ID", id).UniqueResult<string>();

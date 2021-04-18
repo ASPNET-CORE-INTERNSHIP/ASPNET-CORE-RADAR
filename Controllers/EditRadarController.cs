@@ -28,8 +28,18 @@ namespace ASPNETAOP.Controllers
             return View();
         }
 
-        [HttpPost]
-        public async System.Threading.Tasks.Task<IActionResult> EditAsync(RadarGeneral RadarBase)
+        RadarGeneral currentRadar;
+
+        public async System.Threading.Tasks.Task<IActionResult> EditParam(Guid id)
+        {
+            //When redirected from the AdminRadarList, the id of the current Radar is given
+            //Using the id, RadarGeneral with appropiate Radar, Transmitter, Receiver and Location is retrieved
+            currentRadar = await _session.GetRadarGeneralInfo(id);
+            return RedirectToAction("Edit", "EditRadar");
+        }
+
+   
+        public async System.Threading.Tasks.Task<IActionResult> Edit(RadarGeneral RadarBase)
         {
             List<Antenna> AntennaList = await _session.Antennas.Where(b => b.receiver_id.Equals(RadarBase.Receiver.ID) || b.transmitter_id.Equals(RadarBase.Transmitter.ID)).ToListAsync();
             List<Mode> ModeList = await _session.Modes.Where(b => b.radar_id.Equals(RadarBase.Radar.ID)).ToListAsync();

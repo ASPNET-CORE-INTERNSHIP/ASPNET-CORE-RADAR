@@ -15,6 +15,7 @@
     </tr>
     @foreach (RadarGeneral radar in Model)
     {
+        Guid id = radar.Radar.ID;
         var RadarName = radar.Radar.name;
         var TransmitterName = radar.Transmitter.name;
         var ReceiverName = radar.Receiver.name;
@@ -31,7 +32,7 @@
             <td>@radar.Receiver.name</td>
             <td>@radar.Location.name</td>
             <td>
-                <a asp-action="RadarEdit">Edit Radar</a>
+                <a asp-controller="EditRadar" asp-action="EditParam" asp-route-id="@id"> Edit</a>
             </td>
         </tr>
     }
