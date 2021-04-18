@@ -185,5 +185,12 @@ namespace ASPNETAOP.Controllers
 
             return View(loc);
         }
+
+        public IActionResult LocationnEdit(AdminLocationEdit location)
+        {
+            _session.UpdateLocation(location.name, location.newName, location.country, location.city, location.geographic_latitude, location.geographic_longitude, location.airborne);
+
+            return View(location);
+        }
     }
 }

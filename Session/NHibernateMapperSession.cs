@@ -69,6 +69,17 @@ namespace ASPNETAOP.Session
             query.ExecuteUpdate();
         }
 
+        public void UpdateReceiver(string currentName, string newName, double listening_time, double rest_time, double recovery_time)
+        {
+            ISQLQuery query = _session.CreateSQLQuery("UPDATE Receiver SET name = :newName, listening_time = :listening_time, rest_time = :rest_time, recovery_time = :recovery_time WHERE name = :currentName");
+            query.SetParameter("newName", newName);
+            query.SetParameter("currentName", currentName);
+            query.SetParameter("listening_time", listening_time);
+            query.SetParameter("rest_time", rest_time);
+            query.SetParameter("recovery_time", recovery_time);
+            query.ExecuteUpdate();
+        }
+
         public async Task<int> GetReceiverNumber()
         {
             var num = _session.CreateSQLQuery("SELECT COUNT(*) FROM Receiver").UniqueResult<int>();
@@ -324,6 +335,19 @@ namespace ASPNETAOP.Session
         {
             ISQLQuery query = _session.CreateSQLQuery("DELETE FROM Radar WHERE ID = :ID");
             query.SetParameter("ID", id);
+            query.ExecuteUpdate();
+        }
+
+        public void UpdateLocation(string currentName, string newName, string country, string city, string geographic_latitude, string geographic_longitude, string airborne)
+        {
+            ISQLQuery query = _session.CreateSQLQuery("UPDATE Location SET name = :newName, country = :country, city = :city, geographic_latitude = :geographic_latitude, geographic_longitude = :geographic_longitude, airborne = :airborne WHERE name = :currentName");
+            query.SetParameter("newName", newName);
+            query.SetParameter("currentName", currentName);
+            query.SetParameter("country", country);
+            query.SetParameter("city", city);
+            query.SetParameter("geographic_latitude", geographic_latitude);
+            query.SetParameter("geographic_longitude", geographic_longitude);
+            query.SetParameter("airborne", airborne);
             query.ExecuteUpdate();
         }
 

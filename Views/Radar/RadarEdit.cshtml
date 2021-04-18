@@ -1,0 +1,67 @@
+﻿@model ASPNETAOP.Models.Radar
+
+@{
+    ViewData["Title"] = "NewRadar";
+}
+
+<h1>Add Radar</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-9">
+        <form asp-action="NewRadar">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <div class="form-group">
+                    <label asp-for="name" class="control-label"></label>
+                    <input asp-for="name" class="form-control" type="text">
+                    <span asp-validation-for="name" class="text-danger"></span>
+                </div>
+                <label asp-for="system" class="control-label"></label>
+                <select asp-for="system" class="form-select" aria-label="Default select example">
+                    <option selected>Select the system of this radar</option>
+                    <option value="early warning">early warning</option>
+                    <option value="missile guidance">missile guidance</option>
+                    <option value="target tracking">target tracking</option>
+                    <option value="target acquisition">target acquisition</option>
+                    <option value="airborne intercept">airborne intercept</option>
+                    <option value="fire control">fire control</option>
+                    <option value="surface search">surface search</option>
+                    <option value="battlefield surveillance">battlefield surveillance</option>
+                    <option value="air mapping">air mapping</option>
+                    <option value="countermortar">countermortar</option>
+                    <option value="ground surveillance">ground surveillance</option>
+                    <option value="man portable">man portable</option>
+                </select>
+                <span asp-validation-for="system" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="configuration" class="control-label"></label>
+                <select asp-for="configuration" class="form-select" aria-label="Default select example">
+                    <option selected>Select the configuration of this radar</option>
+                    <option value="bistatic">bistatic</option>
+                    <option value="continious wave">continious wave</option>
+                    <option value="doppler">doppler</option>
+                    <option value="fm-cw">fm-cw</option>
+                    <option value="monopulse">monopulse</option>
+                    <option value="passive">passive</option>
+                    <option value="planar array">planar array</option>
+                    <option value="pulse doppler">pulse doppler</option>
+                </select>
+                <span asp-validation-for="configuration" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add" class="btn btn-primary" />
+            </div>
+            <b>@ViewData["Message"]</b>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Turn back</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

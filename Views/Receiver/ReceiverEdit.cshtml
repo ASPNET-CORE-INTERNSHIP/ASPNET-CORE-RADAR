@@ -1,0 +1,50 @@
+﻿@model ASPNETAOP.Models.AdminReceiverEdit
+
+@{
+    ViewData["Title"] = "UpdateReceiver";
+}
+
+<h1>Update Receiver</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-9">
+        <form asp-action="ReceiverEdit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="name" class="control-label"></label>
+                <input asp-for="name" class="form-control" type="text">
+                <span asp-validation-for="name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="newName" class="control-label"></label>
+                <input asp-for="newName" class="form-control" type="text">
+                <span asp-validation-for="newName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="listening_time" class="control-label"></label>
+                <input asp-for="listening_time" class="form-control" type="number" placeholder="00.00ns" step="0.01">
+                <span asp-validation-for="listening_time" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="rest_time" class="control-label"></label>
+                <input asp-for="rest_time" class="form-control" type="number" placeholder="00.00ns" step="0.01">
+                <span asp-validation-for="rest_time" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="recovery_time" class="control-label"></label>
+                <input asp-for="recovery_time" class="form-control" type="number" placeholder="00.00ns" step="0.01">
+                <span asp-validation-for="recovery_time" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="ReceiverEdit" class="btn btn-primary" />
+            </div>
+            <b>@ViewData["Message"]</b>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Permission Edit</h1>
+<h1>Radar Edit</h1>
 
 <hr />
 <div class="row">
@@ -33,10 +33,16 @@
                 <input asp-for="receiver_id" class="form-control" />
                 <span asp-validation-for="receiver_id" class="text-danger"></span>
             </div>
+            <div>
+                <a asp-controller="Receiver" asp-action="ReceiverEdit">Edit receiver</a>
+            </div>
             <div class="form-group">
                 <label asp-for="location_id" class="control-label"></label>
                 <input asp-for="location_id" class="form-control" />
                 <span asp-validation-for="location_id" class="text-danger"></span>
+            </div>
+            <div>
+                <a asp-controller="Location" asp-action="LocationEdit">Edit location</a>
             </div>
             <div class="form-group">
                 <input type="submit" value="Edit" class="btn btn-primary" />
