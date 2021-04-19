@@ -29,10 +29,16 @@ namespace ASPNETAOP.Controllers
         }
 
         [HttpPost]
-        public async System.Threading.Tasks.Task<IActionResult> EditAsync(RadarGeneral RadarBase)
+        public async System.Threading.Tasks.Task<IActionResult> Edit(Guid id)
         {
-            List<Antenna> AntennaList = await _session.Antennas.Where(b => b.receiver_id.Equals(RadarBase.Receiver.ID) || b.transmitter_id.Equals(RadarBase.Transmitter.ID)).ToListAsync();
-            List<Mode> ModeList = await _session.Modes.Where(b => b.radar_id.Equals(RadarBase.Radar.ID)).ToListAsync();
+            Console.WriteLine("////////////////////////" + id);
+            Radar r = await _session.Radars.Where(b => b.ID.Equals(id)).FirstOrDefaultAsync();
+            Transmitter transmitter_temp = await _session.Transmitters.Where(b => b.ID.Equals(r.transmitter_id)).FirstOrDefaultAsync();
+            Receiver receiver_temp = await _session.Receivers.Where(b => b.ID.Equals(r.receiver_id)).FirstOrDefaultAsync();
+            Location location_temp = await _session.Location.Where(b => b.ID.Equals(r.location_id)).FirstOrDefaultAsync();
+            
+            List<Antenna> AntennaList = await _session.Antennas.Where(b => b.receiver_id.Equals(receiver_temp.ID) || b.transmitter_id.Equals(transmitter_temp.ID)).ToListAsync();
+            List<Mode> ModeList = await _session.Modes.Where(b => b.radar_id.Equals(r.ID)).ToListAsync();
             List<Submode> SubModeList = new List<Submode>();
             foreach (Mode mod in ModeList)
             {
@@ -43,12 +49,17 @@ namespace ASPNETAOP.Controllers
                     SubModeList.Add(s);
                 }
             }
+            RadarInfo radar = new RadarInfo(r, transmitter_temp, receiver_temp, location_temp);
+            radar.ListOfAntennas = AntennaList;
+            radar.Mode = ModeList;
+            radar.Submode = SubModeList;
 
-            RadarBase.ListOfAntennas = AntennaList;
-            RadarBase.Mode = ModeList;
-            RadarBase.Submode = SubModeList;
+            return View(radar);
+        }
 
-            return View(RadarBase);
+        public void RadarEdit()
+        {
+
         }
     }
 }

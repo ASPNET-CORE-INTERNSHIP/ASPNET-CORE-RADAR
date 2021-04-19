@@ -35,24 +35,24 @@ namespace ASPNETAOP.Controllers
 
             List<Radar> RadarList = await _session.Radars.ToListAsync();
 
-            var model = new List<RadarGeneral>();
+            var model = new List<RadarInfo>();
 
             for (int i = 0; i < RadarList.Count; i++)
             {
-                Console.WriteLine(i + "th radar is " + RadarList[i].name);
                 Transmitter transmitter_temp = await _session.Transmitters.Where(b => b.ID.Equals(RadarList[i].transmitter_id)).FirstOrDefaultAsync();
                 Receiver receiver_temp = await _session.Receivers.Where(b => b.ID.Equals(RadarList[i].receiver_id)).FirstOrDefaultAsync();
                 Location location_temp = await _session.Location.Where(b => b.ID.Equals(RadarList[i].location_id)).FirstOrDefaultAsync();
-                RadarGeneral temp = new RadarGeneral(RadarList[i], transmitter_temp, receiver_temp, location_temp);
+                RadarInfo temp = new RadarInfo(RadarList[i], transmitter_temp, receiver_temp, location_temp);
                 model.Add(temp);
             }
-
+            Console.WriteLine("**********************");
             return View(model);
         }
 
-        public IActionResult RadarEdit(RadarGeneral radar)
+        public IActionResult RadarEdit(Guid id)
         {
-            return RedirectToAction("EditRadar", "Edit", new { RadarBase = radar });
+            Console.WriteLine(id);
+            return RedirectToAction( "Edit", "EditRadar", new { id = id });
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model List<ASPNETAOP.Models.RadarGeneral>
+﻿@model List<ASPNETAOP.Models.RadarInfo>
 
 @{
     ViewData["Title"] = "RadarList";
@@ -13,14 +13,15 @@
         <th>Receiver Name</th>
         <th>Location Name</th>
     </tr>
-    @foreach (RadarGeneral radar in Model)
+    @foreach (RadarInfo radar in Model)
     {
-        Guid id = radar.Radar.ID;
+        var id = radar.Radar.ID;
         var RadarName = radar.Radar.name;
         var TransmitterName = radar.Transmitter.name;
         var ReceiverName = radar.Receiver.name;
         var LocationName = radar.Location.name;
 
+        <input type="hidden" id="@id" name="@id" value="@radar.Radar.ID" />
         <input type="hidden" id="@RadarName" name="@RadarName" value="@radar.Radar.name" />
         <input type="hidden" id="@TransmitterName" name="@TransmitterName" value="@radar.Transmitter.name" />
         <input type="hidden" id="@ReceiverName" name="@ReceiverName" value="@radar.Receiver.name" />
@@ -32,7 +33,7 @@
             <td>@radar.Receiver.name</td>
             <td>@radar.Location.name</td>
             <td>
-                <a asp-controller="EditRadar" asp-action="EditParam" asp-route-id="@id"> Edit</a>
+                <input type="button" title="Edit" value="Edit" onclick="location.href='@Url.Action("RadarEdit", "AdminRadarList", new { id = @radar.Radar.ID })'" />
             </td>
         </tr>
     }

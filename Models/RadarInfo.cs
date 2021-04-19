@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace ASPNETAOP.Models
 {
-    public class RadarGeneral
+    public class RadarInfo
     {
-        public RadarGeneral() { }
+        public RadarInfo() { }
 
-        public RadarGeneral(Radar radar, Transmitter transmitter, Receiver receiver, Location loc)
+        public RadarInfo(Radar radar, Transmitter transmitter, Receiver receiver, Location loc)
         {
             this.Radar = radar;
             this.Transmitter = transmitter;
@@ -17,7 +17,7 @@ namespace ASPNETAOP.Models
             this.Location = loc;
         }
 
-        public RadarGeneral radarGeneral { get; set; }
+        public RadarInfo radarGeneral { get; set; }
 
         public Radar Radar { get; set; }
 
