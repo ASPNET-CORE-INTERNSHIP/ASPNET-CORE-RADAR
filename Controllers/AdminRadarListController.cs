@@ -33,20 +33,17 @@ namespace ASPNETAOP.Controllers
             //in the upcoming versions, this part will be updated for the admins with the additional role controls
             TempData["ResultMessage"] = "Regular";
 
-            //Retrieve the list of radars 
-            List<Guid> RadarIDList = _session.GetRadarID();
+            List<Radar> RadarList = await _session.Radars.ToListAsync();
+
             var model = new List<RadarGeneral>();
 
-            for (int i = 0; i < RadarIDList.Count; i++)
+            for (int i = 0; i < RadarList.Count; i++)
             {
-                Guid radarID = RadarIDList[i];
-
-                //using the radar's id, retrieve additional information
-                Radar radar = await _session.GetRadarGeneral(radarID);
-                Transmitter transmitter_temp = await _session.Transmitters.Where(b => b.ID.Equals(radar.transmitter_id)).FirstOrDefaultAsync();
-                Receiver receiver_temp = await _session.Receivers.Where(b => b.ID.Equals(radar.receiver_id)).FirstOrDefaultAsync();
-                Location location_temp = await _session.Location.Where(b => b.ID.Equals(radar.location_id)).FirstOrDefaultAsync();
-                RadarGeneral temp = new RadarGeneral(radar, transmitter_temp, receiver_temp, location_temp);
+                Console.WriteLine(i + "th radar is " + RadarList[i].name);
+                Transmitter transmitter_temp = await _session.Transmitters.Where(b => b.ID.Equals(RadarList[i].transmitter_id)).FirstOrDefaultAsync();
+                Receiver receiver_temp = await _session.Receivers.Where(b => b.ID.Equals(RadarList[i].receiver_id)).FirstOrDefaultAsync();
+                Location location_temp = await _session.Location.Where(b => b.ID.Equals(RadarList[i].location_id)).FirstOrDefaultAsync();
+                RadarGeneral temp = new RadarGeneral(RadarList[i], transmitter_temp, receiver_temp, location_temp);
                 model.Add(temp);
             }
 

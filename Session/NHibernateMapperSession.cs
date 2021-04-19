@@ -58,9 +58,6 @@ namespace ASPNETAOP.Session
 
         public IQueryable<Scan> Scan => _session.Query<Scan>();
 
-
-
-        //RADAR
         public async Task SaveRadar(Radar entity)
         {
             ISQLQuery query = _session.CreateSQLQuery("INSERT INTO Radar VALUES(:ID, :name, :system, :configuration, :transmitter_id, :receiver_id, :location_id)");
@@ -71,16 +68,6 @@ namespace ASPNETAOP.Session
             query.SetParameter("transmitter_id", entity.transmitter_id);
             query.SetParameter("receiver_id", entity.receiver_id);
             query.SetParameter("location_id", entity.location_id);
-            query.ExecuteUpdate();
-        }
-
-        public void UpdateRadar(Guid ID, Guid transmitter_id, Guid receiver_id, Guid location_id)
-        {
-            ISQLQuery query = _session.CreateSQLQuery("UPDATE Radar SET transmitter_id = :transmitter_id, receiver_id = :receiver_id, location_id = :location_id WHERE ID = :ID");
-            query.SetParameter("ID", ID);
-            query.SetParameter("transmitter_id", transmitter_id);
-            query.SetParameter("receiver_id", receiver_id);
-            query.SetParameter("location_id", location_id);
             query.ExecuteUpdate();
         }
 
@@ -106,31 +93,6 @@ namespace ASPNETAOP.Session
             return name;
         }
 
-        public async Task<RadarGeneral> GetRadarGeneralInfo(Guid id)
-        {
-            Radar radar = await GetRadarGeneral(id);
-            Transmitter transmitter = await GetTransmitter(radar.transmitter_id);
-            Receiver receiver = await GetReceiver(radar.receiver_id);
-            Location location = await GetLocation(radar.location_id);
-
-            RadarGeneral radarGeneral = new RadarGeneral(radar, transmitter, receiver, location);
-
-            return radarGeneral;
-        }
-
-        public async Task<Radar> GetRadarGeneral(Guid id)
-        {
-            var name = _session.CreateSQLQuery("SELECT name FROM Radar WHERE ID = :ID").SetParameter("ID", id).UniqueResult<string>();
-            var system = _session.CreateSQLQuery("SELECT system FROM Radar WHERE ID = :ID").SetParameter("ID", id).UniqueResult<string>();
-            var configuration = _session.CreateSQLQuery("SELECT configuration FROM Radar WHERE ID = :ID").SetParameter("ID", id).UniqueResult<string>();
-
-            var transmitter_id = _session.CreateSQLQuery("SELECT transmitter_id FROM Radar WHERE ID = :ID").SetParameter("ID", id).UniqueResult<Guid>();
-            var receiver_id = _session.CreateSQLQuery("SELECT receiver_id FROM Radar WHERE ID = :ID").SetParameter("ID", id).UniqueResult<Guid>();
-            var location_id = _session.CreateSQLQuery("SELECT location_id FROM Radar WHERE ID = :ID").SetParameter("ID", id).UniqueResult<Guid>();
-
-            Radar radar = new Radar(name, system, configuration, transmitter_id, receiver_id, location_id);
-            return radar;
-        }
 
         public async Task<int> GetRadarNumber()
         {
@@ -138,9 +100,6 @@ namespace ASPNETAOP.Session
             return num;
         }
 
-
-
-        //TRANSMITTER
         public async Task SaveTransmitter(Transmitter entity)
         {
             ISQLQuery query = _session.CreateSQLQuery("INSERT INTO Transmitter VALUES(:ID, :name, :modulation_type, :max_frequency, :min_frequency, :power)");
@@ -150,17 +109,6 @@ namespace ASPNETAOP.Session
             query.SetParameter("max_frequency", entity.max_frequency);
             query.SetParameter("min_frequency", entity.min_frequency);
             query.SetParameter("power", entity.power);
-            query.ExecuteUpdate();
-        }
-
-        public void UpdateTransmitter(string currentName, string newName, int max_frequency, int min_frequency, int power)
-        {
-            ISQLQuery query = _session.CreateSQLQuery("UPDATE Transmitter SET name = :newName, max_frequency = :max_frequency, min_frequency = :min_frequency, power = :power WHERE name = :currentName");
-            query.SetParameter("newName", newName);
-            query.SetParameter("currentName", currentName);
-            query.SetParameter("max_frequency", max_frequency);
-            query.SetParameter("min_frequency", min_frequency);
-            query.SetParameter("power", power);
             query.ExecuteUpdate();
         }
 
@@ -199,27 +147,12 @@ namespace ASPNETAOP.Session
             return results;
         }
 
-        public async Task<Transmitter> GetTransmitter(Guid id)
-        {
-            var name = _session.CreateSQLQuery("SELECT name FROM Transmitter WHERE ID = :ID").SetParameter("ID", id).UniqueResult<string>();
-            var modulation_type = _session.CreateSQLQuery("SELECT modulation_type FROM Transmitter WHERE ID = :ID").SetParameter("ID", id).UniqueResult<string>();
-            int max_frequency = _session.CreateSQLQuery("SELECT max_frequency FROM Transmitter WHERE ID = :ID").SetParameter("ID", id).UniqueResult<int>();
-            int min_frequency = _session.CreateSQLQuery("SELECT min_frequency FROM Transmitter WHERE ID = :ID").SetParameter("ID", id).UniqueResult<int>();
-            int power = _session.CreateSQLQuery("SELECT power FROM Transmitter WHERE ID = :ID").SetParameter("ID", id).UniqueResult<int>();
-
-            Transmitter transmitter = new Transmitter(name, modulation_type, max_frequency, min_frequency, power);
-            return transmitter;
-        }
-
         public async Task<int> GetTransmitterNumber()
         {
             var num = _session.CreateSQLQuery("SELECT COUNT(*) FROM Transmitter").UniqueResult<int>();
             return num;
         }
 
-
-
-        //RECEIVER
         public async Task SaveReceiver(Receiver entity)
         {
             ISQLQuery query = _session.CreateSQLQuery("INSERT INTO Receiver VALUES (:ID, :name, :listening_time, :rest_time, :recovery_time)");
@@ -228,17 +161,6 @@ namespace ASPNETAOP.Session
             query.SetParameter("listening_time", entity.listening_time);
             query.SetParameter("rest_time", entity.rest_time);
             query.SetParameter("recovery_time", entity.recovery_time);
-            query.ExecuteUpdate();
-        }
-
-        public void UpdateReceiver(string currentName, string newName, double listening_time, double rest_time, double recovery_time)
-        {
-            ISQLQuery query = _session.CreateSQLQuery("UPDATE Receiver SET name = :newName, listening_time = :listening_time, rest_time = :rest_time, recovery_time = :recovery_time WHERE name = :currentName");
-            query.SetParameter("newName", newName);
-            query.SetParameter("currentName", currentName);
-            query.SetParameter("listening_time", listening_time);
-            query.SetParameter("rest_time", rest_time);
-            query.SetParameter("recovery_time", recovery_time);
             query.ExecuteUpdate();
         }
 
@@ -269,27 +191,12 @@ namespace ASPNETAOP.Session
             return receiver_id;
         }
 
-        public async Task<Receiver> GetReceiver(Guid id)
-        {
-
-            var rec_name = _session.CreateSQLQuery("SELECT name FROM Receiver WHERE ID = :ID").SetParameter("ID", id).UniqueResult<string>();
-            double listening_time = _session.CreateSQLQuery("SELECT listening_time FROM Receiver WHERE ID = :ID").SetParameter("ID", id).UniqueResult<double>();
-            double rest_time = _session.CreateSQLQuery("SELECT rest_time FROM Receiver WHERE ID = :ID").SetParameter("ID", id).UniqueResult<double>();
-            double recovery_time = _session.CreateSQLQuery("SELECT recovery_time FROM Receiver WHERE ID = :ID").SetParameter("ID", id).UniqueResult<double>();
-
-            Receiver receiver = new Receiver(rec_name, listening_time, rest_time, recovery_time);
-            return receiver;
-        }
-
         public async Task<int> GetReceiverNumber()
         {
             var num = _session.CreateSQLQuery("SELECT COUNT(*) FROM Receiver").UniqueResult<int>();
             return num;
         }
 
-
-
-        //MODE
         public async Task SaveMode(Mode entity)
         {
             ISQLQuery query = _session.CreateSQLQuery("INSERT INTO Mode VALUES(:ID, :name, :radar_id)");
@@ -306,9 +213,6 @@ namespace ASPNETAOP.Session
             query.ExecuteUpdate();
         }
 
-
-
-        //SUBMODE
         public async Task SaveSubMode(Submode entity)
         {
             ISQLQuery query = _session.CreateSQLQuery("INSERT INTO Submode VALUES(:ID, :name, :mode_id, :PW, :PRI, :min_frequency, :max_frequency, :scan_id)");
@@ -330,9 +234,6 @@ namespace ASPNETAOP.Session
             query.ExecuteUpdate();
         }
 
-
-
-        //SCAN
         public async Task SaveScan(Scan entity)
         {
             ISQLQuery query = _session.CreateSQLQuery("INSERT INTO Scan VALUES(:ID, :name, :type, :main_aspect, :scan_angle, :scan_rate, :hits_per_scan)");
@@ -361,9 +262,6 @@ namespace ASPNETAOP.Session
             return scan_id;
         }
 
-
-
-        //ANTENNA SCAN
         public async Task SaveAntennaScan(AntennaScan entity)
         {
             ISQLQuery query = _session.CreateSQLQuery("INSERT INTO AntennaScan VALUES(:antenna_id, :scan_id)");
@@ -387,9 +285,6 @@ namespace ASPNETAOP.Session
             query.ExecuteUpdate();
         }
 
-
-
-        //ANTENNA
         public async Task SaveAntenna(Antenna entity)
         {
             ISQLQuery query = _session.CreateSQLQuery("INSERT INTO Antenna VALUES (:ID, :name, :type, :horizontal_beamwidth, :vertical_beamwidth, :polarization, :number_of_feed, :horizontal_dimension, :vertical_dimension, :duty, :transmitter_id, :receiver_id, :location)");
@@ -427,8 +322,6 @@ namespace ASPNETAOP.Session
         }
 
 
-
-        //LOCATION
         public async Task SaveLocation(Location entity)
         {
             ISQLQuery query = _session.CreateSQLQuery("INSERT INTO Location VALUES(:ID, :name, :country, :city, :geographic_latitude, :geographic_longitude, :airborne)");
@@ -439,19 +332,6 @@ namespace ASPNETAOP.Session
             query.SetParameter("geographic_latitude", entity.geographic_latitude);
             query.SetParameter("geographic_longitude", entity.geographic_longitude);
             query.SetParameter("airborne", entity.airborne);
-            query.ExecuteUpdate();
-        }
-
-        public void UpdateLocation(string currentName, string newName, string country, string city, string geographic_latitude, string geographic_longitude, string airborne)
-        {
-            ISQLQuery query = _session.CreateSQLQuery("UPDATE Location SET name = :newName, country = :country, city = :city, geographic_latitude = :geographic_latitude, geographic_longitude = :geographic_longitude, airborne = :airborne WHERE name = :currentName");
-            query.SetParameter("newName", newName);
-            query.SetParameter("currentName", currentName);
-            query.SetParameter("country", country);
-            query.SetParameter("city", city);
-            query.SetParameter("geographic_latitude", geographic_latitude);
-            query.SetParameter("geographic_longitude", geographic_longitude);
-            query.SetParameter("airborne", airborne);
             query.ExecuteUpdate();
         }
 
@@ -467,19 +347,5 @@ namespace ASPNETAOP.Session
             int number = _session.CreateSQLQuery("SELECT COUNT(*) FROM Location WHERE airborne = :airborne").SetParameter("airborne", airborne).UniqueResult<int>();
             return number;
         }
-
-        public async Task<Location> GetLocation(Guid id)
-        {
-            var def_name = _session.CreateSQLQuery("SELECT name FROM Location WHERE ID = :ID").SetParameter("ID", id).UniqueResult<string>();
-            var country = _session.CreateSQLQuery("SELECT country FROM Location WHERE ID = :ID").SetParameter("ID", id).UniqueResult<string>();
-            var city = _session.CreateSQLQuery("SELECT city FROM Location WHERE ID = :ID").SetParameter("ID", id).UniqueResult<string>();
-            var geographic_latitude = _session.CreateSQLQuery("SELECT geographic_latitude FROM Location WHERE ID = :ID").SetParameter("ID", id).UniqueResult<string>();
-            var geographic_longitude = _session.CreateSQLQuery("SELECT geographic_longitude FROM Location WHERE ID = :ID").SetParameter("ID", id).UniqueResult<string>();
-            var airborne = _session.CreateSQLQuery("SELECT airborne FROM Location WHERE ID = :ID").SetParameter("ID", id).UniqueResult<string>();
-
-
-            Location location = new Location(def_name, country, city, geographic_latitude, geographic_longitude, airborne);
-            return location;
-        }  
     }
 }

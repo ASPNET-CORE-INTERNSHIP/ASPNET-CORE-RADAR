@@ -101,13 +101,5 @@ namespace ASPNETAOP.Controllers
             return View(receiver);
             
         }
-
-        public IActionResult ReceiverEdit(AdminReceiverEdit receiver)
-        {
-            _session.UpdateReceiver(receiver.name, receiver.newName, receiver.listening_time, receiver.rest_time, receiver.recovery_time);
-
-            return View(receiver);
-        }
-
     }
 }

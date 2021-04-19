@@ -19,17 +19,6 @@ namespace ASPNETAOP.Models
             this.configuration = configuration;
         }
 
-        public Radar(string name, string system, string configuration, Guid transmitter_id, Guid receiver_id, Guid location_id)
-        {
-            this.name = name;
-            this.system = system;
-            this.configuration = configuration;
-
-            this.transmitter_id = transmitter_id;
-            this.receiver_id = receiver_id;
-            this.location_id = location_id;
-        }
-
         public Radar(Guid key, string def_name, string system, string configuration, Guid transmitter_id, Guid receiver_id, Guid location_id)
         {
             this.ID = key;

@@ -28,27 +28,27 @@ namespace ASPNETAOP.Controllers
             return View();
         }
 
-        RadarGeneral currentRadar;
-
-        public async System.Threading.Tasks.Task<IActionResult> EditParam(Guid id)
+        [HttpPost]
+        public async System.Threading.Tasks.Task<IActionResult> EditAsync(RadarGeneral RadarBase)
         {
-            //When redirected from the AdminRadarList, the id of the current Radar is given
-            //Using the id, RadarGeneral with appropiate Radar, Transmitter, Receiver and Location is retrieved
-            currentRadar = await _session.GetRadarGeneralInfo(id);
-            RadarGeneral.currentRadarGeneral.Radar = currentRadar.Radar;
-
-            return RedirectToAction("Edit", "EditRadar");
-        }
-
-   
-        public async System.Threading.Tasks.Task<IActionResult> Edit(Radar ur)
-        {
-            if(ur.name != null)
+            List<Antenna> AntennaList = await _session.Antennas.Where(b => b.receiver_id.Equals(RadarBase.Receiver.ID) || b.transmitter_id.Equals(RadarBase.Transmitter.ID)).ToListAsync();
+            List<Mode> ModeList = await _session.Modes.Where(b => b.radar_id.Equals(RadarBase.Radar.ID)).ToListAsync();
+            List<Submode> SubModeList = new List<Submode>();
+            foreach (Mode mod in ModeList)
             {
-                _session.UpdateRadar(ur.ID, ur.transmitter_id, ur.receiver_id, ur.location_id);
+                List<Submode> list_temp = await _session.Submode.Where(b => b.mode_id.Equals(mod.ID)).ToListAsync();
+
+                foreach (Submode s in list_temp)
+                {
+                    SubModeList.Add(s);
+                }
             }
 
-            return View(ur);
+            RadarBase.ListOfAntennas = AntennaList;
+            RadarBase.Mode = ModeList;
+            RadarBase.Submode = SubModeList;
+
+            return View(RadarBase);
         }
     }
 }
