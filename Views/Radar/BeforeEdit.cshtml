@@ -1,0 +1,85 @@
+﻿@model ASPNETAOP.Models.Radar
+
+@{
+    ViewData["Title"] = "NewRadar";
+}
+
+<h1>Add Radar</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-9">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @{
+                var ID = "Model.ID";
+                var name = "Model.name";
+                var system = "Model.system";
+                var configuration = "Model.configuration";
+                <input type="hidden" id="@ID" name="@ID" value="@Model.ID" />
+                <input type="hidden" id="@name" name="@name" value="@Model.name" />
+                <input type="hidden" id="@system" name="@system" value="@Model.system" />
+                <input type="hidden" id="@configuration" name="@configuration" value="@Model.configuration" />
+                <div class="form-group">
+                    <label asp-for="ID" class="hidden"></label>
+                    <input asp-for="ID" class="form-control" type="hidden">
+                    <span asp-validation-for="name" class="hidden"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="name" class="control-label"></label>
+                    <input asp-for="name" class="form-control" type="text">
+                    <span asp-validation-for="name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="system" class="control-label"></label>
+                    <select asp-for="system" class="form-select" aria-label="Default select example">
+                        <option selected>@Model.system</option>
+                        <option value="early warning">early warning</option>
+                        <option value="missile guidance">missile guidance</option>
+                        <option value="target tracking">target tracking</option>
+                        <option value="target acquisition">target acquisition</option>
+                        <option value="airborne intercept">airborne intercept</option>
+                        <option value="fire control">fire control</option>
+                        <option value="surface search">surface search</option>
+                        <option value="battlefield surveillance">battlefield surveillance</option>
+                        <option value="air mapping">air mapping</option>
+                        <option value="countermortar">countermortar</option>
+                        <option value="ground surveillance">ground surveillance</option>
+                        <option value="man portable">man portable</option>
+                    </select>
+                    <span asp-validation-for="system" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="configuration" class="control-label"></label>
+                    <select asp-for="configuration" class="form-select" aria-label="Default select example">
+                        <option selected>@Model.configuration</option>
+                        <option value="bistatic">bistatic</option>
+                        <option value="continious wave">continious wave</option>
+                        <option value="doppler">doppler</option>
+                        <option value="fm-cw">fm-cw</option>
+                        <option value="monopulse">monopulse</option>
+                        <option value="passive">passive</option>
+                        <option value="planar array">planar array</option>
+                        <option value="pulse doppler">pulse doppler</option>
+                    </select>
+                    <span asp-validation-for="configuration" class="text-danger"></span>
+                </div>
+            }
+            <div class="form-group">
+                <input type="submit" value="Edit" class="btn btn-primary" />
+            </div>
+            <div>
+                <a href="~/Radar/DeleteRadar?id=@Model.ID" id="deleteBtn" class="btn bg-danger mr-1" onclick="return confirm('Are you sure you want to delete this radar completely?');"><i class="fas fa-trash-alt text-white"></i>Delete</a>
+            </div>
+            <b>@ViewData["Message"]</b>
+        </form>
+    </div>
+</div>
+
+<div>
+    <input type="button" title="Back" value="Back" onclick="location.href='@Url.Action("Edit", "EditRadar", new { id = Model.ID })'" />
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

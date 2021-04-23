@@ -97,6 +97,9 @@ table {
     border-spacing: 0;
     width: 100%;
     border: 1px solid #ddd;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
 }
 
 th, td {

@@ -10,7 +10,7 @@ namespace ASPNETAOP.Models
     public class Submode
     {
         public Submode() { }
-        public Submode(Guid ID, String name, Guid mode_id, float PW, float PRI, int min_frequency, int max_frequency, Guid scan_id)
+        public Submode(Guid ID, String name, Guid mode_id, Double PW, Double PRI, int min_frequency, int max_frequency, Guid scan_id)
         {
             this.ID = ID;
             this.mode_id = mode_id;
@@ -21,7 +21,7 @@ namespace ASPNETAOP.Models
             this.max_frequency = max_frequency;
             this.scan_id = scan_id;
         }
-        public Submode(string name, float pW, float pRI, int min_frequency, int max_frequency)
+        public Submode(string name, Double pW, Double pRI, int min_frequency, int max_frequency)
         {
             this.name = name;
             PW = pW;
@@ -43,11 +43,11 @@ namespace ASPNETAOP.Models
 
         [Display(Name = "PW -pulse width-")]
         [Required(ErrorMessage = "Please enter the PW value")]
-        public virtual float PW { get; set; }
+        public virtual Double PW { get; set; }
 
         [Display(Name = "PRI -pulse receive interval-")]
         [Required(ErrorMessage = "Please enter the PRI value")]
-        public virtual float PRI { get; set; }
+        public virtual Double PRI { get; set; }
 
         [Display(Name = "Min Frequency")]
         [Required(ErrorMessage = "Please enter the geogmin frequency")]

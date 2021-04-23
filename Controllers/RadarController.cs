@@ -2,6 +2,7 @@
 using ASPNETAOP.Session;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using NHibernate.Linq;
 using System;
 using System.Data.SqlClient;
 using System.Linq;
@@ -77,8 +78,9 @@ namespace ASPNETAOP.Controllers
             
         }
 
-        public async void DeleteRadar(Guid id)
+        public async Task<RedirectToActionResult> DeleteRadar(Guid id)
         {
+            Console.WriteLine(id);
             try
             {
                 _session.BeginTransaction();
@@ -86,21 +88,61 @@ namespace ASPNETAOP.Controllers
                 Guid transmitter_id = await _session.GetTransmitterID(id);
                 await _session.DeleteReceiver(receiver_id);
                 await _session.DeleteTransmitter(transmitter_id);
+                //look here and delete location 
                 await _session.DeleteScan(id);
                 await _session.Commit();
-                ViewData["Message"] = "Radar " + id + " removed From Database";
+                Data.message = "Radar " + id + " removed From Database";
             }
             catch (Exception e)
             {
                 // log exception here
-                ViewData["Message"] = e.Message.ToString() + " Error";
+                Data.message = e.Message.ToString() + " Error";
                 await _session.Rollback();
             }
             finally
             {
                 _session.CloseTransaction();
             }
+            return RedirectToAction("RadarList", "AdminRadarList");
         }
 
+         public async Task<IActionResult> BeforeEdit(Guid id)
+        {
+            //Because we use the same view before and after edit process we should handle the view messages with the following conditions
+            if (Data.edited)
+            {
+                ViewData["Message"] = "Update completed successfully";
+                Data.edited = false;
+            }
+            if(Data.message != null)
+            {
+                ViewData["Message"] = Data.message;
+                Data.message = null;
+            }
+            //Get radar's informations and shows it in edit page
+            Radar r = await _session.Radars.Where(b => b.ID.Equals(id)).FirstOrDefaultAsync();
+            return View(r);
+        }
+
+        public async Task<IActionResult> Edit(Radar newValues)
+        {
+            try
+            {
+                await _session.EditRadar(newValues.ID, newValues.name, newValues.system, newValues.configuration);
+            }
+            catch (Exception e)
+            {
+                // log exception here
+                Data.message = e.Message.ToString() + " Error";
+                await _session.Rollback();
+                return RedirectToAction("BeforeEdit", "Radar", new { id = newValues.ID });
+            }
+            finally
+            {
+                _session.CloseTransaction();
+            }
+            Data.edited = true;
+            return RedirectToAction("BeforeEdit", "Radar", new { id = newValues.ID });
+        }
     }
 }

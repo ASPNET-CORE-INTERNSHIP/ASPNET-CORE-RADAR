@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\AdminTransmitter\**" />
+    <Content Remove="Views\AdminTransmitter\**" />
+    <EmbeddedResource Remove="Views\AdminTransmitter\**" />
+    <None Remove="Views\AdminTransmitter\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentNHibernate" Version="3.1.0" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="2.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.1" />
@@ -13,10 +20,6 @@
     <PackageReference Include="PostSharp.Redist" Version="6.8.9" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\AdminTransmitter\" />
   </ItemGroup>
 
 </Project>

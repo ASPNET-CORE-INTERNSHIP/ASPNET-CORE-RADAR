@@ -33,7 +33,7 @@
             <td>@radar.Receiver.name</td>
             <td>@radar.Location.name</td>
             <td>
-                <input type="button" title="Edit" value="Edit" onclick="location.href='@Url.Action("RadarEdit", "AdminRadarList", new { id = @radar.Radar.ID })'" />
+                <input type="button" title="Edit" value="Edit" onclick="location.href='@Url.Action("GoToEdit", "AdminRadarList", new { id = @radar.Radar.ID })'" />
             </td>
         </tr>
     }

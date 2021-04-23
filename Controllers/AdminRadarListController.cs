@@ -29,10 +29,6 @@ namespace ASPNETAOP.Controllers
 
         public async System.Threading.Tasks.Task<IActionResult> RadarListAsync()
         {
-            //Used to display the appropriate layout
-            //in the upcoming versions, this part will be updated for the admins with the additional role controls
-            TempData["ResultMessage"] = "Regular";
-
             List<Radar> RadarList = await _session.Radars.ToListAsync();
 
             var model = new List<RadarInfo>();
@@ -45,13 +41,16 @@ namespace ASPNETAOP.Controllers
                 RadarInfo temp = new RadarInfo(RadarList[i], transmitter_temp, receiver_temp, location_temp);
                 model.Add(temp);
             }
-            Console.WriteLine("**********************");
+            if(Data.message != null)
+            {
+                ViewData["Message"] = Data.message;
+                Data.message = null;
+            }
             return View(model);
         }
 
-        public IActionResult RadarEdit(Guid id)
+        public IActionResult GoToEdit(Guid id)
         {
-            Console.WriteLine(id);
             return RedirectToAction( "Edit", "EditRadar", new { id = id });
         }
     }

@@ -30,23 +30,23 @@ namespace ASPNETAOP.Models
 
         [Display(Name = "Country")]
         [Required(ErrorMessage = "Please enter the country")]
-        public virtual String country { get; set; }
+        public virtual String? country { get; set; }
 
         [Display(Name = "City")]
         [Required(ErrorMessage = "Please enter the city")]
-        public virtual String city { get; set; }
+        public virtual String? city { get; set; }
 
         [Display(Name = "Geographic Latitude")]
         [Required(ErrorMessage = "Please enter the geographic latitude")]
-        public virtual String geographic_latitude { get; set; }
+        public virtual String? geographic_latitude { get; set; }
 
         [Display(Name = "Geographic Longitude")]
         [Required(ErrorMessage = "Please enter the geographic longitude")]
-        public virtual String geographic_longitude { get; set; }
+        public virtual String? geographic_longitude { get; set; }
 
         [Display(Name = "If it is an airborne radar please enter the airborne name")]
         [Required(ErrorMessage = "Please enter the airborne name")]
-        public virtual String airborne { get; set; }
+        public virtual String? airborne { get; set; }
 
 
     }

@@ -28,16 +28,14 @@ namespace ASPNETAOP.Controllers
             return View();
         }
 
-        [HttpPost]
         public async System.Threading.Tasks.Task<IActionResult> Edit(Guid id)
         {
-            Console.WriteLine("////////////////////////" + id);
             Radar r = await _session.Radars.Where(b => b.ID.Equals(id)).FirstOrDefaultAsync();
             Transmitter transmitter_temp = await _session.Transmitters.Where(b => b.ID.Equals(r.transmitter_id)).FirstOrDefaultAsync();
             Receiver receiver_temp = await _session.Receivers.Where(b => b.ID.Equals(r.receiver_id)).FirstOrDefaultAsync();
             Location location_temp = await _session.Location.Where(b => b.ID.Equals(r.location_id)).FirstOrDefaultAsync();
             
-            List<Antenna> AntennaList = await _session.Antennas.Where(b => b.receiver_id.Equals(receiver_temp.ID) || b.transmitter_id.Equals(transmitter_temp.ID)).ToListAsync();
+            //List<Antenna> AntennaList = await _session.Antennas.Where(b => (b.duty.Equals("receiver") && b.receiver_id.Equals(receiver_temp.ID)) || (b.duty.Equals("receiver")! && b.transmitter_id.Equals(transmitter_temp.ID)) ).ToListAsync();
             List<Mode> ModeList = await _session.Modes.Where(b => b.radar_id.Equals(r.ID)).ToListAsync();
             List<Submode> SubModeList = new List<Submode>();
             foreach (Mode mod in ModeList)
@@ -50,16 +48,16 @@ namespace ASPNETAOP.Controllers
                 }
             }
             RadarInfo radar = new RadarInfo(r, transmitter_temp, receiver_temp, location_temp);
-            radar.ListOfAntennas = AntennaList;
+            //radar.ListOfAntennas = AntennaList;
             radar.Mode = ModeList;
             radar.Submode = SubModeList;
 
             return View(radar);
         }
 
-        public void RadarEdit()
+        public IActionResult RadarEdit(Guid id)
         {
-
+            return RedirectToAction("BeforeEdit", "Radar", new { id = id });
         }
     }
 }

@@ -8,7 +8,7 @@ namespace ASPNETAOP.Models
     public class Antenna
     {
         public Antenna() { }
-        public Antenna(Guid key, string def_name, string type, float horizontal_beamwidth, float vertical_beamwidth, string polarization, int number_of_feed, float horizontal_dimension, float vertical_dimension, string duty, Guid? transmitter_id, Guid? receiver_id, string location)
+        public Antenna(Guid key, string def_name, string type, Double horizontal_beamwidth, Double vertical_beamwidth, string polarization, int number_of_feed, Double horizontal_dimension, Double vertical_dimension, string duty, Guid? transmitter_id, Guid? receiver_id, string location)
         {
             this.ID = key;
             this.name = def_name;
@@ -38,11 +38,11 @@ namespace ASPNETAOP.Models
 
         [Display(Name = "Horizontal Beamwidth in xx.xx format")]
         [Required(ErrorMessage = "Please enter the antenna's beam's max horizontal beamwidth in xx.xx format")]
-        public virtual float horizontal_beamwidth { get; set; }
+        public virtual Double horizontal_beamwidth { get; set; }
 
         [Display(Name = "Vertical Beamwidth in xx.xx format")]
         [Required(ErrorMessage = "Please enter the antenna's beam's max vertical beamwidth in xx.xx format")]
-        public virtual float vertical_beamwidth { get; set; }
+        public virtual Double vertical_beamwidth { get; set; }
 
         [Display(Name = "Polarization")]
         [Required(ErrorMessage = "Please enter the antenna's polarization")]
@@ -53,11 +53,11 @@ namespace ASPNETAOP.Models
 
         [Display(Name = "Horizontal Dimension in xxx.xx format")]
         [Required(ErrorMessage = "Please enter the antenna's horizontal dimension in xxxx.xx format")]
-        public virtual float horizontal_dimension { get; set; }
+        public virtual Double horizontal_dimension { get; set; }
 
         [Display(Name = "Vertical Dimension in xxx.xx format")]
         [Required(ErrorMessage = "Please enter the antenna's beam's max vertical dimension in xxxx.xx format")]
-        public virtual float vertical_dimension { get; set; }
+        public virtual Double vertical_dimension { get; set; }
 
         [Display(Name = "Duty Ex: Transmitter, Receiver, Both")]
         [Required(ErrorMessage = "Please enter the antenna's duyt as transmitter or receiver or both")]

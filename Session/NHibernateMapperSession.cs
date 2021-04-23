@@ -78,6 +78,16 @@ namespace ASPNETAOP.Session
             query.ExecuteUpdate();
         }
 
+        public async Task EditRadar(Guid id, String name, String system, String configuration)
+        {
+            ISQLQuery query = _session.CreateSQLQuery("UPDATE Radar SET name = :name, system = :system, configuration = :configuration WHERE ID = :ID");
+            query.SetParameter("ID", id);
+            query.SetParameter("name", name);
+            query.SetParameter("system", system);
+            query.SetParameter("configuration", configuration);
+            query.ExecuteUpdate();
+        }
+
         public List<Guid> GetRadarID()
         {
             String sql = "SELECT ID FROM Radar";
@@ -135,7 +145,7 @@ namespace ASPNETAOP.Session
 
         public async Task<Guid> GetTransmitterID(Guid id)
         {
-            Guid transmitter_id = _session.CreateSQLQuery("SELECT transmitter_id FROM Radar WHERE ID = :ID").UniqueResult<Guid>();
+            Guid transmitter_id = _session.CreateSQLQuery("SELECT transmitter_id FROM Radar WHERE ID = :ID").SetParameter("ID", id).UniqueResult<Guid>();
             return transmitter_id;
         }
 
@@ -187,7 +197,7 @@ namespace ASPNETAOP.Session
 
         public async Task<Guid> GetReceiverID(Guid id)
         {
-            Guid receiver_id = _session.CreateSQLQuery("SELECT receiver_id FROM Radar WHERE ID = :ID").UniqueResult<Guid>();
+            Guid receiver_id = _session.CreateSQLQuery("SELECT receiver_id FROM Radar WHERE ID = :ID").SetParameter("ID", id).UniqueResult<Guid>();
             return receiver_id;
         }
 
