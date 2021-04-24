@@ -28,11 +28,20 @@ In order to control the user login attempt, user registration, user authenticati
 - AddTransmitter Page: In this page user should fill the necessary entries to create a transmitter for current radar. Name is not a necessary entry, if the user does not give a name to transmitter, the program gives default name.
 - AddRadar Page: In this page the user will determine radar's general properties.
 - AddLocation Page: This page is necessary to keep Radar's location in the database. If the radar is ground radar the user must fill the City, Country, Geographic Latitude and Geographic longitude areas. If the radar belongs to an aircraft the user should fill the airborne area with the name of aircraft.
-- AddMode Page: A radar can work with multiple ways. In AddMode page the user creates a special mode for current Radar. Then the program automatically routes user to AddSubmode Page. After finished all about the mode the user can return AddMode Page to create a new mode for this radar.
+- AddMode Page: A radar can work with one or multiple aims as Acquisition mode, Search Mode, Tracking mode, Target Illumination Mode, Missile Guidance Mode and more. In AddMode page the user creates a special mode for current Radar. Then the program automatically routes user to AddSubmode Page. After finished all about the mode the user can return AddMode Page to create a new mode for this radar.
 - AddSubmode Page: In this page, the user can add different types of submodes to last created Mode. This page is reachable after AddMode Page and AntennaScan (the last page) page.
 - AddScan Page: Each submode has their own scan types. After created the submode page the user should specify the submode's scan type.
 - AntennaScan Page (Build Relationship Page): In the end of the radar creating process the user should specify which antenna works with which scan type. After this page the user can add new mode, submode or can go to the Done page.
 - Done: After created a whole radar and click the "Done!" button in the AntennaScan Page, the program routes user to this page which gives the added radar's ID.
+- Admin RadarList Page: This page and its routing pages are reachable only by admin and in this page admin is able to see every radars which have been added before and their basic informations. Admin can select spesific radars to modify and can go to their edit page which has detailed information and spesific edit functions about selected radar.
+- Radar Information: In this page Admin can see all informations adout selected radar's transmitter, receiver, location and modes. By clicking the delete button which locates near radar information line admin can remove the whole radar from database. This page contains a group edit buttons in the end of Radar, Transmitter, Receiver and each mode lines. By using related edit buttons admin can reorganize the informations about Radar, Transmitter, Receiver and Modes. In Mode section there is an add button to add new modes to this radar and each mode has its own delete buttons. There is also a antenna list section in the end of this page. Admin can edit antennas and add new antennas to the current radar. 
+- Edit Radar Page: In this page the admin can change radar's name, system and configuration.
+- Edit Transmitter Page: In this page admin can change radar's transmitter's name, modulation type, max frequency, min frequency and power.
+- Edit Receiver Page: In this page admin can change radar's receiver's name, listening time, rest time and recovery time.
+- Edit Location Page: When the location of radar changes, admin can record it with using this page.
+- Edit Mode Page: In this page the admin can modify mode's informations (its all about mode name). This page contains a submode table which contains submodes working with current mode. Each submode has its own edit and delete buttons.
+- Edit Submode Page: In this page the admin can alter current submode's name, PW, PRI, min frequency and max frequency informations. This page also contains scan informations and the list of antennas which used by current submode. In the end of antenna list there is a Add Relation button which routes you to build relationship page that we used in creating process. Admin cannot edit antennas from this page (because one antenna may be use more than one submodes) but can create new relationships between current submode and the radar's other antennas.
+- Edit Antenna Page: In this page the admin can change selected antenna's name, type, beamwidths, polarization, number of feed, location, dimensions and duty. 
 
 ## Necessary Programs/Libraries
 
@@ -164,10 +173,10 @@ Program was written in C#, therefore, a special environment for the aforemention
     CREATE TABLE Location(
 	    ID uniqueidentifier PRIMARY KEY NOT NULL,
 	    name nvarchar(500),
-	    country nvarchar(500) NOT NULL,
-	    city nvarchar(500) NOT NULL,
-	    geographic_latitude nvarchar(500) NOT NULL,
-	    geographic_longitude nvarchar(500) NOT NULL,
+	    country nvarchar(500),
+	    city nvarchar(500),
+	    geographic_latitude nvarchar(500),
+	    geographic_longitude nvarchar(500),
 	    airborne nvarchar(500) DEFAULT 'Non-airborne radar'
     );
 
