@@ -3,11 +3,14 @@ using ASPNETAOP.Session;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using NHibernate;
+using NHibernate.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace ASPNETAOP.Controllers
 {
@@ -19,6 +22,15 @@ namespace ASPNETAOP.Controllers
         {
             _session = session;
 
+            //empty data class for our new Radar
+            Data.Receiver = new Receiver();
+            Data.Transmitter = new Transmitter();
+            Data.Submode = new Submode();
+            Data.Scan = new Scan();
+            Data.Radar = new Radar();
+            Data.newProgram = "yes";
+            Data.message = null;
+            Data.edited = false;
             //new list of antennas for new Radar
             Data.ListOfAntennas = new List<Antenna>();
         }
@@ -47,7 +59,7 @@ namespace ASPNETAOP.Controllers
                 int count = 0;
                 try
                 {
-                    count = await _session.GetTransmitterNumber();
+                    count = await _session.GetReceiverNumber();
                 }
                 catch (Exception e)
                 {
@@ -72,12 +84,7 @@ namespace ASPNETAOP.Controllers
             Receiver r = new Receiver(key, rec_name, receiver.listening_time, receiver.rest_time, receiver.recovery_time);
             r.Isnamed = IsNamed;
             Data.Receiver = r;
-            Data.Transmitter = new Transmitter();
-            Data.Submode = new Submode();
-            Data.Scan = new Scan();
-            Data.Radar = new Radar();
-
-            Data.newProgram = "yes";
+           
             try
             {
                 _session.BeginTransaction();
@@ -98,8 +105,66 @@ namespace ASPNETAOP.Controllers
             {
                 _session.CloseTransaction();
             }
-            return View(receiver);
-            
+        }
+
+        public async Task<IActionResult> BeforeEdit(Guid id)
+        {
+            //Because we use the same view before and after edit process we should handle the view messages with the following conditions
+            if (Data.edited)
+            {
+                ViewData["Message"] = "Update completed successfully";
+                Data.edited = false;
+            }
+            if (Data.message != null)
+            {
+                ViewData["Message"] = Data.message;
+                Data.message = null;
+            }
+            //Get radar's informations and shows it in edit page
+            Receiver r = await _session.Receivers.Where(b => b.ID.Equals(id)).FirstOrDefaultAsync();
+            return View(r);
+        }
+
+        public async Task<IActionResult> Edit(Receiver newValues)
+        {
+            try
+            {
+                await _session.EditReceiver(newValues.ID, newValues.name, newValues.listening_time, newValues.rest_time, newValues.recovery_time);
+            }
+            catch (Exception e)
+            {
+                // log exception here
+                Data.message = e.Message.ToString() + " Error";
+                await _session.Rollback();
+                return RedirectToAction("BeforeEdit", "Receiver", new { id = newValues.ID });
+            }
+            finally
+            {
+                _session.CloseTransaction();
+            }
+            Data.edited = true;
+            return RedirectToAction("BeforeEdit", "Receiver", new { id = newValues.ID });
+        }
+
+        public async Task<IActionResult> GoBack(Guid id)
+        {
+            Radar r = new Radar();
+            try
+            {
+                r = await _session.Radars.Where(b => b.receiver_id.Equals(id)).FirstOrDefaultAsync();
+            }
+            catch (Exception e)
+            {
+                // log exception here
+                Data.message = e.Message.ToString() + " Error";
+                await _session.Rollback();
+                return RedirectToAction("BeforeEdit", "Receiver", new { id = id });
+            }
+            finally
+            {
+                _session.CloseTransaction();
+            }
+            return RedirectToAction("Edit", "EditRadar", new { id = r.ID });
         }
     }
 }

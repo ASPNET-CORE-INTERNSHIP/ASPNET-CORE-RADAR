@@ -38,7 +38,12 @@ namespace ASPNETAOP.Controllers
 
         public async Task<IActionResult> NewAntennaScanParamAsync(Antenna.AntennaList ascans)
         {
-            List<Antenna> alist = new List<Antenna>();
+            for (int i = 0; i < Data.ListOfAntennas.Count; i++)
+            {
+                Antenna antenna = Data.ListOfAntennas[i];
+                Console.WriteLine(antenna.duty+ " ****");
+            }
+            Data.ListOfAntennas = new List<Antenna>();
             try
             {
                 _session.BeginTransaction();
@@ -46,20 +51,15 @@ namespace ASPNETAOP.Controllers
                 for (int i = 0; i < ascans.antennas.Count; i++)
                 {
                     Antenna antenna = ascans.antennas[i];
+                    Data.ListOfAntennas.Add(antenna);
                     AntennaScan ascan = new AntennaScan(antenna.ID, Data.Scan.ID);
-
                     if (antenna.IsChecked)
                     {
                         await _session.SaveAntennaScan(ascan);
-                        antenna.IsChecked = true;
-                        alist.Add(antenna);
                     }
-
                     else
                     {
                         await _session.DeleteAntennaScan(ascan);
-                        antenna.IsChecked = false;
-                        alist.Add(antenna);
                     }
                 }
                 await _session.Commit();
@@ -73,7 +73,6 @@ namespace ASPNETAOP.Controllers
             }
             finally
             {
-                Data.ListOfAntennas = alist;
                 _session.CloseTransaction();
             }
             return RedirectToAction("NewAntennaScan", "AntennaScan");

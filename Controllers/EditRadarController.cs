@@ -59,5 +59,20 @@ namespace ASPNETAOP.Controllers
         {
             return RedirectToAction("BeforeEdit", "Radar", new { id = id });
         }
+
+        public IActionResult ReceiverEdit(Guid id)
+        {
+            return RedirectToAction("BeforeEdit", "Receiver", new { id = id });
+        }
+
+        public IActionResult TransmitterEdit(Guid id)
+        {
+            return RedirectToAction("BeforeEdit", "Transmitter", new { id = id });
+        }
+
+        public IActionResult LocationEdit(Guid id)
+        {
+            return RedirectToAction("BeforeEdit", "Location", new { id = id });
+        }
     }
 }

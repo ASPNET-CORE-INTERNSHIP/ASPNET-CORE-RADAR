@@ -17,8 +17,6 @@ namespace ASPNETAOP.Models
             this.Location = loc;
         }
 
-        public RadarInfo radarGeneral { get; set; }
-
         public Radar Radar { get; set; }
 
         public Receiver Receiver { get; set; }

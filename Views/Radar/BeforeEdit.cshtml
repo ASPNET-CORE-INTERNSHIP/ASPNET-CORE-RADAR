@@ -1,10 +1,10 @@
 ﻿@model ASPNETAOP.Models.Radar
 
 @{
-    ViewData["Title"] = "NewRadar";
+    ViewData["Title"] = "Edit Radar";
 }
 
-<h1>Add Radar</h1>
+<h1>Edit Radar</h1>
 
 <hr />
 <div class="row">
@@ -23,7 +23,7 @@
                 <div class="form-group">
                     <label asp-for="ID" class="hidden"></label>
                     <input asp-for="ID" class="form-control" type="hidden">
-                    <span asp-validation-for="name" class="hidden"></span>
+                    <span asp-validation-for="ID" class="hidden"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="name" class="control-label"></label>

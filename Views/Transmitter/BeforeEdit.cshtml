@@ -1,0 +1,78 @@
+﻿@model ASPNETAOP.Models.Transmitter
+
+@{
+    ViewData["Title"] = "Edit Transmitter";
+}
+
+<h1>Edit Transmitter</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-9">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @{
+                var ID = "Model.ID";
+                var name = "Model.name";
+                var modulation_type = "Model.modulation_type";
+                var max_frequency = "Model.max_frequency";
+                var min_frequency = "Model.min_frequency";
+                var power = "Model.power";
+                <input type="hidden" id="@ID" name="@ID" value="@Model.ID" />
+                <input type="hidden" id="@name" name="@name" value="@Model.name" />
+                <input type="hidden" id="@modulation_type" name="@modulation_type" value="@Model.modulation_type" />
+                <input type="hidden" id="@max_frequency" name="@max_frequency" value="@Model.max_frequency" />
+                <input type="hidden" id="@min_frequency" name="@min_frequency" value="@Model.min_frequency" />
+                <input type="hidden" id="@power" name="@power" value="@Model.power" />
+                <div class="form-group">
+                    <label asp-for="ID" class="hidden"></label>
+                    <input asp-for="ID" class="hidden" type="hidden">
+                    <span asp-validation-for="ID" class="hidden"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="name" class="control-label"></label>
+                    <input asp-for="name" class="form-control" type="text">
+                    <span asp-validation-for="name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="modulation_type" class="control-label"></label>
+                    <select asp-for="modulation_type" class="form-select" aria-label="Default select example">
+                        <option selected>@Model.modulation_type</option>
+                        <option value="AM-amplitude modulation">AM-amplitude modulation</option>
+                        <option value="FM-frequency modulation">FM-frequency modulation</option>
+                        <option value="FSK-frequency shift keying">FSK-frequency shift keying</option>
+                        <option value="OFDM-orthogonal frequency division multiplexing">OFDM-orthogonal frequency division multiplexing</option>
+                    </select>
+                    <span asp-validation-for="modulation_type" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="max_frequency" class="control-label"></label>
+                    <input asp-for="max_frequency" class="form-control" type="number" placeholder=@Model.max_frequency>
+                    <span asp-validation-for="max_frequency" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="min_frequency" class="control-label"></label>
+                    <input asp-for="min_frequency" class="form-control" type="number" placeholder=@Model.min_frequency>
+                    <span asp-validation-for="min_frequency" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="power" class="control-label"></label>
+                    <input asp-for="power" class="form-control" type="number" placeholder=@Model.power>
+                    <span asp-validation-for="power" class="text-danger"></span>
+                </div>
+            }
+            <div class="form-group">
+                <input type="submit" value="Edit" class="btn btn-primary" />
+            </div>
+            <b>@ViewData["Message"]</b>
+        </form>
+    </div>
+</div>
+
+<div>
+    <input type="button" title="Go Back" value="Go Back" onclick="location.href='@Url.Action("GoBack", "Transmitter", new { id = Model.ID })'" />
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

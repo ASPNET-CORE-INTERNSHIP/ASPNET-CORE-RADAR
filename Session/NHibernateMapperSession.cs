@@ -88,22 +88,6 @@ namespace ASPNETAOP.Session
             query.ExecuteUpdate();
         }
 
-        public List<Guid> GetRadarID()
-        {
-            String sql = "SELECT ID FROM Radar";
-            ISQLQuery query = _session.CreateSQLQuery(sql);
-            List<Guid> results = (List<Guid>)query.List<Guid>();
-            Console.WriteLine("GetRadarID" + results.Count);
-            return results;
-        }
-
-        public async Task<string> GetRadarName(int id)
-        {
-            var name = _session.CreateSQLQuery("SELECT name FROM Radar WHERE ID = :ID").SetParameter("ID", id).UniqueResult<string>();
-            return name;
-        }
-
-
         public async Task<int> GetRadarNumber()
         {
             var num = _session.CreateSQLQuery("SELECT COUNT(*) FROM Radar").UniqueResult<int>();
@@ -149,12 +133,16 @@ namespace ASPNETAOP.Session
             return transmitter_id;
         }
 
-        public List<object> GetTransmitterName()
+        public async Task EditTransmitter(Guid id, string name, string modulation_type, double max_frequency, double min_frequency, int power)
         {
-            String sql = "SELECT name FROM Transmitter";
-            ISQLQuery query = _session.CreateSQLQuery(sql);
-            List<object> results = (List<object>)query.List();
-            return results;
+            ISQLQuery query = _session.CreateSQLQuery("UPDATE Transmitter SET name = :name, modulation_type = :modulation_type, max_frequency = :max_frequency, min_frequency = :min_frequency, power = :power WHERE ID = :ID");
+            query.SetParameter("ID", id);
+            query.SetParameter("name", name);
+            query.SetParameter("modulation_type", modulation_type);
+            query.SetParameter("max_frequency", max_frequency);
+            query.SetParameter("min_frequency", min_frequency);
+            query.SetParameter("power", power);
+            query.ExecuteUpdate();
         }
 
         public async Task<int> GetTransmitterNumber()
@@ -199,6 +187,17 @@ namespace ASPNETAOP.Session
         {
             Guid receiver_id = _session.CreateSQLQuery("SELECT receiver_id FROM Radar WHERE ID = :ID").SetParameter("ID", id).UniqueResult<Guid>();
             return receiver_id;
+        }
+
+        public async Task EditReceiver(Guid id, string name, double listening_time, double rest_time, double recovery_time)
+        {
+            ISQLQuery query = _session.CreateSQLQuery("UPDATE Receiver SET name = :name, listening_time = :listening_time, rest_time = :rest_time, recovery_time = :recovery_time WHERE ID = :ID");
+            query.SetParameter("ID", id);
+            query.SetParameter("name", name);
+            query.SetParameter("listening_time", listening_time);
+            query.SetParameter("rest_time", rest_time);
+            query.SetParameter("recovery_time", recovery_time);
+            query.ExecuteUpdate();
         }
 
         public async Task<int> GetReceiverNumber()
@@ -259,7 +258,7 @@ namespace ASPNETAOP.Session
 
         public async Task DeleteScan(Guid id)
         {
-            ISQLQuery query = _session.CreateSQLQuery("DELETE FROM Scan WHERE EXISTS " +
+            ISQLQuery query = _session.CreateSQLQuery("DELETE FROM Scan WHERE ID in " +
                 "(SELECT ID FROM Submode WHERE mode_id IN( SELECT ID FROM Mode " +
                 "WHERE radar_id = :ID)); ");
             query.SetParameter("ID", id);
@@ -331,7 +330,6 @@ namespace ASPNETAOP.Session
             return results;
         }
 
-
         public async Task SaveLocation(Location entity)
         {
             ISQLQuery query = _session.CreateSQLQuery("INSERT INTO Location VALUES(:ID, :name, :country, :city, :geographic_latitude, :geographic_longitude, :airborne)");
@@ -351,11 +349,32 @@ namespace ASPNETAOP.Session
             return number;
         }
 
-
         public async Task<int> GetLocationName(string airborne)
         {
             int number = _session.CreateSQLQuery("SELECT COUNT(*) FROM Location WHERE airborne = :airborne").SetParameter("airborne", airborne).UniqueResult<int>();
             return number;
         }
+
+        public async Task DeleteLocation(Guid id)
+        {
+            ISQLQuery query = _session.CreateSQLQuery("DELETE FROM Location WHERE ID in" +
+                "(SELECT location_id FROM Radar WHERE ID = :ID); ");
+            query.SetParameter("ID", id);
+            query.ExecuteUpdate();
+        }
+
+        public async Task EditLocation(Location entity)
+        {
+            ISQLQuery query = _session.CreateSQLQuery("UPDATE Location SET name = :name, country = :country, city = :city, geographic_latitude = :geographic_latitude, geographic_longitude = :geographic_longitude, airborne = :airborne WHERE ID = :ID");
+            query.SetParameter("ID", entity.ID);
+            query.SetParameter("name", entity.name);
+            query.SetParameter("country", entity.country);
+            query.SetParameter("city", entity.city);
+            query.SetParameter("geographic_latitude", entity.geographic_latitude);
+            query.SetParameter("geographic_longitude", entity.geographic_longitude);
+            query.SetParameter("airborne", entity.airborne);
+            query.ExecuteUpdate();
+        }
+
     }
 }

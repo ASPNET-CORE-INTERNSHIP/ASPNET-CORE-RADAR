@@ -2,6 +2,7 @@
 using ASPNETAOP.Session;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using NHibernate.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -182,8 +183,67 @@ namespace ASPNETAOP.Controllers
                 _session.CloseTransaction();
             }
 
-
             return View(loc);
+        }
+
+        public async Task<IActionResult> BeforeEdit(Guid id)
+        {
+            //Because we use the same view before and after edit process we should handle the view messages with the following conditions
+            if (Data.edited)
+            {
+                ViewData["Message"] = "Update completed successfully";
+                Data.edited = false;
+            }
+            if (Data.message != null)
+            {
+                ViewData["Message"] = Data.message;
+                Data.message = null;
+            }
+            //Get radar's informations and shows it in edit page
+            Location loc = await _session.Location.Where(b => b.ID.Equals(id)).FirstOrDefaultAsync();
+            return View(loc);
+        }
+
+        public async Task<IActionResult> Edit(Location newValues)
+        {
+            try
+            {
+                await _session.EditLocation(newValues);
+            }
+            catch (Exception e)
+            {
+                // log exception here
+                Data.message = e.Message.ToString() + " Error";
+                await _session.Rollback();
+                return RedirectToAction("BeforeEdit", "Location", new { id = newValues.ID });
+            }
+            finally
+            {
+                _session.CloseTransaction();
+            }
+            Data.edited = true;
+            return RedirectToAction("BeforeEdit", "Location", new { id = newValues.ID });
+        }
+
+        public async Task<IActionResult> GoBack(Guid id)
+        {
+            Radar r = new Radar();
+            try
+            {
+                r = await _session.Radars.Where(b => b.location_id.Equals(id)).FirstOrDefaultAsync();
+            }
+            catch (Exception e)
+            {
+                // log exception here
+                Data.message = e.Message.ToString() + " Error";
+                await _session.Rollback();
+                return RedirectToAction("BeforeEdit", "Location", new { id = id });
+            }
+            finally
+            {
+                _session.CloseTransaction();
+            }
+            return RedirectToAction("Edit", "EditRadar", new { id = r.ID });
         }
     }
 }

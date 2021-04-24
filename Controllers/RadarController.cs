@@ -80,16 +80,16 @@ namespace ASPNETAOP.Controllers
 
         public async Task<RedirectToActionResult> DeleteRadar(Guid id)
         {
-            Console.WriteLine(id);
             try
             {
                 _session.BeginTransaction();
                 Guid receiver_id = await _session.GetReceiverID(id);
                 Guid transmitter_id = await _session.GetTransmitterID(id);
+                await _session.DeleteScan(id);
+                await _session.DeleteLocation(id);
                 await _session.DeleteReceiver(receiver_id);
                 await _session.DeleteTransmitter(transmitter_id);
                 //look here and delete location 
-                await _session.DeleteScan(id);
                 await _session.Commit();
                 Data.message = "Radar " + id + " removed From Database";
             }

@@ -30,6 +30,9 @@
                     <td>
                         <input type="button" title="Edit Radar" value="Edit Radar" onclick="location.href='@Url.Action("RadarEdit", "EditRadar", new { id = @Model.Radar.ID })'" />
                     </td>
+                    <td>
+                        <a href="~/Radar/DeleteRadar?id=@Model.Radar.ID" id="deleteBtn" class="btn bg-danger mr-1" onclick="return confirm('Are you sure you want to delete this radar completely?');"><i class="fas fa-trash-alt text-white"></i>Delete</a>
+                    </td>
                 </tr>
             }
         </table>
@@ -59,7 +62,7 @@
                     <td>@RestTime</td>
                     <td>@RecoveryTime</td>
                     <td>
-                        <a asp-action="ReceiverEdit">Edit Receiver</a>
+                        <input type="button" title="Edit Receiver" value="Edit Receiver" onclick="location.href='@Url.Action("ReceiverEdit", "EditRadar", new { id = @Model.Receiver.ID })'" />
                     </td>
                 </tr>
             }
@@ -94,7 +97,7 @@
                     <td>@MinFrequency</td>
                     <td>@Power</td>
                     <td>
-                        <a asp-action="TransmitterEdit">Edit Transmitterr</a>
+                        <input type="button" title="Edit Transmitter" value="Edit Transmitter" onclick="location.href='@Url.Action("TransmitterEdit", "EditRadar", new { id = @Model.Transmitter.ID })'" />
                     </td>
                 </tr>
             }
@@ -133,7 +136,7 @@
                     <td>@Longitude</td>
                     <td>@Airborne</td>
                     <td>
-                        <a asp-action="ReceiverEdit">Edit Radar</a>
+                        <input type="button" title="Edit Location" value="Edit Location" onclick="location.href='@Url.Action("LocationEdit", "EditRadar", new { id = @Model.Location.ID })'" />
                     </td>
                 </tr>
             }

@@ -1,0 +1,79 @@
+﻿@model ASPNETAOP.Models.Location
+
+@{
+    ViewData["Title"] = "Edit Location";
+}
+
+<h1>Edit Location</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-9">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @{
+                var ID = "Model.ID";
+                var name = "Model.name";
+                var country = "Model.country";
+                var city = "Model.city";
+                var geographic_latitude = "Model.geographic_latitude";
+                var geographic_longitude = "Model.geographic_longitude";
+                var airborne = "Model.airborne";
+                <input type="hidden" id="@ID" name="@ID" value="@Model.ID" />
+                <input type="hidden" id="@name" name="@name" value="@Model.name" />
+                <input type="hidden" id="@country" name="@country" value="@Model.country" />
+                <input type="hidden" id="@city" name="@city" value="@Model.city" />
+                <input type="hidden" id="@geographic_latitude" name="@geographic_latitude" value="@Model.geographic_latitude" />
+                <input type="hidden" id="@geographic_longitude" name="@geographic_longitude" value="@Model.geographic_longitude" />
+                <input type="hidden" id="@airborne" name="@airborne" value="@Model.airborne" />
+                <div class="form-group">
+                    <label asp-for="ID" class="hidden"></label>
+                    <input asp-for="ID" class="hidden" type="hidden">
+                    <span asp-validation-for="ID" class="hidden"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="name" class="control-label"></label>
+                    <input asp-for="name" class="form-control" type="text" placeholder=@Model.name>
+                    <span asp-validation-for="name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="country" class="control-label"></label>
+                    <input asp-for="country" class="form-control" type="text" placeholder=@Model.country>
+                    <span asp-validation-for="country" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="city" class="control-label"></label>
+                    <input asp-for="city" class="form-control" type="text" placeholder=@Model.city>
+                    <span asp-validation-for="city" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="geographic_latitude" class="control-label"></label>
+                    <input asp-for="geographic_latitude" class="form-control" type="text" placeholder=@Model.geographic_latitude>
+                    <span asp-validation-for="geographic_latitude" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="geographic_longitude" class="control-label"></label>
+                    <input asp-for="geographic_longitude" class="form-control" type="text" placeholder=@Model.geographic_longitude>
+                    <span asp-validation-for="geographic_longitude" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="airborne" class="control-label"></label>
+                    <input asp-for="airborne" class="form-control" type="text" placeholder=@Model.airborne>
+                    <span asp-validation-for="airborne" class="text-danger"></span>
+                </div>
+            }
+            <div class="form-group">
+                <input type="submit" value="Edit" class="btn btn-primary" />
+            </div>
+            <b>@ViewData["Message"]</b>
+        </form>
+    </div>
+</div>
+
+<div>
+    <input type="button" title="Go Back" value="Go Back" onclick="location.href='@Url.Action("GoBack", "Location", new { id = Model.ID })'" />
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -51,6 +51,17 @@ namespace ASPNETAOP.Controllers
 
         public IActionResult GoToEdit(Guid id)
         {
+            //empty data class for our current working Radar
+            Data.Receiver = new Receiver();
+            Data.Transmitter = new Transmitter();
+            Data.Submode = new Submode();
+            Data.Scan = new Scan();
+            Data.Radar = new Radar();
+            Data.newProgram = "yes";
+            Data.message = null;
+            Data.edited = false;
+            //new list of antennas for current Radar
+            Data.ListOfAntennas = new List<Antenna>();
             return RedirectToAction( "Edit", "EditRadar", new { id = id });
         }
     }
