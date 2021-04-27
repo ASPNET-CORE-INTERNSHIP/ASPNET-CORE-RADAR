@@ -29,7 +29,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="name" class="control-label"></label>
-                <input asp-for="name" class="form-control" type="text">
+                <input asp-for="name" class="form-control" type="text"/>
                 <span asp-validation-for="name" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -47,7 +47,7 @@
                 <input asp-for="polarization" class="form-control" />
                 <span asp-validation-for="polarization" class="text-danger"></span>
             </div>
-            @if (newProgram.Equals("no"))
+            @if (newProgram.Equals("no") || Data.ComeFromAdd)
             {
             <div class="form-group">
                 <label asp-for="number_of_feed" class="control-label"></label>
@@ -57,26 +57,35 @@
             }
             <div class="form-group">
                 <label asp-for="horizontal_dimension" class="control-label"></label>
-                <input asp-for="horizontal_dimension" class="form-control" type="number" placeholder="000.00" min="0" step="0.01" pattern="^\d+(?:\.\d{3,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{4,2})?$/.test(this.value)?'inherit':'red'">
+                <input asp-for="horizontal_dimension" class="form-control" type="number" placeholder="000.00" min="0" step="0.01" pattern="^\d+(?:\.\d{3,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{4,2})?$/.test(this.value)?'inherit':'red'"/>
                 <span asp-validation-for="horizontal_dimension" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="vertical_dimension" class="control-label"></label>
-                <input asp-for="vertical_dimension" class="form-control" type="number" placeholder="000.00" min="0" step="0.01" pattern="^\d+(?:\.\d{3,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{4,2})?$/.test(this.value)?'inherit':'red'">
+                <input asp-for="vertical_dimension" class="form-control" type="number" placeholder="000.00" min="0" step="0.01" pattern="^\d+(?:\.\d{3,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{4,2})?$/.test(this.value)?'inherit':'red'"/>
                 <span asp-validation-for="vertical_dimension" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="duty" class="control-label"></label>
                 <select asp-for="duty" class="form-select" aria-label="Default select example">
-                    @if (newProgram.Equals("yes"))
+                    @if (!Data.ComeFromAdd)
                     {
-                        <option selected>receiver</option>
+                        if (newProgram.Equals("yes"))
+                        {
+                            <option selected>receiver</option>
+                        }
+                        else if (newProgram.Equals("no"))
+                        {
+                            <option selected>transmitter</option>
+                        }
+                        <option value="both">both</option>
                     }
-                    else if (newProgram.Equals("no"))
+                    else
                     {
                         <option selected>transmitter</option>
+                        <option value="receiver">receiver</option>
+                        <option value="both">both</option>
                     }
-                    <option value="both">both</option>
                 </select>
                 <span asp-validation-for="duty" class="text-danger"></span>
             </div>
@@ -88,19 +97,27 @@
             <div class="form-group">
                 <input type="submit" value="Add" class="btn btn-primary" />
             </div>
-            <b>@ViewData["Message"]</b>
+            <b>@Data.message</b>
+            @{Data.message = null;}
         </form>
     </div>
 </div>
 
 <div>
-    @if (newProgram.Equals("no"))
+    @if (!Data.ComeFromAdd)
     {
-        <input type="button" title="Next" value="Next" onclick="location.href='@Url.Action("GoToRadar", "Antenna")'" />
+        if (newProgram.Equals("no"))
+        {
+            <input type="button" title="Next" value="Next" onclick="location.href='@Url.Action("GoToRadar", "Antenna")'" />
+        }
+        else
+        {
+            <input type="button" title="Next" value="Next" onclick="location.href='@Url.Action("GoToTransmitter", "Antenna")'" />
+        }
     }
     else
     {
-        <input type="button" title="Next" value="Next" onclick="location.href='@Url.Action("GoToTransmitter", "Antenna")'" />
+        <input type="button" style="background-color:darkblue; color:white; width:150px; height:40px;" title="Done" value="Done" onclick="location.href='@Url.Action("Done", "Antenna")'" />
     }
 </div>
 

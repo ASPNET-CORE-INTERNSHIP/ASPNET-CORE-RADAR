@@ -1,0 +1,83 @@
+﻿@model ASPNETAOP.Models.ModeInfo
+
+@{
+    ViewData["Title"] = "Edit Mode";
+}
+
+<h1>Edit Mode</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-9">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @{
+                var ID = "Model.Mode.ID";
+                var name = "Model.Mode.name";
+                <input type="hidden" id="@ID" name="@ID" value="@Model.Mode.ID" />
+                <input type="hidden" id="@name" name="@name" value="@Model.Mode.name" />
+                <div class="form-group">
+                    <label asp-for="@Model.Mode.ID" class="hidden"></label>
+                    <input asp-for="@Model.Mode.ID" class="hidden" type="hidden">
+                    <span asp-validation-for="@Model.Mode.ID" class="hidden"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Mode.name" class="control-label"></label>
+                    <input asp-for="@Model.Mode.name" class="form-control" type="text", placeholder=@Model.Mode.name>
+                    <span asp-validation-for="@Model.Mode.name" class="text-danger"></span>
+                </div>
+            }
+            <div class="form-group">
+                <input type="submit" value="Edit" class="btn btn-primary" />
+            </div>
+            <div>
+                <a href="~/Mode/DeleteMode?id=@Model.Mode.ID" id="deleteBtn" class="btn bg-danger mr-1" onclick="return confirm('Are you sure you want to delete this mode with its submodes?');"><i class="fas fa-trash-alt text-white"></i>Delete</a>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <table>
+        <tr>
+            <th>Submode Name</th>
+            <th>PW</th>
+            <th>PRI</th>
+            <th>Mode Name</th>
+        </tr>
+        @{for (int i = 0; i < Model.ListOfSubmodes.Count; i++)
+            {
+                var SubmodeName = Model.ListOfSubmodes[i].name;
+                var PW = Model.ListOfSubmodes[i].PW;
+                var PRI = Model.ListOfSubmodes[i].PRI;
+                <input type="hidden" id="@SubmodeName" name="@SubmodeName" value="@Model.ListOfSubmodes[i].name" />
+                <input type="hidden" id="@PW" name="@PW" value="@Model.ListOfSubmodes[i].PW" />
+                <input type="hidden" id="@PRI" name="@PRI" value="@Model.ListOfSubmodes[i].PRI" />
+
+                <tr>
+                    <td>@SubmodeName</td>
+                    <td>@PW</td>
+                    <td>@PRI</td>
+                    <td>
+                        <input type="button" title="Edit Submode" value="Edit Submode" onclick="location.href='@Url.Action("SubmodeEdit", "Mode", new { id = @Model.ListOfSubmodes[i].ID })'" />
+                    </td>
+                    <td>
+                        <a href="~/Mode/DeleteSubmode?id=@Model.ListOfSubmodes[i].ID" id="deleteBtn" class="btn bg-danger mr-1" onclick="return confirm('Are you sure you want to delete this submode?');"><i class="fas fa-trash-alt text-white"></i>Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+        <div>
+            <input type="button" title="Add SubMode" value="Add SubMode" onclick="location.href='@Url.Action("AddSubMode", "Mode", new { id = Model.Mode.ID })'" />
+        </div>
+    </table>
+    <b>@Data.message</b>
+    @{ Data.message = null; }
+</div>
+
+<div>
+    <input type="button" title="Back" value="Back" onclick="location.href='@Url.Action("GoBack", "Mode", new { id = Model.Mode.ID })'" />
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

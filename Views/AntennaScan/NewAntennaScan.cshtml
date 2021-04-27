@@ -64,22 +64,29 @@
             <div class="form-group">
                 <input type="submit" value="Add" class="btn btn-primary" />
             </div>
-            <b>@ViewData["Message"]</b>
+            <b>@Data.message</b>
+            @{ Data.message = null; }
         </form>
     </div>
 </div>
-<div>
-    <input type="button" title="AddSubmode" value="Add Submode" onclick="location.href='@Url.Action("GoToSubmode", "AntennaScan")'" />
-</div>
-<div>
-    <input type="button" title="AddMode" value="Add Mode" onclick="location.href='@Url.Action("GoToMode", "AntennaScan")'" />
-</div>
-<div>
-    <input type="button" title="Done" value="DONE!" onclick="location.href='@Url.Action("Done", "AntennaScan")'" />
-</div>
-<div>
-    <a asp-action="Index">Turn back</a>
-</div>
+@{
+    if (Data.ComeFromAdd)
+    {
+        <div>
+            <input type="button" style="background-color:lawngreen; color:white; width:150px; height:40px;" title="Done" value="DONE!" onclick="location.href='@Url.Action("GoBack", "AntennaScan")'" />
+        </div>
+    }
+    else
+    {
+        <table>
+            <tr>
+                <input type="button" style="background-color:mediumblue; color:white; width:150px; height:40px;" title="AddSubmode" value="Add Submode" onclick="location.href='@Url.Action("GoToSubmode", "AntennaScan")'" />
+                <input type="button" style="background-color:darkblue; color:white; width:150px; height:40px;" title="AddMode" value="Add Mode" onclick="location.href='@Url.Action("GoToMode", "AntennaScan")'" />
+                <input type="button" style="background-color:orangered; color:white; width:150px; height:40px;" title="Done" value="DONE!" onclick="location.href='@Url.Action("Done", "AntennaScan")'" />
+            </tr>
+        </table>
+    }
+}
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

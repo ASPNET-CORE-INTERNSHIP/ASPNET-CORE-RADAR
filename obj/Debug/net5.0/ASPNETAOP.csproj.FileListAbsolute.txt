@@ -1474,3 +1474,5 @@ C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Radar\B
 C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Receiver\BeforeEdit.cshtml.g.cs
 C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Location\BeforeEdit.cshtml.g.cs
 C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Transmitter\BeforeEdit.cshtml.g.cs
+C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Mode\BeforeEdit.cshtml.g.cs
+C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Antenna\BeforeEdit.cshtml.g.cs

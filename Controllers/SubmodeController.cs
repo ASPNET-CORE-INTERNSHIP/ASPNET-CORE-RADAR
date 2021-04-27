@@ -34,8 +34,13 @@ namespace ASPNETAOP.Controllers
 
 
         [HttpPost]
-        public IActionResult NewSubmode(Submode sm)
+        public async Task<IActionResult> NewSubmodeAsync(Submode sm)
         {
+            if (Data.message != null)
+            {
+                Data.message = null;
+            }
+
             for (int i = 0; i < Data.ListOfAntennas.Count; i++)
             {
                 Data.ListOfAntennas[i].IsChecked = false;
@@ -43,29 +48,6 @@ namespace ASPNETAOP.Controllers
             Submode sbm = new Submode(sm.name, sm.PRI, sm.PW, sm.max_frequency, sm.min_frequency);
             Data.Submode = sbm;
             return RedirectToAction("NewScan", "Scan");
-        }
-
-        public async void DeleteSubModeAsync(Guid id)
-        {
-            try
-            {
-                _session.BeginTransaction();
-                Guid scan_id = await _session.GetScanID(id);
-                await _session.DeleteAntennaScanUsingScanID(scan_id);
-                await _session.DeleteSubMode(id);
-                await _session.Commit();
-                ViewData["Message"] = "SubMode removed from database";
-            }
-            catch (Exception e)
-            {
-                // log exception here
-                ViewData["Message"] = e.Message.ToString() + " Error";
-                await _session.Rollback();
-            }
-            finally
-            {
-                _session.CloseTransaction();
-            }
         }
 
     }

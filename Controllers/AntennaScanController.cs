@@ -38,11 +38,7 @@ namespace ASPNETAOP.Controllers
 
         public async Task<IActionResult> NewAntennaScanParamAsync(Antenna.AntennaList ascans)
         {
-            for (int i = 0; i < Data.ListOfAntennas.Count; i++)
-            {
-                Antenna antenna = Data.ListOfAntennas[i];
-                Console.WriteLine(antenna.duty+ " ****");
-            }
+            Data.message = null;
             Data.ListOfAntennas = new List<Antenna>();
             try
             {
@@ -63,12 +59,12 @@ namespace ASPNETAOP.Controllers
                     }
                 }
                 await _session.Commit();
-                ViewData["Message"] = "New Relationship between antennas and scan added";
+                Data.message = "New Relationship between antennas and scan added";
             }
             catch (Exception e)
             {
                 // log exception here
-                ViewData["Message"] = e.Message.ToString() + " Error";
+                Data.message = e.Message.ToString() + " Error";
                 await _session.Rollback();
             }
             finally
@@ -91,6 +87,13 @@ namespace ASPNETAOP.Controllers
         public IActionResult Done()
         {
             return View("~/Views/Shared/done.cshtml");
+        }
+
+        public IActionResult GoBack()
+        {
+            //After we have done with the ComeFromEdit, we give false (default) to this value
+            Data.ComeFromAdd = false;
+            return RedirectToAction("BeforeEdit", "Mode", new { id = Data.Mode.ID});
         }
     }
 }

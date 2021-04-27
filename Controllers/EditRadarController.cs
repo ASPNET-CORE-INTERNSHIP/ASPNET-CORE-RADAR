@@ -34,23 +34,18 @@ namespace ASPNETAOP.Controllers
             Transmitter transmitter_temp = await _session.Transmitters.Where(b => b.ID.Equals(r.transmitter_id)).FirstOrDefaultAsync();
             Receiver receiver_temp = await _session.Receivers.Where(b => b.ID.Equals(r.receiver_id)).FirstOrDefaultAsync();
             Location location_temp = await _session.Location.Where(b => b.ID.Equals(r.location_id)).FirstOrDefaultAsync();
-            
-            //List<Antenna> AntennaList = await _session.Antennas.Where(b => (b.duty.Equals("receiver") && b.receiver_id.Equals(receiver_temp.ID)) || (b.duty.Equals("receiver")! && b.transmitter_id.Equals(transmitter_temp.ID)) ).ToListAsync();
+            Guid id_receiver = receiver_temp.ID;
+            List<Antenna> AntennaList = await _session.Antennas.Where(b => (b.receiver_id!= null && b.receiver_id.Value.Equals(receiver_temp.ID)) || (b.transmitter_id != null && b.transmitter_id.Value.Equals(transmitter_temp.ID))).ToListAsync();
             List<Mode> ModeList = await _session.Modes.Where(b => b.radar_id.Equals(r.ID)).ToListAsync();
-            List<Submode> SubModeList = new List<Submode>();
-            foreach (Mode mod in ModeList)
-            {
-                List<Submode> list_temp = await _session.Submode.Where(b => b.mode_id.Equals(mod.ID)).ToListAsync();
-
-                foreach (Submode s in list_temp)
-                {
-                    SubModeList.Add(s);
-                }
-            }
+            
             RadarInfo radar = new RadarInfo(r, transmitter_temp, receiver_temp, location_temp);
-            //radar.ListOfAntennas = AntennaList;
-            radar.Mode = ModeList;
-            radar.Submode = SubModeList;
+            radar.ListOfAntennas = AntennaList;
+            radar.ListOfModes = ModeList;
+
+            //FILL THE DATA MODEL WITH NECESSARY VALUES so we can use DATA model in editing process
+            Data.Transmitter = transmitter_temp;
+            Data.Receiver = receiver_temp;
+            Data.ListOfAntennas = AntennaList;
 
             return View(radar);
         }
@@ -74,5 +69,21 @@ namespace ASPNETAOP.Controllers
         {
             return RedirectToAction("BeforeEdit", "Location", new { id = id });
         }
+
+        public IActionResult ModeEdit(Guid id)
+        {
+            return RedirectToAction("BeforeEdit", "Mode", new { id = id });
+        }
+
+        public IActionResult AntennaEdit(Guid id)
+        {
+            return RedirectToAction("BeforeEdit", "Antenna", new { id = id });
+        }
+
+        public async System.Threading.Tasks.Task<IActionResult> AddAntennaAsync(Guid id)
+        {
+            return RedirectToAction("AddNewAntenna", "Antenna", new { id = id});
+        }
+
     }
 }

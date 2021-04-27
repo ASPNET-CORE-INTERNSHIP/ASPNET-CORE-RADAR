@@ -158,7 +158,7 @@ namespace ASPNETAOP.Controllers
                 // log exception here
                 Data.message = e.Message.ToString() + " Error";
                 await _session.Rollback();
-                return RedirectToAction("BeforeEdit", "Receiver", new { id = id });
+                //return RedirectToAction("BeforeEdit", "Receiver", new { id = id });
             }
             finally
             {

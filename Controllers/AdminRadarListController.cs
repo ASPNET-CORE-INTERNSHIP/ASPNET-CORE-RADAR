@@ -60,6 +60,7 @@ namespace ASPNETAOP.Controllers
             Data.newProgram = "yes";
             Data.message = null;
             Data.edited = false;
+            Data.ComeFromAdd = false;
             //new list of antennas for current Radar
             Data.ListOfAntennas = new List<Antenna>();
             return RedirectToAction( "Edit", "EditRadar", new { id = id });

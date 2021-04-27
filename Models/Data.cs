@@ -25,6 +25,8 @@ namespace ASPNETAOP.Models
 
         public static bool edited { get; set; } = false;
 
+        public static bool ComeFromAdd { get; set; } = false;
+
         public static String message { get; set; }
 
         public static List<Antenna> ListOfAntennas { get; set; }

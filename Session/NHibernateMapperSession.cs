@@ -222,6 +222,14 @@ namespace ASPNETAOP.Session
             query.ExecuteUpdate();
         }
 
+        public async Task EditMode(Mode mode)
+        {
+            ISQLQuery query = _session.CreateSQLQuery("UPDATE Mode SET name = :name WHERE ID = :ID");
+            query.SetParameter("ID", mode.ID);
+            query.SetParameter("name", mode.name);
+            query.ExecuteUpdate();
+        }
+
         public async Task SaveSubMode(Submode entity)
         {
             ISQLQuery query = _session.CreateSQLQuery("INSERT INTO Submode VALUES(:ID, :name, :mode_id, :PW, :PRI, :min_frequency, :max_frequency, :scan_id)");
@@ -310,6 +318,22 @@ namespace ASPNETAOP.Session
             query.SetParameter("transmitter_id", entity.transmitter_id);
             query.SetParameter("receiver_id", entity.receiver_id);
             query.SetParameter("location", entity.location);
+            query.ExecuteUpdate();
+        }
+
+        public async Task EditAntenna(Guid id, string name, string type, double horizontal_beamwidth, double vertical_beamwidth, string polarization, int number_of_feed, double horizontal_dimension, double vertical_dimension, string location)
+        {
+            ISQLQuery query = _session.CreateSQLQuery("UPDATE Antenna SET name = :name, type = :type, horizontal_beamwidth = :horizontal_beamwidth, vertical_beamwidth = :vertical_beamwidth, polarization = :polarization, number_of_feed = :number_of_feed, horizontal_dimension = :horizontal_dimension, vertical_dimension = :vertical_dimension, location = :location  WHERE ID = :ID");
+            query.SetParameter("ID", id);
+            query.SetParameter("name", name);
+            query.SetParameter("type", type);
+            query.SetParameter("horizontal_beamwidth", horizontal_beamwidth);
+            query.SetParameter("vertical_beamwidth", vertical_beamwidth);
+            query.SetParameter("polarization", polarization);
+            query.SetParameter("number_of_feed", number_of_feed);
+            query.SetParameter("horizontal_dimension", horizontal_dimension);
+            query.SetParameter("vertical_dimension", vertical_dimension);
+            query.SetParameter("location", location);
             query.ExecuteUpdate();
         }
 

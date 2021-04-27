@@ -51,14 +51,12 @@
             <div class="form-group">
                 <input type="submit" value="Add" class="btn btn-primary" />
             </div>
-            <b>@ViewData["Message"]</b>
+            <b>@Data.message</b>
+            @{ Data.message = null; }
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Turn back</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

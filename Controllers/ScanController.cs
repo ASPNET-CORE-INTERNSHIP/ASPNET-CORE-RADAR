@@ -48,21 +48,20 @@ namespace ASPNETAOP.Controllers
                 await _session.SaveScan(s);
                 await _session.SaveSubMode(sbm);
                 await _session.Commit();
-                ViewData["Message"] = "Both records (Submode and Scan) added to db";
-                return RedirectToAction("NewAntennaScan", "AntennaScan");
+                Data.message = "Both records (Submode and Scan) added to db";
             }
             catch (Exception e)
             {
                 // log exception here
-                ViewData["Message"] = e.Message.ToString() + " Error";
+                Data.message = e.Message.ToString() + " Error";
                 await _session.Rollback();
             }
             finally
             {
                 _session.CloseTransaction();
             }
-            
-            return View(scan);
+
+            return RedirectToAction("NewAntennaScan", "AntennaScan");
         }
 
     }

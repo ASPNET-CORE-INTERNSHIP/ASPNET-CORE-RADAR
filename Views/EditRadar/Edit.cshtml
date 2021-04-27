@@ -1,10 +1,10 @@
 ﻿@model ASPNETAOP.Models.RadarInfo
 
 @{
-    ViewData["Title"] = "RadarList";
+    ViewData["Title"] = "Radar Information";
 }
 
-<h1>Edit</h1>
+<h1>Radar Information</h1>
 <form asp-action="RadarEdit">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="row">
@@ -13,6 +13,8 @@
                 <th>Name</th>
                 <th>System</th>
                 <th>Configuration</th>
+                <th></th>
+                <th></th>
             </tr>
             @{
                 var RadarName = Model.Radar.name;
@@ -28,7 +30,7 @@
                     <td>@System</td>
                     <td>@Configuration</td>
                     <td>
-                        <input type="button" title="Edit Radar" value="Edit Radar" onclick="location.href='@Url.Action("RadarEdit", "EditRadar", new { id = @Model.Radar.ID })'" />
+                        <input type="button" style="background-color:royalblue; color:white; width:150px; height:40px;" title="Edit Radar" value="Edit Radar" onclick="location.href='@Url.Action("RadarEdit", "EditRadar", new { id = @Model.Radar.ID })'" />
                     </td>
                     <td>
                         <a href="~/Radar/DeleteRadar?id=@Model.Radar.ID" id="deleteBtn" class="btn bg-danger mr-1" onclick="return confirm('Are you sure you want to delete this radar completely?');"><i class="fas fa-trash-alt text-white"></i>Delete</a>
@@ -44,6 +46,7 @@
                 <th>Listening Time</th>
                 <th>Rest Time</th>
                 <th>Recovery Time</th>
+                <th></th>
             </tr>
             @{
                 var ReceiverName = Model.Receiver.name;
@@ -62,7 +65,7 @@
                     <td>@RestTime</td>
                     <td>@RecoveryTime</td>
                     <td>
-                        <input type="button" title="Edit Receiver" value="Edit Receiver" onclick="location.href='@Url.Action("ReceiverEdit", "EditRadar", new { id = @Model.Receiver.ID })'" />
+                        <input type="button" style="background-color:royalblue; color:white; width:150px; height:40px;" title="Edit Receiver" value="Edit Receiver" onclick="location.href='@Url.Action("ReceiverEdit", "EditRadar", new { id = @Model.Receiver.ID })'" />
                     </td>
                 </tr>
             }
@@ -76,6 +79,7 @@
                 <th>Max Frequency</th>
                 <th>Min Frequency</th>
                 <th>Power</th>
+                <th></th>
             </tr>
             @{
                 var TransmitterName = Model.Transmitter.name;
@@ -97,7 +101,7 @@
                     <td>@MinFrequency</td>
                     <td>@Power</td>
                     <td>
-                        <input type="button" title="Edit Transmitter" value="Edit Transmitter" onclick="location.href='@Url.Action("TransmitterEdit", "EditRadar", new { id = @Model.Transmitter.ID })'" />
+                        <input type="button" style="background-color:royalblue; color:white; width:150px; height:40px;" title="Edit Transmitter" value="Edit Transmitter" onclick="location.href='@Url.Action("TransmitterEdit", "EditRadar", new { id = @Model.Transmitter.ID })'" />
                     </td>
                 </tr>
             }
@@ -112,6 +116,7 @@
                 <th>Latitude</th>
                 <th>Longitude</th>
                 <th>Airborne</th>
+                <th></th>
             </tr>
             @{
                 var LocationName = Model.Location.name;
@@ -136,7 +141,7 @@
                     <td>@Longitude</td>
                     <td>@Airborne</td>
                     <td>
-                        <input type="button" title="Edit Location" value="Edit Location" onclick="location.href='@Url.Action("LocationEdit", "EditRadar", new { id = @Model.Location.ID })'" />
+                        <input type="button" style="background-color:royalblue; color:white; width:150px; height:40px;" title="Edit Location" value="Edit Location" onclick="location.href='@Url.Action("LocationEdit", "EditRadar", new { id = @Model.Location.ID })'" />
                     </td>
                 </tr>
             }
@@ -147,50 +152,52 @@
             <tr>
                 <th>Mode Name</th>
             </tr>
-            @{for (int i = 0; i < Model.Mode.Count; i++)
+            @{for (int i = 0; i < Model.ListOfModes.Count; i++)
                 {
-                    var name = Model.Mode[i].name;
-                    <input type="hidden" id="@name" name="@name" value="@Model.Mode[i].name" />
+                    var name = Model.ListOfModes[i].name;
+                    <input type="hidden" id="@name" name="@name" value="@Model.ListOfModes[i].name" />
                     <tr>
                         <td>@name</td>
                         <td>
-                            <a asp-action="ModeEdit">Edit Radar</a>
+                            <input type="button" style="background-color:royalblue; color:white; width:150px; height:40px;" title="Edit Mode" value="Edit Mode" onclick="location.href='@Url.Action("ModeEdit", "EditRadar", new { id = @Model.ListOfModes[i].ID })'" />
                         </td>
                     </tr>
                 }
             }
         </table>
-     </div>
+        <input type="button" style="background-color:limegreen; color:white; width:150px; height:40px;" title="Add Mode" value="Add Mode" onclick="location.href='@Url.Action("AddMode", "EditRadar", new { id = @Model.Radar.ID })'" />
+    </div>
     <div class="row">
         <table>
             <tr>
-                <th>Submode Name</th>
-                <th>PW</th>
-                <th>PRI</th>
-                <th>Mode Name</th>
+                <th>Antenna name</th>
+                <th>Antenna type</th>
+                <th>Antenna duty</th>
             </tr>
-            @{for (int i = 0; i < Model.Submode.Count; i++)
+            @{for (int i = 0; i < Model.ListOfAntennas.Count; i++)
                 {
-                    var SubmodeName = Model.Submode[i].name;
-                    var PW = Model.Submode[i].PW;
-                    var PRI = Model.Submode[i].PRI;
-                    var ModeName = Model.Submode[i].mode_id;
-                    <input type="hidden" id="@SubmodeName" name="@SubmodeName" value="@Model.Submode[i].name" />
-                    <input type="hidden" id="@PW" name="@PW" value="@Model.Submode[i].PW" />
-                    <input type="hidden" id="@PRI" name="@PRI" value="@Model.Submode[i].PRI" />
-                    <input type="hidden" id="@ModeName" name="@ModeName" value="@Model.Submode[i].mode_id" />
-                    
+                    var name = Model.ListOfAntennas[i].name;
+                    var type = Model.ListOfAntennas[i].type;
+                    var duty = Model.ListOfAntennas[i].duty;
+                    <input type="hidden" id="@name" name="@name" value="@Model.ListOfAntennas[i].name" />
+                    <input type="hidden" id="@type" name="@type" value="@Model.ListOfAntennas[i].type" />
+                    <input type="hidden" id="@duty" name="@duty" value="@Model.ListOfAntennas[i].duty" />
                     <tr>
-                        <td>@SubmodeName</td>
-                        <td>@PW</td>
-                        <td>@PRI</td>
-                        <td>@ModeName</td>
+                        <td>@name</td>
+                        <td>@type</td>
+                        <td>@duty</td>
                         <td>
-                            <a asp-action="SubmodeEdit">Edit Submode</a>
+                            <input type="button" style="background-color:royalblue; color:white; width:150px; height:40px;" title="Edit Antenna" value="Edit Antenna" onclick="location.href='@Url.Action("AntennaEdit", "EditRadar", new { id = @Model.ListOfAntennas[i].ID })'" />
                         </td>
                     </tr>
                 }
             }
         </table>
+        <input type="button" style="background-color:limegreen; color:white; width:150px; height:40px;" title="Add Antenna" value="Add Antenna" onclick="location.href='@Url.Action("AddAntenna", "EditRadar", new { id = @Model.Radar.ID })'" />
     </div>
 </form>
+<b>@Data.message</b>
+@{ Data.message = null; }
+<div>
+    <input type="button" title="Back" value="Back" onclick="location.href='@Url.Action("RadarList", "AdminRadarList")'" />
+</div>

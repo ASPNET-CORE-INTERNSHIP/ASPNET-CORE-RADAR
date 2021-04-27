@@ -2,9 +2,12 @@
 using ASPNETAOP.Session;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using NHibernate.Linq;
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ASPNETAOP.Controllers
 {
@@ -28,6 +31,28 @@ namespace ASPNETAOP.Controllers
             return View();
         }
 
+        public async Task<IActionResult> AddNewAntenna(Guid id)
+        {
+            Radar r = new Radar();
+            try
+            {
+                r = await _session.Radars.Where(b => b.ID.Equals(id)).FirstOrDefaultAsync();
+                Data.Radar = r;
+            }
+            catch (Exception e)
+            {
+                // log exception here
+                Data.message = e.Message.ToString() + " Error";
+                await _session.Rollback();
+            }
+            finally
+            {
+                _session.CloseTransaction();
+            }
+            Data.ComeFromAdd = true;
+            return RedirectToAction("NewAntenna", "Antenna");
+        }
+
         [HttpPost]
         public async System.Threading.Tasks.Task<IActionResult> NewAntennaAsync(Antenna antenna)
         {
@@ -35,7 +60,7 @@ namespace ASPNETAOP.Controllers
             if (antenna.type.StartsWith("Select"))
             {
                 return View(antenna);
-                ViewData["Message"] = "Please select Type";
+                Data.message = "Please select Type";
             }
 
             Guid receiver_id = Data.Receiver.ID;
@@ -57,7 +82,7 @@ namespace ASPNETAOP.Controllers
                     catch (Exception e)
                     {
                         // log exception here
-                        ViewData["Message"] = e.Message.ToString() + " Error";
+                        Data.message = e.Message.ToString() + " Error";
                         await _session.Rollback();
                     }
                 }
@@ -70,7 +95,7 @@ namespace ASPNETAOP.Controllers
                     catch (Exception e)
                     {
                         // log exception here
-                        ViewData["Message"] = e.Message.ToString() + " Error";
+                        Data.message = e.Message.ToString() + " Error";
                         await _session.Rollback();
                     }
                 }
@@ -116,7 +141,64 @@ namespace ASPNETAOP.Controllers
             return View(antenna);
         }
 
+        public async Task<IActionResult> BeforeEdit(Guid id)
+        {
+            //Get antenna's informations and shows it in edit page
+            Antenna antenna = await _session.Antennas.Where(b => b.ID.Equals(id)).FirstOrDefaultAsync();
 
+            return View(antenna);
+        }
+
+        public async Task<IActionResult> Edit(Antenna antenna)
+        {
+            try
+            {
+                await _session.EditAntenna(antenna.ID, antenna.name, antenna.type, antenna.horizontal_beamwidth, antenna.vertical_beamwidth, antenna.polarization, antenna.number_of_feed, antenna.horizontal_dimension, antenna.vertical_dimension, antenna.location);
+                Data.message = "Antenna updated succesfully";
+            }
+            catch (Exception e)
+            {
+                // log exception here
+                Data.message = e.Message.ToString() + " Error";
+                await _session.Rollback();
+                return RedirectToAction("BeforeEdit", "Antenna", new { id = antenna.ID });
+            }
+            finally
+            {
+                _session.CloseTransaction();
+            }
+            return View(antenna);
+        }
+
+        public async Task<IActionResult> GoBack(Guid id)
+        {
+            Radar radar = new Radar();
+            try
+            {
+                Antenna a = await _session.Antennas.Where(b => b.ID.Equals(id)).FirstOrDefaultAsync();
+                if (a.duty.Equals("receiver"))
+                {
+                    Receiver receiver = await _session.Receivers.Where(b => b.ID.Equals(a.ID)).FirstOrDefaultAsync();
+                    radar = await _session.Radars.Where(b => b.receiver_id.Equals(receiver.ID)).FirstOrDefaultAsync();
+                }
+                else
+                {
+                    Transmitter transmitter = await _session.Transmitters.Where(b => b.ID.Equals(a.ID)).FirstOrDefaultAsync();
+                    radar = await _session.Radars.Where(b => b.transmitter_id.Equals(transmitter.ID)).FirstOrDefaultAsync();
+                }
+            }
+            catch (Exception e)
+            {
+                // log exception here
+                Data.message = e.Message.ToString() + " Error";
+                await _session.Rollback();
+            }
+            finally
+            {
+                _session.CloseTransaction();
+            }
+            return RedirectToAction("Edit", "EditRadar", new { id = radar.ID });
+        }
 
         public IActionResult GoToTransmitter()
         {
@@ -132,13 +214,12 @@ namespace ASPNETAOP.Controllers
                 for (int i = 0; i < Data.ListOfAntennas.Count; i++)
                 {
                     Antenna antenna = Data.ListOfAntennas[i];
-                    Console.WriteLine(antenna.ID + " " + antenna.name + " " + antenna.polarization + " " + antenna.receiver_id + " " + antenna.transmitter_id);
                     if (antenna.duty.Equals("both"))
                     {
                         antenna.transmitter_id = Data.Transmitter.ID;
                     }
                     _session.SaveAntenna(antenna);
-                    ViewData["Message"] = "New Antenna added";
+                    Data.message = "New Antenna added";
                 }
 
                 await _session.Commit();
@@ -146,14 +227,50 @@ namespace ASPNETAOP.Controllers
             catch (Exception e)
             {
                 // log exception here
-                ViewData["Message"] = e.Message.ToString() + " Error";
+                Data.message = e.Message.ToString() + " Error";
                 await _session.Rollback();
             }
             finally
             {
                 _session.CloseTransaction();
             }
+            Data.message = "Antennas added succesfully";
             return RedirectToAction("NewRadar", "Radar");
         }
+
+        public async System.Threading.Tasks.Task<IActionResult> Done()
+        {
+
+            //first save all antennas that created before
+            try
+            {
+                _session.BeginTransaction();
+                for (int i = 0; i < Data.ListOfAntennas.Count; i++)
+                {
+                    Antenna antenna = Data.ListOfAntennas[i];
+                    if (antenna.duty.Equals("both"))
+                    {
+                        antenna.transmitter_id = Data.Transmitter.ID;
+                    }
+                    _session.SaveAntenna(antenna);
+                }
+
+                await _session.Commit(); 
+                Data.message = "New Antennas added";
+            }
+            catch (Exception e)
+            {
+                // log exception here
+                Data.message = e.Message.ToString() + " Error";
+                await _session.Rollback();
+            }
+            finally
+            {
+                _session.CloseTransaction();
+            }
+            Data.ComeFromAdd = false;
+            return RedirectToAction("Edit", "EditRadar", new { id = Data.Radar.ID });
+        }
+
     }
 }

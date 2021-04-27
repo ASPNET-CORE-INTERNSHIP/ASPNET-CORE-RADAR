@@ -25,11 +25,7 @@ namespace ASPNETAOP.Models
 
         public Location Location { get; set; }
 
-        public List<Mode> Mode { get; set; }
-
-        public List<Submode> Submode { get; set; }
-
-        public Scan Scan { get; set; }
+        public List<Mode> ListOfModes { get; set; }
 
         public List<Antenna> ListOfAntennas { get; set; }
     }

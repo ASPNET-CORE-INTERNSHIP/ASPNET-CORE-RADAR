@@ -1,0 +1,112 @@
+﻿@model ASPNETAOP.Models.Antenna
+
+@{
+    ViewData["Title"] = "Edit Antenna";
+}
+
+<h1>Edit Antenna</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-9">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @{
+                var ID = "Model.ID";
+                var name = "Model.name";
+                var type = "Model.type";
+                var horizontal_beamwidth = "Model.horizontal_beamwidth";
+                var vertical_beamwidth = "Model.vertical_beamwidth";
+                var polarization = "Model.polarization";
+                var number_of_feed = "Model.number_of_feed";
+                var horizontal_dimension = "Model.horizontal_dimension";
+                var vertical_dimension = "Model.vertical_dimension";
+                var location = "Model.location";
+                <input type="hidden" id="@ID" name="@ID" value="@Model.ID" />
+                <input type="hidden" id="@name" name="@name" value="@Model.name" />
+                <input type="hidden" id="@type" name="@type" value="@Model.type" />
+                <input type="hidden" id="@horizontal_beamwidth" name="@horizontal_beamwidth" value="@Model.horizontal_beamwidth" />
+                <input type="hidden" id="@vertical_beamwidth" name="@vertical_beamwidth" value="@Model.vertical_beamwidth" />
+                <input type="hidden" id="@polarization" name="@polarization" value="@Model.polarization" />
+                <input type="hidden" id="@number_of_feed" name="@number_of_feed" value="@Model.number_of_feed" />
+                <input type="hidden" id="@horizontal_dimension" name="@horizontal_dimension" value="@Model.horizontal_dimension" />
+                <input type="hidden" id="@vertical_dimension" name="@vertical_dimension" value="@Model.vertical_dimension" />
+                <input type="hidden" id="@location" name="@location" value="@Model.location" />
+                <div class="form-group">
+                    <label asp-for="@Model.ID" class="hidden"></label>
+                    <input asp-for="@Model.ID" class="hidden" type="hidden">
+                    <span asp-validation-for="@Model.ID" class="hidden"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.name" class="control-label"></label>
+                    <input asp-for="@Model.name" class="form-control" type="text" placeholder=@Model.name />
+                    <span asp-validation-for="@Model.name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.type" class="control-label"></label>
+                    <select asp-for="@Model.type" class="form-select" aria-label="Default select example">
+                        <option selected>@Model.type</option>
+                        <option value="parabolic">parabolic</option>
+                        <option value="cassegrain">cassegrain</option>
+                        <option value="phased array">phased array</option>
+                    </select>
+                    <span asp-validation-for="@Model.type" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.horizontal_beamwidth" class="control-label"></label>
+                    <input asp-for="@Model.horizontal_beamwidth" class="form-control" type="number" placeholder=@Model.horizontal_beamwidth step="0.01" pattern="^\d+(?:\.\d{2,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{2,2})?$/.test(this.value)?'inherit':'red'"/>
+                    <span asp-validation-for="@Model.horizontal_beamwidth" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.vertical_beamwidth" class="control-label"></label>
+                    <input asp-for="@Model.vertical_beamwidth" class="form-control" type="number" placeholder=@Model.vertical_beamwidth step="0.01" pattern="^\d+(?:\.\d{2,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{2,2})?$/.test(this.value)?'inherit':'red'"/>
+                    <span asp-validation-for="@Model.vertical_beamwidth" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.polarization" class="control-label"></label>
+                    <input asp-for="@Model.polarization" class="form-control" type="text" placeholder=@Model.polarization />
+                    <span asp-validation-for="@Model.polarization" class="text-danger"></span>
+                </div>
+                if (Model.duty.Equals("transmitter"))
+                {
+                    <div class="form-group">
+                        <label asp-for="@Model.number_of_feed" class="control-label"></label>
+                        <input asp-for="@Model.number_of_feed" class="form-control" type="number" placeholder=@Model.number_of_feed step="1" />
+                        <span asp-validation-for="@Model.number_of_feed" class="text-danger"></span>
+                    </div>
+                }
+            }
+            <div class="form-group">
+                <label asp-for="@Model.horizontal_dimension" class="control-label"></label>
+                <input asp-for="@Model.horizontal_dimension" class="form-control" type="number" placeholder=@Model.horizontal_dimension min="0" step="0.01" pattern="^\d+(?:\.\d{3,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{4,2})?$/.test(this.value)?'inherit':'red'"/>
+                <span asp-validation-for="@Model.horizontal_dimension" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.vertical_dimension" class="control-label"></label>
+                <input asp-for="@Model.vertical_dimension" class="form-control" type="number" placeholder=@Model.vertical_dimension min="0" step="0.01" pattern="^\d+(?:\.\d{3,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{4,2})?$/.test(this.value)?'inherit':'red'"/>
+                <span asp-validation-for="@Model.vertical_dimension" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.location" class="control-label"></label>
+                <input asp-for="@Model.location" class="form-control" type="text" placeholder=@Model.location/>
+                <span asp-validation-for="@Model.location" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Edit" class="btn btn-primary" />
+            </div>
+            <div>
+                <a href="~/Antenna/DeleteAntenna?id=@Model.ID" id="deleteBtn" class="btn bg-danger mr-1" onclick="return confirm('Are you sure you want to delete this antenna?');"><i class="fas fa-trash-alt text-white"></i>Delete</a>
+            </div>
+        </form>
+    </div>
+    <b>@Data.message</b>
+    @{ Data.message = null;}
+</div>
+
+<div>
+    <input type="button" title="Back" value="Back" onclick="location.href='@Url.Action("GoBack", "Antenna")'" />
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
