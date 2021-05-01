@@ -1,0 +1,120 @@
+﻿@model ASPNETAOP.Models.SubModeInfo
+
+@{
+    ViewData["Title"] = "Edit Submode";
+}
+<h1>Edit Submode</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-9">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @{
+                var ID = "Model.Submode.ID";
+                var name = "Model.Submode.name";
+                var PW = "Model.Submode.PW";
+                var PRI = "Model.Submode.PRI";
+                var min_frequency = "Model.Submode.min_frequency";
+                var max_frequency = "Model.Submode.max_frequency";
+                <input type="hidden" id="@ID" name="@ID" value="@Model.Submode.ID" />
+                <input type="hidden" id="@name" name="@name" value="@Model.Submode.name" />
+                <input type="hidden" id="@PW" name="@PW" value="@Model.Submode.PW" />
+                <input type="hidden" id="@PRI" name="@PRI" value="@Model.Submode.PRI" />
+                <input type="hidden" id="@min_frequency" name="@min_frequency" value="@Model.Submode.min_frequency" />
+                <input type="hidden" id="@max_frequency" name="@max_frequency" value="@Model.Submode.max_frequency" />
+                <div class="form-group">
+                    <label asp-for="@Model.Submode.ID" class="hidden"></label>
+                    <input asp-for="@Model.Submode.ID" class="hidden" type="hidden">
+                    <span asp-validation-for="@Model.Submode.ID" class="hidden"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Submode.name" class="control-label"></label>
+                    <input asp-for="@Model.Submode.name" class="form-control" type="text" placeholder=@Model.Submode.name />
+                    <span asp-validation-for="@Model.Submode.name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Submode.PW" class="control-label"></label>
+                    <input asp-for="@Model.Submode.PW" class="form-control" type="number" placeholder=@Model.Submode.PW step="0.01" />
+                    <span asp-validation-for="@Model.Submode.PW" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Submode.PRI" class="control-label"></label>
+                    <input asp-for="@Model.Submode.PRI" class="form-control" type="number" placeholder=@Model.Submode.PRI step="0.01" />
+                    <span asp-validation-for="@Model.Submode.PRI" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Submode.min_frequency" class="control-label"></label>
+                    <input asp-for="@Model.Submode.min_frequency" class="form-control" type="number" placeholder=@Model.Submode.min_frequency />
+                    <span asp-validation-for="@Model.Submode.min_frequency" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Submode.max_frequency" class="control-label"></label>
+                    <input asp-for="@Model.Submode.max_frequency" class="form-control" type="number" placeholder=@Model.Submode.max_frequency />
+                    <span asp-validation-for="@Model.Submode.max_frequency" class="text-danger"></span>
+                </div>
+            }
+            <div class="form-group">
+                <input type="submit" value="Edit" class="btn btn-primary" />
+            </div>
+            <h1>            </h1>
+            <div>
+                <table>
+                    <tr>
+                        <a href="~/Mode/DeleteSubmode?id=@Model.Submode.ID" id="deleteBtn" class="btn bg-danger mr-1" onclick="return confirm('Are you sure you want to delete this submode?');"><i class="fas fa-trash-alt text-white"></i>Delete</a>
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+</div>
+<h1>---------------------------------------------------------------------</h1>
+<h3>Submode's Scan Informations</h3>
+<div class="row">
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>type</th>
+            <th>Main Aspect</th>
+            <th>Scan Angle</th>
+            <th>Scan Rate</th>
+            <th>Hits Per Scan</th>
+            <th></th>
+        </tr>
+        @{
+            var scan_name = Model.Scan.name;
+            var type = Model.Scan.type;
+            var main_aspect = Model.Scan.main_aspect;
+            var scan_angle = Model.Scan.scan_angle;
+            var scan_rate = Model.Scan.scan_rate;
+            var hits_per_scan = Model.Scan.hits_per_scan;
+            <input type="hidden" id="@scan_name" name="@scan_name" value="@Model.Scan.name" />
+            <input type="hidden" id="@type" name="@type" value="@Model.Scan.type" />
+            <input type="hidden" id="@main_aspect" name="@main_aspect" value="@Model.Scan.main_aspect" />
+            <input type="hidden" id="@scan_angle" name="@scan_angle" value="@Model.Scan.scan_angle" />
+            <input type="hidden" id="@scan_rate" name="@scan_rate" value="@Model.Scan.scan_rate" />
+            <input type="hidden" id="@hits_per_scan" name="@hits_per_scan" value="@Model.Scan.hits_per_scan" />
+
+            <tr>
+                <td>@scan_name</td>
+                <td>@type</td>
+                <td>@main_aspect</td>
+                <td>@scan_angle</td>
+                <td>@scan_rate</td>
+                <td>@hits_per_scan</td>
+                <td>
+                    <input type="button" style="background-color:royalblue; border-color:royalblue; color:white; width:150px; height:40px;" title="Edit" value="Edit" onclick="location.href='@Url.Action("ScanEdit", "Submode", new { id = @Model.Scan.ID })'" />
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<h1>---------------------------------------------------------------------</h1>
+<h1>            </h1>
+<div>
+    <input type="button" style="background-color:mediumblue; border-color:mediumblue; color:white; width:150px; height:40px;" title="Back" value="Back" onclick="location.href='@Url.Action("GoBack", "Submode", new { id = Model.Submode.ID })'" />
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

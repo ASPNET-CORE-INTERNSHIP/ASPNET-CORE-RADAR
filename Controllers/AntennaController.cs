@@ -49,7 +49,6 @@ namespace ASPNETAOP.Controllers
             {
                 _session.CloseTransaction();
             }
-            Data.ComeFromAdd = true;
             return RedirectToAction("NewAntenna", "Antenna");
         }
 
@@ -143,6 +142,13 @@ namespace ASPNETAOP.Controllers
 
         public async Task<IActionResult> BeforeEdit(Guid id)
         {
+            //Because we use the same view before and after edit process we should handle the view messages with the following conditions
+            if (Data.edited)
+            {
+                Data.message = "Update completed successfully";
+                Data.edited = false;
+            }
+
             //Get antenna's informations and shows it in edit page
             Antenna antenna = await _session.Antennas.Where(b => b.ID.Equals(id)).FirstOrDefaultAsync();
 
@@ -161,15 +167,16 @@ namespace ASPNETAOP.Controllers
                 // log exception here
                 Data.message = e.Message.ToString() + " Error";
                 await _session.Rollback();
-                return RedirectToAction("BeforeEdit", "Antenna", new { id = antenna.ID });
             }
             finally
             {
                 _session.CloseTransaction();
             }
-            return View(antenna);
+            Data.edited = true;
+            return RedirectToAction("BeforeEdit", "Antenna", new { id = antenna.ID });
         }
 
+        //hiç ekleme yapmayınca sorun
         public async Task<IActionResult> GoBack(Guid id)
         {
             Radar radar = new Radar();

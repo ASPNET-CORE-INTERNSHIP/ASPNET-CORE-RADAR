@@ -32,7 +32,6 @@ namespace ASPNETAOP.Controllers
             return View();
         }
 
-
         [HttpPost]
         public async Task<IActionResult> NewModeAsync(Mode mod)
         {
@@ -65,13 +64,8 @@ namespace ASPNETAOP.Controllers
             //Because we use the same view before and after edit process we should handle the view messages with the following conditions
             if (Data.edited)
             {
-                ViewData["Message"] = "Update completed successfully";
+                Data.message = "Update completed successfully";
                 Data.edited = false;
-            }
-            if (Data.message != null)
-            {
-                ViewData["Message"] = Data.message;
-                Data.message = null;
             }
 
             //Get mode's informations and shows it in edit page
@@ -132,7 +126,7 @@ namespace ASPNETAOP.Controllers
                 _session.CloseTransaction();
             }
 
-            return RedirectToAction("Edit", "EditRadarController", new { id = mode.radar_id });
+            return RedirectToAction("Edit", "EditRadar", new { id = mode.radar_id });
         }
 
         public IActionResult SubmodeEdit(Guid id)

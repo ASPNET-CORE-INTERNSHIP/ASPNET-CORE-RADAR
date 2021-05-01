@@ -23,26 +23,32 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="@Model.Mode.name" class="control-label"></label>
-                    <input asp-for="@Model.Mode.name" class="form-control" type="text", placeholder=@Model.Mode.name>
+                    <input asp-for="@Model.Mode.name" class="form-control" type="text" , placeholder=@Model.Mode.name>
                     <span asp-validation-for="@Model.Mode.name" class="text-danger"></span>
                 </div>
             }
             <div class="form-group">
-                <input type="submit" value="Edit" class="btn btn-primary" />
-            </div>
-            <div>
-                <a href="~/Mode/DeleteMode?id=@Model.Mode.ID" id="deleteBtn" class="btn bg-danger mr-1" onclick="return confirm('Are you sure you want to delete this mode with its submodes?');"><i class="fas fa-trash-alt text-white"></i>Delete</a>
+                <table>
+                    <tr>
+                        <input type="submit" value="Edit" class="btn btn-primary" />
+                        &nbsp;
+                        <a href="~/Mode/DeleteMode?id=@Model.Mode.ID" id="deleteBtn" class="btn bg-danger mr-1" onclick="return confirm('Are you sure you want to delete this mode with its submodes?');"><i class="fas fa-trash-alt text-white"></i>Delete</a>
+                    </tr>
+                </table>
             </div>
         </form>
     </div>
 </div>
+<h1>---------------------------------------------------------------------</h1>
+<h3>Submodes</h3>
 <div class="row">
     <table>
         <tr>
             <th>Submode Name</th>
             <th>PW</th>
             <th>PRI</th>
-            <th>Mode Name</th>
+            <th></th>
+            <th></th>
         </tr>
         @{for (int i = 0; i < Model.ListOfSubmodes.Count; i++)
             {
@@ -58,7 +64,7 @@
                     <td>@PW</td>
                     <td>@PRI</td>
                     <td>
-                        <input type="button" title="Edit Submode" value="Edit Submode" onclick="location.href='@Url.Action("SubmodeEdit", "Mode", new { id = @Model.ListOfSubmodes[i].ID })'" />
+                        <input type="button" style="background-color:royalblue; color:white; width:150px; height:40px;" title="Edit Submode" value="Edit Submode" onclick="location.href='@Url.Action("SubmodeEdit", "Mode", new { id = @Model.ListOfSubmodes[i].ID })'" />
                     </td>
                     <td>
                         <a href="~/Mode/DeleteSubmode?id=@Model.ListOfSubmodes[i].ID" id="deleteBtn" class="btn bg-danger mr-1" onclick="return confirm('Are you sure you want to delete this submode?');"><i class="fas fa-trash-alt text-white"></i>Delete</a>
@@ -66,16 +72,15 @@
                 </tr>
             }
         }
-        <div>
-            <input type="button" title="Add SubMode" value="Add SubMode" onclick="location.href='@Url.Action("AddSubMode", "Mode", new { id = Model.Mode.ID })'" />
-        </div>
     </table>
+    <input type="button" style="background-color:limegreen; border-color:limegreen; color:white; width:150px; height:40px;" title="Add SubMode" value="Add SubMode" onclick="location.href='@Url.Action("AddSubMode", "Mode", new { id = Model.Mode.ID })'" />
     <b>@Data.message</b>
     @{ Data.message = null; }
 </div>
-
+<h1>---------------------------------------------------------------------</h1>
+<h1>            </h1>
 <div>
-    <input type="button" title="Back" value="Back" onclick="location.href='@Url.Action("GoBack", "Mode", new { id = Model.Mode.ID })'" />
+    <input type="button" style="background-color:mediumblue; border-color:mediumblue; color:white; width:150px; height:40px;" title="Back" value="Back" onclick="location.href='@Url.Action("GoBack", "Mode", new { id = Model.Mode.ID })'" />
 </div>
 
 @section Scripts {

@@ -1,0 +1,116 @@
+﻿@model ASPNETAOP.Models.SubModeInfo
+
+@{
+    ViewData["Title"] = "Edit Scan";
+}
+
+<h1>Edit Scan</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-9">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @{
+                var ID = "Model.Scan.ID";
+                var scan_name = "Model.Scan.name";
+                var type = "Model.Scan.type";
+                var main_aspect = "Model.Scan.main_aspect";
+                var scan_angle = "Model.Scan.scan_angle";
+                var scan_rate = "Model.Scan.scan_rate";
+                var hits_per_scan = "Model.Scan.hits_per_scan";
+                <input type="hidden" id="@ID" name="@ID" value="@Model.Scan.ID" />
+                <input type="hidden" id="@scan_name" name="@scan_name" value="@Model.Scan.name" />
+                <input type="hidden" id="@type" name="@type" value="@Model.Scan.type" />
+                <input type="hidden" id="@main_aspect" name="@main_aspect" value="@Model.Scan.main_aspect" />
+                <input type="hidden" id="@scan_angle" name="@scan_angle" value="@Model.Scan.scan_angle" />
+                <input type="hidden" id="@scan_rate" name="@scan_rate" value="@Model.Scan.scan_rate" />
+                <input type="hidden" id="@hits_per_scan" name="@hits_per_scan" value="@Model.Scan.hits_per_scan" />
+
+                <div class="form-group">
+                    <label asp-for="@Model.Scan.ID" class="hidden"></label>
+                    <input asp-for="@Model.Scan.ID" class="hidden" type="hidden">
+                    <span asp-validation-for="@Model.Scan.ID" class="hidden"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Scan.name" class="control-label"></label>
+                    <input asp-for="@Model.Scan.name" class="form-control" type="text" placeholder=@Model.Scan.name />
+                    <span asp-validation-for="@Model.Scan.name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Scan.type" class="control-label"></label>
+                    <input asp-for="@Model.Scan.type" class="form-control" type="text">
+                    <span asp-validation-for="@Model.Scan.type" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Scan.main_aspect" class="control-label"></label>
+                    <select asp-for="@Model.Scan.main_aspect" class="form-select" aria-label="Default select example">
+                        <option selected>placeholder=@Model.Scan.main_aspect</option>
+                        <option value="east">east</option>
+                        <option value="west">west</option>
+                        <option value="north">north</option>
+                        <option value="south">south</option>
+                        <option value="changeable">changeable</option>
+                    </select>
+                    <span asp-validation-for="@Model.Scan.main_aspect" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Scan.scan_angle" class="control-label"></label>
+                    <input asp-for="@Model.Scan.scan_angle" class="form-control" type="number" placeholder=@Model.Scan.scan_angle step="0.1" />
+                    <span asp-validation-for="@Model.Scan.scan_angle" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Scan.scan_rate" class="control-label"></label>
+                    <input asp-for="@Model.Scan.scan_rate" class="form-control" type="number" placeholder=@Model.Scan.scan_rate step="0.1" />
+                    <span asp-validation-for="@Model.Scan.scan_rate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Scan.hits_per_scan" class="control-label"></label>
+                    <input asp-for="@Model.Scan.hits_per_scan" class="form-control" type="number" placeholder=@Model.Scan.hits_per_scan />
+                    <span asp-validation-for="@Model.Scan.hits_per_scan" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Edit" class="btn btn-primary" />
+                </div>
+            }
+        </form>
+    </div>
+</div>
+<h1>---------------------------------------------------------------------</h1>
+<h3>Antennas That Works With This Scan</h3>
+<div class="row">
+    <table>
+        <tr>
+            <th>Antenna Name</th>
+            <th>Type</th>
+            <th>Duty</th>
+            <th></th>
+        </tr>
+        @{for (int i = 0; i < Model.ListOfAntennas.Count; i++)
+            {
+                var name = Model.ListOfAntennas[i].name;
+                var antenna_type = Model.ListOfAntennas[i].type;
+                var duty = Model.ListOfAntennas[i].duty;
+                <input type="hidden" id="@name" name="@name" value="@Model.ListOfAntennas[i].name" />
+                <input type="hidden" id="@antenna_type" name="@antenna_type" value="@Model.ListOfAntennas[i].type" />
+                <input type="hidden" id="@duty" name="@duty" value="@Model.ListOfAntennas[i].duty" />
+                <tr>
+                    <td>@name</td>
+                    <td>@antenna_type</td>
+                    <td>@duty</td>
+                </tr>
+            }
+        }
+    </table>
+    <input type="button" style="background-color:limegreen; border-color:limegreen; color:white; width:150px; height:40px;" title="Edit Relationship" value="Edit Relationship" onclick="location.href='@Url.Action("EditRelationship", "Scan", new { id = Model.Scan.ID })'" />
+    <b>@Data.message</b>
+    @{ Data.message = null; }
+</div>
+<h1>            </h1>
+<h1>---------------------------------------------------------------------</h1>
+<div>
+        <input type="button" style="background-color:mediumblue; border-color:mediumblue; color:white; width:150px; height:40px;" title="Back" value="Back" onclick="location.href='@Url.Action("GoBack", "Scan", new { id = Model.Scan.ID })'" />
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

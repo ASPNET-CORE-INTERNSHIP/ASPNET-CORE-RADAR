@@ -2,6 +2,7 @@
 using ASPNETAOP.Session;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using NHibernate.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -26,11 +27,12 @@ namespace ASPNETAOP.Controllers
             return View();
         }
         
-        public IActionResult NewAntennaScan()
+        public async Task<IActionResult> NewAntennaScanAsync()
         {
             //New variable consisting of a list of antennas
             //so the user can select antennas which empolys current scan type
             AntennaList alist = new AntennaList();
+            List<AntennaScan> selected_list = await _session.AntennaScans.Where(b => b.scan_id.Equals(Data.Scan.ID)).ToListAsync();
             alist.antennas = Data.ListOfAntennas;
             //returning the model for the cshmtl page to access it
             return View(alist);

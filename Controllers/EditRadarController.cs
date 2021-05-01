@@ -46,6 +46,7 @@ namespace ASPNETAOP.Controllers
             Data.Transmitter = transmitter_temp;
             Data.Receiver = receiver_temp;
             Data.ListOfAntennas = AntennaList;
+            Data.Radar = r;
 
             return View(radar);
         }
@@ -80,8 +81,15 @@ namespace ASPNETAOP.Controllers
             return RedirectToAction("BeforeEdit", "Antenna", new { id = id });
         }
 
+        public async System.Threading.Tasks.Task<IActionResult> AddMode(Guid id)
+        {
+            Data.ComeFromAdd = true;
+            return RedirectToAction("NewMode", "Mode");
+        }
+        
         public async System.Threading.Tasks.Task<IActionResult> AddAntennaAsync(Guid id)
         {
+            Data.ComeFromAdd = true;
             return RedirectToAction("AddNewAntenna", "Antenna", new { id = id});
         }
 

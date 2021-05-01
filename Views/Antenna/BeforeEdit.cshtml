@@ -104,7 +104,7 @@
 </div>
 
 <div>
-    <input type="button" title="Back" value="Back" onclick="location.href='@Url.Action("GoBack", "Antenna")'" />
+    <input type="button" style="background-color:mediumblue; border-color:mediumblue; color:white; width:150px; height:40px;" title="Back" value="Back" onclick="location.href='@Url.Action("GoBack", "Antenna", new { id = Model.ID })'" />
 </div>
 
 @section Scripts {

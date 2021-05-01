@@ -58,6 +58,8 @@ namespace ASPNETAOP.Session
 
         public IQueryable<Scan> Scan => _session.Query<Scan>();
 
+        public IQueryable<AntennaScan> AntennaScans => _session.Query<AntennaScan>();
+
         public async Task SaveRadar(Radar entity)
         {
             ISQLQuery query = _session.CreateSQLQuery("INSERT INTO Radar VALUES(:ID, :name, :system, :configuration, :transmitter_id, :receiver_id, :location_id)");
@@ -244,6 +246,18 @@ namespace ASPNETAOP.Session
             query.ExecuteUpdate();
         }
 
+        public async Task EditSubmode(Submode entity)
+        {
+            ISQLQuery query = _session.CreateSQLQuery("UPDATE Submode SET name = :name, PW = :PW, PRI = :PRI, min_frequency = :min_frequency, max_frequency = :max_frequency WHERE ID = :ID");
+            query.SetParameter("ID", entity.ID);
+            query.SetParameter("name", entity.name);
+            query.SetParameter("PW", entity.PW);
+            query.SetParameter("PRI", entity.PRI);
+            query.SetParameter("min_frequency", entity.min_frequency);
+            query.SetParameter("max_frequency", entity.max_frequency);
+            query.ExecuteUpdate();
+        }
+
         public async Task DeleteSubMode(Guid id)
         {
             ISQLQuery query = _session.CreateSQLQuery("DELETE FROM Submode WHERE ID = :ID");
@@ -254,6 +268,19 @@ namespace ASPNETAOP.Session
         public async Task SaveScan(Scan entity)
         {
             ISQLQuery query = _session.CreateSQLQuery("INSERT INTO Scan VALUES(:ID, :name, :type, :main_aspect, :scan_angle, :scan_rate, :hits_per_scan)");
+            query.SetParameter("ID", entity.ID);
+            query.SetParameter("name", entity.name);
+            query.SetParameter("type", entity.type);
+            query.SetParameter("main_aspect", entity.main_aspect);
+            query.SetParameter("scan_angle", entity.scan_angle);
+            query.SetParameter("scan_rate", entity.scan_rate);
+            query.SetParameter("hits_per_scan", entity.hits_per_scan);
+            query.ExecuteUpdate();
+        }
+
+        public async Task EditScan(Scan entity)
+        {
+            ISQLQuery query = _session.CreateSQLQuery("UPDATE Scan SET name = :name, type = :type, main_aspect = :main_aspect, scan_angle = :scan_angle, scan_rate = :scan_rate, hits_per_scan = :hits_per_scan WHERE ID = :ID");
             query.SetParameter("ID", entity.ID);
             query.SetParameter("name", entity.name);
             query.SetParameter("type", entity.type);

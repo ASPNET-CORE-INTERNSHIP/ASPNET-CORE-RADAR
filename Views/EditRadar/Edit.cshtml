@@ -39,6 +39,8 @@
             }
         </table>
     </div>
+    <h1>---------------------------------------------------------------------</h1>
+    <h3>Receiver</h3>
     <div class="row">
         <table>
             <tr>
@@ -71,6 +73,8 @@
             }
         </table>
     </div>
+    <h1>---------------------------------------------------------------------</h1>
+    <h3>Transmitter</h3>
     <div class="row">
         <table>
             <tr>
@@ -107,6 +111,8 @@
             }
         </table>
     </div>
+    <h1>---------------------------------------------------------------------</h1>
+    <h3>Location</h3>
     <div class="row">
         <table>
             <tr>
@@ -147,10 +153,13 @@
             }
         </table>
     </div>
+    <h1>---------------------------------------------------------------------</h1>
+    <h3>Modes</h3>
     <div class="row">
         <table>
             <tr>
                 <th>Mode Name</th>
+                <th></th>
             </tr>
             @{for (int i = 0; i < Model.ListOfModes.Count; i++)
                 {
@@ -159,20 +168,23 @@
                     <tr>
                         <td>@name</td>
                         <td>
-                            <input type="button" style="background-color:royalblue; color:white; width:150px; height:40px;" title="Edit Mode" value="Edit Mode" onclick="location.href='@Url.Action("ModeEdit", "EditRadar", new { id = @Model.ListOfModes[i].ID })'" />
+                            <input type="button" style="background-color:royalblue; border-color:royalblue; color:white; width:150px; height:40px;" title="Edit Mode" value="Edit Mode" onclick="location.href='@Url.Action("ModeEdit", "EditRadar", new { id = @Model.ListOfModes[i].ID })'" />
                         </td>
                     </tr>
                 }
             }
         </table>
-        <input type="button" style="background-color:limegreen; color:white; width:150px; height:40px;" title="Add Mode" value="Add Mode" onclick="location.href='@Url.Action("AddMode", "EditRadar", new { id = @Model.Radar.ID })'" />
+        <input type="button" style="background-color:limegreen; border-color:limegreen; color:white; width:150px; height:40px;" title="Add Mode" value="Add Mode" onclick="location.href='@Url.Action("AddMode", "EditRadar", new { id = @Model.Radar.ID })'" />
     </div>
+    <h1>---------------------------------------------------------------------</h1>
+    <h3>Antennas</h3>
     <div class="row">
         <table>
             <tr>
                 <th>Antenna name</th>
                 <th>Antenna type</th>
                 <th>Antenna duty</th>
+                <th></th>
             </tr>
             @{for (int i = 0; i < Model.ListOfAntennas.Count; i++)
                 {
@@ -198,6 +210,8 @@
 </form>
 <b>@Data.message</b>
 @{ Data.message = null; }
+<h1>---------------------------------------------------------------------</h1>
+<h1>                    </h1>
 <div>
-    <input type="button" title="Back" value="Back" onclick="location.href='@Url.Action("RadarList", "AdminRadarList")'" />
+    <input type="button" style="background-color:mediumblue; border-color:mediumblue; color:white; width:150px; height:40px;" title="Back" value="Back" onclick="location.href='@Url.Action("RadarList", "AdminRadarList")'" />
 </div>

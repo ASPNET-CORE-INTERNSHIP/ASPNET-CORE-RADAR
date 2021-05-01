@@ -10,7 +10,7 @@ namespace ASPNETAOP.Models
     public class Scan
     {
         public Scan() { }
-        public Scan(Guid key, string name, string type, string main_aspect, float scan_angle, float scan_rate, int hits_per_scan)
+        public Scan(Guid key, string name, string type, string main_aspect, Double scan_angle, Double scan_rate, int hits_per_scan)
         {
             this.ID = key;
             this.name = name;
@@ -37,11 +37,11 @@ namespace ASPNETAOP.Models
 
         [Display(Name = "Scanning Angle")]
         [Required(ErrorMessage = "Please enter the angle of scan")]
-        public virtual float scan_angle { get; set; }
+        public virtual Double scan_angle { get; set; }
 
         [Display(Name = "Scan Rate")]
         [Required(ErrorMessage = "Please enter the scan rate")]
-        public virtual float scan_rate { get; set; }
+        public virtual Double scan_rate { get; set; }
 
         [Display(Name = "Scan Duration (Hits-per-scan)")]
         [Required(ErrorMessage = "Please enter the scan duration")]
