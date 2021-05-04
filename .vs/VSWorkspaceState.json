@@ -1,6 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Controllers",
+    "\\Views",
+    "\\Views\\Antenna"
   ],
   "SelectedNode": "\\ASPNETAOP.sln",
   "PreviewInSolutionExplorer": false

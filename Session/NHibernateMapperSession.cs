@@ -181,8 +181,8 @@ namespace ASPNETAOP.Session
 
         public async Task<String> SelectReceiver(Guid ID)
         {
-            var transmitter_name = _session.CreateSQLQuery("SELECT name FROM Receiver WHERE ID = :ID").SetParameter("ID", ID).UniqueResult<string>();
-            return transmitter_name;
+            var receiver_name = _session.CreateSQLQuery("SELECT name FROM Receiver WHERE ID = :ID").SetParameter("ID", ID).UniqueResult<string>();
+            return receiver_name;
         }
 
         public async Task<Guid> GetReceiverID(Guid id)

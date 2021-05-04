@@ -1,10 +1,14 @@
+using ASPNETAOP.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.Collections.Generic;
 
 namespace ASPNETAOP
 {
     public class Program
     {
+        public static IDictionary<Guid, Data> data = new Dictionary<Guid, Data>();
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();

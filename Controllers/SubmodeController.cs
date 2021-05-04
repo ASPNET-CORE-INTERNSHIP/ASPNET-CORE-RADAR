@@ -1,4 +1,4 @@
-﻿using ASPNETAOP.Models;
+﻿/*using ASPNETAOP.Models;
 using ASPNETAOP.Session;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -125,20 +125,20 @@ namespace ASPNETAOP.Controllers
 
     }
     /*
-    SELECT* FROM Transmitter;
-    SELECT* FROM Receiver;
-    SELECT* FROM Antenna;
-    SELECT* FROM Radar;
-    SELECT* FROM Location;
-    SELECT* FROM Mode;
-    SELECT* FROM Submode;
-    SELECT* FROM Scan;
-    DELETE FROM Antenna WHERE number_of_feed < 6000;
-    DELETE FROM Receiver WHERE rest_time < 6000;
-    DELETE FROM Transmitter WHERE max_frequency < 6000;
-    DELETE FROM Location WHERE city = 'DAKAR';
-    DELETE FROM Radar WHERE name = 'Friendly ';
-    DELETE FROM Mode WHERE name ='Friendly ';
-    DELETE FROM Scan WHERE scan_rate<6000;
+SELECT* FROM Transmitter;
+SELECT* FROM Receiver;
+SELECT* FROM Antenna;
+SELECT* FROM Radar;
+SELECT* FROM Location;
+SELECT* FROM Mode;
+SELECT* FROM Submode;
+SELECT* FROM Scan;
+DELETE FROM Antenna WHERE number_of_feed < 6000;
+DELETE FROM Receiver WHERE rest_time < 6000;
+DELETE FROM Transmitter WHERE max_frequency < 6000;
+DELETE FROM Location WHERE city = 'DAKAR';
+DELETE FROM Radar WHERE name = 'Friendly ';
+DELETE FROM Mode WHERE name ='Friendly ';
+DELETE FROM Scan WHERE scan_rate<6000;
     */
-}
+//}

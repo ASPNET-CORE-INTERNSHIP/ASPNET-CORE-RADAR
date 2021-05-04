@@ -1,0 +1,164 @@
+﻿@model ASPNETAOP.Models.Data
+
+@{
+    ViewData["Title"] = "NewAntenna";
+}
+
+<h1>Add Antenna</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-9">
+        @{ String newProgram = Model.newProgram; }
+        @{ var receiver = Model.Receiver.ID;}
+        @{ var number_of_antennas = Model.ListOfAntennas.Count;}
+        @{ var ComeFromAdd = Model.ComeFromAdd;
+            var selected_type = "Select the type of antenna";
+            var phname = String.Empty;
+            double ph_horizontal_beamwidth = 00.00;
+            double ph_vertical_beamwidth = 00.00;
+            var phpolarization = "";
+            int phNOF = 0;
+            double ph_horizontal_dimension = 000.00;
+            double ph_vertical_dimension = 000.00;
+            var phlocation = String.Empty;
+            if (Model.LastAntenna != null)
+            {
+                selected_type = Model.LastAntenna.type;
+                phname = Model.LastAntenna.name;
+                ph_horizontal_beamwidth = Model.LastAntenna.horizontal_beamwidth;
+                ph_vertical_beamwidth = Model.LastAntenna.vertical_beamwidth;
+                phpolarization = Model.LastAntenna.polarization;
+                phNOF = Model.LastAntenna.number_of_feed;
+                ph_horizontal_dimension = Model.LastAntenna.horizontal_dimension;
+                ph_vertical_dimension = Model.LastAntenna.vertical_dimension;
+                phlocation = Model.LastAntenna.location;
+            }
+
+        }
+        @{ Guid? transmitter_id = null;
+            if (Model.Transmitter != null)
+                transmitter_id = (Guid)Model.Transmitter.ID;
+        }
+        <form asp-action="NewAntenna">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input asp-for="@Model.Receiver.ID" class="hidden" type="hidden" placeholder=@receiver>
+            <input asp-for="@Model.LastAntenna.ID" class="hidden" type="hidden">
+            <input asp-for="@Model.ComeFromAdd" class="hidden" type="hidden" placeholder=@ComeFromAdd>
+
+            <div class="form-group">
+                <label asp-for="@Model.LastAntenna.type" class="control-label"></label>
+                <select asp-for="@Model.LastAntenna.type" class="form-select" aria-label="Default select example">
+                    <option selected>@selected_type</option>
+                    <option value="parabolic">parabolic</option>
+                    <option value="cassegrain">cassegrain</option>
+                    <option value="phased array">phased array</option>
+                </select>
+                <span asp-validation-for="@Model.LastAntenna.type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.LastAntenna.name" class="control-label"></label>
+                <input asp-for="@Model.LastAntenna.name" class="form-control" type="text" placeholder=@phname />
+                <span asp-validation-for="@Model.LastAntenna.name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.LastAntenna.horizontal_beamwidth" class="control-label"></label>
+                <input asp-for="@Model.LastAntenna.horizontal_beamwidth" class="form-control" type="number" placeholder=@ph_horizontal_beamwidth step="0.01" pattern="^\d+(?:\.\d{2,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{2,2})?$/.test(this.value)?'inherit':'red'">
+                <span asp-validation-for="@Model.LastAntenna.horizontal_beamwidth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.LastAntenna.vertical_beamwidth" class="control-label"></label>
+                <input asp-for="@Model.LastAntenna.vertical_beamwidth" class="form-control" type="number" placeholder=@ph_vertical_beamwidth step="0.01" pattern="^\d+(?:\.\d{2,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{2,2})?$/.test(this.value)?'inherit':'red'">
+                <span asp-validation-for="@Model.LastAntenna.vertical_beamwidth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.LastAntenna.polarization" class="control-label"></label>
+                <input asp-for="@Model.LastAntenna.polarization" class="form-control" placeholder=@phpolarization />
+                <span asp-validation-for="@Model.LastAntenna.polarization" class="text-danger"></span>
+            </div>
+            @if (newProgram.Equals("no") || Model.ComeFromAdd)
+            {
+                <div class="form-group">
+                    <label asp-for="@Model.LastAntenna.number_of_feed" class="control-label"></label>
+                    <input asp-for="@Model.LastAntenna.number_of_feed" class="form-control" type="number" placeholder=@phNOF step="1" />
+                    <span asp-validation-for="@Model.LastAntenna.number_of_feed" class="text-danger"></span>
+                </div>
+            }
+            <div class="form-group">
+                <label asp-for="@Model.LastAntenna.horizontal_dimension" class="control-label"></label>
+                <input asp-for="@Model.LastAntenna.horizontal_dimension" class="form-control" type="number" placeholder=@ph_horizontal_dimension min="0" step="0.01" pattern="^\d+(?:\.\d{3,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{4,2})?$/.test(this.value)?'inherit':'red'" />
+                <span asp-validation-for="@Model.LastAntenna.horizontal_dimension" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.LastAntenna.vertical_dimension" class="control-label"></label>
+                <input asp-for="@Model.LastAntenna.vertical_dimension" class="form-control" type="number" placeholder=@ph_vertical_dimension min="0" step="0.01" pattern="^\d+(?:\.\d{3,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{4,2})?$/.test(this.value)?'inherit':'red'" />
+                <span asp-validation-for="@Model.LastAntenna.vertical_dimension" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.LastAntenna.duty" class="control-label"></label>
+                <select asp-for="@Model.LastAntenna.duty" class="form-select" aria-label="Default select example">
+                    @if (!Model.ComeFromAdd)
+                    {
+                        if (newProgram.Equals("yes"))
+                        {
+                            <option selected>receiver</option>
+                        }
+                        else if (newProgram.Equals("no"))
+                        {
+                            <option selected>transmitter</option>
+                        }
+                        <option value="both">both</option>
+                    }
+                    else
+                    {
+                        <option selected>transmitter</option>
+                        <option value="receiver">receiver</option>
+                        <option value="both">both</option>
+                    }
+                </select>
+                <span asp-validation-for="@Model.LastAntenna.duty" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.LastAntenna.location" class="control-label"></label>
+                <input asp-for="@Model.LastAntenna.location" class="form-control" type="text" placeholder=@phlocation />
+                <span asp-validation-for="@Model.LastAntenna.location" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add" class="btn btn-primary" />
+            </div>
+            @{
+                if (!String.IsNullOrEmpty(Model.message))
+                {
+                    <b>@Model.message</b>
+                    Model.message = null;
+                }
+            }
+        </form>
+    </div>
+</div>
+
+<div>
+    @if (!Model.ComeFromAdd)
+    {
+        if (number_of_antennas > 0)
+        {
+            if (newProgram.Equals("no"))
+            {
+                <input type="button" title="Next" value="Next" onclick="location.href='@Url.Action("GoToRadar", "Antenna", new { current = Model })'" />
+            }
+            else
+            {
+                <input type="button" title="Next" value="Next" onclick="location.href='@Url.Action("GoToTransmitter", "Antenna", new { current = Model })'" />
+            }
+        }
+    }
+    else
+    {
+        <input type="button" style="background-color:darkblue; color:white; width:150px; height:40px;" title="Done" value="Done" onclick="location.href='@Url.Action("Done", "Antenna")'" />
+    }
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

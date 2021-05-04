@@ -1281,7 +1281,6 @@ C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\Iesi.Collections.dl
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\NHibernate.dll
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\Remotion.Linq.dll
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\Remotion.Linq.EagerFetching.dll
-C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Antenna\NewAntenna.cshtml.g.cs
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Location\NewLocation.cshtml.g.cs
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Mode\NewMode.cshtml.g.cs
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Radar\NewRadar.cshtml.g.cs
@@ -1478,3 +1477,11 @@ C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Mode\Be
 C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Antenna\BeforeEdit.cshtml.g.cs
 C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Submode\BeforeEdit.cshtml.g.cs
 C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Scan\BeforeEdit.cshtml.g.cs
+C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Antenna\begin.cshtml.g.cs
+C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\Npgsql.dll
+C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\System.Diagnostics.DiagnosticSource.dll

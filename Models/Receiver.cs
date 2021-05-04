@@ -1,12 +1,15 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
 
 namespace ASPNETAOP.Models
 {
+    [BindProperties(SupportsGet = true)]
     public class Receiver
     {
         public Receiver() { }
+
         public Receiver(Guid key, string rec_name, Double listening_time, Double rest_time, Double recovery_time)
         {
             this.ID = key;

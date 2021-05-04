@@ -1,4 +1,4 @@
-﻿@model ASPNETAOP.Models.Receiver
+﻿@model ASPNETAOP.Models.Data
 
 @{
     ViewData["Title"] = "NewReceiver";
@@ -12,24 +12,24 @@
         <form asp-action="NewReceiver">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="name" class="control-label"></label>
-                <input asp-for="name" class="form-control" type="text">
-                <span asp-validation-for="name" class="text-danger"></span>
+                <label asp-for="@Model.Receiver.name" class="control-label"></label>
+                <input asp-for="@Model.Receiver.name" class="form-control" type="text">
+                <span asp-validation-for="@Model.Receiver.name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="listening_time" class="control-label"></label>
-                <input asp-for="listening_time" class="form-control" type="number" placeholder="00.00ns" step="0.01">
-                <span asp-validation-for="listening_time" class="text-danger"></span>
+                <label asp-for="@Model.Receiver.listening_time" class="control-label"></label>
+                <input asp-for="@Model.Receiver.listening_time" class="form-control" type="number" placeholder="00.00ns" step="0.01">
+                <span asp-validation-for="@Model.Receiver.listening_time" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="rest_time" class="control-label"></label>
-                <input asp-for="rest_time" class="form-control" type="number" placeholder="00.00ns" step="0.01">
-                <span asp-validation-for="rest_time" class="text-danger"></span>
+                <label asp-for="@Model.Receiver.rest_time" class="control-label"></label>
+                <input asp-for="@Model.Receiver.rest_time" class="form-control" type="number" placeholder="00.00ns" step="0.01">
+                <span asp-validation-for="@Model.Receiver.rest_time" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="recovery_time" class="control-label"></label>
-                <input asp-for="recovery_time" class="form-control" type="number" placeholder="00.00ns" step="0.01">
-                <span asp-validation-for="recovery_time" class="text-danger"></span>
+                <label asp-for="@Model.Receiver.recovery_time" class="control-label"></label>
+                <input asp-for="@Model.Receiver.recovery_time" class="form-control" type="number" placeholder="00.00ns" step="0.01">
+                <span asp-validation-for="@Model.Receiver.recovery_time" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Add" class="btn btn-primary" />
