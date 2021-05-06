@@ -9,10 +9,11 @@ namespace ASPNETAOP
     public class Program
     {
         public static IDictionary<Guid, Data> data = new Dictionary<Guid, Data>();
+        
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
-
+            data.Clear();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

@@ -8,6 +8,7 @@ namespace ASPNETAOP.Models
     public class Antenna
     {
         public Antenna() { }
+
         public Antenna(Guid key, string def_name, string type, Double horizontal_beamwidth, Double vertical_beamwidth, string polarization, int number_of_feed, Double horizontal_dimension, Double vertical_dimension, string duty, Guid? transmitter_id, Guid? receiver_id, string location)
         {
             this.ID = key;
@@ -77,6 +78,17 @@ namespace ASPNETAOP.Models
         public virtual bool IsChecked { get; set; } = false;
 
         public virtual bool Isnamed { get; set; } = false;
+
+        //this variable created for adding receiver and transmitter antennas in regular turn
+        //with this variable the user is able to add receiver antennas after created receiver and transmitter antennas after created transmitter
+        //yes, i can use boolean too :\
+        //public virtual String newProgram { get; set; } = "yes";
+
+        public virtual bool IsFirstAntenna { get; set; } = true;
+
+        //when we are done with adding process we should not continue as normal creating radar process
+        //so I created a variable named ComeFromAdd which keeps the information where we reached current create page
+        public virtual bool ComeFromAdd { get; set; } = false;
 
         public class AntennaList
         {

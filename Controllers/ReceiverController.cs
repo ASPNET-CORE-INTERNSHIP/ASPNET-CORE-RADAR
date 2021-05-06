@@ -1,23 +1,11 @@
 using ASPNETAOP.Models;
 using ASPNETAOP.Session;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using NHibernate.Linq;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
-using ASPNETAOP.Aspect;
-using Microsoft.AspNetCore.Mvc;
-using System.Net.Http.Json;
-using System.Net.Http;
-using System.Runtime.InteropServices;
-using System.Text.Json;
-using System.Threading.Tasks;
-using System;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 
 namespace ASPNETAOP.Controllers
@@ -25,6 +13,8 @@ namespace ASPNETAOP.Controllers
     public class ReceiverController : Controller
     {
         private readonly NHibernateMapperSession _session;
+        private String sessionID_s;
+        private Guid sessionID;
 
         public ReceiverController(NHibernateMapperSession session)
         {
@@ -48,9 +38,8 @@ namespace ASPNETAOP.Controllers
             //create new Data element for our current created radar
             Data current = new Data();
             //I think this method gives the current session id
-            String sessionID_s = HttpContext.Session.GetString("Session");
-            Guid sessionID = Guid.Parse(sessionID_s);
-            Console.WriteLine(sessionID_s);
+            sessionID_s = HttpContext.Session.GetString("Session");
+            sessionID = Guid.Parse(sessionID_s);
             
 
             //If the receiver name is null we give a default name that specifies its number
@@ -68,7 +57,9 @@ namespace ASPNETAOP.Controllers
                 {
                     // log exception here
                     ViewData["Message"] = e.Message.ToString() + " Error";
+                    Program.data.Remove(sessionID);
                     await _session.Rollback();
+                    return RedirectToAction("NewReceiver", "Receiver");
                 }
                 finally
                 {
@@ -99,15 +90,17 @@ namespace ASPNETAOP.Controllers
             catch (Exception e)
             {
                 // log exception here
-                current.message = e.Message.ToString() + " Error";
+                ViewData["Message"] = e.Message.ToString() + " Error";
+                Program.data.Remove(sessionID);
                 await _session.Rollback();
+                return RedirectToAction("NewReceiver", "Receiver");
             }
             finally
             {
                 _session.CloseTransaction();
             }
             Program.data.Add(sessionID, current);
-            return RedirectToAction("begin", "Antenna");
+            return RedirectToAction("Preliminary", "Antenna");
         }
 
         public async Task<IActionResult> BeforeEdit(Data current)

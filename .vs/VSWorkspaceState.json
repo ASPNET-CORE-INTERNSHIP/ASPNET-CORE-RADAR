@@ -2,6 +2,7 @@
   "ExpandedNodes": [
     "",
     "\\Controllers",
+    "\\Models",
     "\\Views",
     "\\Views\\Antenna"
   ],

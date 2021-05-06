@@ -1287,7 +1287,6 @@ C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Radar\N
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Receiver\NewReceiver.cshtml.g.cs
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Scan\NewScan.cshtml.g.cs
 C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Submode\NewSubmode.cshtml.g.cs
-C:\Users\ENA\Source\Repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Transmitter\NewTransmitter.cshtml.g.cs
 C:\Users\Cenk\OneDrive\Desktop\Test2\ASPNET-CORE-RADAR-main\bin\Debug\net5.0\ASPNETAOP.pssym
 C:\Users\Cenk\OneDrive\Desktop\Test2\ASPNET-CORE-RADAR-main\bin\Debug\net5.0\ASPNETAOP.pspdb
 C:\Users\Cenk\OneDrive\Desktop\Test2\ASPNET-CORE-RADAR-main\bin\Debug\net5.0\web.config
@@ -1477,7 +1476,6 @@ C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Mode\Be
 C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Antenna\BeforeEdit.cshtml.g.cs
 C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Submode\BeforeEdit.cshtml.g.cs
 C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Scan\BeforeEdit.cshtml.g.cs
-C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Antenna\begin.cshtml.g.cs
 C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.dll
 C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.Abstractions.dll
 C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.Relational.dll
@@ -1485,3 +1483,5 @@ C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\Microsoft.Extension
 C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\Npgsql.dll
 C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
 C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\System.Diagnostics.DiagnosticSource.dll
+C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Antenna\Preliminary.cshtml.g.cs
+C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Transmitter\NewTransmitter.cshtml.g.cs
