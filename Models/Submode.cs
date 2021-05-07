@@ -10,22 +10,14 @@ namespace ASPNETAOP.Models
     public class Submode
     {
         public Submode() { }
-        public Submode(Guid ID, String name, Guid mode_id, Double PW, Double PRI, int min_frequency, int max_frequency, Guid scan_id)
+
+        public Submode(Guid ID, String name, Guid mode_id, Double PW, Double PRI, int min_frequency, int max_frequency)
         {
             this.ID = ID;
             this.mode_id = mode_id;
             this.name = name;
             this.PW = PW;
             this.PRI = PRI;
-            this.min_frequency = min_frequency;
-            this.max_frequency = max_frequency;
-            this.scan_id = scan_id;
-        }
-        public Submode(string name, Double pW, Double pRI, int min_frequency, int max_frequency)
-        {
-            this.name = name;
-            PW = pW;
-            PRI = pRI;
             this.min_frequency = min_frequency;
             this.max_frequency = max_frequency;
         }

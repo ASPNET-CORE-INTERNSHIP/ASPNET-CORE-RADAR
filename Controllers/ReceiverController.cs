@@ -99,6 +99,7 @@ namespace ASPNETAOP.Controllers
             {
                 _session.CloseTransaction();
             }
+            Program.data.Remove(sessionID);
             Program.data.Add(sessionID, current);
             return RedirectToAction("Preliminary", "Antenna");
         }

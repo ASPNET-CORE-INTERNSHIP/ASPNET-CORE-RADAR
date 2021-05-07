@@ -14,13 +14,16 @@ namespace ASPNETAOP.Models
 
         public Radar Radar { get; set; }
 
+        //because we want to show last inserted antenna informations when creating a new antenna we use the last antenna variable
         public Antenna LastAntenna { get; set; }
 
-        public Mode LastMode { get; set; }
+        //To add submodes to last inserted mode, we should know last inserted mode's id information
+        public ModeInfo LastMode { get; set; }
 
-        public  Mode LastSubmode { get; set; }
+        //To build relationships with the last inserted submode, we should know last inserted submode's id information
+        //public Submode LastSubmode { get; set; }
 
-        public Mode LastScan { get; set; }
+        //public Scan Scan { get; set; }
 
         //I use this value in BeforeEdit functions.
         //So after complete editing process the program routes you to BeforeEdit function again (I let the user exit from edit page by her/his-self, with this solution the user can see the edited values before turning back) but with your "edit completed" message and edited values

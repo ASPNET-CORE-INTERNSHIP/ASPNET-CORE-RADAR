@@ -114,8 +114,6 @@ namespace ASPNETAOP.Controllers
 
             //Add our transmitter to Data model and update the dictionary so we can use its id when we're adding Radar entity
             current.Transmitter = transmitter;
-            Program.data.Remove(sessionID);
-            Program.data.Add(sessionID, current);
 
             return RedirectToAction("Preliminary", "Antenna");
         }

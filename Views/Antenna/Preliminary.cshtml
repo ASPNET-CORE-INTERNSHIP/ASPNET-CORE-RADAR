@@ -62,17 +62,17 @@
             </div>
             <div class="form-group">
                 <label asp-for="@Model.name" class="control-label"></label>
-                <input asp-for="@Model.name" class="form-control" type="text" placeholder=@phname />
+                <input asp-for="@Model.name" class="form-control" type="text" placeholder="@phname" />
                 <span asp-validation-for="@Model.name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="@Model.horizontal_beamwidth" class="control-label"></label>
-                <input asp-for="@Model.horizontal_beamwidth" class="form-control" type="number" placeholder=@ph_horizontal_beamwidth step="0.01" pattern="^\d+(?:\.\d{2,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{2,2})?$/.test(this.value)?'inherit':'red'">
+                <input asp-for="@Model.horizontal_beamwidth" class="form-control" type="number" placeholder="@ph_horizontal_beamwidth" step="0.01" pattern="^\d+(?:\.\d{2,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{2,2})?$/.test(this.value)?'inherit':'red'">
                 <span asp-validation-for="@Model.horizontal_beamwidth" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="@Model.vertical_beamwidth" class="control-label"></label>
-                <input asp-for="@Model.vertical_beamwidth" class="form-control" type="number" placeholder=@ph_vertical_beamwidth step="0.01" pattern="^\d+(?:\.\d{2,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{2,2})?$/.test(this.value)?'inherit':'red'">
+                <input asp-for="@Model.vertical_beamwidth" class="form-control" type="number" placeholder="@ph_vertical_beamwidth" step="0.01" pattern="^\d+(?:\.\d{2,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{2,2})?$/.test(this.value)?'inherit':'red'">
                 <span asp-validation-for="@Model.vertical_beamwidth" class="text-danger"></span>
             </div>
             <div class="form-group">

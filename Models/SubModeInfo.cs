@@ -9,6 +9,12 @@ namespace ASPNETAOP.Models
     {
         public SubModeInfo() { }
 
+        public SubModeInfo(Submode sbm)
+        {
+            this.Submode = sbm;
+            this.ListOfAntennas = new List<Antenna>();
+        }
+
         public Submode Submode { get; set; }
 
         public Scan Scan { get; set; }

@@ -93,6 +93,10 @@ namespace ASPNETAOP.Models
         public class AntennaList
         {
            public List<Antenna>? antennas { get; set; }
+
+            //when we are done with adding process we should not continue as normal creating radar process
+            //so I created a variable named ComeFromAdd which keeps the information where we reached current create page
+            public virtual bool ComeFromAdd { get; set; } = false;
         }
     }
 }

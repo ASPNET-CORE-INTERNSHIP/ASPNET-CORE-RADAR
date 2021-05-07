@@ -1,5 +1,6 @@
-﻿/*using ASPNETAOP.Models;
+﻿using ASPNETAOP.Models;
 using ASPNETAOP.Session;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using NHibernate.Linq;
@@ -13,6 +14,8 @@ namespace ASPNETAOP.Controllers
     public class RadarController : Controller
     {
         private readonly NHibernateMapperSession _session;
+        private String sessionID_s;
+        private Guid sessionID;
 
         public RadarController(NHibernateMapperSession session)
         {
@@ -33,6 +36,13 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public async Task<IActionResult> NewRadarAsync(Radar radar)
         {
+            //handling user-may-occur mistakes
+            if (radar.system.StartsWith("Select") | radar.configuration.StartsWith("Select"))
+            {
+                ViewData["Message"] = "Please select System and Configuration";
+                return View(radar);
+            }
+
             //If the radar name is null we give a default name that specifies its number and change when the location added
             String def_name;
             bool isNamed = false;
@@ -49,6 +59,7 @@ namespace ASPNETAOP.Controllers
                     // log exception here
                     ViewData["Message"] = e.Message.ToString() + " Error";
                     await _session.Rollback();
+                    return View(radar);
                 }
                 finally
                 {
@@ -63,22 +74,17 @@ namespace ASPNETAOP.Controllers
                 def_name = radar.name;
             }
 
-            //handling user-may-occur mistakes
-            if (radar.system.StartsWith("Select") | radar.configuration.StartsWith("Select"))
-            {
-                return View(radar);
-                ViewData["Message"] = "Please select System and Configuration";
-            }
-            else
-            {
-                Data.Radar = new Radar(def_name, radar.system, radar.configuration);
-                Data.Radar.Isnamed = isNamed;
-                return RedirectToAction("NewLocation", "Location");
-            }
-            
+            //get session id (we will use it when updating data and handling errors)
+            sessionID_s = HttpContext.Session.GetString("Session");
+            sessionID = Guid.Parse(sessionID_s);
+            Data d = new Data();
+            Program.data.TryGetValue(sessionID, out d);
+            d.Radar = new Radar(def_name, radar.system, radar.configuration);
+            d.Radar.Isnamed = isNamed;
+            return RedirectToAction("NewLocation", "Location"); 
         }
 
-        public async Task<RedirectToActionResult> DeleteRadar(Guid id)
+        /*public async Task<RedirectToActionResult> DeleteRadar(Guid id)
         {
             try
             {
@@ -143,6 +149,7 @@ namespace ASPNETAOP.Controllers
             }
             Data.edited = true;
             return RedirectToAction("BeforeEdit", "Radar", new { id = newValues.ID });
-        }
+        }*/
+
     }
-}*/
+}

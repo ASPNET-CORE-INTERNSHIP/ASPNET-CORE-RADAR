@@ -30,7 +30,8 @@ namespace ASPNETAOP.Session
 
         public async Task Rollback()
         {
-            await _transaction.RollbackAsync();
+            if (_transaction != null)
+                await _transaction.RollbackAsync();
         }
 
         public void CloseTransaction()

@@ -1,5 +1,6 @@
-﻿/*using ASPNETAOP.Models;
+﻿using ASPNETAOP.Models;
 using ASPNETAOP.Session;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using NHibernate.Linq;
@@ -15,6 +16,8 @@ namespace ASPNETAOP.Controllers
     public class ScanController : Controller
     {
         private readonly NHibernateMapperSession _session;
+        private String sessionID_s;
+        private Guid sessionID;
 
         public ScanController(NHibernateMapperSession session)
         {
@@ -37,11 +40,20 @@ namespace ASPNETAOP.Controllers
         {
             Guid key = Guid.NewGuid();
             Scan s = new Scan(key, scan.name, scan.type, scan.main_aspect, scan.scan_angle, scan.scan_rate, scan.hits_per_scan);
-            Data.Scan = s;
+            
+            //get session id (we will use it when updating data and handling errors)
+            sessionID_s = HttpContext.Session.GetString("Session");
+            sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
 
-            Guid key_submode = Guid.NewGuid();
-            Submode sbm = new Submode(key_submode, Data.Submode.name, Data.Mode.ID, Data.Submode.PW, Data.Submode.PRI, Data.Submode.min_frequency, Data.Submode.max_frequency, key);
-            Data.Submode = sbm;
+            int i = current.LastMode.ListOfSubmodes.Count;
+            i--;
+            current.LastMode.ListOfSubmodes[i].Scan = s;
+            //remember we did not give a scan id to this submode, so we did not add it to db
+            current.LastMode.ListOfSubmodes[i].Submode.scan_id = key;
+
+            Submode sbm = current.LastMode.ListOfSubmodes[i].Submode;
 
             try
             {
@@ -49,12 +61,12 @@ namespace ASPNETAOP.Controllers
                 await _session.SaveScan(s);
                 await _session.SaveSubMode(sbm);
                 await _session.Commit();
-                Data.message = "Both records (Submode and Scan) added to db";
+                current.message = "Both records (Submode and Scan) added to db";
             }
             catch (Exception e)
             {
                 // log exception here
-                Data.message = e.Message.ToString() + " Error";
+                current.message = e.Message.ToString() + " Error";
                 await _session.Rollback();
             }
             finally
@@ -62,9 +74,9 @@ namespace ASPNETAOP.Controllers
                 _session.CloseTransaction();
             }
 
-            return RedirectToAction("NewAntennaScan", "AntennaScan");
+            return RedirectToAction("Preliminary", "AntennaScan");
         }
-
+        /*
         public async Task<IActionResult> BeforeEdit(Guid id)
         {
             //Because we use the same view before and after edit process we should handle the view messages with the following conditions
@@ -136,6 +148,6 @@ namespace ASPNETAOP.Controllers
             return RedirectToAction("BeforeEdit", "Mode", new { id = m.ID });
             //return RedirectToAction("Edit", "EditRadar", new { id = r.ID });
         }
-
+        */
     }
-}*/
+}

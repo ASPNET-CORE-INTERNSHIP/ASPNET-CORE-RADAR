@@ -154,13 +154,11 @@ namespace ASPNETAOP.Controllers
                 Guid transmitter_id = current.Transmitter.ID;
                 antenna = new Antenna(key, def_name, antenna_temp.type, antenna_temp.horizontal_beamwidth, antenna_temp.vertical_beamwidth, antenna_temp.polarization, antenna_temp.number_of_feed, antenna_temp.horizontal_dimension, antenna_temp.vertical_dimension, antenna_temp.duty, transmitter_id, null, antenna_temp.location);
                 antenna.Isnamed = isNamed;
-                ViewData["message"] = "New Antenna added to record list";
+                current.message = "New Antenna added to record list";
                 current.ListOfAntennas.Add(antenna);
             }
 
             current.LastAntenna = antenna_temp;
-            Program.data.Remove(sessionID);
-            Program.data.Add(sessionID, current);
             return RedirectToAction("Preliminary", "Antenna");
         }
 
@@ -199,9 +197,6 @@ namespace ASPNETAOP.Controllers
                 // log exception here
                 current.message = e.Message.ToString() + " Error, plase check your database connection and restart your program, Do not forgett to delete uneccessary transmitter and receiver";
                 await _session.Rollback();
-                //because we will turn back to this page we should update the data which is in dictionary
-                Program.data.Remove(sessionID);
-                Program.data.Add(sessionID, current);
                 return RedirectToAction("Preliminary", "Antenna");
             }
             finally

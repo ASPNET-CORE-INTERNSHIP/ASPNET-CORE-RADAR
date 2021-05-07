@@ -1,5 +1,6 @@
-﻿/*using ASPNETAOP.Models;
+﻿using ASPNETAOP.Models;
 using ASPNETAOP.Session;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using NHibernate.Linq;
@@ -15,6 +16,8 @@ namespace ASPNETAOP.Controllers
     public class ModeController : Controller
     {
         private readonly NHibernateMapperSession _session;
+        private String sessionID_s;
+        private Guid sessionID;
 
         public ModeController(NHibernateMapperSession session)
         {
@@ -36,21 +39,29 @@ namespace ASPNETAOP.Controllers
         public async Task<IActionResult> NewModeAsync(Mode mod)
         {
             Guid key = Guid.NewGuid();
-            Mode m = new Mode(key, mod.name, Data.Radar.ID);
-            Data.Mode = m;
+            //get session id (we will use it when updating data and handling errors)
+            sessionID_s = HttpContext.Session.GetString("Session");
+            sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
+            Mode m = new Mode(key, mod.name, current.Radar.ID);
+            ModeInfo mi = new ModeInfo(m);
+            mi.ListOfSubmodes = new List<SubModeInfo>();
+            current.LastMode = mi;
 
             try
             {
                 _session.BeginTransaction();
                 await _session.SaveMode(m);
                 await _session.Commit();
-                Data.message = "New Mode added";
+                current.message = "New Mode added";
             }
             catch (Exception e)
             {
                 // log exception here
-                Data.message = e.Message.ToString() + " Error";
+                current.message = e.Message.ToString() + " Error";
                 await _session.Rollback();
+                return View(mod);
             }
             finally
             {
@@ -59,7 +70,7 @@ namespace ASPNETAOP.Controllers
             return RedirectToAction("NewSubmode", "Submode");
         }
 
-        public async Task<IActionResult> BeforeEdit(Guid id)
+        /*public async Task<IActionResult> BeforeEdit(Guid id)
         {
             //Because we use the same view before and after edit process we should handle the view messages with the following conditions
             if (Data.edited)
@@ -193,5 +204,6 @@ namespace ASPNETAOP.Controllers
             }
             return RedirectToAction("Edit", "EditRadar", new { id = r.ID });
         }
+        */
     }
-}*/
+}
