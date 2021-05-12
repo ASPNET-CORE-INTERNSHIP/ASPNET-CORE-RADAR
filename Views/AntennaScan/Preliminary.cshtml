@@ -64,13 +64,12 @@
             <div class="form-group">
                 <input type="submit" value="Add" class="btn btn-primary" />
             </div>
-            <b>@Data.message</b>
-            @{ Data.message = null; }
+            <b>@ViewData["message"]</b>
         </form>
     </div>
 </div>
 @{
-    if (Data.ComeFromAdd)
+    if (Model.ComeFromAdd)
     {
         <div>
             <input type="button" style="background-color:lawngreen; color:white; width:150px; height:40px;" title="Done" value="DONE!" onclick="location.href='@Url.Action("GoBack", "AntennaScan")'" />

@@ -1,4 +1,4 @@
-﻿using ASPNETAOP.Aspect;
+﻿/*using ASPNETAOP.Aspect;
 using ASPNETAOP.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -66,4 +66,4 @@ namespace ASPNETAOP.Controllers
             return RedirectToAction( "Edit", "EditRadar", new { id = id });
         }
     }
-}
+}*/

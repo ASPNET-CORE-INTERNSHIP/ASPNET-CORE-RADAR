@@ -1,5 +1,6 @@
 ﻿using ASPNETAOP.Models;
 using ASPNETAOP.Session;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
@@ -37,16 +38,24 @@ namespace ASPNETAOP.Controllers
         [HttpPost]
         public async Task<IActionResult> NewSubmodeAsync(Submode sm)
         {
-            for (int i = 0; i < Data.ListOfAntennas.Count; i++)
+            //get session id (we will use it when updating data and handling errors)
+            String sessionID_s = HttpContext.Session.GetString("Session");
+            Guid sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
+
+            for (int i = 0; i < current.ListOfAntennas.Count; i++)
             {
-                Data.ListOfAntennas[i].IsChecked = false;
+                current.ListOfAntennas[i].IsChecked = false;
             }
-            Submode sbm = new Submode(sm.name, sm.PRI, sm.PW, sm.max_frequency, sm.min_frequency);
-            Data.Submode = sbm;
+            Guid key_submode = Guid.NewGuid();
+            Submode sbm = new Submode(key_submode ,sm.name, current.LastMode.Mode.ID, sm.PRI, sm.PW, sm.max_frequency, sm.min_frequency);
+            SubModeInfo sbmINFO = new SubModeInfo(sbm);
+            current.LastMode.ListOfSubmodes.Add(sbmINFO);
             return RedirectToAction("NewScan", "Scan");
         }
 
-        public async Task<IActionResult> BeforeEdit(Guid id)
+        /*public async Task<IActionResult> BeforeEdit(Guid id)
         {
             //Because we use the same view before and after edit process we should handle the view messages with the following conditions
             if (Data.edited)
@@ -121,24 +130,24 @@ namespace ASPNETAOP.Controllers
             }
             return RedirectToAction("BeforeEdit", "Mode", new { id = m.ID });
             //return RedirectToAction("Edit", "EditRadar", new { id = r.ID });
-        }
+        }*/
 
     }
     /*
-    SELECT* FROM Transmitter;
-    SELECT* FROM Receiver;
-    SELECT* FROM Antenna;
-    SELECT* FROM Radar;
-    SELECT* FROM Location;
-    SELECT* FROM Mode;
-    SELECT* FROM Submode;
-    SELECT* FROM Scan;
-    DELETE FROM Antenna WHERE number_of_feed < 6000;
-    DELETE FROM Receiver WHERE rest_time < 6000;
-    DELETE FROM Transmitter WHERE max_frequency < 6000;
-    DELETE FROM Location WHERE city = 'DAKAR';
-    DELETE FROM Radar WHERE name = 'Friendly ';
-    DELETE FROM Mode WHERE name ='Friendly ';
-    DELETE FROM Scan WHERE scan_rate<6000;
+SELECT* FROM Transmitter;
+SELECT* FROM Receiver;
+SELECT* FROM Antenna;
+SELECT* FROM Radar;
+SELECT* FROM Location;
+SELECT* FROM Mode;
+SELECT* FROM Submode;
+SELECT* FROM Scan;
+DELETE FROM Antenna WHERE number_of_feed < 6000;
+DELETE FROM Receiver WHERE rest_time < 6000;
+DELETE FROM Transmitter WHERE max_frequency < 6000;
+DELETE FROM Location WHERE city = 'DAKAR';
+DELETE FROM Radar WHERE name = 'Friendly ';
+DELETE FROM Mode WHERE name ='Friendly ';
+DELETE FROM Scan WHERE scan_rate<6000;
     */
 }

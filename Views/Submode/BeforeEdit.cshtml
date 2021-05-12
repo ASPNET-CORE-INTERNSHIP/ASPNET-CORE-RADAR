@@ -23,7 +23,7 @@
                 <input type="hidden" id="@PRI" name="@PRI" value="@Model.Submode.PRI" />
                 <input type="hidden" id="@min_frequency" name="@min_frequency" value="@Model.Submode.min_frequency" />
                 <input type="hidden" id="@max_frequency" name="@max_frequency" value="@Model.Submode.max_frequency" />
-                <div class="form-group">
+                <div class="hidden">
                     <label asp-for="@Model.Submode.ID" class="hidden"></label>
                     <input asp-for="@Model.Submode.ID" class="hidden" type="hidden">
                     <span asp-validation-for="@Model.Submode.ID" class="hidden"></span>

@@ -9,8 +9,13 @@ namespace ASPNETAOP.Models
     {
         public ModeInfo() { }
 
+        public ModeInfo(Mode m) 
+        {
+            this.Mode = m;
+        }
+
         public Mode Mode { get; set; }
 
-        public List<Submode> ListOfSubmodes { get; set; }
+        public List<SubModeInfo> ListOfSubmodes { get; set; }
     }
 }

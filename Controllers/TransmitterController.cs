@@ -1,13 +1,12 @@
 ﻿using ASPNETAOP.Models;
 using ASPNETAOP.Session;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using NHibernate.Linq;
 using System;
+using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace ASPNETAOP.Controllers
@@ -15,6 +14,8 @@ namespace ASPNETAOP.Controllers
     public class TransmitterController : Controller
     {
         private readonly NHibernateMapperSession _session;
+        private String sessionID_s;
+        private Guid sessionID;
 
         public TransmitterController(NHibernateMapperSession session)
         {
@@ -34,22 +35,32 @@ namespace ASPNETAOP.Controllers
 
 
         [HttpPost]
-        public async System.Threading.Tasks.Task<IActionResult> NewTransmitterAsync(Transmitter transmitter)
+        public async System.Threading.Tasks.Task<IActionResult> NewTransmitter(Transmitter transmitter_temp)
         {
-            Data.newProgram = "no";
-
-            //handling user may occur errors
-            if (transmitter.modulation_type.StartsWith("Select"))
+            //handling user-may-occur mistakes
+            if (transmitter_temp.modulation_type.StartsWith("Select"))
             {
-                ViewData["Message"] = "Please fill the modulation type";
-                return View(transmitter);
+                ViewData["message"] = "Please fill the modulation type";
+                return View(transmitter_temp);
+            }
+
+            //get session id (we will use it when updating data and handling errors)
+            sessionID_s = HttpContext.Session.GetString("Session");
+            sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            foreach (KeyValuePair<Guid, Data> sds in Program.data)
+            {
+                if (sds.Key.Equals(sessionID))
+                {
+                    current = sds.Value;
+                }
             }
 
             //If the transmitter name is null we give a default name that specifies its number
             String def_name = null;
             //because we change the default name after the Radar added we we should keep it in mind to it is a default given name
             bool isNamed = false;
-            if (String.IsNullOrEmpty(transmitter.name))
+            if (String.IsNullOrEmpty(transmitter_temp.name))
             {
                 int count = 0;
 
@@ -60,8 +71,10 @@ namespace ASPNETAOP.Controllers
                 catch (Exception e)
                 {
                     // log exception here
-                    ViewData["Message"] = e.Message.ToString() + " Error";
+                    ViewData["message"] = e.Message.ToString() + " Error";
                     await _session.Rollback();
+                    count = -1;
+                    return View(transmitter_temp);
                 }
                 finally
                 {
@@ -73,86 +86,83 @@ namespace ASPNETAOP.Controllers
             }
             else
             {
-                def_name = transmitter.name;
+                def_name = transmitter_temp.name;
             }
 
             Guid key = Guid.NewGuid();
-            Transmitter transmitter_temp = new Transmitter(key, def_name,transmitter.modulation_type, transmitter.max_frequency, transmitter.min_frequency, transmitter.power);
-            transmitter_temp.Isnamed = isNamed;
-            //Add our transmitter to Datas model so we can use its id when we add Radar entity
-            Data.Transmitter = transmitter_temp;
+            Transmitter transmitter = new Transmitter(key, def_name, transmitter_temp.modulation_type, transmitter_temp.max_frequency, transmitter_temp.min_frequency, transmitter_temp.power);
+            transmitter.Isnamed = isNamed;
 
             //save our transmitter to database
             try
             {
                 _session.BeginTransaction();
-                await _session.SaveTransmitter(transmitter_temp);
+                await _session.SaveTransmitter(transmitter);
                 await _session.Commit();
             }
             catch (Exception e)
             {
                 // log exception here
-                ViewData["Message"] = e.Message.ToString() + " Error";
+                ViewData["message"] = e.Message.ToString() + " Error";
                 await _session.Rollback();
+                return View(transmitter);
             }
             finally
             {
                 _session.CloseTransaction();
             }
 
-            return RedirectToAction("NewAntenna", "Antenna");
+            //Add our transmitter to Data model and update the dictionary so we can use its id when we're adding Radar entity
+            current.Transmitter = transmitter;
+
+            return RedirectToAction("Preliminary", "Antenna");
         }
 
-        public async Task<IActionResult> BeforeEdit(Guid id)
+        public async Task<IActionResult> BeforeEdit(Data current)
         {
             //Because we use the same view before and after edit process we should handle the view messages with the following conditions
-            if (Data.edited)
+            if (current.edited)
             {
-                ViewData["Message"] = "Update completed successfully";
-                Data.edited = false;
-            }
-            if (Data.message != null)
-            {
-                ViewData["Message"] = Data.message;
-                Data.message = null;
+                current.message = "Update completed successfully";
+                current.edited = false;
             }
             //Get radar's informations and shows it in edit page
-            Transmitter t = await _session.Transmitters.Where(b => b.ID.Equals(id)).FirstOrDefaultAsync();
-            return View(t);
+            //Transmitter t = await _session.Transmitters.Where(b => b.ID.Equals(current.Transmitter.ID)).FirstOrDefaultAsync();
+            return View(current);
         }
 
-        public async Task<IActionResult> Edit(Transmitter newValues)
+        public async Task<IActionResult> Edit(Transmitter transmitter_temp)
         {
             try
             {
-                await _session.EditTransmitter(newValues.ID, newValues.name, newValues.modulation_type, newValues.max_frequency, newValues.min_frequency, newValues.power);
+                await _session.EditTransmitter(transmitter_temp.ID, transmitter_temp.name, transmitter_temp.modulation_type, transmitter_temp.max_frequency, transmitter_temp.min_frequency, transmitter_temp.power);
             }
             catch (Exception e)
             {
                 // log exception here
-                Data.message = e.Message.ToString() + " Error";
+                ViewData["message"] = e.Message.ToString() + " Error";
                 await _session.Rollback();
-                return RedirectToAction("BeforeEdit", "Transmitter", new { id = newValues.ID });
+                return RedirectToAction("BeforeEdit", "Transmitter", new { id = transmitter_temp.ID });
             }
             finally
             {
                 _session.CloseTransaction();
             }
-            Data.edited = true;
-            return RedirectToAction("BeforeEdit", "Transmitter", new { id = newValues.ID });
+            //current.edited = true;
+            return RedirectToAction("BeforeEdit", "Transmitter", new { id = transmitter_temp.ID });
         }
 
-        public async Task<IActionResult> GoBack(Guid id)
+        /*public async Task<IActionResult> GoBack(Transmitter transmitter_temp)
         {
             Radar r = new Radar();
             try
             {
-                r = await _session.Radars.Where(b => b.transmitter_id.Equals(id)).FirstOrDefaultAsync();
+                r = await _session.Radars.Where(b => b.transmitter_id.Equals(transmitter_temp.ID)).FirstOrDefaultAsync();
             }
             catch (Exception e)
             {
                 // log exception here
-                Data.message = e.Message.ToString() + " Error";
+                current.message = e.Message.ToString() + " Error";
                 await _session.Rollback();
                 //return RedirectToAction("BeforeEdit", "Transmitter", new { id = id });
             }
@@ -160,7 +170,7 @@ namespace ASPNETAOP.Controllers
             {
                 _session.CloseTransaction();
             }
-            return RedirectToAction("Edit", "EditRadar", new { id = r.ID });
-        }
+            return RedirectToAction("Edit", "EditRadar", new { current = current });
+        }*/
     }
 }

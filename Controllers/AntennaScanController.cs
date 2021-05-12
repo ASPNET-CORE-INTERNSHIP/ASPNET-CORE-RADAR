@@ -1,5 +1,6 @@
 ﻿using ASPNETAOP.Models;
 using ASPNETAOP.Session;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using NHibernate.Linq;
@@ -16,6 +17,8 @@ namespace ASPNETAOP.Controllers
     public class AntennaScanController : Controller
     {
         private readonly NHibernateMapperSession _session;
+        private String sessionID_s;
+        private Guid sessionID;
 
         public AntennaScanController(NHibernateMapperSession session)
         {
@@ -27,21 +30,36 @@ namespace ASPNETAOP.Controllers
             return View();
         }
         
-        public async Task<IActionResult> NewAntennaScanAsync()
+        public async Task<IActionResult> Preliminary()
         {
             //New variable consisting of a list of antennas
             //so the user can select antennas which empolys current scan type
             AntennaList alist = new AntennaList();
-            List<AntennaScan> selected_list = await _session.AntennaScans.Where(b => b.scan_id.Equals(Data.Scan.ID)).ToListAsync();
-            alist.antennas = Data.ListOfAntennas;
+
+            //get session id (we will use it when updating data and handling errors)
+            sessionID_s = HttpContext.Session.GetString("Session");
+            sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
+
+            alist.antennas = current.ListOfAntennas;
+            ViewData["message"] = current.message;
             //returning the model for the cshmtl page to access it
             return View(alist);
         }
 
         public async Task<IActionResult> NewAntennaScanParamAsync(Antenna.AntennaList ascans)
         {
-            Data.message = null;
-            Data.ListOfAntennas = new List<Antenna>();
+            //get session id (we will use it when updating data and handling errors)
+            sessionID_s = HttpContext.Session.GetString("Session");
+            sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
+            int index = current.LastMode.ListOfSubmodes.Count;
+            index--;
+
+            //refresh the list to specify selected antennas
+            current.ListOfAntennas = ascans.antennas;
             try
             {
                 _session.BeginTransaction();
@@ -49,8 +67,8 @@ namespace ASPNETAOP.Controllers
                 for (int i = 0; i < ascans.antennas.Count; i++)
                 {
                     Antenna antenna = ascans.antennas[i];
-                    Data.ListOfAntennas.Add(antenna);
-                    AntennaScan ascan = new AntennaScan(antenna.ID, Data.Scan.ID);
+
+                    AntennaScan ascan = new AntennaScan(antenna.ID, current.LastMode.ListOfSubmodes[index].Scan.ID);
                     if (antenna.IsChecked)
                     {
                         await _session.SaveAntennaScan(ascan);
@@ -61,19 +79,19 @@ namespace ASPNETAOP.Controllers
                     }
                 }
                 await _session.Commit();
-                Data.message = "New Relationship between antennas and scan added";
+                current.message = "New Relationship between antennas and scan added";
             }
             catch (Exception e)
             {
                 // log exception here
-                Data.message = e.Message.ToString() + " Error";
+                current.message = e.Message.ToString() + " Error";
                 await _session.Rollback();
             }
             finally
             {
                 _session.CloseTransaction();
             }
-            return RedirectToAction("NewAntennaScan", "AntennaScan");
+            return RedirectToAction("Preliminary", "AntennaScan");
         }
 
         public IActionResult GoToSubmode()
@@ -91,12 +109,12 @@ namespace ASPNETAOP.Controllers
             return View("~/Views/Shared/done.cshtml");
         }
 
-        public IActionResult GoBack()
+        /*public IActionResult GoBack()
         {
             //After we have done with the ComeFromEdit, we give false (default) to this value
             Data.ComeFromAdd = false;
             return RedirectToAction("BeforeEdit", "Mode", new { id = Data.Mode.ID});
         }
+        */
     }
 }
-            

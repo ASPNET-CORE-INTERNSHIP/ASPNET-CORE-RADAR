@@ -1,0 +1,164 @@
+﻿@model ASPNETAOP.Models.Antenna
+
+@{
+    ViewData["Title"] = "NewAntenna";
+}
+
+<h1>Add Antenna</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-9">
+        @{ var receiverID = Model.receiver_id;
+           Guid? transmitterID = null;
+           if ((Guid)Model.transmitter_id != Guid.Empty)
+                transmitterID = (Guid)Model.transmitter_id;
+           
+            var newProgram = "yes";
+            if (Model.transmitter_id != Guid.Empty)
+                newProgram = "no";
+        }
+        @{ var isFirstAntenna = Model.IsFirstAntenna;}
+        @{ var ComeFromAdd = Model.ComeFromAdd;
+            var selected_type = "Select the type of antenna";
+            var phname = String.Empty;
+            double ph_horizontal_beamwidth = 00.00;
+            double ph_vertical_beamwidth = 00.00;
+            var phpolarization = String.Empty;
+            int phNOF = 0;
+            double ph_horizontal_dimension = 000.00;
+            double ph_vertical_dimension = 000.00;
+            var phlocation = String.Empty;
+            if (!Model.IsFirstAntenna)
+            {
+                selected_type = Model.type;
+                ph_horizontal_beamwidth = Model.horizontal_beamwidth;
+                ph_vertical_beamwidth = Model.vertical_beamwidth;
+                phpolarization = Model.polarization;
+                phNOF = Model.number_of_feed;
+                ph_horizontal_dimension = Model.horizontal_dimension;
+                ph_vertical_dimension = Model.vertical_dimension;
+                phlocation = Model.location;
+            }
+
+        }
+        @{ var NOF = false;}
+        <form asp-action="NewAntenna">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input asp-for="@Model.receiver_id" class="hidden" type="hidden" placeholder=@receiverID />
+            <input asp-for="@Model.transmitter_id" class="hidden" type="hidden" placeholder="=@transmitterID" />
+            <input asp-for="@Model.ComeFromAdd" class="hidden" type="hidden" placeholder=@ComeFromAdd />
+
+            <div class="form-group">
+                <label asp-for="@Model.type" class="control-label"></label>
+                <select asp-for="@Model.type" class="form-select" aria-label="Default select example">
+                    <option selected>@selected_type</option>
+                    <option value="parabolic">parabolic</option>
+                    <option value="cassegrain">cassegrain</option>
+                    <option value="phased array">phased array</option>
+                </select>
+                <span asp-validation-for="@Model.type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.name" class="control-label"></label>
+                <input asp-for="@Model.name" class="form-control" type="text" placeholder="@phname" />
+                <span asp-validation-for="@Model.name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.horizontal_beamwidth" class="control-label"></label>
+                <input asp-for="@Model.horizontal_beamwidth" class="form-control" type="number" placeholder="@ph_horizontal_beamwidth" step="0.01" pattern="^\d+(?:\.\d{2,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{2,2})?$/.test(this.value)?'inherit':'red'">
+                <span asp-validation-for="@Model.horizontal_beamwidth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.vertical_beamwidth" class="control-label"></label>
+                <input asp-for="@Model.vertical_beamwidth" class="form-control" type="number" placeholder="@ph_vertical_beamwidth" step="0.01" pattern="^\d+(?:\.\d{2,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{2,2})?$/.test(this.value)?'inherit':'red'">
+                <span asp-validation-for="@Model.vertical_beamwidth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.polarization" class="control-label"></label>
+                <input asp-for="@Model.polarization" class="form-control" placeholder=@phpolarization />
+                <span asp-validation-for="@Model.polarization" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.horizontal_dimension" class="control-label"></label>
+                <input asp-for="@Model.horizontal_dimension" class="form-control" type="number" placeholder=@ph_horizontal_dimension min="0" step="0.01" pattern="^\d+(?:\.\d{3,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{4,2})?$/.test(this.value)?'inherit':'red'" />
+                <span asp-validation-for="@Model.horizontal_dimension" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.vertical_dimension" class="control-label"></label>
+                <input asp-for="@Model.vertical_dimension" class="form-control" type="number" placeholder=@ph_vertical_dimension min="0" step="0.01" pattern="^\d+(?:\.\d{3,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{4,2})?$/.test(this.value)?'inherit':'red'" />
+                <span asp-validation-for="@Model.vertical_dimension" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.duty" class="control-label"></label>
+                <select asp-for="@Model.duty" onchange="NOFFunction(@Model.duty)" class="form-select" aria-label="Default select example">
+                    @if (!Model.ComeFromAdd)
+                    {
+                        if (newProgram.Equals("yes"))
+                        {
+                            <option selected>receiver</option>
+                        }
+                        else if (newProgram.Equals("no"))
+                        {
+                            <option selected>transmitter</option>
+                        }
+                        <option value="both">both</option>
+                    }
+                    else
+                    {
+                        <option selected>transmitter</option>
+                        <option value="receiver">receiver</option>
+                        <option value="both">both</option>
+                    }
+                </select>
+                <span asp-validation-for="@Model.duty" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.number_of_feed" class="control-label"></label>
+                <input asp-for="@Model.number_of_feed" class="form-control" type="number" placeholder=@phNOF step="1" />
+                <span asp-validation-for="@Model.number_of_feed" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.location" class="control-label"></label>
+                <input asp-for="@Model.location" class="form-control" type="text" placeholder=@phlocation />
+                <span asp-validation-for="@Model.location" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add" class="btn btn-primary" />
+            </div>
+            <b>@ViewData["message"]</b>
+        </form>
+    </div>
+</div>
+
+<div>
+    @if (!Model.ComeFromAdd)
+    {
+        if (!isFirstAntenna)
+        {
+            if (newProgram.Equals("no"))
+            {
+                <input type="button" title="Next" value="Next" onclick="location.href='@Url.Action("GoToRadar", "Antenna")'" />
+            }
+            else
+            {
+                <input type="button" title="Next" value="Next" onclick="location.href='@Url.Action("GoToTransmitter", "Antenna")'" />
+            }
+        }
+    }
+    else
+    {
+        <input type="button" style="background-color:darkblue; color:white; width:150px; height:40px;" title="Done" value="Done" onclick="location.href='@Url.Action("Done", "Antenna")'" />
+    }
+</div>
+<script type="text/javascript">
+    function NOFFunction(duty) {
+        if (duty == "receiver")
+        @NOF = true;
+    }
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
