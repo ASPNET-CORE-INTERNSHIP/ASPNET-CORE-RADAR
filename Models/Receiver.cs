@@ -25,15 +25,15 @@ namespace ASPNETAOP.Models
         [Display(Name = "User Friendly Name")]
         public virtual String? name { get; set; }
 
-        [Display(Name = "Listening time in nsec")]
+        [Display(Name = "Listening time in microsecond")]
         [Required(ErrorMessage = "Please enter the receiver's listening time in nsec")]
         public virtual Double listening_time { get; set; }
 
-        [Display(Name = "Rest time in nsec")]
+        [Display(Name = "Rest time in microsecond")]
         [Required(ErrorMessage = "Please enter the receiver's rest time in nsec")]
         public virtual Double rest_time { get; set; }
 
-        [Display(Name = "Recovery time in nsec")]
+        [Display(Name = "Recovery time in microsecond")]
         [Required(ErrorMessage = "Please enter the receiver's recovery time in nsec")]
         public virtual Double recovery_time { get; set; }
 

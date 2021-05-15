@@ -1,5 +1,6 @@
-﻿/*using ASPNETAOP.Models;
+﻿using ASPNETAOP.Models;
 using ASPNETAOP.Session;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using NHibernate;
@@ -16,6 +17,8 @@ namespace ASPNETAOP.Controllers
     public class EditRadarController : Controller
     {
         private readonly NHibernateMapperSession _session;
+        private String sessionID_s;
+        private Guid sessionID;
 
         public EditRadarController(NHibernateMapperSession session)
         {
@@ -34,41 +37,53 @@ namespace ASPNETAOP.Controllers
             Transmitter transmitter_temp = await _session.Transmitters.Where(b => b.ID.Equals(r.transmitter_id)).FirstOrDefaultAsync();
             Receiver receiver_temp = await _session.Receivers.Where(b => b.ID.Equals(r.receiver_id)).FirstOrDefaultAsync();
             Location location_temp = await _session.Location.Where(b => b.ID.Equals(r.location_id)).FirstOrDefaultAsync();
-            Guid id_receiver = receiver_temp.ID;
             List<Antenna> AntennaList = await _session.Antennas.Where(b => (b.receiver_id!= null && b.receiver_id.Value.Equals(receiver_temp.ID)) || (b.transmitter_id != null && b.transmitter_id.Value.Equals(transmitter_temp.ID))).ToListAsync();
             List<Mode> ModeList = await _session.Modes.Where(b => b.radar_id.Equals(r.ID)).ToListAsync();
-            
-            RadarInfo radar = new RadarInfo(r, transmitter_temp, receiver_temp, location_temp);
-            radar.ListOfAntennas = AntennaList;
-            radar.ListOfModes = ModeList;
+            List<ModeInfo> Modes = new List<ModeInfo>();
+
+            foreach (Mode m in ModeList)
+            {
+                ModeInfo INFO = new ModeInfo();
+                INFO.Mode = m;
+                Modes.Add(INFO);
+            }
 
             //FILL THE DATA MODEL WITH NECESSARY VALUES so we can use DATA model in editing process
-            Data.Transmitter = transmitter_temp;
-            Data.Receiver = receiver_temp;
-            Data.ListOfAntennas = AntennaList;
-            Data.Radar = r;
+            //create new Data element for our current created radar
+            Data radar = new Data();
+            radar.Transmitter = transmitter_temp;
+            radar.Receiver = receiver_temp;
+            radar.Radar = r;
+            radar.Location = location_temp;
+            radar.ListOfAntennas = AntennaList;
+            radar.ListOfModes = Modes;
+            sessionID_s = HttpContext.Session.GetString("Session");
+            sessionID = Guid.Parse(sessionID_s);
+            Program.data.Remove(sessionID);
+            Program.data.Add(sessionID, radar);
+           
 
             return View(radar);
         }
 
-        public IActionResult RadarEdit(Guid id)
+        public IActionResult RadarEdit()
         {
-            return RedirectToAction("BeforeEdit", "Radar", new { id = id });
+            return RedirectToAction("BeforeEdit", "Radar");
         }
 
-        public IActionResult ReceiverEdit(Guid id)
+        public IActionResult ReceiverEdit()
         {
-            return RedirectToAction("BeforeEdit", "Receiver", new { id = id });
+            return RedirectToAction("BeforeEdit", "Receiver");
         }
 
-        public IActionResult TransmitterEdit(Guid id)
+        public IActionResult TransmitterEdit()
         {
-            return RedirectToAction("BeforeEdit", "Transmitter", new { id = id });
+            return RedirectToAction("BeforeEdit", "Transmitter");
         }
 
-        public IActionResult LocationEdit(Guid id)
+        public IActionResult LocationEdit()
         {
-            return RedirectToAction("BeforeEdit", "Location", new { id = id });
+            return RedirectToAction("BeforeEdit", "Location");
         }
 
         public IActionResult ModeEdit(Guid id)
@@ -81,17 +96,38 @@ namespace ASPNETAOP.Controllers
             return RedirectToAction("BeforeEdit", "Antenna", new { id = id });
         }
 
-        public async System.Threading.Tasks.Task<IActionResult> AddMode(Guid id)
+        public async System.Threading.Tasks.Task<IActionResult> AddMode()
         {
-            Data.ComeFromAdd = true;
+            //get session id (we will use it when updating data and handling errors)
+            sessionID_s = HttpContext.Session.GetString("Session");
+            sessionID = Guid.Parse(sessionID_s);
+            Data d = new Data();
+            Program.data.TryGetValue(sessionID, out d);
+
+            //control if current did not came
+            if (d == null)
+            {
+                d.ComeFromAdd = true;
+            }
+
             return RedirectToAction("NewMode", "Mode");
         }
         
-        public async System.Threading.Tasks.Task<IActionResult> AddAntennaAsync(Guid id)
+        public async System.Threading.Tasks.Task<IActionResult> AddAntennaAsync()
         {
-            Data.ComeFromAdd = true;
-            return RedirectToAction("AddNewAntenna", "Antenna", new { id = id});
+            //get session id (we will use it when updating data and handling errors)
+            sessionID_s = HttpContext.Session.GetString("Session");
+            sessionID = Guid.Parse(sessionID_s);
+            Data d = new Data();
+            Program.data.TryGetValue(sessionID, out d);
+
+            //control if current did not came
+            if (d == null)
+            {
+                d.ComeFromAdd = true;
+            }
+            return RedirectToAction("Preliminary", "Antenna");
         }
 
     }
-}*/
+}

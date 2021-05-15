@@ -1,4 +1,4 @@
-﻿/*using ASPNETAOP.Aspect;
+﻿using ASPNETAOP.Aspect;
 using ASPNETAOP.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -9,6 +9,7 @@ using System;
 using ASPNETAOP.Session;
 using NHibernate.Linq;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 
 namespace ASPNETAOP.Controllers
 {
@@ -16,6 +17,8 @@ namespace ASPNETAOP.Controllers
     public class AdminRadarListController : Controller
     {
         private readonly Session.NHibernateMapperSession _session;
+        private String sessionID_s;
+        private Guid sessionID;
 
         public AdminRadarListController(NHibernateMapperSession session)
         {
@@ -41,29 +44,20 @@ namespace ASPNETAOP.Controllers
                 RadarInfo temp = new RadarInfo(RadarList[i], transmitter_temp, receiver_temp, location_temp);
                 model.Add(temp);
             }
-            if(Data.message != null)
-            {
-                ViewData["Message"] = Data.message;
-                Data.message = null;
-            }
+            //get session id (we will use it when updating data and handling errors)
+            sessionID_s = HttpContext.Session.GetString("Session");
+            sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
+
+            if (current != null && !String.IsNullOrEmpty(current.message))
+                ViewData["message"] = current.message;
             return View(model);
         }
 
         public IActionResult GoToEdit(Guid id)
         {
-            //empty data class for our current working Radar
-            Data.Receiver = new Receiver();
-            Data.Transmitter = new Transmitter();
-            Data.Submode = new Submode();
-            Data.Scan = new Scan();
-            Data.Radar = new Radar();
-            Data.newProgram = "yes";
-            Data.message = null;
-            Data.edited = false;
-            Data.ComeFromAdd = false;
-            //new list of antennas for current Radar
-            Data.ListOfAntennas = new List<Antenna>();
             return RedirectToAction( "Edit", "EditRadar", new { id = id });
         }
     }
-}*/
+}

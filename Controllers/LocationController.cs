@@ -110,6 +110,13 @@ namespace ASPNETAOP.Controllers
             Data current = new Data();
             Program.data.TryGetValue(sessionID, out current);
 
+            //control if current did not came
+            if (current == null)
+            {
+                ViewData["Message"] = "Error occured please restart the program";
+                return View(loc);
+            }
+
             //defining Radar's and Location's key here
             Guid key_location = Guid.NewGuid();
             Guid key = Guid.NewGuid();
@@ -174,7 +181,7 @@ namespace ASPNETAOP.Controllers
             Location location_temp = new Location(key_location, def_name, loc.country, loc.city, loc.geographic_latitude, loc.geographic_longitude, loc.airborne);
             Radar radar_temp = new Radar(key, radar_name, current.Radar.system, current.Radar.configuration, current.Transmitter.ID, current.Receiver.ID, key_location);
             current.Radar = radar_temp;
-            //we do nott need locatioon in current because we will not use its informations 
+            //we do not need location in current because we will not use its informations 
 
             try
             {
@@ -201,26 +208,48 @@ namespace ASPNETAOP.Controllers
             
         }
 
-        /*public async Task<IActionResult> BeforeEdit(Guid id)
+        public async Task<IActionResult> BeforeEdit()
         {
+            //get session id (we will use it when updating data and handling errors)
+            String sessionID_s = HttpContext.Session.GetString("Session");
+            Guid sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
+
+            //control if current did not came
+            if (current == null)
+            {
+                ViewData["Message"] = "Error occured please restart the program";
+                Location l = new Location();
+                return View(l);
+            }
+
             //Because we use the same view before and after edit process we should handle the view messages with the following conditions
-            if (Data.edited)
+            if (current.edited)
             {
                 ViewData["Message"] = "Update completed successfully";
-                Data.edited = false;
+                current.edited = false;
             }
-            if (Data.message != null)
+            if (current.message != null)
             {
-                ViewData["Message"] = Data.message;
-                Data.message = null;
+                ViewData["Message"] = current.message;
+                current.message = null;
             }
-            //Get radar's informations and shows it in edit page
-            Location loc = await _session.Location.Where(b => b.ID.Equals(id)).FirstOrDefaultAsync();
-            return View(loc);
+
+            //Get receiver's informations and shows it in edit page
+            //Transmitter t = await _session.Transmitters.Where(b => b.ID.Equals(current.Transmitter.ID)).FirstOrDefaultAsync();
+            return View(current.Location);
         }
 
         public async Task<IActionResult> Edit(Location newValues)
         {
+            //get session id (we will use it when updating data and handling errors)
+            String sessionID_s = HttpContext.Session.GetString("Session");
+            Guid sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
+
+            current.Location = newValues;
             try
             {
                 await _session.EditLocation(newValues);
@@ -228,38 +257,28 @@ namespace ASPNETAOP.Controllers
             catch (Exception e)
             {
                 // log exception here
-                Data.message = e.Message.ToString() + " Error";
+                ViewData["message"] = e.Message.ToString() + " Error";
                 await _session.Rollback();
-                return RedirectToAction("BeforeEdit", "Location", new { id = newValues.ID });
+                return RedirectToAction("BeforeEdit", "Location");
             }
             finally
             {
                 _session.CloseTransaction();
             }
-            Data.edited = true;
-            return RedirectToAction("BeforeEdit", "Location", new { id = newValues.ID });
+            current.edited = true;
+            return RedirectToAction("BeforeEdit", "Location");
         }
 
-        public async Task<IActionResult> GoBack(Guid id)
+        public async Task<IActionResult> GoBack()
         {
-            Radar r = new Radar();
-            try
-            {
-                r = await _session.Radars.Where(b => b.location_id.Equals(id)).FirstOrDefaultAsync();
-            }
-            catch (Exception e)
-            {
-                // log exception here
-                Data.message = e.Message.ToString() + " Error";
-                await _session.Rollback();
-                return RedirectToAction("BeforeEdit", "Location", new { id = id });
-            }
-            finally
-            {
-                _session.CloseTransaction();
-            }
-            return RedirectToAction("Edit", "EditRadar", new { id = r.ID });
-        }*/
+            //get session id (we will use it when updating data and handling errors)
+            String sessionID_s = HttpContext.Session.GetString("Session");
+            Guid sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
 
+            return RedirectToAction("Edit", "EditRadar", new { id = current.Radar.ID });
+        }
+     
     }
 }

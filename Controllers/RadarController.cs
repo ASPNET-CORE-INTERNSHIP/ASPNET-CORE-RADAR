@@ -79,30 +79,35 @@ namespace ASPNETAOP.Controllers
             sessionID = Guid.Parse(sessionID_s);
             Data d = new Data();
             Program.data.TryGetValue(sessionID, out d);
+
             d.Radar = new Radar(def_name, radar.system, radar.configuration);
             d.Radar.Isnamed = isNamed;
             return RedirectToAction("NewLocation", "Location"); 
         }
 
-        /*public async Task<RedirectToActionResult> DeleteRadar(Guid id)
+        public async Task<RedirectToActionResult> DeleteRadar()
         {
+            //get session id (we will use it when updating data and handling errors)
+            sessionID_s = HttpContext.Session.GetString("Session");
+            sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
+
             try
             {
                 _session.BeginTransaction();
-                Guid receiver_id = await _session.GetReceiverID(id);
-                Guid transmitter_id = await _session.GetTransmitterID(id);
-                await _session.DeleteScan(id);
-                await _session.DeleteLocation(id);
-                await _session.DeleteReceiver(receiver_id);
-                await _session.DeleteTransmitter(transmitter_id);
-                //look here and delete location 
+                await _session.DeleteScan(current.Radar.ID);
+                await _session.DeleteLocation(current.Location.ID);
+                await _session.DeleteReceiver(current.Receiver.ID);
+                await _session.DeleteTransmitter(current.Transmitter.ID);
+                await _session.DeleteLocation(current.Location.ID);
                 await _session.Commit();
-                Data.message = "Radar " + id + " removed From Database";
+                current.message = "Radar " + current.Radar.ID + " removed From Database";
             }
             catch (Exception e)
             {
                 // log exception here
-                Data.message = e.Message.ToString() + " Error";
+                current.message = e.Message.ToString() + " Error";
                 await _session.Rollback();
             }
             finally
@@ -112,26 +117,40 @@ namespace ASPNETAOP.Controllers
             return RedirectToAction("RadarList", "AdminRadarList");
         }
 
-         public async Task<IActionResult> BeforeEdit(Guid id)
+         public async Task<IActionResult> BeforeEdit()
         {
+            //get session id (we will use it when updating data and handling errors)
+            sessionID_s = HttpContext.Session.GetString("Session");
+            sessionID = Guid.Parse(sessionID_s);
+            Data d = new Data();
+            Program.data.TryGetValue(sessionID, out d);
+
             //Because we use the same view before and after edit process we should handle the view messages with the following conditions
-            if (Data.edited)
+            if (d.edited)
             {
                 ViewData["Message"] = "Update completed successfully";
-                Data.edited = false;
+                d.edited = false;
             }
-            if(Data.message != null)
+            if(d.message != null)
             {
-                ViewData["Message"] = Data.message;
-                Data.message = null;
+                ViewData["Message"] = d.message;
+                d.message = null;
             }
+           
             //Get radar's informations and shows it in edit page
-            Radar r = await _session.Radars.Where(b => b.ID.Equals(id)).FirstOrDefaultAsync();
+            //Radar r = await _session.Radars.Where(b => b.ID.Equals(id)).FirstOrDefaultAsync();
+            Radar r = d.Radar;
             return View(r);
         }
 
         public async Task<IActionResult> Edit(Radar newValues)
         {
+            //get session id (we will use it when updating data and handling errors)
+            sessionID_s = HttpContext.Session.GetString("Session");
+            sessionID = Guid.Parse(sessionID_s);
+            Data d = new Data();
+            Program.data.TryGetValue(sessionID, out d);
+            d.Radar = newValues;
             try
             {
                 await _session.EditRadar(newValues.ID, newValues.name, newValues.system, newValues.configuration);
@@ -139,17 +158,16 @@ namespace ASPNETAOP.Controllers
             catch (Exception e)
             {
                 // log exception here
-                Data.message = e.Message.ToString() + " Error";
+                d.message = e.Message.ToString() + " Error";
                 await _session.Rollback();
-                return RedirectToAction("BeforeEdit", "Radar", new { id = newValues.ID });
             }
             finally
             {
                 _session.CloseTransaction();
             }
-            Data.edited = true;
-            return RedirectToAction("BeforeEdit", "Radar", new { id = newValues.ID });
-        }*/
+            d.edited = true;
+            return RedirectToAction("BeforeEdit", "Radar");
+        }
 
     }
 }

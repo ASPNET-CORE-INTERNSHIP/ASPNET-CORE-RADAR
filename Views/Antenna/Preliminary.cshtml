@@ -22,14 +22,14 @@
         @{ var ComeFromAdd = Model.ComeFromAdd;
             var selected_type = "Select the type of antenna";
             var phname = String.Empty;
-            double ph_horizontal_beamwidth = 00.00;
-            double ph_vertical_beamwidth = 00.00;
+            Double ph_horizontal_beamwidth = 0;
+            Double ph_vertical_beamwidth = 0;
             var phpolarization = String.Empty;
             int phNOF = 0;
-            double ph_horizontal_dimension = 000.00;
-            double ph_vertical_dimension = 000.00;
+            Double ph_horizontal_dimension = 0;
+            Double ph_vertical_dimension = 0;
             var phlocation = String.Empty;
-            if (!Model.IsFirstAntenna)
+            if (!Model.IsFirstAntenna && !Model.ComeFromAdd)
             {
                 selected_type = Model.type;
                 ph_horizontal_beamwidth = Model.horizontal_beamwidth;
@@ -67,12 +67,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="@Model.horizontal_beamwidth" class="control-label"></label>
-                <input asp-for="@Model.horizontal_beamwidth" class="form-control" type="number" placeholder="@ph_horizontal_beamwidth" step="0.01" pattern="^\d+(?:\.\d{2,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{2,2})?$/.test(this.value)?'inherit':'red'">
+                <input asp-for="@Model.horizontal_beamwidth" class="form-control" type="number" placeholder="@ph_horizontal_beamwidth" step="0.01" />
                 <span asp-validation-for="@Model.horizontal_beamwidth" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="@Model.vertical_beamwidth" class="control-label"></label>
-                <input asp-for="@Model.vertical_beamwidth" class="form-control" type="number" placeholder="@ph_vertical_beamwidth" step="0.01" pattern="^\d+(?:\.\d{2,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{2,2})?$/.test(this.value)?'inherit':'red'">
+                <input asp-for="@Model.vertical_beamwidth" class="form-control" type="number" placeholder="@ph_vertical_beamwidth" step="0.01" />
                 <span asp-validation-for="@Model.vertical_beamwidth" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -149,15 +149,9 @@
     }
     else
     {
-        <input type="button" style="background-color:darkblue; color:white; width:150px; height:40px;" title="Done" value="Done" onclick="location.href='@Url.Action("Done", "Antenna")'" />
+        <input type="button" style="background-color:darkblue; color:white; width:150px; height:40px;" title="Done" value="Done" onclick="location.href='@Url.Action("GoBack", "Antenna")'" />
     }
 </div>
-<script type="text/javascript">
-    function NOFFunction(duty) {
-        if (duty == "receiver")
-        @NOF = true;
-    }
-</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

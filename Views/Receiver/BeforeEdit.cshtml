@@ -1,4 +1,4 @@
-﻿@model ASPNETAOP.Models.Data
+﻿@model ASPNETAOP.Models.Receiver
 
 @{
     ViewData["Title"] = "Edit Receiver";
@@ -17,48 +17,43 @@
                 var listening_time = "@Model.Receiver.listening_time";
                 var rest_time = "@Model.Receiver.rest_time";
                 var recovery_time = "@Model.Receiver.recovery_time";
-                <input type="hidden" id="@ID" name="@ID" value="@Model.Receiver.ID" />
-                <input type="hidden" id="@name" name="@name" value="@Model.Receiver.name" />
-                <input type="hidden" id="@listening_time" name="@listening_time" value="@Model.Receiver.listening_time" />
-                <input type="hidden" id="@rest_time" name="@rest_time" value="@Model.Receiver.rest_time" />
-                <input type="hidden" id="@recovery_time" name="@recovery_time" value="@Model.Receiver.recovery_time" />
+                <input type="hidden" id="@ID" name="@ID" value="@Model.ID" />
+                <input type="hidden" id="@name" name="@name" value="@Model.name" />
+                <input type="hidden" id="@listening_time" name="@listening_time" value="@Model.listening_time" />
+                <input type="hidden" id="@rest_time" name="@rest_time" value="@Model.rest_time" />
+                <input type="hidden" id="@recovery_time" name="@recovery_time" value="@Model.recovery_time" />
+                <input asp-for="@Model.ID" class="hidden" type="hidden">
                 <div class="form-group">
-                    <label asp-for="@Model.Receiver.ID" class="hidden"></label>
-                    <input asp-for="@Model.Receiver.ID" class="hidden" type="hidden">
-                    <span asp-validation-for="@Model.Receiver.ID" class="hidden"></span>
+                    <label asp-for="@Model.name" class="control-label"></label>
+                    <input asp-for="@Model.name" class="form-control" type="text" placeholder=@Model.name/>
+                    <span asp-validation-for="@Model.name" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="@Model.Receiver.name" class="control-label"></label>
-                    <input asp-for="@Model.Receiver.name" class="form-control" type="text" placeholder=@Model.Receiver.name/>
-                    <span asp-validation-for="@Model.Receiver.name" class="text-danger"></span>
+                    <label asp-for="@Model.listening_time" class="control-label"></label>
+                    <input asp-for="@Model.listening_time" class="form-control" type="number" placeholder=@Model.listening_time step="0.01"/>
+                    <span asp-validation-for="@Model.listening_time" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="@Model.Receiver.listening_time" class="control-label"></label>
-                    <input asp-for="@Model.Receiver.listening_time" class="form-control" type="number" placeholder=@Model.Receiver.listening_time step="0.01"/>
-                    <span asp-validation-for="@Model.Receiver.listening_time" class="text-danger"></span>
+                    <label asp-for="@Model.rest_time" class="control-label"></label>
+                    <input asp-for="@Model.rest_time" class="form-control" type="number" placeholder=@Model.rest_time step="0.01"/>
+                    <span asp-validation-for="@Model.rest_time" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="@Model.Receiver.rest_time" class="control-label"></label>
-                    <input asp-for="@Model.Receiver.rest_time" class="form-control" type="number" placeholder=@Model.Receiver.rest_time step="0.01"/>
-                    <span asp-validation-for="@Model.Receiver.rest_time" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="@Model.Receiver.recovery_time" class="control-label"></label>
-                    <input asp-for="@Model.Receiver.recovery_time" class="form-control" type="number" placeholder=@Model.Receiver.recovery_time step="0.01"/>
-                    <span asp-validation-for="@Model.Receiver.recovery_time" class="text-danger"></span>
+                    <label asp-for="@Model.recovery_time" class="control-label"></label>
+                    <input asp-for="@Model.recovery_time" class="form-control" type="number" placeholder=@Model.recovery_time step="0.01"/>
+                    <span asp-validation-for="@Model.recovery_time" class="text-danger"></span>
                 </div>
             }
             <div class="form-group">
                 <input type="submit" value="Edit" class="btn btn-primary" />
             </div>
-            <b>@Model.message</b>
-            @{ Model.message = null; }
+            <b>@ViewData["Message"]</b>
         </form>
     </div>
 </div>
 
 <div>
-    <input type="button" style="background-color:mediumblue; border-color:mediumblue; color:white; width:150px; height:40px;" title="Go Back" value="Go Back" onclick="location.href='@Url.Action("GoBack", "Receiver", new { id = @Model.Receiver.ID })'" />
+    <input type="button" style="background-color:mediumblue; border-color:mediumblue; color:white; width:150px; height:40px;" title="Go Back" value="Go Back" onclick="location.href='@Url.Action("GoBack", "Receiver")'" />
 </div>
 
 @section Scripts {

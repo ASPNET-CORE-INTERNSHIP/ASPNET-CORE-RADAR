@@ -42,27 +42,44 @@ namespace ASPNETAOP.Controllers
             Program.data.TryGetValue(sessionID, out d);
 
             Antenna antenna = new Antenna();
-            if (d.LastAntenna != null)
+            //control if current did not came
+            if (d != null)
             {
-                antenna = d.LastAntenna;
-                if (d.ListOfAntennas.Count > 0)
+                if (d.ComeFromAdd)
                 {
+                    antenna.IsFirstAntenna = false;
+                    antenna.receiver_id = d.Receiver.ID;
+                    antenna.transmitter_id = d.Transmitter.ID;
+                    antenna.ComeFromAdd = true;
+                }
+                //not first antenna case
+                else if (d.LastAntenna != null)
+                {
+                    //copy last added antenna's informations to this so we can arrange different values
+                    antenna = d.LastAntenna;
                     antenna.IsFirstAntenna = false;
                     if (d.Transmitter != null)
                     {
                         antenna.transmitter_id = d.Transmitter.ID;
                     }
+                    else
+                    {
+                        antenna.transmitter_id = Guid.Empty;
+                    }
                 }
-            }
-            else
-            {
-                antenna.transmitter_id = Guid.Empty;
-                antenna.IsFirstAntenna = true;
-                antenna.receiver_id = d.Receiver.ID;
-            }
+                //first antenna case
+                else
+                {
+                    antenna.transmitter_id = Guid.Empty;
+                    antenna.IsFirstAntenna = true;
+                    antenna.receiver_id = d.Receiver.ID;
+                }
 
-            if(!string.IsNullOrEmpty(d.message))
-                ViewData["message"] = d.message;
+                if (!string.IsNullOrEmpty(d.message))
+                    ViewData["message"] = d.message;
+            }
+            else //error case
+                return RedirectToAction("NewReceiver", "Receiver");
 
             return View(antenna);
         }
@@ -85,6 +102,13 @@ namespace ASPNETAOP.Controllers
                 {
                     current = sds.Value;
                 }
+            }
+
+            //control if current did not came
+            if (current == null)
+            {
+                //it is an error
+                return RedirectToAction("NewReceiver", "Receiver");
             }
 
             //handling user-may-occur mistakes
@@ -158,6 +182,27 @@ namespace ASPNETAOP.Controllers
                 current.ListOfAntennas.Add(antenna);
             }
 
+            if (antenna_temp.ComeFromAdd)
+            {
+                current.message = "New Antenna added to database";
+                try
+                {
+                    _session.BeginTransaction();
+                    await _session.SaveAntenna(antenna);
+                    await _session.Commit();
+                }
+                catch (Exception e)
+                {
+                    // log exception here
+                    current.message = e.Message.ToString() + " Error, plase check your database connection and restart your program, Do not forgett to delete uneccessary transmitter and receiver";
+                    await _session.Rollback();
+                    return RedirectToAction("Preliminary", "Antenna");
+                }
+                finally
+                {
+                    _session.CloseTransaction();
+                }
+            }
             current.LastAntenna = antenna_temp;
             return RedirectToAction("Preliminary", "Antenna");
         }
@@ -207,45 +252,65 @@ namespace ASPNETAOP.Controllers
             return RedirectToAction("NewRadar", "Radar");
         }
 
-        //This method is for edit page
-        public async Task<IActionResult> AddNewAntenna(Data current)
+        //This methods are for edit page
+        public async Task<IActionResult> BeforeEdit(Guid id)
         {
-            Radar r = new Radar();
-            try
-            {
-                r = await _session.Radars.Where(b => b.ID.Equals(current.Radar)).FirstOrDefaultAsync();
-                current.Radar = r;
-            }
-            catch (Exception e)
-            {
-                // log exception here
-                current.message = e.Message.ToString() + " Error";
-                await _session.Rollback();
-            }
-            finally
-            {
-                _session.CloseTransaction();
-            }
-            return RedirectToAction("NewAntenna", "Antenna");
-        }
+            //get session id (we will use it when updating data and handling errors)
+            String sessionID_s = HttpContext.Session.GetString("Session");
+            Guid sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
 
-        public async Task<IActionResult> BeforeEdit(Antenna antenna)
-        {
-            //Because we use the same view before and after edit process we should handle the view messages with the following conditions
-            /*if (anntenna.edited)
+            //control if current did not came
+            if (current != null)
             {
-                ViewData["message"] = "Update completed successfully";
-                current.edited = false;
-            }*/
-
-            //Get antenna's informations and shows it in edit page
-            Antenna a = await _session.Antennas.Where(b => b.ID.Equals(antenna.ID)).FirstOrDefaultAsync();
-
+                //Because we use the same view before and after edit process we should handle the view messages with the following conditions
+                if (current.edited)
+                {
+                    ViewData["Message"] = "Update completed successfully";
+                    current.edited = false;
+                }
+                if (current.message != null)
+                {
+                    ViewData["Message"] = current.message;
+                    current.message = null;
+                }
+            }
+            else
+            {
+                ViewData["Message"] = "An error occured please restart the program";
+            }
+            
+            Antenna a = await _session.Antennas.Where(b => b.ID.Equals(id)).FirstOrDefaultAsync();
             return View(a);
         }
 
         public async Task<IActionResult> Edit(Antenna antenna)
         {
+            //get session id (we will use it when updating data and handling errors)
+            String sessionID_s = HttpContext.Session.GetString("Session");
+            Guid sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
+
+            //control if current did not came
+            if (current == null)
+            {
+                //error
+                return RedirectToAction("BeforeEdit", "Antenna", new { id = antenna.ID });
+            }
+
+            //update our data class
+            //this way is not so effective if I can find a more effective way I will change it
+            for (int i=0; i< current.ListOfAntennas.Count; i++)
+            {
+                if (current.ListOfAntennas[i].ID.Equals(antenna.ID))
+                {
+                    current.ListOfAntennas[i] = antenna;
+                }
+            }
+
+            //update database
             try
             {
                 await _session.EditAntenna(antenna.ID, antenna.name, antenna.type, antenna.horizontal_beamwidth, antenna.vertical_beamwidth, antenna.polarization, antenna.number_of_feed, antenna.horizontal_dimension, antenna.vertical_dimension, antenna.location);
@@ -261,59 +326,24 @@ namespace ASPNETAOP.Controllers
             {
                 _session.CloseTransaction();
             }
-            //current.edited = true;
+            current.edited = true;
             return RedirectToAction("BeforeEdit", "Antenna", new { id = antenna.ID });
         }
 
-        //hiç ekleme yapmayınca sorun
-        public async Task<IActionResult> GoBack(Data current)
+        public async Task<RedirectToActionResult> DeleteAntenna(Guid id)
         {
-            /*Radar radar = new Radar();
-            try
-            {
-                Antenna a = await _session.Antennas.Where(b => b.ID.Equals(antenna_temp.ID)).FirstOrDefaultAsync();
-                if (a.duty.Equals("receiver"))
-                {
-                    Receiver receiver = await _session.Receivers.Where(b => b.ID.Equals(a.ID)).FirstOrDefaultAsync();
-                    radar = await _session.Radars.Where(b => b.receiver_id.Equals(receiver.ID)).FirstOrDefaultAsync();
-                }
-                else
-                {
-                    Transmitter transmitter = await _session.Transmitters.Where(b => b.ID.Equals(a.ID)).FirstOrDefaultAsync();
-                    radar = await _session.Radars.Where(b => b.transmitter_id.Equals(transmitter.ID)).FirstOrDefaultAsync();
-                }
-            }
-            catch (Exception e)
-            {
-                // log exception here
-                current.message = e.Message.ToString() + " Error";
-                await _session.Rollback();
-            }
-            finally
-            {
-                _session.CloseTransaction();
-            }*/
-            return RedirectToAction("Edit", "EditRadar", new { current = current });
-        }
+            //get session id (we will use it when updating data and handling errors)
+            sessionID_s = HttpContext.Session.GetString("Session");
+            sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
 
-        public async System.Threading.Tasks.Task<IActionResult> Done(Data current)
-        {
-            //first save all antennas that created before
             try
             {
                 _session.BeginTransaction();
-                for (int i = 0; i < current.ListOfAntennas.Count; i++)
-                {
-                    Antenna antenna = current.ListOfAntennas[i];
-                    if (antenna.duty.Equals("both"))
-                    {
-                        antenna.transmitter_id = current.Transmitter.ID;
-                    }
-                    _session.SaveAntenna(antenna);
-                }
-
-                await _session.Commit(); 
-                current.message = "New Antennas added";
+                await _session.DeleteAntenna(id);
+                await _session.Commit();
+                current.message = "Radar " + id + " removed From Database";
             }
             catch (Exception e)
             {
@@ -325,8 +355,26 @@ namespace ASPNETAOP.Controllers
             {
                 _session.CloseTransaction();
             }
-            //current.ComeFromAdd = false;
-            return RedirectToAction("Edit", "EditRadar", new { current = current });
+            return RedirectToAction("Edit", "EditRadar", new { id = current.Radar.ID });
+        }
+
+        public async Task<IActionResult> GoBack()
+        {
+            //get session id (we will use it when updating data and handling errors)
+            String sessionID_s = HttpContext.Session.GetString("Session");
+            Guid sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
+
+            //control if current did not came
+            if (current == null)
+            {
+                return RedirectToAction("RadarList", "AdminRadarList");
+            }
+
+            //we may came to there from edit page
+            current.ComeFromAdd = false;
+            return RedirectToAction("Edit", "EditRadar", new { id = current.Radar.ID });
         }
 
     }
