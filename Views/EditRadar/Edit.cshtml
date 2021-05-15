@@ -1,4 +1,4 @@
-﻿@model ASPNETAOP.Models.RadarInfo
+﻿@model ASPNETAOP.Models.Data
 
 @{
     ViewData["Title"] = "Radar Information";
@@ -67,7 +67,7 @@
                     <td>@RestTime</td>
                     <td>@RecoveryTime</td>
                     <td>
-                        <input type="button" style="background-color:royalblue; color:white; width:150px; height:40px;" title="Edit Receiver" value="Edit Receiver" onclick="location.href='@Url.Action("ReceiverEdit", "EditRadar", new { id = @Model.Receiver.ID })'" />
+                        <input type="button" style="background-color:royalblue; color:white; width:150px; height:40px;" title="Edit Receiver" value="Edit Receiver" onclick="location.href='@Url.Action("ReceiverEdit", "EditRadar")'" />
                     </td>
                 </tr>
             }
@@ -105,7 +105,7 @@
                     <td>@MinFrequency</td>
                     <td>@Power</td>
                     <td>
-                        <input type="button" style="background-color:royalblue; color:white; width:150px; height:40px;" title="Edit Transmitter" value="Edit Transmitter" onclick="location.href='@Url.Action("TransmitterEdit", "EditRadar", new { id = @Model.Transmitter.ID })'" />
+                        <input type="button" style="background-color:royalblue; color:white; width:150px; height:40px;" title="Edit Transmitter" value="Edit Transmitter" onclick="location.href='@Url.Action("TransmitterEdit", "EditRadar")'" />
                     </td>
                 </tr>
             }
@@ -147,7 +147,7 @@
                     <td>@Longitude</td>
                     <td>@Airborne</td>
                     <td>
-                        <input type="button" style="background-color:royalblue; color:white; width:150px; height:40px;" title="Edit Location" value="Edit Location" onclick="location.href='@Url.Action("LocationEdit", "EditRadar", new { id = @Model.Location.ID })'" />
+                        <input type="button" style="background-color:royalblue; color:white; width:150px; height:40px;" title="Edit Location" value="Edit Location" onclick="location.href='@Url.Action("LocationEdit", "EditRadar")'" />
                     </td>
                 </tr>
             }
@@ -163,18 +163,18 @@
             </tr>
             @{for (int i = 0; i < Model.ListOfModes.Count; i++)
                 {
-                    var name = Model.ListOfModes[i].name;
-                    <input type="hidden" id="@name" name="@name" value="@Model.ListOfModes[i].name" />
+                    var name = Model.ListOfModes[i].Mode.name;
+                    <input type="hidden" id="@name" name="@name" value="@Model.ListOfModes[i].Mode.name" />
                     <tr>
                         <td>@name</td>
                         <td>
-                            <input type="button" style="background-color:royalblue; border-color:royalblue; color:white; width:150px; height:40px;" title="Edit Mode" value="Edit Mode" onclick="location.href='@Url.Action("ModeEdit", "EditRadar", new { id = @Model.ListOfModes[i].ID })'" />
+                            <input type="button" style="background-color:royalblue; border-color:royalblue; color:white; width:150px; height:40px;" title="Edit Mode" value="Edit Mode" onclick="location.href='@Url.Action("ModeEdit", "EditRadar", new { id = @Model.ListOfModes[i].Mode.ID })'" />
                         </td>
                     </tr>
                 }
             }
         </table>
-        <input type="button" style="background-color:limegreen; border-color:limegreen; color:white; width:150px; height:40px;" title="Add Mode" value="Add Mode" onclick="location.href='@Url.Action("AddMode", "EditRadar", new { id = @Model.Radar.ID })'" />
+        <input type="button" style="background-color:limegreen; border-color:limegreen; color:white; width:150px; height:40px;" title="Add Mode" value="Add Mode" onclick="location.href='@Url.Action("AddMode", "EditRadar")'" />
     </div>
     <h1>---------------------------------------------------------------------</h1>
     <h3>Antennas</h3>
@@ -205,7 +205,7 @@
                 }
             }
         </table>
-        <input type="button" style="background-color:limegreen; color:white; width:150px; height:40px;" title="Add Antenna" value="Add Antenna" onclick="location.href='@Url.Action("AddAntenna", "EditRadar", new { id = @Model.Radar.ID })'" />
+        <input type="button" style="background-color:limegreen; color:white; width:150px; height:40px;" title="Add Antenna" value="Add Antenna" onclick="location.href='@Url.Action("AddAntenna", "EditRadar")'" />
     </div>
 </form>
 <h1>---------------------------------------------------------------------</h1>

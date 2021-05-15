@@ -41,7 +41,6 @@ namespace ASPNETAOP.Controllers
             sessionID_s = HttpContext.Session.GetString("Session");
             sessionID = Guid.Parse(sessionID_s);
             
-
             //If the receiver name is null we give a default name that specifies its number
             //because we change the default name after the Radar added we we should keep it in mind to it is a default given name
             bool IsNamed = false;
@@ -104,8 +103,14 @@ namespace ASPNETAOP.Controllers
             return RedirectToAction("Preliminary", "Antenna");
         }
 
-        public async Task<IActionResult> BeforeEdit(Data current)
+        public async Task<IActionResult> BeforeEdit()
         {
+            //get session id (we will use it when updating data and handling errors)
+            String sessionID_s = HttpContext.Session.GetString("Session");
+            Guid sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
+
             //Because we use the same view before and after edit process we should handle the view messages with the following conditions
             if (current.edited)
             {
@@ -118,50 +123,46 @@ namespace ASPNETAOP.Controllers
                 current.message = null;
             }
             //Get radar's informations and shows it in edit page
-            Receiver r = await _session.Receivers.Where(b => b.ID.Equals(current.Receiver.ID)).FirstOrDefaultAsync();
+            //Receiver r = await _session.Receivers.Where(b => b.ID.Equals(current.Receiver.ID)).FirstOrDefaultAsync();
+            Receiver r = current.Receiver;
             return View(r);
         }
 
-        public async Task<IActionResult> Edit(Data current)
+        public async Task<IActionResult> Edit(Receiver newValues)
         {
+            //get session id (we will use it when updating data and handling errors)
+            String sessionID_s = HttpContext.Session.GetString("Session");
+            Guid sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
+            current.Receiver = newValues;
             try
             {
-                await _session.EditReceiver(current.Receiver.ID, current.Receiver.name, current.Receiver.listening_time, current.Receiver.rest_time, current.Receiver.recovery_time);
+                await _session.EditReceiver(newValues.ID, newValues.name, newValues.listening_time, newValues.rest_time, newValues.recovery_time);
             }
             catch (Exception e)
             {
                 // log exception here
                 current.message = e.Message.ToString() + " Error";
                 await _session.Rollback();
-                return RedirectToAction("BeforeEdit", "Receiver", new { id = current.Receiver.ID });
+                return RedirectToAction("BeforeEdit", "Receiver");
             }
             finally
             {
                 _session.CloseTransaction();
             }
             current.edited = true;
-            return RedirectToAction("BeforeEdit", "Receiver", new { current = current });
+            return RedirectToAction("BeforeEdit", "Receiver");
         }
 
-        public async Task<IActionResult> GoBack(Data current)
+        public async Task<IActionResult> GoBack()
         {
-            /*Radar r = new Radar();
-            try
-            {
-                r = await _session.Radars.Where(b => b.receiver_id.Equals(current.Receiver.ID)).FirstOrDefaultAsync();
-            }
-            catch (Exception e)
-            {
-                // log exception here
-                current.message = e.Message.ToString() + " Error";
-                await _session.Rollback();
-                //return RedirectToAction("BeforeEdit", "Receiver", new { id = id });
-            }
-            finally
-            {
-                _session.CloseTransaction();
-            }*/
-            return RedirectToAction("Edit", "EditRadar", new { current = current });
+            //get session id (we will use it when updating data and handling errors)
+            String sessionID_s = HttpContext.Session.GetString("Session");
+            Guid sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
+            return RedirectToAction("Edit", "EditRadar", new { id = current.Radar.ID});
         }
     }
 }

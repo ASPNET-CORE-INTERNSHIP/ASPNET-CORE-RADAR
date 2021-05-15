@@ -25,7 +25,7 @@ namespace ASPNETAOP.Models
 
         public Location Location { get; set; }
 
-        public List<Mode> ListOfModes { get; set; }
+        public List<ModeInfo> ListOfModes { get; set; }
 
         public List<Antenna> ListOfAntennas { get; set; }
     }

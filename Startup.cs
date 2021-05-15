@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Globalization;
 
 //runs on localhost:44363
 namespace ASPNETAOP
@@ -47,6 +48,9 @@ namespace ASPNETAOP
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseSession();
+            app.UseRequestLocalization();
+            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
+            CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("en-US");
 
             app.UseExceptionHandler(errorApp =>
             {

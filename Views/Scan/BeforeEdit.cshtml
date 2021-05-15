@@ -27,11 +27,8 @@
                 <input type="hidden" id="@scan_rate" name="@scan_rate" value="@Model.Scan.scan_rate" />
                 <input type="hidden" id="@hits_per_scan" name="@hits_per_scan" value="@Model.Scan.hits_per_scan" />
 
-                <div class="form-group">
-                    <label asp-for="@Model.Scan.ID" class="hidden"></label>
-                    <input asp-for="@Model.Scan.ID" class="hidden" type="hidden">
-                    <span asp-validation-for="@Model.Scan.ID" class="hidden"></span>
-                </div>
+                <input asp-for="@Model.Scan.ID" class="hidden" type="hidden" placeholder=@ID />
+
                 <div class="form-group">
                     <label asp-for="@Model.Scan.name" class="control-label"></label>
                     <input asp-for="@Model.Scan.name" class="form-control" type="text" placeholder=@Model.Scan.name />
@@ -102,13 +99,13 @@
             }
         }
     </table>
-    <input type="button" style="background-color:limegreen; border-color:limegreen; color:white; width:150px; height:40px;" title="Edit Relationship" value="Edit Relationship" onclick="location.href='@Url.Action("EditRelationship", "Scan", new { id = Model.Scan.ID })'" />
-    
+    <input type="button" style="background-color:limegreen; border-color:limegreen; color:white; width:150px; height:40px;" title="Edit Relationship" value="Edit Relationship" onclick="location.href='@Url.Action("EditRelationship", "Scan", new { id = Model.Scan.ID })'" />  
 </div>
 <h1>            </h1>
+<b>@ViewData["Message"]</b>
 <h1>---------------------------------------------------------------------</h1>
 <div>
-        <input type="button" style="background-color:mediumblue; border-color:mediumblue; color:white; width:150px; height:40px;" title="Back" value="Back" onclick="location.href='@Url.Action("GoBack", "Scan", new { id = Model.Scan.ID })'" />
+        <input type="button" style="background-color:mediumblue; border-color:mediumblue; color:white; width:150px; height:40px;" title="Back" value="Back" onclick="location.href='@Url.Action("GoBack", "Scan")'" />
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

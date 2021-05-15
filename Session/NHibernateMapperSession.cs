@@ -74,13 +74,6 @@ namespace ASPNETAOP.Session
             query.ExecuteUpdate();
         }
 
-        public async Task DeleteRadar(Guid id)
-        {
-            ISQLQuery query = _session.CreateSQLQuery("DELETE FROM Radar WHERE ID = :ID");
-            query.SetParameter("ID", id);
-            query.ExecuteUpdate();
-        }
-
         public async Task EditRadar(Guid id, String name, String system, String configuration)
         {
             ISQLQuery query = _session.CreateSQLQuery("UPDATE Radar SET name = :name, system = :system, configuration = :configuration WHERE ID = :ID");
@@ -122,18 +115,6 @@ namespace ASPNETAOP.Session
             ISQLQuery query = _session.CreateSQLQuery("DELETE FROM Transmitter WHERE ID = :ID");
             query.SetParameter("ID", ID);
             query.ExecuteUpdate();
-        }
-
-        public async Task<String> SelectTransmitter(Guid ID)
-        {
-            var transmitter_name = _session.CreateSQLQuery("SELECT name FROM Transmitter WHERE ID = :ID").SetParameter("ID", ID).UniqueResult<string>();
-            return transmitter_name;
-        }
-
-        public async Task<Guid> GetTransmitterID(Guid id)
-        {
-            Guid transmitter_id = _session.CreateSQLQuery("SELECT transmitter_id FROM Radar WHERE ID = :ID").SetParameter("ID", id).UniqueResult<Guid>();
-            return transmitter_id;
         }
 
         public async Task EditTransmitter(Guid id, string name, string modulation_type, double max_frequency, double min_frequency, int power)
@@ -178,18 +159,6 @@ namespace ASPNETAOP.Session
             ISQLQuery query = _session.CreateSQLQuery("DELETE FROM Receiver WHERE ID = :ID");
             query.SetParameter("ID", ID);
             query.ExecuteUpdate();
-        }
-
-        public async Task<String> SelectReceiver(Guid ID)
-        {
-            var receiver_name = _session.CreateSQLQuery("SELECT name FROM Receiver WHERE ID = :ID").SetParameter("ID", ID).UniqueResult<string>();
-            return receiver_name;
-        }
-
-        public async Task<Guid> GetReceiverID(Guid id)
-        {
-            Guid receiver_id = _session.CreateSQLQuery("SELECT receiver_id FROM Radar WHERE ID = :ID").SetParameter("ID", id).UniqueResult<Guid>();
-            return receiver_id;
         }
 
         public async Task EditReceiver(Guid id, string name, double listening_time, double rest_time, double recovery_time)
@@ -301,6 +270,13 @@ namespace ASPNETAOP.Session
             query.ExecuteUpdate();
         }
 
+        public async Task DeleteScanbyID(Guid id)
+        {
+            ISQLQuery query = _session.CreateSQLQuery("DELETE FROM Scan WHERE ID = :ID");
+            query.SetParameter("ID", id);
+            query.ExecuteUpdate();
+        }
+
         public async Task<Guid> GetScanID(Guid id)
         {
             Guid scan_id = _session.CreateSQLQuery("SELECT scan_id FROM Submode WHERE ID = :ID").SetParameter("ID", id).UniqueResult<Guid>();
@@ -328,6 +304,12 @@ namespace ASPNETAOP.Session
             ISQLQuery query = _session.CreateSQLQuery("DELETE FROM AntennaScan WHERE scan_id = :scan_id");
             query.SetParameter("scan_id", id);
             query.ExecuteUpdate();
+        }
+
+        public async Task<Guid> SelectAntennaScan(Guid id_antenna, Guid id_scan)
+        {
+            Guid id = _session.CreateSQLQuery("SELECT scan_id FROM AntennaScan WHERE scan_id = :scan_id AND antenna_id = :antenna_id").SetParameter("scan_id", id_scan).SetParameter("antenna_id", id_antenna).UniqueResult<Guid>();
+            return id;
         }
 
         public async Task SaveAntenna(Antenna entity)
@@ -373,13 +355,11 @@ namespace ASPNETAOP.Session
             query.ExecuteUpdate();
         }
 
-        public List<Guid> SelectAntennasUsingReceiverOrTransmitter(Guid ID)
+        public async Task DeleteAntenna(Guid id)
         {
-            String sql = "SELECT ID FROM Antenna WHERE receiver_id = :id OR transmitter_id = :id";
-            ISQLQuery query = _session.CreateSQLQuery(sql);
-            query.SetParameter("ID", ID);
-            List<Guid> results = (List<Guid>)query.List();
-            return results;
+            ISQLQuery query = _session.CreateSQLQuery("DELETE FROM Antenna WHERE ID = :ID");
+            query.SetParameter("ID", id);
+            query.ExecuteUpdate();
         }
 
         public async Task SaveLocation(Location entity)
@@ -409,8 +389,7 @@ namespace ASPNETAOP.Session
 
         public async Task DeleteLocation(Guid id)
         {
-            ISQLQuery query = _session.CreateSQLQuery("DELETE FROM Location WHERE ID in" +
-                "(SELECT location_id FROM Radar WHERE ID = :ID); ");
+            ISQLQuery query = _session.CreateSQLQuery("DELETE FROM Location WHERE ID = :ID");
             query.SetParameter("ID", id);
             query.ExecuteUpdate();
         }

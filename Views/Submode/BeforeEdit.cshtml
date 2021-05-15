@@ -17,17 +17,15 @@
                 var PRI = "Model.Submode.PRI";
                 var min_frequency = "Model.Submode.min_frequency";
                 var max_frequency = "Model.Submode.max_frequency";
+                var mode_id = "Model.Submode.mode_id";
                 <input type="hidden" id="@ID" name="@ID" value="@Model.Submode.ID" />
                 <input type="hidden" id="@name" name="@name" value="@Model.Submode.name" />
                 <input type="hidden" id="@PW" name="@PW" value="@Model.Submode.PW" />
                 <input type="hidden" id="@PRI" name="@PRI" value="@Model.Submode.PRI" />
                 <input type="hidden" id="@min_frequency" name="@min_frequency" value="@Model.Submode.min_frequency" />
                 <input type="hidden" id="@max_frequency" name="@max_frequency" value="@Model.Submode.max_frequency" />
-                <div class="hidden">
-                    <label asp-for="@Model.Submode.ID" class="hidden"></label>
-                    <input asp-for="@Model.Submode.ID" class="hidden" type="hidden">
-                    <span asp-validation-for="@Model.Submode.ID" class="hidden"></span>
-                </div>
+                <input asp-for="@Model.Submode.mode_id" class="hidden" type="hidden" placeholder=@mode_id />
+                <input asp-for="@Model.Submode.ID" class="hidden" type="hidden" placeholder=@ID />
                 <div class="form-group">
                     <label asp-for="@Model.Submode.name" class="control-label"></label>
                     <input asp-for="@Model.Submode.name" class="form-control" type="text" placeholder=@Model.Submode.name />
@@ -109,6 +107,7 @@
         }
     </table>
 </div>
+<b>@ViewData["Message"]</b>
 <h1>---------------------------------------------------------------------</h1>
 <h1>            </h1>
 <div>

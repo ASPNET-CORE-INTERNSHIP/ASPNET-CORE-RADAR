@@ -16,6 +16,9 @@ namespace ASPNETAOP.Models
 
         public Mode Mode { get; set; }
 
+        //To build relationships with the last inserted submode, we should know last inserted submode's id information
+        public SubModeInfo LastSubmode { get; set; }
+
         public List<SubModeInfo> ListOfSubmodes { get; set; }
     }
 }

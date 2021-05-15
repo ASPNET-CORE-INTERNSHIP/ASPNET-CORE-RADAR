@@ -16,15 +16,17 @@
                 var name = "Model.name";
                 var system = "Model.system";
                 var configuration = "Model.configuration";
+                Guid transmitter_id = Guid.Empty;
+                Guid receiver_id = Guid.Empty;
+                Guid location_id = Guid.Empty;
                 <input type="hidden" id="@ID" name="@ID" value="@Model.ID" />
                 <input type="hidden" id="@name" name="@name" value="@Model.name" />
                 <input type="hidden" id="@system" name="@system" value="@Model.system" />
                 <input type="hidden" id="@configuration" name="@configuration" value="@Model.configuration" />
-                <div class="form-group">
-                    <label asp-for="ID" class="hidden"></label>
-                    <input asp-for="ID" class="form-control" type="hidden">
-                    <span asp-validation-for="ID" class="hidden"></span>
-                </div>
+                <input type="hidden" id="@transmitter_id" name="@transmitter_id" value="@Model.transmitter_id" />
+                <input type="hidden" id="@receiver_id" name="@receiver_id" value="@Model.receiver_id" />
+                <input type="hidden" id="@location_id" name="@location_id" value="@Model.location_id" />
+                <input asp-for="ID" class="form-control" type="hidden">
                 <div class="form-group">
                     <label asp-for="name" class="control-label"></label>
                     <input asp-for="name" class="form-control" type="text">
@@ -65,18 +67,20 @@
                     <span asp-validation-for="configuration" class="text-danger"></span>
                 </div>
             }
-            <div class="form-group">
-                <input type="submit" value="Edit" class="btn btn-primary" />
-            </div>
-            <div>
-                <a href="~/Radar/DeleteRadar?id=@Model.ID" id="deleteBtn" class="btn bg-danger mr-1" onclick="return confirm('Are you sure you want to delete this radar completely?');"><i class="fas fa-trash-alt text-white"></i>Delete</a>
-            </div>
+            <table>
+                <tr>
+                    <input type="submit" value="Edit" class="btn btn-primary" />
+                    &nbsp;
+                    <a href="~/Radar/DeleteRadar?id=@Model.ID" id="deleteBtn" class="btn bg-danger mr-1" onclick="return confirm('Are you sure you want to delete this radar completely?');"><i class="fas fa-trash-alt text-white"></i>Delete</a>
+                </tr>
+            </table>
         </form>
+        <b>@ViewData["Message"]</b>
     </div>
 </div>
 
 <div>
-    <input type="button" title="Back" value="Back" onclick="location.href='@Url.Action("Edit", "EditRadar", new { id = Model.ID })'" />
+    <input type="button" style="background-color:mediumblue; border-color:mediumblue; color:white; width:150px; height:40px;" title="Back" value="Back" onclick="location.href='@Url.Action("Edit", "EditRadar", new { id = Model.ID })'" />
 </div>
 
 @section Scripts {

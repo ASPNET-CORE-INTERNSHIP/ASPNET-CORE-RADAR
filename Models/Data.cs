@@ -20,14 +20,15 @@ namespace ASPNETAOP.Models
         //To add submodes to last inserted mode, we should know last inserted mode's id information
         public ModeInfo LastMode { get; set; }
 
-        //To build relationships with the last inserted submode, we should know last inserted submode's id information
-        //public Submode LastSubmode { get; set; }
-
-        //public Scan Scan { get; set; }
+        //we will use it in edit pages
+        public Location Location { get; set; }
 
         //I use this value in BeforeEdit functions.
         //So after complete editing process the program routes you to BeforeEdit function again (I let the user exit from edit page by her/his-self, with this solution the user can see the edited values before turning back) but with your "edit completed" message and edited values
         public bool edited { get; set; } = false;
+
+        //this variable is created for determine if the route to add comes from edit or is it a creating process
+        public bool ComeFromAdd { get; set; } = false;
 
         //with message variable I send my messages from controllers to different views
         public String message { get; set; }

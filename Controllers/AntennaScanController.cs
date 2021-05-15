@@ -42,8 +42,22 @@ namespace ASPNETAOP.Controllers
             Data current = new Data();
             Program.data.TryGetValue(sessionID, out current);
 
-            alist.antennas = current.ListOfAntennas;
-            ViewData["message"] = current.message;
+            //control if current did not came
+            if (current != null)
+            {
+                alist.antennas = current.ListOfAntennas;
+
+                if (current.ComeFromAdd)
+                {
+                    alist.ComeFromAdd = true;
+                }
+
+                ViewData["message"] = current.message;
+                //returning the model for the cshmtl page to access it
+                return View(alist);
+            }
+
+            ViewData["message"] = "Error occured please restart the program";
             //returning the model for the cshmtl page to access it
             return View(alist);
         }
@@ -55,8 +69,13 @@ namespace ASPNETAOP.Controllers
             sessionID = Guid.Parse(sessionID_s);
             Data current = new Data();
             Program.data.TryGetValue(sessionID, out current);
-            int index = current.LastMode.ListOfSubmodes.Count;
-            index--;
+
+            //control if current did not came
+            if (current == null)
+            {
+                ViewData["message"] = "Error occured please restart the program";
+                return View(ascans);
+            }
 
             //refresh the list to specify selected antennas
             current.ListOfAntennas = ascans.antennas;
@@ -68,23 +87,35 @@ namespace ASPNETAOP.Controllers
                 {
                     Antenna antenna = ascans.antennas[i];
 
-                    AntennaScan ascan = new AntennaScan(antenna.ID, current.LastMode.ListOfSubmodes[index].Scan.ID);
+                    AntennaScan ascan = new AntennaScan(antenna.ID, current.LastMode.LastSubmode.Scan.ID);
                     if (antenna.IsChecked)
                     {
-                        await _session.SaveAntennaScan(ascan);
+                        Guid temp = Guid.Empty;
+                        temp = await _session.SelectAntennaScan(current.ListOfAntennas[i].ID, current.LastMode.LastSubmode.Scan.ID);
+                        if (temp.Equals(Guid.Empty))
+                        {
+                            await _session.SaveAntennaScan(ascan);
+                        }
                     }
                     else
                     {
-                        await _session.DeleteAntennaScan(ascan);
+                        Guid temp = Guid.Empty;
+                        temp = await _session.SelectAntennaScan(current.ListOfAntennas[i].ID, current.LastMode.LastSubmode.Scan.ID);
+                        if (!temp.Equals(Guid.Empty))
+                        {
+                            await _session.DeleteAntennaScan(ascan);
+                        }
                     }
                 }
                 await _session.Commit();
-                current.message = "New Relationship between antennas and scan added";
+                if (current != null)
+                    current.message = "New Relationship between antennas and scan added";
             }
             catch (Exception e)
             {
                 // log exception here
-                current.message = e.Message.ToString() + " Error";
+                if (current != null)
+                    current.message = e.Message.ToString() + " Error";
                 await _session.Rollback();
             }
             finally
@@ -106,15 +137,27 @@ namespace ASPNETAOP.Controllers
 
         public IActionResult Done()
         {
+            Program.data.Remove(sessionID);
             return View("~/Views/Shared/done.cshtml");
         }
 
-        /*public IActionResult GoBack()
+        public IActionResult GoBack()
         {
             //After we have done with the ComeFromEdit, we give false (default) to this value
-            Data.ComeFromAdd = false;
-            return RedirectToAction("BeforeEdit", "Mode", new { id = Data.Mode.ID});
+            String sessionID_s = HttpContext.Session.GetString("Session");
+            Guid sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
+            if (current != null)
+            {
+                current.ComeFromAdd = false;
+                return RedirectToAction("BeforeEdit", "Mode", new { id = current.LastMode.Mode.ID });
+            }
+            else
+            {
+                return RedirectToAction("RadarList", "AdminRadarList");
+            }
         }
-        */
+        
     }
 }

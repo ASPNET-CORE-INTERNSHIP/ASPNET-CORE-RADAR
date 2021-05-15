@@ -49,57 +49,120 @@ namespace ASPNETAOP.Controllers
                 current.ListOfAntennas[i].IsChecked = false;
             }
             Guid key_submode = Guid.NewGuid();
-            Submode sbm = new Submode(key_submode ,sm.name, current.LastMode.Mode.ID, sm.PRI, sm.PW, sm.max_frequency, sm.min_frequency);
+
+            //if our submode does not have a user friendly name we give it a default name with the code below.
+            String def_name = null;
+            if (String.IsNullOrEmpty(sm.name))
+            {
+                def_name = current.LastMode.Mode.name + "'s submode " + current.LastMode.ListOfSubmodes.Count;
+            }
+            else
+                def_name = sm.name;
+
+            Submode sbm = new Submode(key_submode, def_name, current.LastMode.Mode.ID, sm.PRI, sm.PW, sm.max_frequency, sm.min_frequency);
             SubModeInfo sbmINFO = new SubModeInfo(sbm);
             current.LastMode.ListOfSubmodes.Add(sbmINFO);
+            //specify current submode as lastSubmode. So it helps us find scanID during creation of antenna scan relationship
+            current.LastMode.LastSubmode = sbmINFO;
             return RedirectToAction("NewScan", "Scan");
         }
 
-        /*public async Task<IActionResult> BeforeEdit(Guid id)
+        public async Task<IActionResult> BeforeEdit(Guid id, String? message)
         {
-            //Because we use the same view before and after edit process we should handle the view messages with the following conditions
-            if (Data.edited)
+            //error case
+            if (!String.IsNullOrEmpty(message as string))
             {
-                Data.message = "Update completed successfully";
-                Data.edited = false;
+                SubModeInfo modal = new SubModeInfo();
+                modal.Submode = new Submode();
+                modal.Scan = new Scan();
+                modal.ListOfAntennas = new List<Antenna>();
+                ViewData["Message"] = message as string;
+                return View(modal);
             }
 
-            //Get mode's informations and shows it in edit page
-            Submode sbm = await _session.Submode.Where(b => b.ID.Equals(id)).FirstOrDefaultAsync();
-            Scan scan = await _session.Scan.Where(b => b.ID.Equals(sbm.scan_id)).FirstOrDefaultAsync();
+            //get session id (we will use it when updating data and handling errors)
+            String sessionID_s = HttpContext.Session.GetString("Session");
+            Guid sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
 
-            List<Submode> SubModeList = new List<Submode>();
-            List<Submode> list_temp = await _session.Submode.Where(b => b.mode_id.Equals(id)).ToListAsync();
-            foreach (Submode s in list_temp)
+            if (current != null)
             {
-                SubModeList.Add(s);
-            }
+                //Because we use the same view before and after edit process we should handle the view messages with the following conditions
+                if (current.edited)
+                {
+                    ViewData["Message"] = "Update completed successfully";
+                    current.edited = false;
+                }
+                if (current.message != null)
+                {
+                    ViewData["Message"] = current.message;
+                    current.message = null;
+                }
 
-            SubModeInfo modal = new SubModeInfo();
-            modal.Submode = sbm;
-            modal.Scan = scan;
-            modal.ListOfAntennas = Data.ListOfAntennas;
-            return View(modal);
+                //Get submode's informations and shows it in edit page
+                Submode sbm = await _session.Submode.Where(b => b.ID.Equals(id)).FirstOrDefaultAsync();
+                Scan scan = await _session.Scan.Where(b => b.ID.Equals(sbm.scan_id)).FirstOrDefaultAsync();
+
+                for (int j = 0; j < current.LastMode.ListOfSubmodes.Count; j++)
+                {
+                    if (current.LastMode.ListOfSubmodes[j].Submode.ID.Equals(id))
+                    {
+                        //specify current submode as last submode. It helps us in scan pages
+                        current.LastMode.LastSubmode = current.LastMode.ListOfSubmodes[j];
+                    }
+                }
+
+                SubModeInfo modal = new SubModeInfo();
+                modal.Submode = sbm;
+                modal.Scan = scan;
+                modal.ListOfAntennas = current.ListOfAntennas;
+                return View(modal);
+            }
+            return RedirectToAction("RadarList", "AdminRadarList");
+            
         }
 
         public async Task<IActionResult> Edit(SubModeInfo newValues)
         {
-            try
+            //get session id (we will use it when updating data and handling errors)
+            String sessionID_s = HttpContext.Session.GetString("Session");
+            Guid sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
+
+            if (current != null)
             {
-                await _session.EditSubmode(newValues.Submode);
+                //update the class
+                for (int j = 0; j < current.LastMode.ListOfSubmodes.Count; j++)
+                {
+                    if (current.LastMode.ListOfSubmodes[j].Submode.ID.Equals(newValues.Submode.ID))
+                    {
+                        current.LastMode.ListOfSubmodes[j].Submode = newValues.Submode;
+                        //specify current submode as last submode
+                        current.LastMode.LastSubmode = current.LastMode.ListOfSubmodes[j];
+                    }
+                }
+                //update the db
+                try
+                {
+                    await _session.EditSubmode(newValues.Submode);
+                }
+                catch (Exception e)
+                {
+                    // log exception here
+                    current.message = e.Message.ToString() + " Error";
+                    await _session.Rollback();
+                }
+                finally
+                {
+                    _session.CloseTransaction();
+                }
+                current.edited = true;
+                return RedirectToAction("BeforeEdit", "Submode", new { id = newValues.Submode.ID });
             }
-            catch (Exception e)
-            {
-                // log exception here
-                Data.message = e.Message.ToString() + " Error";
-                await _session.Rollback();
-            }
-            finally
-            {
-                _session.CloseTransaction();
-            }
-            Data.edited = true;
-            return RedirectToAction("BeforeEdit", "Submode", new { id = newValues.Submode.ID });
+            String message = "Update cannot be completed, please restart the program to solve this issue. If it continues please report it";
+            return RedirectToAction("BeforeEdit", "Submode", new { id = newValues.Submode.ID, message = message });
         }
 
         public IActionResult ScanEdit(Guid id)
@@ -109,45 +172,13 @@ namespace ASPNETAOP.Controllers
 
         public async Task<IActionResult> GoBack(Guid id)
         {
-            Radar r = new Radar();
-            Mode m = new Mode();
-            Submode sm = new Submode();
-            try
-            {
-                sm = await _session.Submode.Where(b => b.ID.Equals(id)).FirstOrDefaultAsync();
-                m = await _session.Modes.Where(b => b.ID.Equals(sm.mode_id)).FirstOrDefaultAsync();
-                r = await _session.Radars.Where(b => b.ID.Equals(m.radar_id)).FirstOrDefaultAsync();
-            }
-            catch (Exception e)
-            {
-                // log exception here
-                Data.message = e.Message.ToString() + " Error";
-                await _session.Rollback();
-            }
-            finally
-            {
-                _session.CloseTransaction();
-            }
-            return RedirectToAction("BeforeEdit", "Mode", new { id = m.ID });
-            //return RedirectToAction("Edit", "EditRadar", new { id = r.ID });
-        }*/
+            //get session id (we will use it when updating data and handling errors)
+            String sessionID_s = HttpContext.Session.GetString("Session");
+            Guid sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
+            return RedirectToAction("BeforeEdit", "Mode", new { id = current.LastMode.Mode.ID });
+        }
 
     }
-    /*
-SELECT* FROM Transmitter;
-SELECT* FROM Receiver;
-SELECT* FROM Antenna;
-SELECT* FROM Radar;
-SELECT* FROM Location;
-SELECT* FROM Mode;
-SELECT* FROM Submode;
-SELECT* FROM Scan;
-DELETE FROM Antenna WHERE number_of_feed < 6000;
-DELETE FROM Receiver WHERE rest_time < 6000;
-DELETE FROM Transmitter WHERE max_frequency < 6000;
-DELETE FROM Location WHERE city = 'DAKAR';
-DELETE FROM Radar WHERE name = 'Friendly ';
-DELETE FROM Mode WHERE name ='Friendly ';
-DELETE FROM Scan WHERE scan_rate<6000;
-    */
 }
