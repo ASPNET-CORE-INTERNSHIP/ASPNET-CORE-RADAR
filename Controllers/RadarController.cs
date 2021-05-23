@@ -85,40 +85,9 @@ namespace ASPNETAOP.Controllers
             return RedirectToAction("NewLocation", "Location"); 
         }
 
-        public async Task<RedirectToActionResult> DeleteRadar()
-        {
-            //get session id (we will use it when updating data and handling errors)
-            sessionID_s = HttpContext.Session.GetString("Session");
-            sessionID = Guid.Parse(sessionID_s);
-            Data current = new Data();
-            Program.data.TryGetValue(sessionID, out current);
-
-            try
-            {
-                _session.BeginTransaction();
-                await _session.DeleteScan(current.Radar.ID);
-                await _session.DeleteLocation(current.Location.ID);
-                await _session.DeleteReceiver(current.Receiver.ID);
-                await _session.DeleteTransmitter(current.Transmitter.ID);
-                await _session.DeleteLocation(current.Location.ID);
-                await _session.Commit();
-                current.message = "Radar " + current.Radar.ID + " removed From Database";
-            }
-            catch (Exception e)
-            {
-                // log exception here
-                current.message = e.Message.ToString() + " Error";
-                await _session.Rollback();
-            }
-            finally
-            {
-                _session.CloseTransaction();
-            }
-            return RedirectToAction("RadarList", "AdminRadarList");
-        }
-
+         //Below functions are for edit pages
          public async Task<IActionResult> BeforeEdit()
-        {
+         {
             //get session id (we will use it when updating data and handling errors)
             sessionID_s = HttpContext.Session.GetString("Session");
             sessionID = Guid.Parse(sessionID_s);
@@ -167,6 +136,51 @@ namespace ASPNETAOP.Controllers
             }
             d.edited = true;
             return RedirectToAction("BeforeEdit", "Radar");
+        }
+
+        public async Task<RedirectToActionResult> DeleteRadar()
+        {
+            //get session id (we will use it when updating data and handling errors)
+            sessionID_s = HttpContext.Session.GetString("Session");
+            sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
+
+            try
+            {
+                _session.BeginTransaction();
+                await _session.DeleteScan(current.Radar.ID);
+                await _session.DeleteLocation(current.Location.ID);
+                await _session.DeleteReceiver(current.Receiver.ID);
+                await _session.DeleteTransmitter(current.Transmitter.ID);
+                await _session.DeleteLocation(current.Location.ID);
+                await _session.Commit();
+                current.message = "Radar " + current.Radar.ID + " removed From Database";
+            }
+            catch (Exception e)
+            {
+                // log exception here
+                current.message = e.Message.ToString() + " Error";
+                await _session.Rollback();
+            }
+            finally
+            {
+                _session.CloseTransaction();
+            }
+            return RedirectToAction("RadarList", "AdminRadarList");
+        }
+
+        //Below functions are for display pages
+        public async Task<IActionResult> Show()
+        {
+            //get session id (we will use it when updating data and handling errors)
+            sessionID_s = HttpContext.Session.GetString("Session");
+            sessionID = Guid.Parse(sessionID_s);
+            Data d = new Data();
+            Program.data.TryGetValue(sessionID, out d);
+
+            Radar r = d.Radar;
+            return View(r);
         }
 
     }

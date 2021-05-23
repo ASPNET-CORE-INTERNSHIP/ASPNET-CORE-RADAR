@@ -1,0 +1,57 @@
+﻿@model ASPNETAOP.Models.Receiver
+
+@{
+    ViewData["Title"] = "Receiver's Informations";
+}
+
+<h1>Receiver's Informations</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-9">
+        <form asp-action="Show">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @{
+                var ID = "@Model.Receiver.ID";
+                var name = "@Model.Receiver.name";
+                var listening_time = "@Model.Receiver.listening_time";
+                var rest_time = "@Model.Receiver.rest_time";
+                var recovery_time = "@Model.Receiver.recovery_time";
+                <input type="hidden" id="@ID" name="@ID" value="@Model.ID" />
+                <input type="hidden" id="@name" name="@name" value="@Model.name" />
+                <input type="hidden" id="@listening_time" name="@listening_time" value="@Model.listening_time" />
+                <input type="hidden" id="@rest_time" name="@rest_time" value="@Model.rest_time" />
+                <input type="hidden" id="@recovery_time" name="@recovery_time" value="@Model.recovery_time" />
+                <input asp-for="@Model.ID" class="hidden" type="hidden">
+                <h1>---------------------------------------------------------------------</h1>
+                <table>
+                    <tr>
+                        <th>Name:</th>
+                        <th>@Model.name</th>
+                    </tr>
+                    <tr>
+                        <th>Listening Time:</th>
+                        <th>@Model.listening_time</th>
+                    </tr>
+                    <tr>
+                        <th>Rest Time:</th>
+                        <th>@Model.rest_time</th>
+                    </tr>
+                    <tr>
+                        <th>Recovery Time:</th>
+                        <th>@Model.recovery_time</th>
+                    </tr>
+                </table>
+                <h1>---------------------------------------------------------------------</h1>
+            }
+        </form>
+    </div>
+</div>
+<b>@ViewData["Message"]</b>
+<div>
+    <input type="button" style="background-color:mediumblue; border-color:mediumblue; color:white; width:150px; height:40px;" title="Go Back" value="Go Back" onclick="location.href='@Url.Action("GoBackToRadar", "Receiver")'" />
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

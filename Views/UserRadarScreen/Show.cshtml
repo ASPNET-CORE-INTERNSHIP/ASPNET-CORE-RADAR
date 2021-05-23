@@ -1,11 +1,11 @@
 ﻿@model ASPNETAOP.Models.Data
 
 @{
-    ViewData["Title"] = "Radar Information";
+    ViewData["Title"] = "Radar Informations";
 }
 
-<h1>Radar Information</h1>
-<form asp-action="RadarEdit">
+<h1>Radar Informations</h1>
+<form asp-action="UserRadarScreen">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="row">
         <table>
@@ -30,10 +30,7 @@
                     <td>@System</td>
                     <td>@Configuration</td>
                     <td>
-                        <input type="button" style="background-color:royalblue; color:white; width:150px; height:40px;" title="Edit Radar" value="Edit Radar" onclick="location.href='@Url.Action("RadarEdit", "EditRadar", new { id = @Model.Radar.ID })'" />
-                    </td>
-                    <td>
-                        <a href="~/Radar/DeleteRadar?id=@Model.Radar.ID" id="deleteBtn" class="btn bg-danger mr-1" onclick="return confirm('Are you sure you want to delete this radar completely?');"><i class="fas fa-trash-alt text-white"></i>Delete</a>
+                        <input type="button" style="background-color:royalblue; color:white; width:150px; height:40px;" title="Edit Radar" value="Edit Radar" onclick="location.href='@Url.Action("DisplayRadar", "UserRadarScreen", new { id = @Model.Radar.ID })'" />
                     </td>
                 </tr>
             }
@@ -67,7 +64,7 @@
                     <td>@RestTime</td>
                     <td>@RecoveryTime</td>
                     <td>
-                        <input type="button" style="background-color:royalblue; color:white; width:150px; height:40px;" title="Edit Receiver" value="Edit Receiver" onclick="location.href='@Url.Action("ReceiverEdit", "EditRadar")'" />
+                        <input type="button" style="background-color:royalblue; color:white; width:150px; height:40px;" title="Edit Receiver" value="Edit Receiver" onclick="location.href='@Url.Action("DisplayReceiver", "UserRadarScreen")'" />
                     </td>
                 </tr>
             }
@@ -105,7 +102,7 @@
                     <td>@MinFrequency</td>
                     <td>@Power</td>
                     <td>
-                        <input type="button" style="background-color:royalblue; color:white; width:150px; height:40px;" title="Edit Transmitter" value="Edit Transmitter" onclick="location.href='@Url.Action("TransmitterEdit", "EditRadar")'" />
+                        <input type="button" style="background-color:royalblue; color:white; width:150px; height:40px;" title="Edit Transmitter" value="Edit Transmitter" onclick="location.href='@Url.Action("DisplayTransmitter", "UserRadarScreen")'" />
                     </td>
                 </tr>
             }
@@ -147,7 +144,7 @@
                     <td>@Longitude</td>
                     <td>@Airborne</td>
                     <td>
-                        <input type="button" style="background-color:royalblue; color:white; width:150px; height:40px;" title="Edit Location" value="Edit Location" onclick="location.href='@Url.Action("LocationEdit", "EditRadar")'" />
+                        <input type="button" style="background-color:royalblue; color:white; width:150px; height:40px;" title="Edit Location" value="Edit Location" onclick="location.href='@Url.Action("DisplayLocation", "UserRadarScreen")'" />
                     </td>
                 </tr>
             }
@@ -168,13 +165,12 @@
                     <tr>
                         <td>@name</td>
                         <td>
-                            <input type="button" style="background-color:royalblue; border-color:royalblue; color:white; width:150px; height:40px;" title="Edit Mode" value="Edit Mode" onclick="location.href='@Url.Action("ModeEdit", "EditRadar", new { id = @Model.ListOfModes[i].Mode.ID })'" />
+                            <input type="button" style="background-color:royalblue; border-color:royalblue; color:white; width:150px; height:40px;" title="Edit Mode" value="Edit Mode" onclick="location.href='@Url.Action("DisplayMode", "UserRadarScreen", new { id = @Model.ListOfModes[i].Mode.ID })'" />
                         </td>
                     </tr>
                 }
             }
         </table>
-        <input type="button" style="background-color:limegreen; border-color:limegreen; color:white; width:150px; height:40px;" title="Add Mode" value="Add Mode" onclick="location.href='@Url.Action("AddMode", "EditRadar")'" />
     </div>
     <h1>---------------------------------------------------------------------</h1>
     <h3>Antennas</h3>
@@ -199,18 +195,17 @@
                         <td>@type</td>
                         <td>@duty</td>
                         <td>
-                            <input type="button" style="background-color:royalblue; color:white; width:150px; height:40px;" title="Edit Antenna" value="Edit Antenna" onclick="location.href='@Url.Action("AntennaEdit", "EditRadar", new { id = @Model.ListOfAntennas[i].ID })'" />
+                            <input type="button" style="background-color:royalblue; color:white; width:150px; height:40px;" title="Show Details" value="Show Details" onclick="location.href='@Url.Action("DisplayAntenna", "UserRadarScreen", new { id = @Model.ListOfAntennas[i].ID })'" />
                         </td>
                     </tr>
                 }
             }
         </table>
-        <input type="button" style="background-color:limegreen; color:white; width:150px; height:40px;" title="Add Antenna" value="Add Antenna" onclick="location.href='@Url.Action("AddAntenna", "EditRadar")'" />
     </div>
 </form>
 <h1>---------------------------------------------------------------------</h1>
 <h1>                    </h1>
 <b>@ViewData["Message"]</b>
 <div>
-    <input type="button" style="background-color:mediumblue; border-color:mediumblue; color:white; width:150px; height:40px;" title="Back" value="Back" onclick="location.href='@Url.Action("RadarList", "AdminRadarList")'" />
+    <input type="button" style="background-color:mediumblue; border-color:mediumblue; color:white; width:150px; height:40px;" title="Back" value="Back" onclick="location.href='@Url.Action("RadarList", "UserRadarList")'" />
 </div>

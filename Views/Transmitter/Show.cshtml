@@ -1,0 +1,64 @@
+﻿@model ASPNETAOP.Models.Transmitter
+
+@{
+    ViewData["Title"] = "Edit Transmitter";
+}
+
+<h1>Edit Transmitter</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-9">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @{
+                var ID = "Model.ID";
+                var name = "Model.name";
+                var modulation_type = "Model.modulation_type";
+                var max_frequency = "Model.max_frequency";
+                var min_frequency = "Model.min_frequency";
+                var power = "Model.power";
+                <input type="hidden" id="@ID" name="@ID" value="@Model.ID" />
+                <input type="hidden" id="@name" name="@name" value="@Model.name" />
+                <input type="hidden" id="@modulation_type" name="@modulation_type" value="@Model.modulation_type" />
+                <input type="hidden" id="@max_frequency" name="@max_frequency" value="@Model.max_frequency" />
+                <input type="hidden" id="@min_frequency" name="@min_frequency" value="@Model.min_frequency" />
+                <input type="hidden" id="@power" name="@power" value="@Model.power" />
+                <input asp-for="ID" class="hidden" type="hidden">
+                <h1>---------------------------------------------------------------------</h1>
+                <table>
+                    <tr>
+                        <th>Name:</th>
+                        <th>@Model.name</th>
+                    </tr>
+                    <tr>
+                        <th>Modulation Type:</th>
+                        <th>>@Model.modulation_type</th>
+                    </tr>
+                    <tr>
+                        <th>Max Frequency Time:</th>
+                        <th>@Model.max_frequency</th>
+                    </tr>
+                    <tr>
+                        <th>Min Frequency Time:</th>
+                        <th>@Model.min_frequency</th>
+                    </tr>
+                    <tr>
+                        <th>Power:</th>
+                        <th>@Model.power</th>
+                    </tr>
+                </table>
+                <h1>---------------------------------------------------------------------</h1>
+            }
+        </form>
+        <b>@ViewData["Message"]</b>
+    </div>
+</div>
+
+<div>
+    <input type="button" style="background-color:mediumblue; border-color:mediumblue; color:white; width:150px; height:40px;" title="Go Back" value="Go Back" onclick="location.href='@Url.Action("GoBackToRadar", "Transmitter")'" />
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

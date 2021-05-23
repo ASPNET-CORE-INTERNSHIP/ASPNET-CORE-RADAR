@@ -1,0 +1,57 @@
+﻿@model ASPNETAOP.Models.Radar
+
+@{
+    ViewData["Title"] = "Radar's Informations";
+}
+
+<h1>Radar's Informations</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-9">
+        <form asp-action="Show">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @{
+                var ID = "Model.ID";
+                var name = "Model.name";
+                var system = "Model.system";
+                var configuration = "Model.configuration";
+                Guid transmitter_id = Guid.Empty;
+                Guid receiver_id = Guid.Empty;
+                Guid location_id = Guid.Empty;
+                <input type="hidden" id="@ID" name="@ID" value="@Model.ID" />
+                <input type="hidden" id="@name" name="@name" value="@Model.name" />
+                <input type="hidden" id="@system" name="@system" value="@Model.system" />
+                <input type="hidden" id="@configuration" name="@configuration" value="@Model.configuration" />
+                <input type="hidden" id="@transmitter_id" name="@transmitter_id" value="@Model.transmitter_id" />
+                <input type="hidden" id="@receiver_id" name="@receiver_id" value="@Model.receiver_id" />
+                <input type="hidden" id="@location_id" name="@location_id" value="@Model.location_id" />
+                <input asp-for="ID" class="form-control" type="hidden">
+                <h1>---------------------------------------------------------------------</h1>
+                <table>
+                    <tr>
+                        <th>Name:</th>
+                        <th>@Model.name</th>
+                    </tr>
+                    <tr>
+                        <th>System:</th>
+                        <th>@Model.system</th>
+                    </tr>
+                    <tr>
+                        <th>Configuration:</th>
+                        <th>@Model.configuration</th>
+                    </tr>
+                </table>
+                <h1>---------------------------------------------------------------------</h1>
+            }
+        </form>
+    </div>
+</div>
+<b>@ViewData["Message"]</b>
+<div>
+    <input type="button" style="background-color:mediumblue; border-color:mediumblue; color:white; width:150px; height:40px;" title="Back" value="Back" onclick="location.href='@Url.Action("Show", "UserRadarScreen", new { id = Model.ID })'" />
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

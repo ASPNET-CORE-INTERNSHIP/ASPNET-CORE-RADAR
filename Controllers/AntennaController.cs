@@ -105,7 +105,7 @@ namespace ASPNETAOP.Controllers
             }
 
             //control if current did not came
-            if (current == null)
+            if (current.Receiver == null)
             {
                 //it is an error
                 return RedirectToAction("NewReceiver", "Receiver");
@@ -252,7 +252,7 @@ namespace ASPNETAOP.Controllers
             return RedirectToAction("NewRadar", "Radar");
         }
 
-        //This methods are for edit page
+        //These methods are for edit pages
         public async Task<IActionResult> BeforeEdit(Guid id)
         {
             //get session id (we will use it when updating data and handling errors)
@@ -375,6 +375,38 @@ namespace ASPNETAOP.Controllers
             //we may came to there from edit page
             current.ComeFromAdd = false;
             return RedirectToAction("Edit", "EditRadar", new { id = current.Radar.ID });
+        }
+
+        //below methods are for non-admin users display pages
+        public async Task<IActionResult> Show(Guid id)
+        {
+            //get session id (we will use it when updating data and handling errors)
+            String sessionID_s = HttpContext.Session.GetString("Session");
+            Guid sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
+
+            Antenna a = await _session.Antennas.Where(b => b.ID.Equals(id)).FirstOrDefaultAsync();
+            return View(a);
+        }
+
+        public async Task<IActionResult> GoBackToRadar()
+        {
+            //get session id (we will use it when updating data and handling errors)
+            String sessionID_s = HttpContext.Session.GetString("Session");
+            Guid sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
+
+            /*control if current did not came
+            if (current.Receiver == null)
+            {
+                return RedirectToAction("RadarList", "UserRadarList");
+            }*/
+
+            //we may came to there from edit page
+            current.ComeFromAdd = false;
+            return RedirectToAction("Show", "UserRadarScreen", new { id = current.Radar.ID });
         }
 
     }

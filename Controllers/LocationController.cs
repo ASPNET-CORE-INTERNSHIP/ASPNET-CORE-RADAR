@@ -208,6 +208,7 @@ namespace ASPNETAOP.Controllers
             
         }
 
+        //Below functions are for edit pages
         public async Task<IActionResult> BeforeEdit()
         {
             //get session id (we will use it when updating data and handling errors)
@@ -217,7 +218,7 @@ namespace ASPNETAOP.Controllers
             Program.data.TryGetValue(sessionID, out current);
 
             //control if current did not came
-            if (current == null)
+            if (current.Receiver == null)
             {
                 ViewData["Message"] = "Error occured please restart the program";
                 Location l = new Location();
@@ -279,6 +280,42 @@ namespace ASPNETAOP.Controllers
 
             return RedirectToAction("Edit", "EditRadar", new { id = current.Radar.ID });
         }
-     
+
+        //Below methods are for normal user pages
+        public async Task<IActionResult> Show()
+        {
+            //get session id (we will use it when updating data and handling errors)
+            String sessionID_s = HttpContext.Session.GetString("Session");
+            Guid sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
+
+            //control if current did not came
+            if (current.Receiver == null)
+            {
+                ViewData["Message"] = "Error occured please restart the program";
+                Location l = new Location();
+                return View(l);
+            }
+
+            //Get receiver's informations and shows it in edit page
+            //Transmitter t = await _session.Transmitters.Where(b => b.ID.Equals(current.Transmitter.ID)).FirstOrDefaultAsync();
+            return View(current.Location);
+        }
+
+        //In case we do not need to write this code again and again in all controllers
+        //we can use redirecttoaction method to reach this method
+        //but i chose write it again and again because i do not know what we need if more user roles added 
+        public async Task<IActionResult> GoBackToRadar()
+        {
+            //get session id (we will use it when updating data and handling errors)
+            String sessionID_s = HttpContext.Session.GetString("Session");
+            Guid sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
+
+            return RedirectToAction("Show", "UserRadarScreen", new { id = current.Radar.ID });
+        }
+
     }
 }

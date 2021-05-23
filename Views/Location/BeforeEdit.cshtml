@@ -65,11 +65,10 @@
             <div class="form-group">
                 <input type="submit" value="Edit" class="btn btn-primary" />
             </div>
-            <b>@ViewData["Message"]</b>
         </form>
     </div>
 </div>
-
+<b>@ViewData["Message"]</b>
 <div>
     <input type="button" style="background-color:mediumblue; border-color:mediumblue; color:white; width:150px; height:40px;" title="Go Back" value="Go Back" onclick="location.href='@Url.Action("GoBack", "Location", new { id = Model.ID })'" />
 </div>

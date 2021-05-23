@@ -71,7 +71,7 @@ namespace ASPNETAOP.Controllers
             Program.data.TryGetValue(sessionID, out current);
 
             //control if current did not came
-            if (current == null)
+            if (current.Receiver == null) //means current == null
             {
                 ViewData["message"] = "Error occured please restart the program";
                 return View(ascans);
@@ -108,14 +108,13 @@ namespace ASPNETAOP.Controllers
                     }
                 }
                 await _session.Commit();
-                if (current != null)
+                if (current.Receiver != null) //means current != null
                     current.message = "New Relationship between antennas and scan added";
             }
             catch (Exception e)
             {
                 // log exception here
-                if (current != null)
-                    current.message = e.Message.ToString() + " Error";
+                current.message = e.Message.ToString() + " Error";
                 await _session.Rollback();
             }
             finally
@@ -148,8 +147,9 @@ namespace ASPNETAOP.Controllers
             Guid sessionID = Guid.Parse(sessionID_s);
             Data current = new Data();
             Program.data.TryGetValue(sessionID, out current);
-            if (current != null)
+            if (current.Receiver != null)
             {
+                current.message = null;
                 current.ComeFromAdd = false;
                 return RedirectToAction("BeforeEdit", "Mode", new { id = current.LastMode.Mode.ID });
             }

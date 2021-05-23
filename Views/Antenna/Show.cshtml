@@ -1,0 +1,87 @@
+﻿@model ASPNETAOP.Models.Antenna
+
+@{
+    ViewData["Title"] = "Antenna's Informations";
+}
+
+<h1>Antenna's Informations</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-9">
+        <form asp-action="Show">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @{
+                var ID = "Model.LastAntenna.ID";
+                var name = "Model.LastAntenna.name";
+                var type = "Model.LastAntenna.type";
+                var horizontal_beamwidth = "Model.LastAntenna.horizontal_beamwidth";
+                var vertical_beamwidth = "Model.LastAntenna.vertical_beamwidth";
+                var polarization = "Model.LastAntenna.polarization";
+                var number_of_feed = "Model.LastAntenna.number_of_feed";
+                var horizontal_dimension = "Model.LastAntenna.horizontal_dimension";
+                var vertical_dimension = "Model.LastAntenna.vertical_dimension";
+                var location = "Model.LastAntenna.location";
+                <input type="hidden" id="@ID" name="@ID" value="@Model.ID" />
+                <input type="hidden" id="@name" name="@name" value="@Model.name" />
+                <input type="hidden" id="@type" name="@type" value="@Model.type" />
+                <input type="hidden" id="@horizontal_beamwidth" name="@horizontal_beamwidth" value="@Model.horizontal_beamwidth" />
+                <input type="hidden" id="@vertical_beamwidth" name="@vertical_beamwidth" value="@Model.vertical_beamwidth" />
+                <input type="hidden" id="@polarization" name="@polarization" value="@Model.polarization" />
+                <input type="hidden" id="@number_of_feed" name="@number_of_feed" value="@Model.number_of_feed" />
+                <input type="hidden" id="@horizontal_dimension" name="@horizontal_dimension" value="@Model.horizontal_dimension" />
+                <input type="hidden" id="@vertical_dimension" name="@vertical_dimension" value="@Model.vertical_dimension" />
+                <input type="hidden" id="@location" name="@location" value="@Model.location" />
+                <input asp-for="@Model.ID" class="hidden" type="hidden">
+                <h1>---------------------------------------------------------------------</h1>
+                <table>
+                    <tr>
+                        <th>Name:</th>
+                        <th>@Model.name</th>
+                    </tr>
+                    <tr>
+                        <th>Type:</th>
+                        <th>@Model.type</th>
+                    </tr>
+                    <tr>
+                        <th>Horizontal Beamwidth:</th>
+                        <th>@Model.horizontal_beamwidth</th>
+                    </tr>
+                    <tr>
+                        <th>Vertical Beamwidth:</th>
+                        <th>@Model.vertical_beamwidth</th>
+                    </tr>
+                    <tr>
+                        <th>Polarization:</th>
+                        <th>@Model.polarization</th>
+                    </tr>
+                    <tr>
+                        <th>Number Of Feed:</th>
+                        <th>@Model.number_of_feed</th>
+                    </tr>
+                    <tr>
+                        <th>Horizontal Dimension:</th>
+                        <th>@Model.horizontal_dimension</th>
+                    </tr>
+                    <tr>
+                        <th>Vertical Dimension:</th>
+                        <th>@Model.vertical_dimension</th>
+                    </tr>
+                    <tr>
+                        <th>Location:</th>
+                        <th>@Model.location</th>
+                    </tr>
+                </table>
+                <h1>---------------------------------------------------------------------</h1>
+            }
+        </form>
+    </div>
+</div>
+<b>@ViewData["Message"]</b>
+<div>
+    <input type="button" style="background-color:mediumblue; border-color:mediumblue; color:white; width:150px; height:40px;" title="Back" value="Back" onclick="location.href='@Url.Action("GoBackToRadar", "Antenna")'" />
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

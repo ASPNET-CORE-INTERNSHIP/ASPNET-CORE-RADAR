@@ -14,13 +14,13 @@ using Microsoft.AspNetCore.Http;
 namespace ASPNETAOP.Controllers
 {
     [Guid("151E61F1-1FE3-4FAD-B8EC-9034B676579E")]
-    public class AdminRadarListController : Controller
+    public class UserRadarListController : Controller
     {
         private readonly Session.NHibernateMapperSession _session;
         private String sessionID_s;
         private Guid sessionID;
 
-        public AdminRadarListController(NHibernateMapperSession session)
+        public UserRadarListController(NHibernateMapperSession session)
         {
             _session = session;
         }
@@ -55,9 +55,9 @@ namespace ASPNETAOP.Controllers
             return View(model);
         }
 
-        public IActionResult GoToEdit(Guid id)
+        public IActionResult GoToDisplayPage(Guid id)
         {
-            return RedirectToAction( "Edit", "EditRadar", new { id = id });
+            return RedirectToAction("Display", "UserRadarScreen", new { id = id });
         }
     }
 }

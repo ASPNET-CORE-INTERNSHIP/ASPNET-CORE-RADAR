@@ -105,12 +105,13 @@ namespace ASPNETAOP.Controllers
             Program.data.TryGetValue(sessionID, out d);
 
             //control if current did not came
-            if (d == null)
+            if (d.Receiver != null) //means d!=null
             {
+                d.message = null;
                 d.ComeFromAdd = true;
+                return RedirectToAction("NewMode", "Mode");
             }
-
-            return RedirectToAction("NewMode", "Mode");
+            return RedirectToAction("RadarList", "AdminRadarList");
         }
         
         public async System.Threading.Tasks.Task<IActionResult> AddAntennaAsync()
@@ -122,11 +123,13 @@ namespace ASPNETAOP.Controllers
             Program.data.TryGetValue(sessionID, out d);
 
             //control if current did not came
-            if (d == null)
+            if (d.Receiver != null) //means d!=null
             {
+                d.message = null;
                 d.ComeFromAdd = true;
+                return RedirectToAction("Preliminary", "Antenna");
             }
-            return RedirectToAction("Preliminary", "Antenna");
+            return RedirectToAction("RadarList", "AdminRadarList");
         }
 
     }
