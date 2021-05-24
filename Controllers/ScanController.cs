@@ -83,6 +83,7 @@ namespace ASPNETAOP.Controllers
             return RedirectToAction("Preliminary", "AntennaScan");
         }
         
+        //below functions are for edit pages
         public async Task<IActionResult> BeforeEdit(Guid id)
         {
             //get session id (we will use it when updating data and handling errors)
@@ -203,12 +204,65 @@ namespace ASPNETAOP.Controllers
             Guid sessionID = Guid.Parse(sessionID_s);
             Data current = new Data();
             Program.data.TryGetValue(sessionID, out current);
-            if (current != null)
+            if (current.Receiver != null)
             {
                 return RedirectToAction("BeforeEdit", "Mode", new { id = current.LastMode.Mode.ID });
             }
             String message = "Update cannot be completed, please restart the program to solve this issue. If it continues please report it";
             return RedirectToAction("BeforeEdit", "Submode", new { id = Guid.Empty, message = message });
+        }
+
+        //below functions are for display pages
+        public async Task<IActionResult> Show(Guid id)
+        {
+            //get session id (we will use it when updating data and handling errors)
+            String sessionID_s = HttpContext.Session.GetString("Session");
+            Guid sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
+
+            if (current.Receiver != null)
+            {
+                //Get scan's informations and shows it in edit page
+                Scan scan = await _session.Scan.Where(b => b.ID.Equals(id)).FirstOrDefaultAsync();
+                Submode sbm = await _session.Submode.Where(b => b.scan_id.Equals(id)).FirstOrDefaultAsync();
+                SubModeInfo info = new SubModeInfo();
+                info.Scan = scan;
+                info.Submode = sbm;
+                info.ListOfAntennas = new List<Antenna>();
+                //because we do not have an attribute that specifies if the antenna is checked
+                //(because an antenna might be used from a lot of scans)
+                //we should find if the antenna is working with this scan using AntennaScan tables
+                for (int i = 0; i < current.ListOfAntennas.Count; i++)
+                {
+                    Guid temp = Guid.Empty;
+                    temp = await _session.SelectAntennaScan(current.ListOfAntennas[i].ID, id);
+                    if (!temp.Equals(Guid.Empty))
+                    {
+                        info.ListOfAntennas.Add(current.ListOfAntennas[i]);
+                    }
+                }
+                current.LastMode.LastSubmode = info;
+                return View(info);
+            }
+            //else
+            String message = "The process cannot be completed, please restart the program to solve this issue. If it continues please report it";
+            return RedirectToAction("RadarList", "UserRadarList", new { message = message });
+        }
+
+        public async Task<IActionResult> Back()
+        {
+            //get session id (we will use it when updating data and handling errors)
+            String sessionID_s = HttpContext.Session.GetString("Session");
+            Guid sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
+            if (current.Receiver != null)
+            {
+                return RedirectToAction("Show", "Submode", new { id = current.LastMode.LastSubmode.Submode.ID });
+            }
+            String message = "The process cannot be completed, please restart the program to solve this issue. If it continues please report it";
+            return RedirectToAction("Show", "Submode", new { id = Guid.Empty, message = message });
         }
 
     }

@@ -67,6 +67,7 @@ namespace ASPNETAOP.Controllers
             return RedirectToAction("NewScan", "Scan");
         }
 
+        //below functions are for edit pages
         public async Task<IActionResult> BeforeEdit(Guid id, String? message)
         {
             //error case
@@ -120,7 +121,6 @@ namespace ASPNETAOP.Controllers
                 return View(modal);
             }
             return RedirectToAction("RadarList", "AdminRadarList");
-            
         }
 
         public async Task<IActionResult> Edit(SubModeInfo newValues)
@@ -178,6 +178,57 @@ namespace ASPNETAOP.Controllers
             Data current = new Data();
             Program.data.TryGetValue(sessionID, out current);
             return RedirectToAction("BeforeEdit", "Mode", new { id = current.LastMode.Mode.ID });
+        }
+
+        //below functions are for display pages
+        public async Task<IActionResult> Show(Guid id, String message)
+        {
+            //get session id (we will use it when updating data and handling errors)
+            String sessionID_s = HttpContext.Session.GetString("Session");
+            Guid sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
+
+            if (!String.IsNullOrEmpty(message))
+                ViewData["message"] = message;
+
+            if (current.Receiver != null)
+            {
+                //Get submode's informations and shows it in edit page
+                Submode sbm = await _session.Submode.Where(b => b.ID.Equals(id)).FirstOrDefaultAsync();
+                Scan scan = await _session.Scan.Where(b => b.ID.Equals(sbm.scan_id)).FirstOrDefaultAsync();
+
+                for (int j = 0; j < current.LastMode.ListOfSubmodes.Count; j++)
+                {
+                    if (current.LastMode.ListOfSubmodes[j].Submode.ID.Equals(id))
+                    {
+                        //specify current submode as last submode. It helps us in scan pages
+                        current.LastMode.LastSubmode = current.LastMode.ListOfSubmodes[j];
+                    }
+                }
+
+                SubModeInfo modal = new SubModeInfo();
+                modal.Submode = sbm;
+                modal.Scan = scan;
+                modal.ListOfAntennas = current.ListOfAntennas;
+                return View(modal);
+            }
+            return RedirectToAction("RadarList", "UserRadarList");
+        }
+
+        public IActionResult DisplayScan(Guid id)
+        {
+            return RedirectToAction("Show", "Scan", new { id = id });
+        }
+
+        public async Task<IActionResult> Back(Guid id)
+        {
+            //get session id (we will use it when updating data and handling errors)
+            String sessionID_s = HttpContext.Session.GetString("Session");
+            Guid sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
+            return RedirectToAction("Show", "Mode", new { id = current.LastMode.Mode.ID });
         }
 
     }

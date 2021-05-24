@@ -70,6 +70,7 @@ namespace ASPNETAOP.Controllers
             return RedirectToAction("NewSubmode", "Submode");
         }
 
+        //below functions are for edit pages
         public async Task<IActionResult> BeforeEdit(Guid id)
         {
             //get session id (we will use it when updating data and handling errors)
@@ -111,6 +112,7 @@ namespace ASPNETAOP.Controllers
             }
             return RedirectToAction("RadarList", "AdminRadarList");
         }
+
         public async Task<IActionResult> Edit(ModeInfo newValues)
         {
             //get session id (we will use it when updating data and handling errors)
@@ -268,6 +270,60 @@ namespace ASPNETAOP.Controllers
             Radar r = current.Radar;
             return RedirectToAction("Edit", "EditRadar", new { id = r.ID });
         }
-        
+
+        //below functions are for display pages
+        public async Task<IActionResult> Show(Guid id)
+        {
+            //get session id (we will use it when updating data and handling errors)
+            String sessionID_s = HttpContext.Session.GetString("Session");
+            Guid sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
+
+            if (current.Receiver != null) //means current!=null
+            {
+                //Get mode's informations and shows it in edit page
+                Mode mod = await _session.Modes.Where(b => b.ID.Equals(id)).FirstOrDefaultAsync();
+                List<SubModeInfo> INFOLIST = new List<SubModeInfo>();
+                List<Submode> sbm_list = await _session.Submode.Where(b => b.mode_id.Equals(id)).ToListAsync();
+                foreach (Submode sbm in sbm_list)
+                {
+                    Scan s = await _session.Scan.Where(b => b.ID.Equals(sbm.scan_id)).FirstOrDefaultAsync();
+                    SubModeInfo subModeInfo = new SubModeInfo(sbm, s);
+                    INFOLIST.Add(subModeInfo);
+                }
+                ModeInfo INFO = new ModeInfo();
+                INFO.Mode = mod;
+                INFO.ListOfSubmodes = INFOLIST;
+                //it is necessary when we are going to submode pages
+                current.LastMode = INFO;
+                return View(INFO);
+            }
+            return RedirectToAction("RadarList", "UserRadarList");
+        }
+
+        public IActionResult DisplaySubmode(Guid id)
+        {
+            //get session id (we will use it when updating data and handling errors)
+            String sessionID_s = HttpContext.Session.GetString("Session");
+            Guid sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
+            return RedirectToAction("Show", "Submode", new { id = id });
+        }
+
+        public async Task<IActionResult> GoBackToRadar()
+        {
+            //get session id (we will use it when updating data and handling errors)
+            String sessionID_s = HttpContext.Session.GetString("Session");
+            Guid sessionID = Guid.Parse(sessionID_s);
+            Data current = new Data();
+            Program.data.TryGetValue(sessionID, out current);
+            //we may came to there from edit page
+            current.ComeFromAdd = false;
+            Radar r = current.Radar;
+            return RedirectToAction("Show", "UserRadarScreen", new { id = r.ID });
+        }
+
     }
 }

@@ -1,0 +1,73 @@
+﻿@model ASPNETAOP.Models.ModeInfo
+
+@{
+    ViewData["Title"] = "Mode's Indormations";
+}
+
+<h1>Mode's Indormations</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-9">
+        <form asp-action="Show">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @{
+                var ID = "Model.Mode.ID";
+                var name = "Model.Mode.name";
+                <input type="hidden" id="@ID" name="@ID" value="@Model.Mode.ID" />
+                <input type="hidden" id="@name" name="@name" value="@Model.Mode.name" />
+                <input asp-for="@Model.Mode.ID" class="hidden" type="hidden" placeholder=@ID />
+                <h1>---------------------------------------------------------------------</h1>
+                <table>
+                    <tr>
+                        <th>Name:</th>
+                        <th>@Model.Mode.name</th>
+                    </tr>
+                </table>
+                <h1>---------------------------------------------------------------------</h1>
+            }
+        </form>
+    </div>
+</div>
+<h1>---------------------------------------------------------------------</h1>
+<h3>Submodes</h3>
+<div class="row">
+    <table>
+        <tr>
+            <th>Submode Name</th>
+            <th>PW</th>
+            <th>PRI</th>
+            <th></th>
+            <th></th>
+        </tr>
+        @{for (int i = 0; i < Model.ListOfSubmodes.Count; i++)
+            {
+                var SubmodeName = Model.ListOfSubmodes[i].Submode.name;
+                var PW = Model.ListOfSubmodes[i].Submode.PW;
+                var PRI = Model.ListOfSubmodes[i].Submode.PRI;
+                <input type="hidden" id="@SubmodeName" name="@SubmodeName" value="@Model.ListOfSubmodes[i].Submode.name" />
+                <input type="hidden" id="@PW" name="@PW" value="@Model.ListOfSubmodes[i].Submode.PW" />
+                <input type="hidden" id="@PRI" name="@PRI" value="@Model.ListOfSubmodes[i].Submode.PRI" />
+
+                <tr>
+                    <td>@SubmodeName</td>
+                    <td>@PW</td>
+                    <td>@PRI</td>
+                    <td>
+                        <input type="button" style="background-color:royalblue; color:white; width:150px; height:40px;" title="Details" value="Details" onclick="location.href='@Url.Action("DisplaySubmode", "Mode", new { id = @Model.ListOfSubmodes[i].Submode.ID })'" />
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+<h1>---------------------------------------------------------------------</h1>
+<h1>            </h1>
+<b>@ViewData["Message"]</b>
+<div>
+    <input type="button" style="background-color:mediumblue; border-color:mediumblue; color:white; width:150px; height:40px;" title="Back" value="Back" onclick="location.href='@Url.Action("GoBackToRadar", "Mode")'" />
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

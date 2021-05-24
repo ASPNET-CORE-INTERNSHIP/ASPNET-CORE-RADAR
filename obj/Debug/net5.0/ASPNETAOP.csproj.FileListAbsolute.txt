@@ -1485,3 +1485,13 @@ C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\bin\Debug\net5.0\System.Diagnostics.
 C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Antenna\Preliminary.cshtml.g.cs
 C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Transmitter\NewTransmitter.cshtml.g.cs
 C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\AntennaScan\Preliminary.cshtml.g.cs
+C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Antenna\Show.cshtml.g.cs
+C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Location\Show.cshtml.g.cs
+C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Mode\Show.cshtml.g.cs
+C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Radar\Show.cshtml.g.cs
+C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Receiver\Show.cshtml.g.cs
+C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Scan\Show.cshtml.g.cs
+C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Submode\Show.cshtml.g.cs
+C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\Transmitter\Show.cshtml.g.cs
+C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\UserRadarList\RadarList.cshtml.g.cs
+C:\Users\ENA\source\repos\ASPNET-CORE-RADAR\obj\Debug\net5.0\Razor\Views\UserRadarScreen\Show.cshtml.g.cs

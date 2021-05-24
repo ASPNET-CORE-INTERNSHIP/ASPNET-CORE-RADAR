@@ -1,0 +1,99 @@
+﻿@model ASPNETAOP.Models.SubModeInfo
+
+@{
+    ViewData["Title"] = "Scan's Informations";
+}
+
+<h1>Scan's Informations</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-9">
+        <form asp-action="Show">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @{
+                var ID = "Model.Scan.ID";
+                var scan_name = "Model.Scan.name";
+                var type = "Model.Scan.type";
+                var main_aspect = "Model.Scan.main_aspect";
+                var scan_angle = "Model.Scan.scan_angle";
+                var scan_rate = "Model.Scan.scan_rate";
+                var hits_per_scan = "Model.Scan.hits_per_scan";
+                <input type="hidden" id="@ID" name="@ID" value="@Model.Scan.ID" />
+                <input type="hidden" id="@scan_name" name="@scan_name" value="@Model.Scan.name" />
+                <input type="hidden" id="@type" name="@type" value="@Model.Scan.type" />
+                <input type="hidden" id="@main_aspect" name="@main_aspect" value="@Model.Scan.main_aspect" />
+                <input type="hidden" id="@scan_angle" name="@scan_angle" value="@Model.Scan.scan_angle" />
+                <input type="hidden" id="@scan_rate" name="@scan_rate" value="@Model.Scan.scan_rate" />
+                <input type="hidden" id="@hits_per_scan" name="@hits_per_scan" value="@Model.Scan.hits_per_scan" />
+
+                <input asp-for="@Model.Scan.ID" class="hidden" type="hidden" placeholder=@ID />
+
+                <h1>---------------------------------------------------------------------</h1>
+                <table>
+                    <tr>
+                        <th>Name:</th>
+                        <th>@Model.Scan.name</th>
+                    </tr>
+                    <tr>
+                        <th>Type:</th>
+                        <th>@Model.Scan.type</th>
+                    </tr>
+                    <tr>
+                        <th>Main Aspect:</th>
+                        <th>@Model.Scan.main_aspect</th>
+                    </tr>
+                    <tr>
+                        <th>Scan Rate:</th>
+                        <th>@Model.Scan.scan_rate</th>
+                    </tr>
+                    <tr>
+                        <th>Scan Angle:</th>
+                        <th>@Model.Scan.scan_angle</th>
+                    </tr>
+                    <tr>
+                        <th>Hits Per Scan:</th>
+                        <th>@Model.Scan.hits_per_scan</th>
+                    </tr>
+                </table>
+                <h1>---------------------------------------------------------------------</h1>
+            }
+        </form>
+    </div>
+</div>
+<h1>---------------------------------------------------------------------</h1>
+<h3>Antennas That Works With This Scan</h3>
+<div class="row">
+    <table>
+        <tr>
+            <th>Antenna Name</th>
+            <th>Type</th>
+            <th>Duty</th>
+            <th></th>
+        </tr>
+        @{for (int i = 0; i < Model.ListOfAntennas.Count; i++)
+            {
+                var name = Model.ListOfAntennas[i].name;
+                var antenna_type = Model.ListOfAntennas[i].type;
+                var duty = Model.ListOfAntennas[i].duty;
+                <input type="hidden" id="@name" name="@name" value="@Model.ListOfAntennas[i].name" />
+                <input type="hidden" id="@antenna_type" name="@antenna_type" value="@Model.ListOfAntennas[i].type" />
+                <input type="hidden" id="@duty" name="@duty" value="@Model.ListOfAntennas[i].duty" />
+                <tr>
+                    <td>@name</td>
+                    <td>@antenna_type</td>
+                    <td>@duty</td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+<h1>            </h1>
+<h1>---------------------------------------------------------------------</h1>
+<b>@ViewData["Message"]</b>
+<div>
+    <input type="button" style="background-color:mediumblue; border-color:mediumblue; color:white; width:150px; height:40px;" title="Back" value="Back" onclick="location.href='@Url.Action("Back", "Scan")'" />
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

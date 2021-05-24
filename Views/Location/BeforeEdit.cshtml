@@ -26,11 +26,7 @@
                 <input type="hidden" id="@geographic_latitude" name="@geographic_latitude" value="@Model.geographic_latitude" />
                 <input type="hidden" id="@geographic_longitude" name="@geographic_longitude" value="@Model.geographic_longitude" />
                 <input type="hidden" id="@airborne" name="@airborne" value="@Model.airborne" />
-                <div class="form-group">
-                    <label asp-for="ID" class="hidden"></label>
-                    <input asp-for="ID" class="hidden" type="hidden">
-                    <span asp-validation-for="ID" class="hidden"></span>
-                </div>
+                <input asp-for="ID" class="hidden" type="hidden">
                 <div class="form-group">
                     <label asp-for="name" class="control-label"></label>
                     <input asp-for="name" class="form-control" type="text" placeholder=@Model.name>

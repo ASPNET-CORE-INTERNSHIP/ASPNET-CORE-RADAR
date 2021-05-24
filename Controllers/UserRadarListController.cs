@@ -30,7 +30,7 @@ namespace ASPNETAOP.Controllers
             return View();
         }
 
-        public async System.Threading.Tasks.Task<IActionResult> RadarList()
+        public async System.Threading.Tasks.Task<IActionResult> RadarList(String message)
         {
             List<Radar> RadarList = await _session.Radars.ToListAsync();
 
@@ -50,6 +50,8 @@ namespace ASPNETAOP.Controllers
             Data current = new Data();
             Program.data.TryGetValue(sessionID, out current);
 
+            if(!String.IsNullOrEmpty(message))
+                ViewData["message"] = message;
             if (current != null && !String.IsNullOrEmpty(current.message))
                 ViewData["message"] = current.message;
             return View(model);
